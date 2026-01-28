@@ -8,10 +8,10 @@
 #include "mc/deps/input/enums/DirectionId.h"
 #include "mc/deps/input/enums/FocusImpact.h"
 #include "mc/deps/input/enums/RawInputType.h"
+#include "mc/deps/input/InputEvent.h"
 
 // auto generated forward declare list
 // clang-format off
-struct InputEvent;
 // clang-format on
 
 class InputEventQueue {
