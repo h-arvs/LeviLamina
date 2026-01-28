@@ -15,6 +15,7 @@ namespace Json { class Value; }
 namespace Scripting { struct ModuleDescriptor; }
 // clang-format on
 
+class __multiple_inheritance ScriptDeferredEventCoordinator;
 class ScriptDeferredEventCoordinator : public ::EventCoordinatorNoTracking<::ScriptDeferredEventListener> {
 public:
     // ScriptDeferredEventCoordinator inner types declare

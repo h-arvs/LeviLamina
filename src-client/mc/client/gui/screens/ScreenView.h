@@ -19,6 +19,7 @@
 #include "mc/deps/input/enums/ButtonState.h"
 #include "mc/deps/input/enums/DirectionId.h"
 #include "mc/deps/input/enums/FocusImpact.h"
+#include "mc/client/gui/screens/ScreenEvent.h"
 
 // auto generated forward declare list
 // clang-format off

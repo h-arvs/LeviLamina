@@ -7,7 +7,7 @@
 #include "mc/deps/core/utility/buffer_span.h"
 #include "mc/network/NetworkIdentifier.h"
 #include "mc/world/level/BlockPos.h"
-
+#include "mc/server/ClientGenerationRequestHandler.h"
 // auto generated forward declare list
 // clang-format off
 class ChunkPos;
@@ -20,7 +20,7 @@ class ServerNetworkSystem;
 class VarIntDataOutput;
 class Vec3;
 struct ChunkPositionAndDimension;
-struct ClientGenerationRequestHandler;
+
 namespace ClientBlobCache::Server { class ActiveTransfersManager; }
 namespace ClientBlobCache::Server { class TransferBuilder; }
 // clang-format on
