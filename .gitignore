@@ -10,3 +10,5 @@ src/mc1
 /cmake-build-*/
 /src-test/
 *.txt
+*.db
+*.so
