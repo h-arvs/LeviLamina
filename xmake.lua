@@ -13,7 +13,7 @@ add_requires("fmt 11")
 
 add_requires("leveldb 1.23")
 add_requires("type_safe v0.2.4")
-add_requires("expected-lite v0.6.3")
+add_requires("expected-lite")
 add_requires("rapidjson")
 add_requires("concurrentqueue v1.0.4")
 target("header_server")
