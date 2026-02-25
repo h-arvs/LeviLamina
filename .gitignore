@@ -10,9 +10,6 @@ src/mc1
 /cmake-build-*/
 /src-test/
 *.txt
-<<<<<<< HEAD
-/vsxmake2026
-=======
 *.db
 *.so
->>>>>>> 3bc5db4e84 (Update gitignore)
+
