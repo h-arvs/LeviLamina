@@ -9,6 +9,7 @@ src/mc1
 /bin/
 /cmake-build-*/
 /src-test/
+/test/
 *.txt
 *.db
 *.so
