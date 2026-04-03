@@ -6,6 +6,7 @@
 // clang-format off
 class Actor;
 class ActorInteraction;
+class InteractionResult;
 class Player;
 // clang-format on
 
@@ -24,21 +25,13 @@ public:
         // NOLINTBEGIN
         virtual ~InteractionMappingBase() = default;
 
-        virtual bool getInteraction(::Actor& actor, ::Player& player, ::ActorInteraction& interaction);
+        virtual ::InteractionResult getInteraction(::Actor&, ::Player&, ::ActorInteraction&) const = 0;
         // NOLINTEND
 
     public:
         // virtual function thunks
         // NOLINTBEGIN
-        MCNAPI bool $getInteraction(::Actor& actor, ::Player& player, ::ActorInteraction& interaction);
 
-
-        // NOLINTEND
-
-    public:
-        // vftables
-        // NOLINTBEGIN
-        MCNAPI static void** $vftable();
         // NOLINTEND
     };
 
@@ -48,12 +41,7 @@ public:
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 24> mUnk84c215;
+    ::ll::TypedStorage<8, 24, ::std::vector<::std::unique_ptr<::PlayerInteractionSystem::InteractionMappingBase>>>
+        mInteractionMappings;
     // NOLINTEND
-
-public:
-    // prevent constructor by default
-    PlayerInteractionSystem& operator=(PlayerInteractionSystem const&);
-    PlayerInteractionSystem(PlayerInteractionSystem const&);
-    PlayerInteractionSystem();
 };

@@ -168,7 +168,8 @@ public:
             operator=(::AtmosphericScattering::AtmosphericScatteringConfigSettings::AtmosphericScatteringSettings&&);
 
             MCNAPI ::AtmosphericScattering::AtmosphericScatteringConfigSettings::AtmosphericScatteringSettings&
-            operator=(::AtmosphericScattering::AtmosphericScatteringConfigSettings::AtmosphericScatteringSettings const&
+            operator=(
+                ::AtmosphericScattering::AtmosphericScatteringConfigSettings::AtmosphericScatteringSettings const&
             );
 
             MCNAPI ~AtmosphericScatteringSettings();
@@ -202,7 +203,7 @@ public:
     public:
         // member variables
         // NOLINTBEGIN
-        ::ll::UntypedStorage<8, 32>  mUnk9ac781;
+        ::ll::UntypedStorage<8, 32>  mUnk849e4b;
         ::ll::UntypedStorage<8, 352> mUnk9cdae9;
         // NOLINTEND
 
@@ -272,16 +273,33 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
+    MCNAPI bool addNewAtmosphereSetting(
+        ::HashedString const&                                         identifier,
+        ::AtmosphericScattering::AtmosphericScatteringConfigSettings& inAtmosphereSettings
+    );
+
     MCNAPI ::dragon::framerenderer::modules::AtmosphericScatteringParameters calculateAtmosphericScatteringParameters(
         ::AtmosphericScattering::AtmosphericScatteringConfigSettings const& atmosphereSettings,
         float                                                               timeOfDay
     ) const;
+
+    MCNAPI ::AtmosphericScattering::AtmosphericScatteringConfigSettings const&
+    findAtmosphereSettings(::HashedString const& identifier) const;
+
+    MCNAPI void setDefaultAtmosphereSettings(
+        ::AtmosphericScattering::AtmosphericScatteringConfigSettings const& inAtmosphereSettings
+    );
     // NOLINTEND
 
 public:
     // static functions
     // NOLINTBEGIN
     MCNAPI static void bindAtmosphericParameters(::cereal::ReflectionCtx& ctx);
+
+    MCNAPI static ::Scripting::Result_deprecated<void> registerConfigMappingChangeHandler(
+        ::Editor::Services::ClientDataTransferServiceProvider& dataTransferService,
+        ::LocalPlayer&                                         localPlayer
+    );
 
     MCNAPI static ::Scripting::Result_deprecated<void> registerEditorAccessors(
         ::Editor::Services::ClientDataTransferServiceProvider& dataTransferService,

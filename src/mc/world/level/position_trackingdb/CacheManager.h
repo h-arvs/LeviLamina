@@ -4,12 +4,13 @@
 
 // auto generated inclusion list
 #include "mc/deps/core/utility/AutomaticID.h"
+#include "mc/world/level/PositionTrackingId.h"
 
 // auto generated forward declare list
 // clang-format off
 class BlockPos;
 class Dimension;
-class PositionTrackingId;
+class Level;
 namespace PositionTrackingDB { class TrackingRecord; }
 // clang-format on
 
@@ -17,10 +18,15 @@ namespace PositionTrackingDB {
 
 class CacheManager {
 public:
+    // CacheManager inner types define
+    using TrackingRecordMap = ::std::map<::PositionTrackingId, ::std::unique_ptr<::PositionTrackingDB::TrackingRecord>>;
+
+public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 8>  mUnk948f80;
-    ::ll::UntypedStorage<8, 16> mUnkaec1ce;
+    ::ll::TypedStorage<8, 8, ::Level&> mLevel;
+    ::ll::TypedStorage<8, 16, ::std::map<::PositionTrackingId, ::std::unique_ptr<::PositionTrackingDB::TrackingRecord>>>
+        mLocalCache;
     // NOLINTEND
 
 public:
@@ -32,7 +38,7 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCNAPI ::gsl::not_null<::PositionTrackingDB::TrackingRecord*> createTrackingRecordInLocalCache(
+    MCAPI ::gsl::not_null<::PositionTrackingDB::TrackingRecord*> createTrackingRecordInLocalCache(
         ::PositionTrackingId const& id,
         ::BlockPos const&           pos,
         ::DimensionType const&      dimension

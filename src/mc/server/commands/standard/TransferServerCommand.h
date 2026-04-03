@@ -19,16 +19,10 @@ class TransferServerCommand : public ::ServerCommand {
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 32> mUnk249017;
-    ::ll::UntypedStorage<8, 32> mUnk3eb83f;
-    ::ll::UntypedStorage<4, 4>  mUnk4a8ed8;
+    ::ll::TypedStorage<8, 32, ::std::string> mPfidOrMSA;
+    ::ll::TypedStorage<8, 32, ::std::string> mServer;
+    ::ll::TypedStorage<4, 4, int>            mPort;
     // NOLINTEND
-
-public:
-    // prevent constructor by default
-    TransferServerCommand& operator=(TransferServerCommand const&);
-    TransferServerCommand(TransferServerCommand const&);
-    TransferServerCommand();
 
 public:
     // virtual functions
@@ -43,7 +37,9 @@ public:
     // NOLINTBEGIN
     MCAPI_S ::Social::GameConnectionInfo _convertToDestination() const;
 
-    MCAPI ::Player const* _loopPlayers(::Level& level, ::std::function<bool(::Player const*)> condition) const;
+    MCAPI_S ::Player const* _findTarget(::CommandOutput& output, ::Level& level, ::std::string const& pfidOrMSA) const;
+
+    MCAPI_C ::Player const* _loopPlayers(::Level& level, ::std::function<bool(::Player const*)> condition) const;
     // NOLINTEND
 
 public:

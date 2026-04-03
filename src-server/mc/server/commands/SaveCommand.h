@@ -10,6 +10,7 @@
 class CommandOrigin;
 class CommandOutput;
 class CommandRegistry;
+class Level;
 struct SnapshotFilenameAndLength;
 namespace Bedrock::Threading { class Mutex; }
 // clang-format on
@@ -32,14 +33,8 @@ public:
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<4, 4> mUnkbdbb95;
+    ::ll::TypedStorage<4, 4, ::SaveCommand::Mode> mMode;
     // NOLINTEND
-
-public:
-    // prevent constructor by default
-    SaveCommand& operator=(SaveCommand const&);
-    SaveCommand(SaveCommand const&);
-    SaveCommand();
 
 public:
     // virtual functions
@@ -52,11 +47,11 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
-    MCAPI static void saveHold(::CommandOutput& output);
+    MCAPI static bool saveHold(::Level& level);
 
-    MCAPI static void saveResume(::CommandOutput& output);
+    MCAPI static ::std::optional<::std::vector<::SnapshotFilenameAndLength>> saveQuery();
 
-    MCAPI static void saveState(::CommandOutput& output);
+    MCAPI static bool saveResume(::Level& level);
 
     MCAPI static void setup(::CommandRegistry& registry);
     // NOLINTEND

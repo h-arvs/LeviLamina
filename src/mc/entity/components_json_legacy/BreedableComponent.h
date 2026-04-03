@@ -9,49 +9,19 @@
 // clang-format off
 class Actor;
 class ActorInteraction;
-class AttributeInstanceConstRef;
 class BreedableDefinition;
-class IRandom;
+class InteractionResult;
 class ItemDescriptor;
 class ItemStack;
 class Player;
-struct BreedableType;
-struct MutableAttributeWithContext;
+class WeakEntityRef;
+struct OffspringDefinition;
 // clang-format on
 
 class BreedableComponent {
 public:
-    // BreedableComponent inner types declare
-    // clang-format off
-    struct MatingResult;
-    // clang-format on
-
     // BreedableComponent inner types define
-    struct MatingResult {
-    public:
-        // member variables
-        // NOLINTBEGIN
-        ::ll::UntypedStorage<8, 24> mUnk464dae;
-        // NOLINTEND
-
-    public:
-        // prevent constructor by default
-        MatingResult& operator=(MatingResult const&);
-        MatingResult(MatingResult const&);
-        MatingResult();
-
-    public:
-        // member functions
-        // NOLINTBEGIN
-        MCAPI ~MatingResult();
-        // NOLINTEND
-
-    public:
-        // destructor thunk
-        // NOLINTBEGIN
-        MCFOLD void $dtor();
-        // NOLINTEND
-    };
+    using MatingResult = ::std::vector<::WeakEntityRef>;
 
 public:
     // member variables
@@ -60,7 +30,6 @@ public:
     ::ll::TypedStorage<4, 4, int>                          mLoveTimer;
     ::ll::TypedStorage<4, 4, int>                          mBreedCooldown;
     ::ll::TypedStorage<4, 4, int>                          mBreedCooldownTime;
-    ::ll::TypedStorage<1, 1, bool>                         mCausesPregnancy;
     ::ll::TypedStorage<8, 8, ::ActorUniqueID>              mLoveCause;
     // NOLINTEND
 
@@ -69,9 +38,7 @@ public:
     // NOLINTBEGIN
     MCAPI bool _canBreed(::Actor& owner, ::Player& player, ::ItemStack const& playerItem);
 
-    MCAPI ::std::optional<::BreedableType> _determineBreedType(::Actor const& partner) const;
-
-    MCAPI ::Actor* _handleMate(::Actor& owner, ::Actor& partner);
+    MCAPI ::Actor const* _handleMate(::Actor& owner, ::Actor& partner, ::OffspringDefinition const& offspringData);
 
     MCAPI void _handlePregnancy(::Actor& owner, ::Actor& partner);
 
@@ -88,31 +55,12 @@ public:
         ::std::optional<::ItemDescriptor> const& resultItem
     );
 
-    MCAPI bool getInteraction(::Actor& owner, ::Player& player, ::ActorInteraction& interaction);
+    MCAPI bool canMate(::Actor const& owner, ::Actor const& partner) const;
 
-    MCAPI ::Player* getLoveCause(::Actor const& owner) const;
+    MCAPI ::InteractionResult getInteraction(::Actor& owner, ::Player& player, ::ActorInteraction& interaction);
 
-    MCAPI ::BreedableComponent::MatingResult mate(::Actor& owner, ::Actor& partner);
+    MCAPI ::std::vector<::WeakEntityRef> mate(::Actor& owner, ::Actor& partner);
 
     MCAPI bool meetsSittingRequirements(::Actor const& actor) const;
-    // NOLINTEND
-
-public:
-    // static functions
-    // NOLINTBEGIN
-    MCAPI static void setOffspringAttributes(
-        ::MutableAttributeWithContext& offspring,
-        ::AttributeInstanceConstRef    owner,
-        ::AttributeInstanceConstRef    partner
-    );
-
-    MCAPI static void setOffspringAttributesWithParentCentricBlending(
-        ::MutableAttributeWithContext& offspring,
-        ::AttributeInstanceConstRef    owner,
-        ::AttributeInstanceConstRef    partner,
-        ::IRandom&                     random,
-        float                          attributeRangeMin,
-        float                          attributeRangeMax
-    );
     // NOLINTEND
 };

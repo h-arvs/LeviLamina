@@ -3,16 +3,22 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
+#include "mc/deps/core/math/EasingType.h"
 #include "mc/server/commands/Command.h"
+#include "mc/server/commands/CommandPositionFloat.h"
+#include "mc/server/commands/CommandSelector.h"
+#include "mc/server/commands/RelativeFloat.h"
 
 // auto generated forward declare list
 // clang-format off
+class Actor;
 class BaseGameVersion;
 class CameraPresets;
 class CommandOrigin;
 class CommandOutput;
 class CommandRegistry;
 class Experiments;
+class Player;
 struct CameraInstruction;
 struct ServerCameraStatesComponent;
 namespace SharedTypes::v1_21_90 { struct CameraPreset; }
@@ -32,70 +38,68 @@ public:
         Facing           = 7,
         AttachToEntity   = 8,
         DetachFromEntity = 9,
-        TargetEntity     = 10,
-        TargetOffset     = 11,
-        RemoveTarget     = 12,
-        ViewOffset       = 13,
-        EntityOffset     = 14,
-        Default          = 15,
-        Clear            = 16,
-        Fade             = 17,
-        Time             = 18,
-        Color            = 19,
+        PlaySpline       = 10,
+        TargetEntity     = 11,
+        TargetOffset     = 12,
+        RemoveTarget     = 13,
+        ViewOffset       = 14,
+        EntityOffset     = 15,
+        Default          = 16,
+        Clear            = 17,
+        Fade             = 18,
+        Time             = 19,
+        Color            = 20,
     };
 
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 200> mUnk822547;
-    ::ll::UntypedStorage<1, 1>   mUnk6d2b15;
-    ::ll::UntypedStorage<8, 32>  mUnk602621;
-    ::ll::UntypedStorage<1, 1>   mUnk43793e;
-    ::ll::UntypedStorage<4, 4>   mUnk76eb2f;
-    ::ll::UntypedStorage<4, 4>   mUnkda0689;
-    ::ll::UntypedStorage<1, 1>   mUnk49b356;
-    ::ll::UntypedStorage<4, 16>  mUnk717385;
-    ::ll::UntypedStorage<1, 1>   mUnkbe461d;
-    ::ll::UntypedStorage<4, 8>   mUnkc0d6b9;
-    ::ll::UntypedStorage<4, 8>   mUnk79bee7;
-    ::ll::UntypedStorage<1, 1>   mUnk221b02;
-    ::ll::UntypedStorage<8, 200> mUnkbcf156;
-    ::ll::UntypedStorage<4, 16>  mUnk6890a2;
-    ::ll::UntypedStorage<1, 1>   mUnkb51868;
-    ::ll::UntypedStorage<1, 1>   mUnk87851f;
-    ::ll::UntypedStorage<1, 1>   mUnkcf4eac;
-    ::ll::UntypedStorage<4, 4>   mUnk124698;
-    ::ll::UntypedStorage<4, 4>   mUnkf530ad;
-    ::ll::UntypedStorage<1, 1>   mUnkac13f3;
-    ::ll::UntypedStorage<4, 4>   mUnked6be8;
-    ::ll::UntypedStorage<4, 4>   mUnk5b206e;
-    ::ll::UntypedStorage<4, 4>   mUnk8f6909;
-    ::ll::UntypedStorage<1, 1>   mUnk9cd0bc;
-    ::ll::UntypedStorage<8, 200> mUnk79bdc0;
-    ::ll::UntypedStorage<1, 1>   mUnk3233d4;
-    ::ll::UntypedStorage<1, 1>   mUnk18245b;
-    ::ll::UntypedStorage<8, 200> mUnk90b622;
-    ::ll::UntypedStorage<4, 4>   mUnkf3ad95;
-    ::ll::UntypedStorage<4, 4>   mUnk48d083;
-    ::ll::UntypedStorage<4, 4>   mUnkc0d44c;
-    ::ll::UntypedStorage<1, 1>   mUnk46fd0d;
-    ::ll::UntypedStorage<4, 4>   mUnk623384;
-    ::ll::UntypedStorage<4, 4>   mUnk6220be;
-    ::ll::UntypedStorage<4, 4>   mUnk811594;
-    ::ll::UntypedStorage<1, 1>   mUnk626e12;
-    ::ll::UntypedStorage<4, 4>   mUnkcb9bf0;
-    ::ll::UntypedStorage<4, 4>   mUnk1be6e3;
-    ::ll::UntypedStorage<4, 4>   mUnk7df88a;
-    ::ll::UntypedStorage<1, 1>   mUnkcf2ab3;
-    ::ll::UntypedStorage<4, 4>   mUnkecea45;
-    ::ll::UntypedStorage<4, 4>   mUnk55454d;
-    ::ll::UntypedStorage<4, 4>   mUnk647e26;
+    ::ll::TypedStorage<8, 200, ::CommandSelector<::Player>>        mPlayerTargets;
+    ::ll::TypedStorage<1, 1, ::CameraCommand::CameraCommandOption> mCommandMode;
+    ::ll::TypedStorage<8, 32, ::std::string>                       mCameraPresetName;
+    ::ll::TypedStorage<1, 1, ::CameraCommand::CameraCommandOption> mEasingOption;
+    ::ll::TypedStorage<4, 4, ::EasingType>                         mEasingType;
+    ::ll::TypedStorage<4, 4, float>                                mEasingTime;
+    ::ll::TypedStorage<1, 1, ::CameraCommand::CameraCommandOption> mPosOption;
+    ::ll::TypedStorage<4, 16, ::CommandPositionFloat>              mPos;
+    ::ll::TypedStorage<1, 1, ::CameraCommand::CameraCommandOption> mRotOption;
+    ::ll::TypedStorage<4, 8, ::RelativeFloat>                      mRotX;
+    ::ll::TypedStorage<4, 8, ::RelativeFloat>                      mRotY;
+    ::ll::TypedStorage<1, 1, ::CameraCommand::CameraCommandOption> mFacingOption;
+    ::ll::TypedStorage<8, 200, ::CommandSelector<::Actor>>         mFacingEntity;
+    ::ll::TypedStorage<4, 16, ::CommandPositionFloat>              mFacingPos;
+    ::ll::TypedStorage<1, 1, bool>                                 mFacingIsPosition;
+    ::ll::TypedStorage<1, 1, ::CameraCommand::CameraCommandOption> mDefaultOption;
+    ::ll::TypedStorage<1, 1, ::CameraCommand::CameraCommandOption> mViewOffsetOption;
+    ::ll::TypedStorage<4, 4, float>                                mViewOffsetX;
+    ::ll::TypedStorage<4, 4, float>                                mViewOffsetY;
+    ::ll::TypedStorage<1, 1, ::CameraCommand::CameraCommandOption> mEntityOffsetOption;
+    ::ll::TypedStorage<4, 4, float>                                mEntityOffsetX;
+    ::ll::TypedStorage<4, 4, float>                                mEntityOffsetY;
+    ::ll::TypedStorage<4, 4, float>                                mEntityOffsetZ;
+    ::ll::TypedStorage<1, 1, ::CameraCommand::CameraCommandOption> mAttachOption;
+    ::ll::TypedStorage<8, 200, ::CommandSelector<::Actor>>         mAttachToEntity;
+    ::ll::TypedStorage<1, 1, ::CameraCommand::CameraCommandOption> mTargetEntityOption;
+    ::ll::TypedStorage<1, 1, ::CameraCommand::CameraCommandOption> mTargetOffsetOption;
+    ::ll::TypedStorage<8, 200, ::CommandSelector<::Actor>>         mTargetEntity;
+    ::ll::TypedStorage<4, 4, float>                                mTargetCenterOffsetX;
+    ::ll::TypedStorage<4, 4, float>                                mTargetCenterOffsetY;
+    ::ll::TypedStorage<4, 4, float>                                mTargetCenterOffsetZ;
+    ::ll::TypedStorage<1, 1, ::CameraCommand::CameraCommandOption> mTimeOption;
+    ::ll::TypedStorage<4, 4, float>                                mFadeInSeconds;
+    ::ll::TypedStorage<4, 4, float>                                mHoldSeconds;
+    ::ll::TypedStorage<4, 4, float>                                mFadeOutSeconds;
+    ::ll::TypedStorage<1, 1, ::CameraCommand::CameraCommandOption> mColorOption;
+    ::ll::TypedStorage<4, 4, int>                                  mFadeColorR;
+    ::ll::TypedStorage<4, 4, int>                                  mFadeColorG;
+    ::ll::TypedStorage<4, 4, int>                                  mFadeColorB;
+    ::ll::TypedStorage<1, 1, ::CameraCommand::CameraCommandOption> mFovOption;
+    ::ll::TypedStorage<4, 4, ::EasingType>                         mFovEasingType;
+    ::ll::TypedStorage<4, 4, float>                                mFieldOfView;
+    ::ll::TypedStorage<4, 4, float>                                mFovEasingTime;
+    ::ll::TypedStorage<1, 1, ::CameraCommand::CameraCommandOption> mSplineOption;
+    ::ll::TypedStorage<8, 32, ::std::string>                       mSplineName;
     // NOLINTEND
-
-public:
-    // prevent constructor by default
-    CameraCommand& operator=(CameraCommand const&);
-    CameraCommand(CameraCommand const&);
 
 public:
     // virtual functions
@@ -139,88 +143,12 @@ public:
         ::std::vector<::SharedTypes::v1_21_90::CameraPreset> const& presetList
     );
 
-    MCAPI static void setup(::CommandRegistry& registry, ::Experiments const* experiments);
+    MCAPI static void setup(::CommandRegistry& registry);
     // NOLINTEND
 
 public:
     // static variables
     // NOLINTBEGIN
-    MCAPI static char const*& ENUM_OPTION_ATTACH_TO_ENTITY();
-
-    MCAPI static char const*& ENUM_OPTION_CLEAR();
-
-    MCAPI static char const*& ENUM_OPTION_COLOR();
-
-    MCAPI static char const*& ENUM_OPTION_DEFAULT();
-
-    MCAPI static char const*& ENUM_OPTION_DETACH_FROM_ENTITY();
-
-    MCAPI static char const*& ENUM_OPTION_EASE();
-
-    MCAPI static char const*& ENUM_OPTION_ENTITY_OFFSET();
-
-    MCAPI static char const*& ENUM_OPTION_FACING();
-
-    MCAPI static char const*& ENUM_OPTION_FADE();
-
-    MCAPI static char const*& ENUM_OPTION_FOV();
-
-    MCAPI static char const*& ENUM_OPTION_FOV_CLEAR();
-
-    MCAPI static char const*& ENUM_OPTION_POS();
-
-    MCAPI static char const*& ENUM_OPTION_ROT();
-
-    MCAPI static char const*& ENUM_OPTION_SET();
-
-    MCAPI static char const*& ENUM_OPTION_TARGET();
-
-    MCAPI static char const*& ENUM_OPTION_TARGET_OFFSET();
-
-    MCAPI static char const*& ENUM_OPTION_TARGET_REMOVE();
-
-    MCAPI static char const*& ENUM_OPTION_TIME();
-
-    MCAPI static char const*& ENUM_OPTION_VIEW_OFFSET();
-
-    MCAPI static char const*& OPTION_ATTACH_TO_ENTITY();
-
-    MCAPI static char const*& OPTION_CLEAR();
-
-    MCAPI static char const*& OPTION_COLOR();
-
-    MCAPI static char const*& OPTION_DEFAULT();
-
-    MCAPI static char const*& OPTION_DETACH_FROM_ENTITY();
-
-    MCAPI static char const*& OPTION_EASE();
-
-    MCAPI static char const*& OPTION_ENTITY_OFFSET();
-
-    MCAPI static char const*& OPTION_FACING();
-
-    MCAPI static char const*& OPTION_FADE();
-
-    MCAPI static char const*& OPTION_FOV();
-
-    MCAPI static char const*& OPTION_FOV_CLEAR();
-
-    MCAPI static char const*& OPTION_POS();
-
-    MCAPI static char const*& OPTION_ROT();
-
-    MCAPI static char const*& OPTION_SET();
-
-    MCAPI static char const*& OPTION_TARGET();
-
-    MCAPI static char const*& OPTION_TARGET_OFFSET();
-
-    MCAPI static char const*& OPTION_TARGET_REMOVE();
-
-    MCAPI static char const*& OPTION_TIME();
-
-    MCAPI static char const*& OPTION_VIEW_OFFSET();
-
     MCAPI static ::BaseGameVersion const& REMOVE_IGNORE_STARTING_VALUE_COMPONENT_VERSION();
     // NOLINTEND
 

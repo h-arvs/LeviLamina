@@ -46,7 +46,8 @@ public:
             // member functions
             // NOLINTBEGIN
             MCFOLD ::SharedTypes::v1_21_40::ClientBiomeJsonDocument::ClientBiomeJsonObject::ClientBiomeDescription&
-            operator=(::SharedTypes::v1_21_40::ClientBiomeJsonDocument::ClientBiomeJsonObject::ClientBiomeDescription&&
+            operator=(
+                ::SharedTypes::v1_21_40::ClientBiomeJsonDocument::ClientBiomeJsonObject::ClientBiomeDescription&&
             );
 
             MCFOLD ::SharedTypes::v1_21_40::ClientBiomeJsonDocument::ClientBiomeJsonObject::ClientBiomeDescription&
@@ -159,12 +160,6 @@ public:
     // static variables
     // NOLINTBEGIN
     MCAPI_C static ::SemVersionConstant const& VERSION();
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCFOLD_C void* $ctor(::SharedTypes::v1_21_40::ClientBiomeJsonDocument&&);
     // NOLINTEND
 
 public:

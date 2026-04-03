@@ -3,16 +3,13 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
+#include "mc/deps/input/InputEvent.h"
 #include "mc/deps/input/InputMode.h"
 #include "mc/deps/input/enums/ButtonState.h"
 #include "mc/deps/input/enums/DirectionId.h"
 #include "mc/deps/input/enums/FocusImpact.h"
 #include "mc/deps/input/enums/RawInputType.h"
 #include "mc/deps/input/InputEvent.h"
-
-// auto generated forward declare list
-// clang-format off
-// clang-format on
 
 class InputEventQueue {
 public:

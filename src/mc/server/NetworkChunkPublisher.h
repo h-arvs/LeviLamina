@@ -6,6 +6,8 @@
 #include "mc/common/SubClientId.h"
 #include "mc/deps/core/utility/buffer_span.h"
 #include "mc/network/NetworkIdentifier.h"
+#include "mc/server/ChunkPositionAndDimension.h"
+#include "mc/server/ClientGenerationRequestHandler.h"
 #include "mc/world/level/BlockPos.h"
 #include "mc/server/ClientGenerationRequestHandler.h"
 // auto generated forward declare list
@@ -38,7 +40,7 @@ public:
     ::ll::TypedStorage<4, 4, uint>                                               mLastChunkUpdateRadius;
     ::ll::TypedStorage<4, 4, uint>                                               mHandleForChunkBuildOrderUpdates;
     ::ll::TypedStorage<4, 4, int>                                                mChunksSentSinceStart;
-    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::ChunkViewSource>>               mSource;
+    ::ll::TypedStorage<8, 16, ::std::shared_ptr<::ChunkViewSource>>              mSource;
     ::ll::TypedStorage<8, 16, ::std::shared_ptr<::ChunkSource>>                  mNetworkChunkSource;
     ::ll::TypedStorage<
         8,
@@ -89,6 +91,8 @@ public:
     );
 
     MCAPI void clearRegion();
+
+    MCAPI void destroyRegion();
 
     MCAPI_C void handleGenerationRequests();
 

@@ -16,7 +16,7 @@ class ScriptSecretString : public ::Scripting::WeakHandleFromThis<::ScriptModule
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 32> mUnkf8a2ed;
+    ::ll::UntypedStorage<8, 32> mUnka4633b;
     // NOLINTEND
 
 public:
@@ -29,8 +29,8 @@ public:
     // NOLINTBEGIN
     MCNAPI ::ScriptModuleServerAdmin::ScriptSecretString& operator=(::ScriptModuleServerAdmin::ScriptSecretString&&);
 
-    MCNAPI ::ScriptModuleServerAdmin::ScriptSecretString& operator=(::ScriptModuleServerAdmin::ScriptSecretString const&
-    );
+    MCNAPI ::ScriptModuleServerAdmin::ScriptSecretString&
+    operator=(::ScriptModuleServerAdmin::ScriptSecretString const&);
 
     MCNAPI ~ScriptSecretString();
     // NOLINTEND

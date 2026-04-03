@@ -7,8 +7,8 @@
 
 // auto generated forward declare list
 // clang-format off
+class FogDefinitionRegistry;
 struct DeferredRenderingBiomeRegistry;
-struct FogDefinitionRegistry;
 // clang-format on
 
 struct ClientBiomeJsonDocumentGlue {
@@ -57,7 +57,7 @@ public:
     public:
         // member variables
         // NOLINTBEGIN
-        ::ll::UntypedStorage<8, 24> mUnk391d8c;
+        ::ll::UntypedStorage<8, 24> mUnkfe04c5;
         // NOLINTEND
 
     public:
@@ -82,7 +82,7 @@ public:
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 16> mUnk6fa67f;
+    ::ll::UntypedStorage<8, 16> mUnkfbd184;
     // NOLINTEND
 
 public:

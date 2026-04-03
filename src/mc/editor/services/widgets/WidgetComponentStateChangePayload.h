@@ -148,7 +148,7 @@ public:
         // member variables
         // NOLINTBEGIN
         ::ll::UntypedStorage<1, 2>  mUnkd693f4;
-        ::ll::UntypedStorage<8, 40> mUnkd70457;
+        ::ll::UntypedStorage<8, 40> mUnk44614c;
         // NOLINTEND
 
     public:
@@ -163,8 +163,8 @@ public:
         MCNAPI ::Editor::Network::WidgetComponentStateChangePayload::ComponentStateEntity&
         operator=(::Editor::Network::WidgetComponentStateChangePayload::ComponentStateEntity&&);
 
-        MCNAPI bool operator==(::Editor::Network::WidgetComponentStateChangePayload::ComponentStateEntity const& other
-        ) const;
+        MCNAPI bool
+        operator==(::Editor::Network::WidgetComponentStateChangePayload::ComponentStateEntity const& other) const;
 
         MCNAPI ~ComponentStateEntity();
         // NOLINTEND
@@ -199,12 +199,6 @@ public:
         // NOLINTEND
 
     public:
-        // static functions
-        // NOLINTBEGIN
-        MCNAPI static void bindType(::cereal::ReflectionCtx& ctx);
-        // NOLINTEND
-
-    public:
         // constructor thunks
         // NOLINTBEGIN
         MCNAPI_C void* $ctor();
@@ -236,8 +230,8 @@ public:
         MCNAPI ::Editor::Network::WidgetComponentStateChangePayload::ComponentStateGrid&
         operator=(::Editor::Network::WidgetComponentStateChangePayload::ComponentStateGrid const&);
 
-        MCNAPI bool operator==(::Editor::Network::WidgetComponentStateChangePayload::ComponentStateGrid const& other
-        ) const;
+        MCNAPI bool
+        operator==(::Editor::Network::WidgetComponentStateChangePayload::ComponentStateGrid const& other) const;
         // NOLINTEND
     };
 
@@ -248,7 +242,7 @@ public:
         // member variables
         // NOLINTBEGIN
         ::ll::UntypedStorage<4, 8>  mUnkf5d661;
-        ::ll::UntypedStorage<8, 32> mUnk806765;
+        ::ll::UntypedStorage<8, 32> mUnkbf5d52;
         // NOLINTEND
 
     public:
@@ -265,8 +259,8 @@ public:
         MCNAPI ::Editor::Network::WidgetComponentStateChangePayload::ComponentStateSpline&
         operator=(::Editor::Network::WidgetComponentStateChangePayload::ComponentStateSpline const&);
 
-        MCNAPI bool operator==(::Editor::Network::WidgetComponentStateChangePayload::ComponentStateSpline const& other
-        ) const;
+        MCNAPI bool
+        operator==(::Editor::Network::WidgetComponentStateChangePayload::ComponentStateSpline const& other) const;
 
         MCNAPI ~ComponentStateSpline();
         // NOLINTEND
@@ -282,7 +276,7 @@ public:
     public:
         // member variables
         // NOLINTBEGIN
-        ::ll::UntypedStorage<8, 40> mUnk4b88d2;
+        ::ll::UntypedStorage<8, 40> mUnk7b3cbc;
         ::ll::UntypedStorage<4, 20> mUnkfae6d8;
         // NOLINTEND
 
@@ -298,8 +292,8 @@ public:
         MCNAPI ::Editor::Network::WidgetComponentStateChangePayload::ComponentStateText&
         operator=(::Editor::Network::WidgetComponentStateChangePayload::ComponentStateText&&);
 
-        MCNAPI bool operator==(::Editor::Network::WidgetComponentStateChangePayload::ComponentStateText const& other
-        ) const;
+        MCNAPI bool
+        operator==(::Editor::Network::WidgetComponentStateChangePayload::ComponentStateText const& other) const;
 
         MCNAPI ~ComponentStateText();
         // NOLINTEND
@@ -346,8 +340,8 @@ public:
         MCNAPI ::Editor::Network::WidgetComponentStateChangePayload::ComponentStateVolumeOutline&
         operator=(::Editor::Network::WidgetComponentStateChangePayload::ComponentStateVolumeOutline const&);
 
-        MCNAPI bool
-        operator==(::Editor::Network::WidgetComponentStateChangePayload::ComponentStateVolumeOutline const& other
+        MCNAPI bool operator==(
+            ::Editor::Network::WidgetComponentStateChangePayload::ComponentStateVolumeOutline const& other
         ) const;
 
         MCNAPI ~ComponentStateVolumeOutline();
@@ -390,12 +384,6 @@ public:
         // member functions
         // NOLINTBEGIN
         MCNAPI ~ComponentStateVolumeOutlineVolumeUpdate();
-        // NOLINTEND
-
-    public:
-        // static functions
-        // NOLINTBEGIN
-        MCNAPI static void bindType(::cereal::ReflectionCtx& ctx);
         // NOLINTEND
 
     public:

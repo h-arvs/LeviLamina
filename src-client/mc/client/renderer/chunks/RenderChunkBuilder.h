@@ -7,6 +7,7 @@
 #include "mc/client/renderer/chunks/RenderChunkPerformanceTrackingData.h"
 #include "mc/deps/game_refs/WeakRef.h"
 #include "mc/deps/minecraft_renderer/game/RangeIndices.h"
+#include "mc/world/level/block/BlockRenderLayer.h"
 #include "mc/world/level/chunk/ChunkSourceViewGenerateMode.h"
 #include "mc/world/phys/AABB.h"
 
@@ -48,10 +49,10 @@ public:
     ::ll::TypedStorage<1, 1, bool>                                                          mBlendCanRenderAsOpaque;
     ::ll::TypedStorage<4, 4, float>                                                         mAverageSkyLight;
     ::ll::TypedStorage<8, 168, ::std::array<::std::vector<::RenderChunkQuadInfo>, 7>>       mFaceMetadata;
-    ::ll::TypedStorage<4, 136, ::std::array<::RangeIndices, 17>>                            mRenderLayerRanges;
+    ::ll::TypedStorage<4, 176, ::std::array<::RangeIndices, 22>>                            mRenderLayerRanges;
     ::ll::TypedStorage<8, 8, ::std::vector<::BlockQueueEntry>*>                             mQueues;
     ::ll::TypedStorage<8, 8, ::std::vector<::BlockQueueEntry>*>                             mSimpleOpaqueBlockQueue;
-    ::ll::TypedStorage<8, 136, uint64[17]>                                                  mQueueIndexCounts;
+    ::ll::TypedStorage<8, 176, uint64[22]>                                                  mQueueIndexCounts;
     ::ll::TypedStorage<8, 8, ::std::unique_ptr<::Tessellator>>                              mOwnedTessellator;
     ::ll::TypedStorage<8, 16, ::std::shared_ptr<::ClientBlockPipeline::MaterialRepository>> mMaterialRepository;
     ::ll::TypedStorage<8, 16, ::std::weak_ptr<::RuntimeLocalLightingConfig const>>          mLocalLightingConfig;
@@ -63,6 +64,7 @@ public:
     ::ll::TypedStorage<1, 1, bool>                                                               mGUIRendering;
     ::ll::TypedStorage<4, 24, ::AABB>                                                            mBuildBoundingBox;
     ::ll::TypedStorage<1, 1, bool>                                    mUseNewTessellationPipeline;
+    ::ll::TypedStorage<1, 1, bool>                                    mTextureShiftsEnabled;
     ::ll::TypedStorage<8, 16, ::std::weak_ptr<::IRenderChunkGarbage>> mRenderChunkGarbage;
     ::ll::TypedStorage<8, 16, ::WeakRef<::RenderChunkCoordinator>>    mRenderChunkCoordinator;
     // NOLINTEND
@@ -76,32 +78,36 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCNAPI RenderChunkBuilder(
+    MCAPI RenderChunkBuilder(
         ::std::shared_ptr<::ClientBlockPipeline::MaterialRepository> const& materialRepository,
         ::ChunkSource&                                                      mainSource,
         ::Tessellator&                                                      tessellator,
         ::WeakRef<::RenderChunkCoordinator>                                 coordinator
     );
 
-    MCNAPI RenderChunkBuilder(
+    MCAPI RenderChunkBuilder(
         ::std::shared_ptr<::ClientBlockPipeline::MaterialRepository> const& materialRepository,
         ::ChunkSource&                                                      mainSource,
         ::Tessellator&                                                      tessellator,
         ::std::weak_ptr<::IRenderChunkGarbage>                              garbage
     );
 
-    MCNAPI RenderChunkBuilder(
+    MCAPI RenderChunkBuilder(
         ::MinecraftGameplayGraphicsResources&      minecraftGameplayGraphicsResources,
         ::ClientBlockPipeline::TessellatorContext& pipelineTessellatorContext,
         ::ChunkSource&                             mainSource,
         ::WeakRef<::RenderChunkCoordinator>        coordinator
     );
 
-    MCNAPI void _buildRanges(::RenderChunkPerformanceTrackingData::RenderChunkBuildDetails& renderChunkBuildDetails);
+    MCAPI void _buildRanges(::RenderChunkPerformanceTrackingData::RenderChunkBuildDetails& renderChunkBuildDetails);
 
-    MCNAPI void _overrideStaticBlockLighting(::BlockSource& region, ::SubChunkPos const& subChunkPos);
+    MCAPI void _overrideStaticBlockLighting(
+        ::BlockSource&                 region,
+        ::SubChunkPos const&           subChunkPos,
+        ::AirAndSimpleBlockBits const& airAndSimpleBlocks
+    );
 
-    MCNAPI bool _sortBlocks(
+    MCAPI bool _sortBlocks(
         ::BlockSource&                                                 region,
         ::RenderChunkGeometry&                                         renderChunkGeometry,
         bool                                                           transparentLeaves,
@@ -109,22 +115,22 @@ public:
         ::RenderChunkPerformanceTrackingData::RenderChunkBuildDetails& renderChunkBuildDetails
     );
 
-    MCNAPI bool _tessellateNewPipeline(
+    MCAPI bool _tessellateNewPipeline(
         ::RenderChunkGeometry& renderChunkGeometry,
         ::BlockSource&,
         ::RenderChunkPerformanceTrackingData::RenderChunkBuildDetails& renderChunkBuildDetails
     );
 
-    MCNAPI bool _tessellateQueues(
+    MCAPI bool _tessellateQueues(
         ::RenderChunkGeometry&                                         renderChunkGeometry,
         ::BlockSource&                                                 region,
         ::AirAndSimpleBlockBits&                                       airAndSimpleBlocks,
         ::RenderChunkPerformanceTrackingData::RenderChunkBuildDetails& renderChunkBuildDetails
     );
 
-    MCNAPI void _updateFacesMetadata();
+    MCAPI void _updateFacesMetadata();
 
-    MCNAPI void build(
+    MCAPI void build(
         ::RenderChunkGeometry&                                     renderChunkGeometry,
         bool                                                       transparentLeaves,
         ::BakedBlockLightType                                      lightingType,
@@ -132,15 +138,27 @@ public:
         ::mce::framebuilder::FrameLightingModelCapabilities const& lightingModelCapabilities
     );
 
-    MCNAPI void prepareWorldData(::BlockPos const& pos, ::ChunkSourceViewGenerateMode viewMoveMode);
+    MCAPI void prepareWorldData(::BlockPos const& pos, ::ChunkSourceViewGenerateMode viewMoveMode);
 
-    MCNAPI ~RenderChunkBuilder();
+    MCAPI ~RenderChunkBuilder();
     // NOLINTEND
 
 public:
     // static functions
     // NOLINTBEGIN
-    MCNAPI static void checkNeighborBlockIsAirOrSimpleBlock(
+    MCAPI static void _checkForAirAndOpaque(
+        int                      x,
+        int                      y,
+        int                      z,
+        ::BlockPos const&        min,
+        ::BlockPos const&        max,
+        bool                     guiRendering,
+        ::BlockSource&           region,
+        ::AirAndSimpleBlockBits& airAndSimpleBlocks
+    );
+
+    MCAPI static bool checkAndSetSimpleBlockInfo(
+        ::BlockRenderLayer       renderLayer,
         ::Block const&           block,
         uint64                   blockBitsetIndex,
         ::AirAndSimpleBlockBits& airAndSimpleBlocks
@@ -150,21 +168,21 @@ public:
 public:
     // constructor thunks
     // NOLINTBEGIN
-    MCNAPI void* $ctor(
+    MCAPI void* $ctor(
         ::std::shared_ptr<::ClientBlockPipeline::MaterialRepository> const& materialRepository,
         ::ChunkSource&                                                      mainSource,
         ::Tessellator&                                                      tessellator,
         ::WeakRef<::RenderChunkCoordinator>                                 coordinator
     );
 
-    MCNAPI void* $ctor(
+    MCAPI void* $ctor(
         ::std::shared_ptr<::ClientBlockPipeline::MaterialRepository> const& materialRepository,
         ::ChunkSource&                                                      mainSource,
         ::Tessellator&                                                      tessellator,
         ::std::weak_ptr<::IRenderChunkGarbage>                              garbage
     );
 
-    MCNAPI void* $ctor(
+    MCAPI void* $ctor(
         ::MinecraftGameplayGraphicsResources&      minecraftGameplayGraphicsResources,
         ::ClientBlockPipeline::TessellatorContext& pipelineTessellatorContext,
         ::ChunkSource&                             mainSource,
@@ -175,6 +193,6 @@ public:
 public:
     // destructor thunk
     // NOLINTBEGIN
-    MCNAPI void $dtor();
+    MCAPI void $dtor();
     // NOLINTEND
 };
