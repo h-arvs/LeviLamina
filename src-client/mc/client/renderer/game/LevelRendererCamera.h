@@ -38,39 +38,39 @@
 class AABB;
 class Actor;
 class BaseActorRenderContext;
+class BiomeBlendingMapRenderer;
 class Block;
 class BlockActor;
 class BlockSource;
+class CameraAimAssistRenderer;
+class ClientFrameUpdateContext;
 class Dimension;
 class Font;
 class IClientInstance;
 class IConstBlockSource;
 class Level;
+class LevelBuilder;
+class LevelCullerBase;
 class LevelRenderer;
 class LevelRendererCameraProxy;
 class LocalPlayer;
 class Player;
+class RenderChunkInstanced;
+class RenderChunkShared;
 class ResourcePackManager;
 class ScreenContext;
+class TerrainLayer;
+class WeatherRenderer;
 struct BaseSceneDirectionalLightRenderData;
-struct BiomeBlendingMapRenderer;
-struct CameraAimAssistRenderer;
 struct ChunkRenderObjectCollection;
-struct ClientFrameUpdateContext;
 struct CrackRenderObjectCollection;
 struct FogTransitionSetting;
-struct LevelBuilder;
-struct LevelCullerBase;
 struct LevelRenderPreRenderUpdateParameters;
 struct NameTagRenderObjectCollection;
 struct OccluderFace;
-struct RenderChunkInstanced;
-struct RenderChunkShared;
 struct SkyRenderObject;
-struct TerrainLayer;
 struct ViewRenderData;
 struct ViewRenderObject;
-struct WeatherRenderer;
 namespace mce { class TextureGroup; }
 namespace mce { class TexturePtr; }
 // clang-format on
@@ -367,7 +367,7 @@ public:
 
     virtual void setViewArea(::LevelRenderPreRenderUpdateParameters const& levelRenderPreRenderUpdateParameters);
 
-    virtual bool getForceFog(::Actor const&) const;
+    virtual bool getForceFog(::Actor const& cameraActor) const;
 
     virtual void setupFog(::ScreenContext& screenContext, float const skyIntensityOverride);
 
@@ -388,11 +388,12 @@ public:
 
     virtual void postRenderUpdate();
 
-    virtual void notifyGeoChangedForAffectedEntities(::RenderChunkShared&, uchar);
+    virtual void notifyGeoChangedForAffectedEntities(::RenderChunkShared& renderChunkShared, uchar version);
 
-    virtual void updateLevelCullerType(::LevelCullerType const) = 0;
+    virtual void updateLevelCullerType(::LevelCullerType const newLevelCullerType) = 0;
 
-    virtual void queueRenderEntities(::LevelRenderPreRenderUpdateParameters const&);
+    virtual void
+    queueRenderEntities(::LevelRenderPreRenderUpdateParameters const& levelRenderPreRenderUpdateParameters);
 
     virtual void _releaseRespectiveResources();
 
@@ -636,7 +637,7 @@ public:
 
     MCAPI void $setViewArea(::LevelRenderPreRenderUpdateParameters const& levelRenderPreRenderUpdateParameters);
 
-    MCFOLD bool $getForceFog(::Actor const&) const;
+    MCFOLD bool $getForceFog(::Actor const& cameraActor) const;
 
     MCAPI void $setupFog(::ScreenContext& screenContext, float const skyIntensityOverride);
 
@@ -657,9 +658,9 @@ public:
 
     MCFOLD void $postRenderUpdate();
 
-    MCFOLD void $notifyGeoChangedForAffectedEntities(::RenderChunkShared&, uchar);
+    MCFOLD void $notifyGeoChangedForAffectedEntities(::RenderChunkShared& renderChunkShared, uchar version);
 
-    MCAPI void $queueRenderEntities(::LevelRenderPreRenderUpdateParameters const&);
+    MCAPI void $queueRenderEntities(::LevelRenderPreRenderUpdateParameters const& levelRenderPreRenderUpdateParameters);
 
     MCFOLD void $_releaseRespectiveResources();
 

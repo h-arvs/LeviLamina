@@ -169,11 +169,15 @@ public:
         ::Json::Value const&                     sessionSummary
     ) /*override*/;
 
-    virtual void onAllConnectionsClosed(::Connection::DisconnectFailReason, bool) /*override*/;
+    virtual void
+    onAllConnectionsClosed(::Connection::DisconnectFailReason discoReason, bool skipDisconnectMessage) /*override*/;
 
-    virtual void onAllRemoteConnectionsClosed(::Connection::DisconnectFailReason, bool) /*override*/;
+    virtual void onAllRemoteConnectionsClosed(
+        ::Connection::DisconnectFailReason discoReason,
+        bool                               skipDisconnectMessage
+    ) /*override*/;
 
-    virtual void onOutgoingConnectionFailed(::Connection::DisconnectFailReason) /*override*/;
+    virtual void onOutgoingConnectionFailed(::Connection::DisconnectFailReason discoReason) /*override*/;
 
     virtual void onWebsocketRequest(
         ::std::string const&    serverAddress,
@@ -192,11 +196,13 @@ public:
     MCAPI bool
     _sortAndPacketizeEvents(::NetworkConnection& connection, ::std::chrono::steady_clock::time_point endTime);
 
-    MCAPI_C void closeConnection(
+#ifdef LL_PLAT_C
+    MCAPI void closeConnection(
         ::NetworkIdentifier const&         id,
         ::Connection::DisconnectFailReason discoReason,
         ::std::string const&               messageFromServer
     );
+#endif
 
     MCAPI void disconnect();
 
@@ -208,7 +214,9 @@ public:
 
     MCAPI bool isServer() const;
 
-    MCAPI_C void registerClientInstance(::NetEventCallback& callback, ::SubClientId subID);
+#ifdef LL_PLAT_C
+    MCAPI void registerClientInstance(::NetEventCallback& callback, ::SubClientId subID);
+#endif
 
     MCAPI void runEvents(bool networkIsCritical);
 
@@ -260,6 +268,13 @@ public:
         bool                                     skipDisconnectMessage,
         ::Json::Value const&                     sessionSummary
     );
+
+    MCAPI void $onAllConnectionsClosed(::Connection::DisconnectFailReason discoReason, bool skipDisconnectMessage);
+
+    MCAPI void
+    $onAllRemoteConnectionsClosed(::Connection::DisconnectFailReason discoReason, bool skipDisconnectMessage);
+
+    MCAPI void $onOutgoingConnectionFailed(::Connection::DisconnectFailReason discoReason);
 
     MCAPI void $onWebsocketRequest(
         ::std::string const&    serverAddress,

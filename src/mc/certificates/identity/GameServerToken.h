@@ -3,7 +3,7 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
-#include "mc/deps/certificates/certificates/WebToken.h"
+#include "mc/deps/certificates/WebToken.h"
 #include "mc/options/DiscoveryEnvironment.h"
 
 // auto generated forward declare list
@@ -53,12 +53,14 @@ public:
     MCAPI static ::GameServerToken
     createAndValidateSelfSigned(::RawGameServerToken const& rawToken, int64 currentTime, bool checkExpiration);
 
-    MCAPI_C static ::RawGameServerToken createLocal(
+#ifdef LL_PLAT_C
+    MCAPI static ::RawGameServerToken createLocal(
         ::PrivateKeyManager const&        signer,
         int64                             expirationDate,
         ::std::string const&              keyId,
         ::PlayerAuthenticationInfo const& claims
     );
+#endif
     // NOLINTEND
 
 public:

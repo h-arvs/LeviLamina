@@ -10,7 +10,7 @@
 
 // auto generated forward declare list
 // clang-format off
-struct StoreCatalogItem;
+class StoreCatalogItem;
 // clang-format on
 
 class WorldTemplatePurchaseScreenController : public ::MainMenuScreenController {
@@ -36,7 +36,7 @@ public:
     // NOLINTBEGIN
     virtual ::ui::DirtyFlag tick() /*override*/;
 
-    virtual ::ui::DirtyFlag handleGameEventNotification(::ui::GameEventNotification) /*override*/;
+    virtual ::ui::DirtyFlag handleGameEventNotification(::ui::GameEventNotification notification) /*override*/;
 
     virtual ~WorldTemplatePurchaseScreenController() /*override*/ = default;
     // NOLINTEND

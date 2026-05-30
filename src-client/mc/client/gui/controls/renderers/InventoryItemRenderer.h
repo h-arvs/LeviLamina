@@ -30,11 +30,23 @@ class InventoryItemRenderer : public ::MinecraftUICustomRenderer, public ::Actor
 public:
     // InventoryItemRenderer inner types declare
     // clang-format off
-    struct CachedProperties;
+    class CachedProperties;
     // clang-format on
 
     // InventoryItemRenderer inner types define
-    struct CachedProperties {};
+    class CachedProperties {
+    public:
+        // member variables
+        // NOLINTBEGIN
+        ::ll::TypedStorage<4, 4, int>   mCacheVersion;
+        ::ll::TypedStorage<4, 4, int>   mItemIdAux;
+        ::ll::TypedStorage<4, 4, int>   mChargedItem;
+        ::ll::TypedStorage<4, 4, int>   mCustomColor;
+        ::ll::TypedStorage<1, 1, bool>  mIsFiltered;
+        ::ll::TypedStorage<8, 8, int64> mRawPickUpTime;
+        ::ll::TypedStorage<1, 1, bool>  mIsShowPickup;
+        // NOLINTEND
+    };
 
 public:
     // member variables
@@ -84,7 +96,7 @@ public:
 
     virtual int getNumRenderPasses() const /*override*/;
 
-    virtual ::UIMaterialType getUIMaterialType(int) const /*override*/;
+    virtual ::UIMaterialType getUIMaterialType(int pass) const /*override*/;
 
     virtual ::ResourceLocation getResourceLocation(int textureSlot, int pass) const /*override*/;
 
@@ -135,9 +147,13 @@ public:
     MCAPI void
     $render(::MinecraftUIRenderContext& renderContext, ::IClientInstance& client, ::UIControl& owner, int pass);
 
+    MCAPI ::UIBatchType $getBatchType() const;
+
     MCFOLD int $getCustomId() const;
 
     MCAPI int $getNumRenderPasses() const;
+
+    MCAPI ::UIMaterialType $getUIMaterialType(int pass) const;
 
     MCAPI ::ResourceLocation $getResourceLocation(int textureSlot, int pass) const;
 

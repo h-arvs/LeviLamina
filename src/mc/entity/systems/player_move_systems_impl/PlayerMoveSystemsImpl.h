@@ -24,7 +24,7 @@ struct DebugCameraIsActiveComponent;
 namespace VanillaSystems::PlayerMoveSystemsImpl {
 // functions
 // NOLINTBEGIN
-MCNAPI void _doPlayerPreMoveSystem(
+MCAPI void _doPlayerPreMoveSystem(
     ::StrictEntityContext const&                  entity,
     ::MoveRequestComponent const&                 request,
     ::StateVectorComponent const&                 stateVector,
@@ -33,18 +33,20 @@ MCNAPI void _doPlayerPreMoveSystem(
     ::EntityModifier<::WasOnGroundFlagComponent>& modifier
 );
 
-MCNAPI_C void _singleTickDebugCameraFilterSystem(
+#ifdef LL_PLAT_C
+MCAPI void _singleTickDebugCameraFilterSystem(
     ::StrictEntityContext&                                                                    entity,
     ::ViewT<::StrictEntityContext, ::Include<::LocalPlayerComponent, ::MoveRequestComponent>> view,
     ::EntityModifier<::MoveRequestComponent>                                                  modifier,
     ::OptionalGlobal<::DebugCameraIsActiveComponent>                                          debugCamera
 );
 
-MCNAPI_C void _tickDebugCameraFilterSystem(
+MCAPI void _tickDebugCameraFilterSystem(
     ::ViewT<::StrictEntityContext, ::Include<::LocalPlayerComponent, ::MoveRequestComponent>> view,
     ::EntityModifier<::MoveRequestComponent>                                                  modifier,
     ::OptionalGlobal<::DebugCameraIsActiveComponent>                                          debugCamera
 );
+#endif
 // NOLINTEND
 
 } // namespace VanillaSystems::PlayerMoveSystemsImpl

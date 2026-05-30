@@ -27,17 +27,23 @@ MCNAPI ::std::string_view getName(::entt::meta_type const& type);
 
 MCNAPI ::std::string_view getName(::entt::meta_type const& type, uint member);
 
-MCNAPI_S ::cereal::SchemaDescription
+#ifdef LL_PLAT_S
+MCNAPI ::cereal::SchemaDescription
 getSchemaDescription(::cereal::ReflectionCtx const& ctx, ::entt::type_info info, ::cereal::DescriptionConfig config);
+#endif
 
-MCNAPI_C ::std::vector<::cereal::SchemaDescription> getSchemaDescriptionRecursive(
+#ifdef LL_PLAT_C
+MCNAPI ::std::vector<::cereal::SchemaDescription> getSchemaDescriptionRecursive(
     ::cereal::ReflectionCtx const& ctx,
     ::entt::type_info              info,
     ::cereal::DescriptionConfig    config
 );
+#endif
 
-MCNAPI_S ::std::vector<::cereal::SchemaDescription>
+#ifdef LL_PLAT_S
+MCNAPI ::std::vector<::cereal::SchemaDescription>
 getSchemaDescriptions(::cereal::ReflectionCtx const& ctx, ::cereal::DescriptionConfig config);
+#endif
 
 MCNAPI bool isOptional(::entt::meta_type const& type);
 
@@ -47,9 +53,11 @@ MCNAPI bool operator==(::cereal::DynamicValue const& lhs, ::cereal::DynamicValue
 
 MCNAPI ::entt::meta_type resolve(::cereal::ReflectionCtx const& ctx, ::entt::type_info const& info);
 
-MCNAPI_C ::std::string toJsonString(::cereal::DynamicValue const& value);
+#ifdef LL_PLAT_C
+MCNAPI ::std::string toJsonString(::cereal::DynamicValue const& value);
 
-MCNAPI_C ::std::optional<::std::string> toJsonString(::std::optional<::cereal::DynamicValue> value);
+MCNAPI ::std::optional<::std::string> toJsonString(::std::optional<::cereal::DynamicValue> value);
+#endif
 
 MCNAPI ::Json::Value toJsonValue(::cereal::DynamicValue const& value);
 

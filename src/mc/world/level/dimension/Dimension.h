@@ -22,6 +22,7 @@
 #include "mc/world/level/chunk/LevelChunkGarbageCollector.h"
 #include "mc/world/level/dimension/ActorReplication.h"
 #include "mc/world/level/dimension/DimensionHeightRange.h"
+#include "mc/world/level/dimension/DirectionalLightSource.h"
 #include "mc/world/level/dimension/IDimension.h"
 #include "mc/world/level/dimension/LimboEntitiesVersion.h"
 #include "mc/world/level/levelgen/v1/FeatureTerrainAdjustments.h"
@@ -95,34 +96,22 @@ public:
     public:
         // member variables
         // NOLINTBEGIN
-        ::ll::UntypedStorage<4, 4> mUnkcec13a;
-        ::ll::UntypedStorage<4, 4> mUnkcf25a7;
-        ::ll::UntypedStorage<4, 4> mUnkaf1fb7;
-        ::ll::UntypedStorage<4, 4> mUnkb93f34;
+        ::ll::TypedStorage<4, 4, float> mMinFlashDuration;
+        ::ll::TypedStorage<4, 4, float> mMaxFlashDuration;
+        ::ll::TypedStorage<4, 4, float> mMinFlashCooldown;
+        ::ll::TypedStorage<4, 4, float> mMaxFlashCooldown;
         // NOLINTEND
-
-    public:
-        // prevent constructor by default
-        ChaoticDirectionalLightControls& operator=(ChaoticDirectionalLightControls const&);
-        ChaoticDirectionalLightControls(ChaoticDirectionalLightControls const&);
-        ChaoticDirectionalLightControls();
     };
 
     struct DirectionalLightState {
     public:
         // member variables
         // NOLINTBEGIN
-        ::ll::UntypedStorage<4, 4> mUnkc3428f;
-        ::ll::UntypedStorage<4, 4> mUnkff4708;
-        ::ll::UntypedStorage<4, 4> mUnk2d8810;
-        ::ll::UntypedStorage<4, 4> mUnk8baae1;
+        ::ll::TypedStorage<4, 4, float>                    mAngle;
+        ::ll::TypedStorage<4, 4, float>                    mPerpendicularAngle;
+        ::ll::TypedStorage<4, 4, float>                    mIntensityMultiplier;
+        ::ll::TypedStorage<4, 4, ::DirectionalLightSource> mLightSource;
         // NOLINTEND
-
-    public:
-        // prevent constructor by default
-        DirectionalLightState& operator=(DirectionalLightState const&);
-        DirectionalLightState(DirectionalLightState const&);
-        DirectionalLightState();
     };
 
     using ActorTagList = ::std::vector<::std::unique_ptr<::CompoundTag>>;
@@ -213,17 +202,18 @@ public:
 
     virtual void tickRedstone();
 
-    virtual ::std::unique_ptr<::WorldGenerator> createGenerator(::br::worldgen::StructureSetRegistry const&) = 0;
+    virtual ::std::unique_ptr<::WorldGenerator>
+    createGenerator(::br::worldgen::StructureSetRegistry const& structureSetRegistry) = 0;
 
-    virtual void upgradeLevelChunk(::ChunkSource&, ::LevelChunk&, ::LevelChunk&) = 0;
+    virtual void upgradeLevelChunk(::ChunkSource& source, ::LevelChunk& lc, ::LevelChunk& generatedChunk) = 0;
 
-    virtual void fixWallChunk(::ChunkSource&, ::LevelChunk&) = 0;
+    virtual void fixWallChunk(::ChunkSource& source, ::LevelChunk& lc) = 0;
 
     virtual void initializeWithLevelStorageManagerConnector(
         ::ILevelStorageManagerConnector& levelStorageManagerConnector
     ) /*override*/;
 
-    virtual bool levelChunkNeedsUpgrade(::LevelChunk const&) const = 0;
+    virtual bool levelChunkNeedsUpgrade(::LevelChunk const& lc) const = 0;
 
     virtual bool isNaturalDimension() const /*override*/;
 
@@ -245,8 +235,9 @@ public:
 
     virtual float getTimeOfDay(int time, float a) const;
 
-    virtual void
-    setDimensionDirectionalLightControls(::std::variant<::Dimension::ChaoticDirectionalLightControls> const&);
+    virtual void setDimensionDirectionalLightControls(
+        ::std::variant<::Dimension::ChaoticDirectionalLightControls> const& directionalLightControls
+    );
 
     virtual ::Dimension::DirectionalLightState getDimensionDirectionalLightSourceState(float a) const;
 
@@ -316,10 +307,12 @@ public:
 
     virtual ::std::unique_ptr<::ChunkBuildOrderPolicyBase> _createChunkBuildOrderPolicy();
 
-    virtual void _upgradeOldLimboEntity(::CompoundTag&, ::LimboEntitiesVersion) = 0;
+    virtual void _upgradeOldLimboEntity(::CompoundTag& tag, ::LimboEntitiesVersion vers) = 0;
 
-    virtual ::std::unique_ptr<::ChunkSource>
-        _wrapStorageForVersionCompatibility(::std::unique_ptr<::ChunkSource>, ::StorageVersion) = 0;
+    virtual ::std::unique_ptr<::ChunkSource> _wrapStorageForVersionCompatibility(
+        ::std::unique_ptr<::ChunkSource> storageSource,
+        ::StorageVersion                 levelVersion
+    ) = 0;
     // NOLINTEND
 
 public:
@@ -372,15 +365,19 @@ public:
 
     MCAPI float getMoonBrightness() const;
 
-    MCAPI_C int getMoonPhase() const;
+#ifdef LL_PLAT_C
+    MCAPI int getMoonPhase() const;
+#endif
 
     MCAPI ::Brightness getOldSkyDarken(float a);
 
-    MCAPI_C float getSkyDarken(float a) const;
+#ifdef LL_PLAT_C
+    MCAPI float getSkyDarken(float a) const;
 
-    MCAPI_C float getSunAngle(float a) const;
+    MCAPI float getSunAngle(float a) const;
 
-    MCAPI_C float getTimeOfDay(float a) const;
+    MCAPI float getTimeOfDay(float a) const;
+#endif
 
     MCAPI bool isBrightOutside() const;
 
@@ -388,7 +385,9 @@ public:
 
     MCAPI bool operator==(::Dimension const& rhs) const;
 
-    MCAPI_C void registerDisplayEntity(::WeakRef<::EntityContext> entityRef);
+#ifdef LL_PLAT_C
+    MCAPI void registerDisplayEntity(::WeakRef<::EntityContext> entityRef);
+#endif
 
     MCAPI void removeActorByID(::ActorUniqueID const& id);
 
@@ -462,8 +461,9 @@ public:
 
     MCAPI float $getTimeOfDay(int time, float a) const;
 
-    MCFOLD void
-    $setDimensionDirectionalLightControls(::std::variant<::Dimension::ChaoticDirectionalLightControls> const&);
+    MCFOLD void $setDimensionDirectionalLightControls(
+        ::std::variant<::Dimension::ChaoticDirectionalLightControls> const& directionalLightControls
+    );
 
     MCAPI ::Dimension::DirectionalLightState $getDimensionDirectionalLightSourceState(float a) const;
 
@@ -503,6 +503,18 @@ public:
 
     MCAPI void $onBlockEvent(::BlockSource& source, int x, int y, int z, int b0, int b1);
 
+    MCAPI void $onBlockChanged(
+        ::BlockSource&                 source,
+        ::BlockPos const&              pos,
+        uint                           layer,
+        ::Block const&                 block,
+        ::Block const&                 oldBlock,
+        int                            updateFlags,
+        ::ActorBlockSyncMessage const* syncMsg,
+        ::BlockChangedEventTarget      eventTarget,
+        ::Actor*                       blockChangeSource
+    );
+
     MCAPI void $onLevelDestruction(::std::string const&);
 
     MCFOLD ::DimensionBrightnessRamp const& $getBrightnessRamp() const;
@@ -518,20 +530,6 @@ public:
     MCAPI void $updatePoiBlockStateChange(::BlockPos pos, ::Block const& removed, ::Block const& placed) const;
 
     MCAPI ::std::unique_ptr<::ChunkBuildOrderPolicyBase> $_createChunkBuildOrderPolicy();
-
-#ifdef LL_PLAT_C
-    MCAPI void $onBlockChanged(
-        ::BlockSource&                 source,
-        ::BlockPos const&              pos,
-        uint                           layer,
-        ::Block const&                 block,
-        ::Block const&                 oldBlock,
-        int                            updateFlags,
-        ::ActorBlockSyncMessage const* syncMsg,
-        ::BlockChangedEventTarget      eventTarget,
-        ::Actor*                       blockChangeSource
-    );
-#endif
 
 
     // NOLINTEND

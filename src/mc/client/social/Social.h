@@ -18,55 +18,61 @@ namespace cohtml { class Binder; }
 namespace Social {
 // functions
 // NOLINTBEGIN
-MCNAPI_C void CoherentBind(::cohtml::Binder* binder, ::Social::PlayerProfileState* state);
+#ifdef LL_PLAT_C
+MCNAPI void CoherentBind(::cohtml::Binder* binder, ::Social::PlayerProfileState* state);
 
-MCNAPI_C ::std::string identityErrorToUserFacingString(::std::error_code error);
+MCNAPI ::std::string identityErrorToUserFacingString(::std::error_code error);
 
-MCNAPI_C bool isSignInError(::std::error_code const& code);
+MCNAPI bool isSignInError(::std::error_code const& code);
 
-MCNAPI_C ::Social::MultiplayerServiceIdentifier serviceIdentifierFromString(::std::string_view idString);
+MCNAPI ::Social::MultiplayerServiceIdentifier serviceIdentifierFromString(::std::string_view idString);
 
-MCNAPI_C ::Bedrock::Threading::Async<::std::pair<::std::error_code, ::Social::XsapiHandle<::XUser*>>>
+MCNAPI ::Bedrock::Threading::Async<::std::pair<::std::error_code, ::Social::XsapiHandle<::XUser*>>>
 signInCompleteHelper(::XUser* user, long hr);
+#endif
 // NOLINTEND
 
 // static variables
 // NOLINTBEGIN
-MCNAPI_C uint const& BEDROCK_XBOXLIVE_ACTIVE_TITLEID();
+#ifdef LL_PLAT_C
+MCNAPI uint const& BEDROCK_XBOXLIVE_ACTIVE_TITLEID();
 
-MCNAPI_C ::std::vector<::std::string> const& BEDROCK_XBOXLIVE_ALL_SCIDS();
+MCNAPI ::std::vector<::std::string> const& BEDROCK_XBOXLIVE_ALL_SCIDS();
 
-MCNAPI_C ::std::vector<uint> const& BEDROCK_XBOXLIVE_ALL_TITLEIDS();
+MCNAPI ::std::vector<uint> const& BEDROCK_XBOXLIVE_ALL_TITLEIDS();
 
-MCNAPI_C ::std::string const& BEDROCK_XBOXLIVE_CLIENTID();
+MCNAPI ::std::string const& BEDROCK_XBOXLIVE_CLIENTID();
 
-MCNAPI_C ::std::string const& BEDROCK_XBOXLIVE_REDIRECTURI();
+MCNAPI ::std::string const& BEDROCK_XBOXLIVE_REDIRECTURI();
 
-MCNAPI_C ::std::string const& BEDROCK_XBOXLIVE_SCID();
+MCNAPI ::std::string const& BEDROCK_XBOXLIVE_SCID();
 
-MCNAPI_C ::std::string const& BEDROCK_XBOXLIVE_SCID_AMAZON_KINDLE();
+MCNAPI ::std::string const& BEDROCK_XBOXLIVE_SCID_AMAZON_KINDLE();
 
-MCNAPI_C ::std::string const& BEDROCK_XBOXLIVE_SCID_BERWICK();
+MCNAPI ::std::string const& BEDROCK_XBOXLIVE_SCID_BERWICK();
 
-MCNAPI_C ::std::string const& BEDROCK_XBOXLIVE_SCID_GOOGLE();
+MCNAPI ::std::string const& BEDROCK_XBOXLIVE_SCID_GOOGLE();
 
-MCNAPI_C ::std::string const& BEDROCK_XBOXLIVE_SCID_IOS();
+MCNAPI ::std::string const& BEDROCK_XBOXLIVE_SCID_IOS();
 
-MCNAPI_C ::std::string const& BEDROCK_XBOXLIVE_SCID_IOS_PREVIEW();
+MCNAPI ::std::string const& BEDROCK_XBOXLIVE_SCID_IOS_PREVIEW();
 
-MCNAPI_C ::std::string const& BEDROCK_XBOXLIVE_SCID_SWITCH();
+MCNAPI ::std::string const& BEDROCK_XBOXLIVE_SCID_SWITCH();
 
-MCNAPI_C ::std::string const& BEDROCK_XBOXLIVE_SCID_WIN();
+MCNAPI ::std::string const& BEDROCK_XBOXLIVE_SCID_WIN();
 
-MCNAPI_C ::std::string const& BEDROCK_XBOXLIVE_SCID_WIN_PREVIEW();
+MCNAPI ::std::string const& BEDROCK_XBOXLIVE_SCID_WIN_PREVIEW();
 
-MCNAPI_C ::std::string const& BEDROCK_XBOXLIVE_SCID_XBOX();
+MCNAPI ::std::string const& BEDROCK_XBOXLIVE_SCID_XBOX();
 
-MCNAPI_C ::std::string const& BEDROCK_XBOXLIVE_SCID_XBOX_PREVIEW();
+MCNAPI ::std::string const& BEDROCK_XBOXLIVE_SCID_XBOX_PREVIEW();
+#endif
 
 MCNAPI ::Social::GameConnectionInfo const& INVALID_CONNECTION();
 
-MCNAPI_C ::Social::XboxLiveUserProfileData& nullProfile();
+#ifdef LL_PLAT_C
+MCNAPI ::Social::XboxLiveUserProfileData& nullProfile();
+#endif
 // NOLINTEND
 
 } // namespace Social

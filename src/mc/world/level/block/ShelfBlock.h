@@ -179,8 +179,10 @@ public:
     // NOLINTBEGIN
     MCAPI static ::AABB const& _getShape(::BlockPos const& pos, ::Block const& block, ::AABB& bufferValue);
 
-    MCAPI_C static ::ShelfBlock::SlotState
+#ifdef LL_PLAT_C
+    MCAPI static ::ShelfBlock::SlotState
     getBlockSlotState(::BlockPos const& blockPos, ::Vec3 const& blockHit, uchar faceHit, ::BlockSource const& region);
+#endif
     // NOLINTEND
 
 public:
@@ -215,9 +217,7 @@ public:
 
     MCAPI void $onRemove(::BlockSource& region, ::BlockPos const& pos) const;
 
-#ifdef LL_PLAT_S
     MCAPI bool $canProvideSupport(::Block const& block, uchar face, ::BlockSupportType) const;
-#endif
 
     MCAPI bool $liquidCanFlowIntoFromDirection(
         uchar                                                     flowIntoFacing,

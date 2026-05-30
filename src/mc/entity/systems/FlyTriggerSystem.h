@@ -10,11 +10,13 @@ struct TickingSystemWithInfo;
 namespace FlyTriggerSystem {
 // functions
 // NOLINTBEGIN
-MCNAPI_S ::TickingSystemWithInfo createActionSystem();
+#ifdef LL_PLAT_S
+MCAPI ::TickingSystemWithInfo createActionSystem();
+#endif
 
-MCNAPI ::TickingSystemWithInfo createIntentSystem();
+MCAPI ::TickingSystemWithInfo createIntentSystem();
 
-MCNAPI ::TickingSystemWithInfo createRemovePermissionFlyFlagSystem();
+MCAPI ::TickingSystemWithInfo createRemovePermissionFlyFlagSystem();
 // NOLINTEND
 
 } // namespace FlyTriggerSystem

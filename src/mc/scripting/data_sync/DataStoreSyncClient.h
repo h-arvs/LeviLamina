@@ -24,14 +24,16 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCNAPI_C ::std::vector<::Bedrock::DDUI::DataStoreUpdate> getAndClearUpdates();
+#ifdef LL_PLAT_C
+    MCAPI ::std::vector<::Bedrock::DDUI::DataStoreUpdate> getAndClearUpdates();
+#endif
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
 #ifdef LL_PLAT_C
-    MCNAPI void $assertAppropriateThread() const;
+    MCFOLD void $assertAppropriateThread() const;
 #endif
 
 

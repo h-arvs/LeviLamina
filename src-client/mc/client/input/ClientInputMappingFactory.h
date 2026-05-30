@@ -8,9 +8,9 @@
 
 // auto generated forward declare list
 // clang-format off
+class Config;
 class IOptions;
 class KeyboardRemappingLayout;
-struct Config;
 struct DeviceButtonMapping;
 struct InputMapping;
 struct TouchInputMapping;
@@ -43,13 +43,13 @@ public:
     // NOLINTBEGIN
     virtual ::InputMapping const* getMapping(::std::string const& mappingName) /*override*/;
 
-    virtual void createInputMappingTemplates(::IOptions&) = 0;
+    virtual void createInputMappingTemplates(::IOptions& options) = 0;
 
     virtual ::TouchInputMapping _createScreenTouchMapping() const;
 
     virtual ::std::vector<::DeviceButtonMapping> _createScreenDeviceButtonMapping() const;
 
-    virtual void _updateKeyboardAndMouseControls(::IOptions&) = 0;
+    virtual void _updateKeyboardAndMouseControls(::IOptions& options) = 0;
 
     virtual void _updateGameControllerControls() = 0;
 

@@ -47,7 +47,8 @@ public:
     _useOn(::ItemStack& instance, ::Actor& entity, ::BlockPos pos, uchar face, ::Vec3 const& clickPos) const
         /*override*/;
 
-    virtual bool _calculatePlacePos(::ItemStackBase&, ::Actor& entity, uchar& face, ::BlockPos& pos) const /*override*/;
+    virtual bool _calculatePlacePos(::ItemStackBase& instance, ::Actor& entity, uchar& face, ::BlockPos& pos) const
+        /*override*/;
 
     virtual ~SkullItem() /*override*/ = default;
     // NOLINTEND
@@ -56,6 +57,8 @@ public:
     // virtual function thunks
     // NOLINTBEGIN
     MCAPI ::ResolvedItemIconInfo $getIconInfo(::ItemStackBase const& item, int, bool) const;
+
+    MCAPI ::Rarity $getRarity(::ItemStackBase const& stack) const;
 
     MCFOLD int $getLevelDataForAuxValue(int auxValue) const;
 
@@ -72,11 +75,7 @@ public:
     MCAPI ::InteractionResult
     $_useOn(::ItemStack& instance, ::Actor& entity, ::BlockPos pos, uchar face, ::Vec3 const& clickPos) const;
 
-    MCAPI bool $_calculatePlacePos(::ItemStackBase&, ::Actor& entity, uchar& face, ::BlockPos& pos) const;
-
-#ifdef LL_PLAT_C
-    MCAPI ::Rarity $getRarity(::ItemStackBase const& stack) const;
-#endif
+    MCAPI bool $_calculatePlacePos(::ItemStackBase& instance, ::Actor& entity, uchar& face, ::BlockPos& pos) const;
 
 
     // NOLINTEND

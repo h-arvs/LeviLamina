@@ -9,11 +9,11 @@
 
 // auto generated forward declare list
 // clang-format off
+class IPersonaRepository;
+class IStoreCatalogItem;
 class PersonaPiece;
 class UIPropertyBag;
-struct IPersonaRepository;
-struct IStoreCatalogItem;
-namespace persona { struct PieceOfferWrapper; }
+namespace persona { class PieceOfferWrapper; }
 // clang-format on
 
 class PersonaAnimationModel {
@@ -27,7 +27,40 @@ public:
     // PersonaAnimationModel inner types define
     struct ReactAnimationTypeHash {};
 
-    struct ReactAnimationData {};
+    struct ReactAnimationData {
+    public:
+        // member variables
+        // NOLINTBEGIN
+        ::ll::TypedStorage<8, 32, ::std::string> animationName;
+        ::ll::TypedStorage<8, 32, ::std::string> soundEventName;
+        // NOLINTEND
+
+    public:
+        // prevent constructor by default
+        ReactAnimationData& operator=(ReactAnimationData const&);
+        ReactAnimationData(ReactAnimationData const&);
+        ReactAnimationData();
+
+    public:
+        // member functions
+        // NOLINTBEGIN
+        MCAPI ReactAnimationData(::PersonaAnimationModel::ReactAnimationData&&);
+
+        MCAPI ~ReactAnimationData();
+        // NOLINTEND
+
+    public:
+        // constructor thunks
+        // NOLINTBEGIN
+        MCFOLD void* $ctor(::PersonaAnimationModel::ReactAnimationData&&);
+        // NOLINTEND
+
+    public:
+        // destructor thunk
+        // NOLINTBEGIN
+        MCFOLD void $dtor();
+        // NOLINTEND
+    };
 
     using ReactAnimationType = ::persona::ReactAnimationType;
 

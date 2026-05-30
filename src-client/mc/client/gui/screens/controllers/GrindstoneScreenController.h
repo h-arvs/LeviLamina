@@ -18,7 +18,11 @@ struct ActorUniqueID;
 class GrindstoneScreenController : public ::ContainerScreenController {
 public:
     // GrindstoneScreenController inner types define
-    enum class SlotIndex : int {};
+    enum class SlotIndex : int {
+        Input      = 0,
+        Additional = 1,
+        Result     = 2,
+    };
 
 public:
     // member variables
@@ -53,9 +57,9 @@ public:
     // NOLINTBEGIN
     MCAPI GrindstoneScreenController(
         ::std::shared_ptr<::ClientInstanceScreenModel> model,
-        ::Player&                                      player,
-        ::BlockPos const&                              pos,
-        ::ActorUniqueID                                uniqueId
+        ::Player&,
+        ::BlockPos const& pos,
+        ::ActorUniqueID
     );
 
     MCAPI void _registerStateMachine();
@@ -64,12 +68,8 @@ public:
 public:
     // constructor thunks
     // NOLINTBEGIN
-    MCAPI void* $ctor(
-        ::std::shared_ptr<::ClientInstanceScreenModel> model,
-        ::Player&                                      player,
-        ::BlockPos const&                              pos,
-        ::ActorUniqueID                                uniqueId
-    );
+    MCAPI void*
+    $ctor(::std::shared_ptr<::ClientInstanceScreenModel> model, ::Player&, ::BlockPos const& pos, ::ActorUniqueID);
     // NOLINTEND
 
 public:

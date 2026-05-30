@@ -85,7 +85,7 @@ public:
 
     virtual ::ActorHurtResult _hurt(::ActorDamageSource const&, float damage, bool, bool) /*override*/;
 
-    virtual void addAdditionalSaveData(::CompoundTag& tag) const /*override*/;
+    virtual void addAdditionalSaveData(::CompoundTag& entityTag) const /*override*/;
 
     virtual void readAdditionalSaveData(::CompoundTag const& tag, ::DataLoadHelper& dataLoadHelper) /*override*/;
     // NOLINTEND
@@ -111,7 +111,8 @@ public:
 
     MCAPI void _validateItem();
 
-    MCAPI_C void clientInitialize(
+#ifdef LL_PLAT_C
+    MCAPI void clientInitialize(
         ::BlockSource&     region,
         ::Vec3 const&      pos,
         ::ItemStack const& item,
@@ -119,6 +120,7 @@ public:
         bool               isInItemFrame,
         bool               isFromFishing
     );
+#endif
 
     MCAPI void postNormalTick();
     // NOLINTEND
@@ -154,7 +156,7 @@ public:
 
     MCAPI ::ActorHurtResult $_hurt(::ActorDamageSource const&, float damage, bool, bool);
 
-    MCAPI void $addAdditionalSaveData(::CompoundTag& tag) const;
+    MCAPI void $addAdditionalSaveData(::CompoundTag& entityTag) const;
 
     MCAPI void $readAdditionalSaveData(::CompoundTag const& tag, ::DataLoadHelper& dataLoadHelper);
 

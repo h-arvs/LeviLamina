@@ -40,7 +40,7 @@ public:
         ::std::optional<::SerializationMode> overrideMode
     ) const /*override*/;
 
-    virtual void write(::BinaryStream& bitStream, ::cereal::ReflectionCtx const& reflectionCtx) const /*override*/;
+    virtual void write(::BinaryStream& stream, ::cereal::ReflectionCtx const& reflectionCtx) const /*override*/;
 
     virtual void write(::BinaryStream& stream) const /*override*/;
 
@@ -58,7 +58,7 @@ public:
     virtual ::Bedrock::Result<void> _read(::ReadOnlyBinaryStream& stream) /*override*/;
 
     virtual ::Bedrock::Result<void>
-    _read(::ReadOnlyBinaryStream& bitStream, ::cereal::ReflectionCtx const& reflectionCtx) /*override*/;
+    _read(::ReadOnlyBinaryStream& stream, ::cereal::ReflectionCtx const& reflectionCtx) /*override*/;
 
 #ifdef LL_PLAT_S
     virtual ~PhotoTransferPacket() /*override*/ = default;
@@ -72,6 +72,10 @@ public:
     // member functions
     // NOLINTBEGIN
     MCAPI PhotoTransferPacket();
+
+#ifdef LL_PLAT_C
+    MCAPI explicit PhotoTransferPacket(::PhotoTransferPacketPayload payload);
+#endif
     // NOLINTEND
 
 public:
@@ -79,7 +83,9 @@ public:
     // NOLINTBEGIN
     MCAPI void* $ctor();
 
-    MCAPI_C void* $ctor(::PhotoTransferPacketPayload payload);
+#ifdef LL_PLAT_C
+    MCAPI void* $ctor(::PhotoTransferPacketPayload payload);
+#endif
     // NOLINTEND
 
 public:
@@ -105,7 +111,7 @@ public:
         ::std::optional<::SerializationMode> overrideMode
     ) const;
 
-    MCFOLD void $write(::BinaryStream& bitStream, ::cereal::ReflectionCtx const& reflectionCtx) const;
+    MCFOLD void $write(::BinaryStream& stream, ::cereal::ReflectionCtx const& reflectionCtx) const;
 
     MCAPI void $write(::BinaryStream& stream) const;
 
@@ -122,8 +128,7 @@ public:
 
     MCAPI ::Bedrock::Result<void> $_read(::ReadOnlyBinaryStream& stream);
 
-    MCAPI ::Bedrock::Result<void>
-    $_read(::ReadOnlyBinaryStream& bitStream, ::cereal::ReflectionCtx const& reflectionCtx);
+    MCAPI ::Bedrock::Result<void> $_read(::ReadOnlyBinaryStream& stream, ::cereal::ReflectionCtx const& reflectionCtx);
 
 
     // NOLINTEND

@@ -185,8 +185,12 @@ public:
     virtual ::gsl::span<::gsl::not_null<::Actor*>>
     fetchEntities(::Actor const* except, ::AABB const& bb, bool useHitbox, bool getDisplayEntities) /*override*/;
 
-    virtual ::gsl::span<::gsl::not_null<::Actor*>>
-    fetchEntities(::ActorType, ::AABB const&, ::Actor const*, ::std::function<bool(::Actor*)>) /*override*/;
+    virtual ::gsl::span<::gsl::not_null<::Actor*>> fetchEntities(
+        ::ActorType                     entityTypeId,
+        ::AABB const&                   bb,
+        ::Actor const*                  except,
+        ::std::function<bool(::Actor*)> selector
+    ) /*override*/;
 
     virtual void
     fetchAABBs(::std::vector<::AABB>& shapes, ::AABB const& intersectTestBox, bool withUnloadedChunks) const
@@ -400,7 +404,9 @@ public:
 
     MCAPI bool biomeAtPosHasTag(::BlockPos const& pos, ::IDType<::BiomeTagIDType> const& tagId) const;
 
-    MCAPI_C void blockEvent(int x, int y, int z, int b0, int b1);
+#ifdef LL_PLAT_C
+    MCAPI void blockEvent(int x, int y, int z, int b0, int b1);
+#endif
 
     MCAPI bool canProvideSupport(::BlockPos const& pos, uchar face, ::BlockSupportType type) const;
 
@@ -424,10 +430,14 @@ public:
 
     MCAPI ::std::vector<::BlockActor*> fetchBlockEntities(::BlockActorType blockActorTypeId, ::AABB const& bb) const;
 
-    MCAPI_S ::std::vector<::BlockActor*> const& fetchBlockEntities(::AABB const& bb);
+#ifdef LL_PLAT_S
+    MCAPI ::std::vector<::BlockActor*> const& fetchBlockEntities(::AABB const& bb);
+#endif
 
-    MCAPI_C void
+#ifdef LL_PLAT_C
+    MCAPI void
     fetchBlockEntities(::AABB const& bb, ::std::vector<::BlockActor*>& blockEntityList, bool withPreservedEntities);
+#endif
 
     MCAPI bool fetchBlocks(::BlockPos const& origin, ::BlockVolume& volume) const;
 
@@ -455,17 +465,23 @@ public:
 
     MCAPI ::Biome const& getBiome(::BlockPos const& pos) const;
 
-    MCAPI_C ::BiomeIdLatticeBatch getBiomeIdsInBatch(::BlockPos const& centerPos, int areaOffset, int gridOffset) const;
+#ifdef LL_PLAT_C
+    MCAPI ::BiomeIdLatticeBatch getBiomeIdsInBatch(::BlockPos const& centerPos, int areaOffset, int gridOffset) const;
+#endif
 
     MCFOLD ::BlockActor* getBlockEntity(::BlockPos const& pos);
 
-    MCAPI_C ::BrightnessPair getLightColor(::BlockPos const& pos, ::Brightness minBlockLight) const;
+#ifdef LL_PLAT_C
+    MCAPI ::BrightnessPair getLightColor(::BlockPos const& pos, ::Brightness minBlockLight) const;
+#endif
 
     MCAPI float getSeenPercent(::Vec3 const& center, ::AABB const& bb);
 
     MCAPI int getSkylightBrightness(::BlockPos const& pos) const;
 
-    MCAPI_C ::Biome const& getSurfaceBiome(::BlockPos const& pos) const;
+#ifdef LL_PLAT_C
+    MCAPI ::Biome const& getSurfaceBiome(::BlockPos const& pos) const;
+#endif
 
     MCAPI void getTallestCollisionShapeFromUnloadedChunksAABBs(
         ::AABB const& intersectTestBox,
@@ -490,11 +506,15 @@ public:
 
     MCAPI bool hasUntickedNeighborChunk(::ChunkPos const& pos, int chunkRadius) const;
 
-    MCAPI_C bool isEmptyBlock(::BlockPos const& pos) const;
+#ifdef LL_PLAT_C
+    MCAPI bool isEmptyBlock(::BlockPos const& pos) const;
+#endif
 
     MCAPI bool isNearUnloadedChunks(::ChunkPos const& pos) const;
 
-    MCAPI_C bool isPositionUnderSnow(::Vec3 const& p);
+#ifdef LL_PLAT_C
+    MCAPI bool isPositionUnderSnow(::Vec3 const& p);
+#endif
 
     MCAPI bool isTouchingMaterial(::BlockPos const& pos, ::MaterialType type) const;
 
@@ -522,7 +542,9 @@ public:
 
     MCAPI bool setLiquidBlock(::BlockPos const& pos, ::Block const& block, bool useExtraData, int updateFlags);
 
-    MCAPI_C ::Biome const* tryGetBiome(::BlockPos const& pos) const;
+#ifdef LL_PLAT_C
+    MCAPI ::Biome const* tryGetBiome(::BlockPos const& pos) const;
+#endif
 
     MCAPI void updateConnectionsAt(::BlockPos const& pos);
 
@@ -642,6 +664,13 @@ public:
     MCAPI ::gsl::span<::gsl::not_null<::Actor*>>
     $fetchEntities(::Actor const* except, ::AABB const& bb, bool useHitbox, bool getDisplayEntities);
 
+    MCAPI ::gsl::span<::gsl::not_null<::Actor*>> $fetchEntities(
+        ::ActorType                     entityTypeId,
+        ::AABB const&                   bb,
+        ::Actor const*                  except,
+        ::std::function<bool(::Actor*)> selector
+    );
+
     MCAPI void
     $fetchAABBs(::std::vector<::AABB>& shapes, ::AABB const& intersectTestBox, bool withUnloadedChunks) const;
 
@@ -695,6 +724,17 @@ public:
     MCAPI bool $isInWall(::Vec3 const& pos) const;
 
     MCAPI bool $isUnderWater(::BlockPos const& pos, ::Block const& block) const;
+
+    MCAPI void $fireBlockChanged(
+        ::BlockPos const&              pos,
+        uint                           layer,
+        ::Block const&                 block,
+        ::Block const&                 oldBlock,
+        int                            flags,
+        ::BlockChangedEventTarget      eventTarget,
+        ::ActorBlockSyncMessage const* syncMsg,
+        ::Actor*                       source
+    );
 
     MCAPI ::Block const& $getBlock(::BlockPos const& pos) const;
 
@@ -751,19 +791,6 @@ public:
         ::BlockPos const&  originPos,
         ::Block const*     affectedBlock
     );
-
-#ifdef LL_PLAT_C
-    MCAPI void $fireBlockChanged(
-        ::BlockPos const&              pos,
-        uint                           layer,
-        ::Block const&                 block,
-        ::Block const&                 oldBlock,
-        int                            flags,
-        ::BlockChangedEventTarget      eventTarget,
-        ::ActorBlockSyncMessage const* syncMsg,
-        ::Actor*                       source
-    );
-#endif
 
 
     // NOLINTEND

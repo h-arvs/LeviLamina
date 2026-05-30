@@ -14,8 +14,10 @@ class MolangVersionMapping {
 public:
     // static functions
     // NOLINTBEGIN
-    MCNAPI_S static ::SemVersion getSemVersion(::MolangVersion molangVersion);
+#ifdef LL_PLAT_S
+    MCAPI static ::SemVersion getSemVersion(::MolangVersion molangVersion);
+#endif
 
-    MCNAPI static ::MolangVersion getVersion(::SemVersion const& semVersion);
+    MCAPI static ::MolangVersion getVersion(::SemVersion const& semVersion);
     // NOLINTEND
 };

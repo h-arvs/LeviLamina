@@ -23,17 +23,17 @@ class Block;
 class BlockActor;
 class BlockSource;
 class IClientInstance;
+class IRenderChunkGarbage;
 class MinecraftUIRenderContext;
 class RenderChunkBuilder;
+class RenderChunkInstanced;
+class RenderChunkSorterSharedInfo;
 class ScreenContext;
 class Tessellator;
 class UIControl;
 class UICustomRenderer;
 class UIPropertyBag;
 struct ActorBlockSyncMessage;
-struct IRenderChunkGarbage;
-struct RenderChunkInstanced;
-struct RenderChunkSorterSharedInfo;
 struct UIActorOffscreenCaptureDescription;
 struct UIMeshOffscreenCaptureDescription;
 struct UIStructureVolumeOffscreenCaptureDescription;
@@ -84,15 +84,15 @@ public:
     virtual void onSourceDestroyed(::BlockSource& source) /*override*/;
 
     virtual void onBlockChanged(
-        ::BlockSource&    source,
-        ::BlockPos const& pos,
-        uint,
-        ::Block const&,
-        ::Block const&,
-        int,
-        ::ActorBlockSyncMessage const*,
-        ::BlockChangedEventTarget eventTarget,
-        ::Actor*
+        ::BlockSource&                 source,
+        ::BlockPos const&              pos,
+        uint                           layer,
+        ::Block const&                 block,
+        ::Block const&                 oldBlock,
+        int                            updateFlags,
+        ::ActorBlockSyncMessage const* syncMsg,
+        ::BlockChangedEventTarget      eventTarget,
+        ::Actor*                       blockChangeSource
     ) /*override*/;
 
     virtual void onAppResumed() /*override*/;
@@ -208,15 +208,15 @@ public:
     MCAPI void $onSourceDestroyed(::BlockSource& source);
 
     MCAPI void $onBlockChanged(
-        ::BlockSource&    source,
-        ::BlockPos const& pos,
-        uint,
-        ::Block const&,
-        ::Block const&,
-        int,
-        ::ActorBlockSyncMessage const*,
-        ::BlockChangedEventTarget eventTarget,
-        ::Actor*
+        ::BlockSource&                 source,
+        ::BlockPos const&              pos,
+        uint                           layer,
+        ::Block const&                 block,
+        ::Block const&                 oldBlock,
+        int                            updateFlags,
+        ::ActorBlockSyncMessage const* syncMsg,
+        ::BlockChangedEventTarget      eventTarget,
+        ::Actor*                       blockChangeSource
     );
 
     MCAPI void $onAppResumed();

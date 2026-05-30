@@ -46,12 +46,15 @@ class ActiveDirectoryIdentity;
 class ClientInstanceModel;
 class ContentIdentity;
 class ContentTierInfo;
+class DlcId;
 class EduDeeplinkObserver;
 class FilePickerSettings;
 class HitResult;
 class IAdvancedGraphicsOptions;
 class IClientInstance;
 class IDlcBatchModel;
+class IEDUDiscoveryService;
+class IGameConnectionListener;
 class IMinecraftGame;
 class INetworkGameConnector;
 class IOptions;
@@ -64,34 +67,31 @@ class MinecraftCommands;
 class PackManifest;
 class PlatformMultiplayerRestrictions;
 class PlatformUpsellDialog;
+class PlayerAchievementData;
 class ProgressHandler;
+class RealmsAPI;
 class ResourceLocation;
 class ResourcePackManager;
 class SceneFactory;
+class SkinHandle;
 class SkinPackCollectionModel;
+class StoreCatalogRepository;
 class TaskGroup;
 class ToastMessage;
+class TransactionContext;
 class WebviewInterface;
+class WireframeQueue;
 struct ActorUniqueID;
 struct ContentLogMessage;
-struct DlcId;
 struct DownloadStateObject;
 struct EducationLevelSettings;
-struct IEDUDiscoveryService;
-struct IGameConnectionListener;
 struct LevelSummary;
 struct PDFOptions;
 struct PackIdVersion;
-struct PlayerAchievementData;
 struct Purchase;
-struct RealmsAPI;
-struct SkinHandle;
-struct StoreCatalogRepository;
 struct StoreContentSources;
 struct StoreDataDrivenScreenParams;
-struct TransactionContext;
-struct WireframeQueue;
-namespace Clubs { struct ActivityFeed; }
+namespace Clubs { class ActivityFeed; }
 namespace Clubs { struct ClubModel; }
 namespace Clubs { struct FeedItem; }
 namespace Clubs { struct ReportedItem; }
@@ -99,15 +99,15 @@ namespace Core { class Path; }
 namespace EduCloud { struct IEduCloudSaveSystem; }
 namespace Identity { struct SignOutResult; }
 namespace Json { class Value; }
-namespace Realms { struct InvitesService; }
+namespace Realms { class InvitesService; }
+namespace Realms { class WorldCache; }
 namespace Realms { struct RealmId; }
 namespace Realms { struct World; }
 namespace Realms { struct WorldBackupList; }
-namespace Realms { struct WorldCache; }
 namespace SDL { struct SubscriptionInfo; }
+namespace Social { class FriendList; }
 namespace Social { class GameConnectionInfo; }
 namespace Social { class IUserManager; }
-namespace Social { struct FriendList; }
 namespace Social { struct MultiIdentitySigninResult; }
 namespace Social { struct PlatformUserProfileData; }
 namespace Social { struct XboxLiveUserProfileData; }
@@ -125,9 +125,41 @@ public:
     // clang-format on
 
     // MinecraftScreenModel inner types define
-    enum class FriendsDrawerLocation : int {};
+    enum class FriendsDrawerLocation : int {
+        MainMenu   = 0,
+        InGameMenu = 1,
+    };
 
-    struct Context {};
+    struct Context {
+    public:
+        // member variables
+        // NOLINTBEGIN
+        ::ll::TypedStorage<8, 8, ::IMinecraftGame&>                                          mMinecraft;
+        ::ll::TypedStorage<8, 8, ::IClientInstance&>                                         mClient;
+        ::ll::TypedStorage<8, 24, ::Bedrock::NotNullNonOwnerPtr<::IAdvancedGraphicsOptions>> mAdvancedGraphicsOptions;
+        ::ll::TypedStorage<8, 24, ::Bedrock::NotNullNonOwnerPtr<::ISceneStack>>              mSceneStack;
+        ::ll::TypedStorage<8, 8, ::SceneFactory&>                                            mSceneFactory;
+        ::ll::TypedStorage<8, 8, ::std::unique_ptr<::IScreenCapabilities>>                   mCapabilities;
+        // NOLINTEND
+
+    public:
+        // prevent constructor by default
+        Context& operator=(Context const&);
+        Context(Context const&);
+        Context();
+
+    public:
+        // member functions
+        // NOLINTBEGIN
+        MCAPI ~Context();
+        // NOLINTEND
+
+    public:
+        // destructor thunk
+        // NOLINTBEGIN
+        MCAPI void $dtor();
+        // NOLINTEND
+    };
 
 public:
     // member variables

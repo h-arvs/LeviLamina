@@ -32,11 +32,11 @@ struct TickingSystemWithInfo;
 namespace MobMovementGravity {
 // functions
 // NOLINTBEGIN
-MCNAPI void forSystems(::std::function<void(::TickingSystemWithInfo&&)> const& func);
+MCAPI void forSystems(::std::function<void(::TickingSystemWithInfo&&)> const& func);
 
-MCNAPI bool isCenterTopAndBottomNotInAir(::Vec3 const& pos, ::IConstBlockSource const& region, ::Vec2 const& aabbDim);
+MCAPI bool isCenterTopAndBottomNotInAir(::Vec3 const& pos, ::IConstBlockSource const& region, ::Vec2 const& aabbDim);
 
-MCNAPI void tickAirGravity(
+MCFOLD void tickAirGravity(
     ::entt::type_list<
         ::Include<::AirTravelFlagComponent>,
         ::Exclude<::AutoClimbTravelFlagComponent, ::LevitateTravelFlagComponent>>,
@@ -47,15 +47,17 @@ MCNAPI void tickAirGravity(
     ::EntityModifier<::ApplyGravityComponent> modifier
 );
 
-MCNAPI_S void tickDefaultGravity(
+#ifdef LL_PLAT_S
+MCAPI void tickDefaultGravity(
     ::StrictEntityContext const&               context,
     ::ActorDataFlagComponent const&            synchedActorData,
     ::MobEffectsComponent const&               mobEffects,
     ::StateVectorComponent const&              stateVector,
     ::EntityModifier<::ApplyGravityComponent>& modifier
 );
+#endif
 
-MCNAPI void tickGroundGravity(
+MCFOLD void tickGroundGravity(
     ::entt::type_list<
         ::Include<::GroundTravelFlagComponent>,
         ::Exclude<::AutoClimbTravelFlagComponent, ::LevitateTravelFlagComponent>>,
@@ -66,7 +68,7 @@ MCNAPI void tickGroundGravity(
     ::EntityModifier<::ApplyGravityComponent> modifier
 );
 
-MCNAPI void tickLavaGravity(
+MCAPI void tickLavaGravity(
     ::StrictEntityContext const&              context,
     ::Optional<::NavigationComponent const>   navigation,
     ::Optional<::PhysicsComponent const>      physics,
@@ -77,7 +79,8 @@ MCNAPI void tickLavaGravity(
     ::IConstBlockSource const&                region
 );
 
-MCNAPI_C void tickLavaWalkGravity(
+#ifdef LL_PLAT_C
+MCAPI void tickLavaWalkGravity(
     ::entt::type_list<
         ::Include<::LavaTravelFlagComponent>,
         ::Exclude<::AutoClimbTravelFlagComponent, ::LevitateTravelFlagComponent>>,
@@ -88,8 +91,9 @@ MCNAPI_C void tickLavaWalkGravity(
     ::StateVectorComponent const&             stateVector,
     ::EntityModifier<::ApplyGravityComponent> modifier
 );
+#endif
 
-MCNAPI void tickMobWaterGravity(
+MCAPI void tickMobWaterGravity(
     ::StrictEntityContext const&              context,
     ::Optional<::NavigationComponent const>   navigation,
     ::Optional<::PhysicsComponent const>      physics,

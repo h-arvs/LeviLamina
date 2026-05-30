@@ -9,7 +9,7 @@
 // clang-format off
 namespace Core { class FileStorageArea; }
 namespace Core { class SingleThreadedLock; }
-namespace Social { struct User; }
+namespace Social { class User; }
 // clang-format on
 
 namespace Social {
@@ -20,7 +20,7 @@ public:
     // NOLINTBEGIN
     virtual void onUserAdded(::std::shared_ptr<::Social::User> const& user);
 
-    virtual void onUserRemoved(::std::shared_ptr<::Social::User> const&);
+    virtual void onUserRemoved(::std::shared_ptr<::Social::User> const& user);
 
     virtual void onUserStorageAreaChanged(
         ::std::shared_ptr<::Social::User> const&    user,

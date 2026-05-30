@@ -4,11 +4,11 @@
 
 // auto generated inclusion list
 #include "mc/deps/core/utility/NonOwnerPointer.h"
-#include "mc/deps/renoir/RendererBackend.h"
+#include "mc/external/gameface/renoir/RendererBackend.h"
 
 // auto generated forward declare list
 // clang-format off
-namespace mce { struct ShaderGroup; }
+namespace mce { class ShaderGroup; }
 // clang-format on
 
 namespace OreUI {

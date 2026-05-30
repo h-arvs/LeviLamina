@@ -19,14 +19,14 @@
 
 // auto generated forward declare list
 // clang-format off
+class DlcChecker;
 class DlcUIWrapper;
 class PlatformMultiplayerRestrictions;
 class PlayScreenModel;
-struct DlcChecker;
+class ServicesManager;
 struct ImportResult;
 struct LegacyWorldInfo;
 struct NetworkWorldInfo;
-struct ServicesManager;
 namespace Json { class Value; }
 namespace Realms { struct World; }
 namespace Social { struct PermissionCheckResult; }
@@ -36,9 +36,17 @@ namespace ui { class ScreenTechStackSelector; }
 class PlayScreenController : public ::MainMenuScreenController {
 public:
     // PlayScreenController inner types define
-    enum class ConvertProgressState : int {};
+    enum class ConvertProgressState : int {
+        Closed   = 0,
+        Active   = 1,
+        TryClose = 2,
+    };
 
-    enum class ServerCollectionName : int {};
+    enum class ServerCollectionName : int {
+        ThirdParty = 0,
+        External   = 1,
+        Invalid    = 2,
+    };
 
 public:
     // member variables

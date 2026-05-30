@@ -3,7 +3,7 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
-#include "mc/deps/nbt/nbt/CompoundTag.h"
+#include "mc/deps/nbt/CompoundTag.h"
 
 // auto generated forward declare list
 // clang-format off
@@ -30,7 +30,9 @@ public:
         ::SharedTypes::v1_21_20::JigsawStructureData const& jigsawStructureData
     );
 
-    MCAPI_C ::std::unique_ptr<::SharedTypes::v1_21_20::JigsawStructureData> getJigsawStrutureData() const;
+#ifdef LL_PLAT_C
+    MCAPI ::std::unique_ptr<::SharedTypes::v1_21_20::JigsawStructureData> getJigsawStrutureData() const;
+#endif
 
     MCFOLD ::JigsawStructureDataPacketPayload& operator=(::JigsawStructureDataPacketPayload&&);
 

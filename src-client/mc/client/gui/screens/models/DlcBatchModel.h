@@ -10,16 +10,20 @@
 
 // auto generated forward declare list
 // clang-format off
-struct DlcId;
-struct IContentAcquisition;
-struct IStoreCatalogRepository;
+class DlcId;
+class IContentAcquisition;
+class IStoreCatalogRepository;
 struct PackIdVersion;
 // clang-format on
 
 class DlcBatchModel : public ::IDlcBatchModel {
 public:
     // DlcBatchModel inner types define
-    enum class DlcProductIdSearch : int {};
+    enum class DlcProductIdSearch : int {
+        Unknown   = 0,
+        Searching = 1,
+        Done      = 2,
+    };
 
 public:
     // member variables

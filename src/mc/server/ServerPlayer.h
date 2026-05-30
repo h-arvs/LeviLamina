@@ -62,7 +62,7 @@ namespace ClientBlobCache::Server { class ActiveTransfersManager; }
 namespace Editor { class IEditorManager; }
 namespace Editor { class IEditorPlayer; }
 namespace mce { class UUID; }
-struct FrameUpdateContextBase;
+class FrameUpdateContextBase;
 // clang-format on
 
 class ServerPlayer : public ::Player {
@@ -157,7 +157,7 @@ public:
 
     virtual void moveView() /*override*/;
 
-    virtual void moveSpawnView(::Vec3 const& spawnPosition, ::DimensionType dimensionType) /*override*/;
+    virtual void moveSpawnView(::Vec3 const& spawnPosition, ::DimensionType dimension) /*override*/;
 
     virtual void frameUpdate(::FrameUpdateContextBase&) /*override*/;
 
@@ -166,7 +166,7 @@ public:
     virtual bool swing(::ActorSwingSource swingSource) /*override*/;
 
     virtual void
-    hurtArmorSlots(::ActorDamageSource const& source, int damage, ::std::bitset<5> const hurtSlots) /*override*/;
+    hurtArmorSlots(::ActorDamageSource const& source, int dmg, ::std::bitset<5> const hurtSlots) /*override*/;
 
     virtual void sendArmorDamage(::std::bitset<5> const damagedSlots) /*override*/;
 
@@ -190,7 +190,7 @@ public:
     ) /*override*/;
 
     virtual void displayTextObjectWhisperMessage(
-        ::ResolvedTextObject const& resolvedTextObject,
+        ::ResolvedTextObject const& textObject,
         ::std::string const&        xuid,
         ::std::string const&        platformId
     ) /*override*/;
@@ -428,7 +428,7 @@ public:
 
     MCAPI void $moveView();
 
-    MCAPI void $moveSpawnView(::Vec3 const& spawnPosition, ::DimensionType dimensionType);
+    MCAPI void $moveSpawnView(::Vec3 const& spawnPosition, ::DimensionType dimension);
 
     MCFOLD void $frameUpdate(::FrameUpdateContextBase&);
 
@@ -436,7 +436,7 @@ public:
 
     MCAPI bool $swing(::ActorSwingSource swingSource);
 
-    MCAPI void $hurtArmorSlots(::ActorDamageSource const& source, int damage, ::std::bitset<5> const hurtSlots);
+    MCAPI void $hurtArmorSlots(::ActorDamageSource const& source, int dmg, ::std::bitset<5> const hurtSlots);
 
     MCAPI void $sendArmorDamage(::std::bitset<5> const damagedSlots);
 
@@ -459,7 +459,7 @@ public:
     );
 
     MCAPI void $displayTextObjectWhisperMessage(
-        ::ResolvedTextObject const& resolvedTextObject,
+        ::ResolvedTextObject const& textObject,
         ::std::string const&        xuid,
         ::std::string const&        platformId
     );

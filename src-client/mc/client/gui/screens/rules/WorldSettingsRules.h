@@ -8,17 +8,29 @@
 // auto generated forward declare list
 // clang-format off
 class MinecraftCommands;
-struct SkinRepositoryClientInterface;
-struct TrialManager;
+class SkinRepositoryClientInterface;
+class TrialManager;
 namespace Social { class IUserManager; }
-namespace Social { struct MultiplayerServiceManager; }
-namespace Social { struct User; }
+namespace Social { class MultiplayerServiceManager; }
+namespace Social { class User; }
 // clang-format on
 
 class WorldSettingsRules {
 public:
     // WorldSettingsRules inner types define
-    enum class GeneralMultiplayerWarningState : int {};
+    enum class GeneralMultiplayerWarningState : int {
+        None                                        = 0,
+        CheckInternetConnection                     = 1,
+        DisconnectedThirdPartyWithSubscription      = 2,
+        DisconnectedThirdParty                      = 3,
+        LocalMultiplayerPrivilegesBlockedThirdParty = 4,
+        MultiplayerPrivilegesBlockedThirdParty      = 5,
+        MultiplayerPrivilegesBlocked                = 6,
+        MultiplayerPrivilegesBlockedOnConsole       = 7,
+        CrossPlatformDisabled                       = 8,
+        NonMultiplayerSkinEquipped                  = 9,
+        Max                                         = 10,
+    };
 
 public:
     // member variables

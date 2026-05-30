@@ -13,33 +13,47 @@ class ZipFileRestrictions {
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 16> mUnk19693d;
-    ::ll::UntypedStorage<8, 16> mUnkab9825;
-    ::ll::UntypedStorage<8, 16> mUnkafe69e;
+    ::ll::TypedStorage<8, 16, ::std::set<::std::string>> mForbiddenExtensions;
+    ::ll::TypedStorage<8, 16, ::std::set<::std::string>> mRestrictedExtensions;
+    ::ll::TypedStorage<8, 16, ::std::set<::std::string>> mForbiddenFilenames;
     // NOLINTEND
 
+#ifdef LL_PLAT_S
+#else // LL_PLAT_C
 public:
     // prevent constructor by default
     ZipFileRestrictions& operator=(ZipFileRestrictions const&);
-    ZipFileRestrictions(ZipFileRestrictions const&);
     ZipFileRestrictions();
 
+#endif
 public:
     // member functions
     // NOLINTBEGIN
-    MCNAPI bool allowFile(::Core::PathView file) const;
+#ifdef LL_PLAT_C
+    MCAPI ZipFileRestrictions(::Core::ZipUtils::ZipFileRestrictions const&);
+#endif
+
+    MCAPI bool allowFile(::Core::PathView file) const;
+
+#ifdef LL_PLAT_C
+    MCAPI ~ZipFileRestrictions();
+#endif
     // NOLINTEND
 
 public:
     // constructor thunks
     // NOLINTBEGIN
-    MCNAPI_C void* $ctor(::Core::ZipUtils::ZipFileRestrictions const&);
+#ifdef LL_PLAT_C
+    MCAPI void* $ctor(::Core::ZipUtils::ZipFileRestrictions const&);
+#endif
     // NOLINTEND
 
 public:
     // destructor thunk
     // NOLINTBEGIN
-    MCNAPI_C void $dtor();
+#ifdef LL_PLAT_C
+    MCAPI void $dtor();
+#endif
     // NOLINTEND
 };
 

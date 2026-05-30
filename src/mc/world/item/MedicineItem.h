@@ -32,7 +32,7 @@ public:
 
     virtual bool isValidAuxValue(int auxValue) const /*override*/;
 
-    virtual ::Item& setIconInfo(::std::string const& name, int index) /*override*/;
+    virtual ::Item& setIconInfo(::std::string const& name, int id) /*override*/;
 
     virtual ::ResolvedItemIconInfo getIconInfo(::ItemStackBase const& item, int, bool) const /*override*/;
 
@@ -42,7 +42,9 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
-    MCAPI_C static bool canPlayerDrink(::ItemStack const& item, ::Player const& player);
+#ifdef LL_PLAT_C
+    MCAPI static bool canPlayerDrink(::ItemStack const& item, ::Player const& player);
+#endif
     // NOLINTEND
 
 public:
@@ -53,13 +55,11 @@ public:
 
     MCAPI ::ItemStack& $use(::ItemStack& item, ::Player& player) const;
 
-#ifdef LL_PLAT_S
     MCAPI ::ItemUseMethod $useTimeDepleted(::ItemStack& inoutInstance, ::Level* level, ::Player* player) const;
-#endif
 
     MCAPI bool $isValidAuxValue(int auxValue) const;
 
-    MCFOLD ::Item& $setIconInfo(::std::string const& name, int index);
+    MCFOLD ::Item& $setIconInfo(::std::string const& name, int id);
 
     MCFOLD ::ResolvedItemIconInfo $getIconInfo(::ItemStackBase const& item, int, bool) const;
 

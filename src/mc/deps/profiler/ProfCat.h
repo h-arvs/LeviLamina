@@ -10,35 +10,47 @@ namespace Bedrock::Profiler::details { struct Category; }
 namespace ProfCat {
 // static variables
 // NOLINTBEGIN
-MCNAPI_C ::Bedrock::Profiler::details::Category const& ACTOR_RENDER_SYSTEM();
+#ifdef LL_PLAT_C
+MCNAPI ::Bedrock::Profiler::details::Category const& ACTOR_RENDER_SYSTEM();
+#endif
 
 MCNAPI ::Bedrock::Profiler::details::Category const& ACTOR_SYSTEM();
 
-MCNAPI_C ::Bedrock::Profiler::details::Category const& BASELINE();
+#ifdef LL_PLAT_C
+MCNAPI ::Bedrock::Profiler::details::Category const& BASELINE();
+#endif
 
 MCNAPI ::Bedrock::Profiler::details::Category const& BASELINE_CREATOR();
 
-MCNAPI_C ::Bedrock::Profiler::details::Category const& BASELINE_RESOURCELOAD();
+#ifdef LL_PLAT_C
+MCNAPI ::Bedrock::Profiler::details::Category const& BASELINE_RESOURCELOAD();
 
-MCNAPI_C ::Bedrock::Profiler::details::Category const& BURST();
+MCNAPI ::Bedrock::Profiler::details::Category const& BURST();
 
-MCNAPI_C ::Bedrock::Profiler::details::Category const& JSON_UI_SYSTEM();
+MCNAPI ::Bedrock::Profiler::details::Category const& JSON_UI_SYSTEM();
 
-MCNAPI_C ::Bedrock::Profiler::details::Category const& LEVEL_RENDERER();
+MCNAPI ::Bedrock::Profiler::details::Category const& LEVEL_RENDERER();
+#endif
 
 MCNAPI ::Bedrock::Profiler::details::Category const& MAIN_APP();
 
-MCNAPI_C ::Bedrock::Profiler::details::Category const& MAIN_LOOP();
+#ifdef LL_PLAT_C
+MCNAPI ::Bedrock::Profiler::details::Category const& MAIN_LOOP();
 
-MCNAPI_C ::Bedrock::Profiler::details::Category const& MULTIPLAYER_LEVEL();
+MCNAPI ::Bedrock::Profiler::details::Category const& MULTIPLAYER_LEVEL();
+#endif
 
 MCNAPI ::Bedrock::Profiler::details::Category const& NETWORK_SYSTEM();
 
-MCNAPI_C ::Bedrock::Profiler::details::Category const& ORCHESTRATOR();
+#ifdef LL_PLAT_C
+MCNAPI ::Bedrock::Profiler::details::Category const& ORCHESTRATOR();
+#endif
 
 MCNAPI ::Bedrock::Profiler::details::Category const& SCHEDULER();
 
-MCNAPI_C ::Bedrock::Profiler::details::Category const& UISCENE();
+#ifdef LL_PLAT_C
+MCNAPI ::Bedrock::Profiler::details::Category const& UISCENE();
+#endif
 // NOLINTEND
 
 } // namespace ProfCat

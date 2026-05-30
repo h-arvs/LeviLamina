@@ -14,8 +14,12 @@
 // auto generated forward declare list
 // clang-format off
 class Actor;
+class ArmorTrimIconGenerator;
+class ArmorTrimUnloader;
 class BlockSource;
+class CameraRegistry;
 class ChunkSource;
+class ClientSubChunkLighter;
 class DisplayActorManager;
 class EntityContext;
 class EntitySystems;
@@ -26,22 +30,18 @@ class LevelSettings;
 class MapDataManager;
 class NetworkIdentifier;
 class SerializedSkinRef;
+class SubChunkManager;
 class SubChunkPacket;
 class SubChunkRequestManager;
 class TickTimeManager;
 class TickTimeManagerClient;
+class TrustedSkinHelper;
+class VolumeEntityManagerClient;
 class WeakEntityRef;
 struct ActorUniqueID;
-struct ArmorTrimIconGenerator;
-struct ArmorTrimUnloader;
 struct BiomeJsonDocumentGlueResolvedBiomeData;
-struct CameraRegistry;
-struct ClientSubChunkLighter;
 struct MultiPlayerLevelArguments;
-struct SubChunkManager;
 struct Tick;
-struct TrustedSkinHelper;
-struct VolumeEntityManagerClient;
 namespace GameModeExt { struct MessengerFactory; }
 // clang-format on
 
@@ -96,9 +96,9 @@ public:
 
     virtual ::Actor* addEntity(::BlockSource& region, ::OwnerPtr<::EntityContext> entity) /*override*/;
 
-    virtual ::OwnerPtr<::EntityContext> removeActorFromWorldAndTakeEntity(::WeakEntityRef) /*override*/;
+    virtual ::OwnerPtr<::EntityContext> removeActorFromWorldAndTakeEntity(::WeakEntityRef entityRef) /*override*/;
 
-    virtual ::OwnerPtr<::EntityContext> takeEntity(::WeakEntityRef entityRef, ::LevelChunk&) /*override*/;
+    virtual ::OwnerPtr<::EntityContext> takeEntity(::WeakEntityRef entityRef, ::LevelChunk& lc) /*override*/;
 
     virtual ::Actor* addDisplayEntity(::BlockSource& region, ::OwnerPtr<::EntityContext> entity) /*override*/;
 
@@ -206,9 +206,9 @@ public:
 
     MCAPI ::Actor* $addEntity(::BlockSource& region, ::OwnerPtr<::EntityContext> entity);
 
-    MCAPI ::OwnerPtr<::EntityContext> $removeActorFromWorldAndTakeEntity(::WeakEntityRef);
+    MCAPI ::OwnerPtr<::EntityContext> $removeActorFromWorldAndTakeEntity(::WeakEntityRef entityRef);
 
-    MCAPI ::OwnerPtr<::EntityContext> $takeEntity(::WeakEntityRef entityRef, ::LevelChunk&);
+    MCAPI ::OwnerPtr<::EntityContext> $takeEntity(::WeakEntityRef entityRef, ::LevelChunk& lc);
 
     MCAPI ::Actor* $addDisplayEntity(::BlockSource& region, ::OwnerPtr<::EntityContext> entity);
 

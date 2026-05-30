@@ -33,55 +33,64 @@ public:
     // NOLINTBEGIN
     virtual ~EditorStructureBlockSource() /*override*/ = default;
 
-    virtual void addListener(::BlockSourceListener&) /*override*/;
+    virtual void addListener(::BlockSourceListener& l) /*override*/;
 
-    virtual void removeListener(::BlockSourceListener&) /*override*/;
-
-    virtual ::gsl::span<::gsl::not_null<::Actor*>>
-    fetchEntities(::Actor const*, ::AABB const&, bool, bool) /*override*/;
+    virtual void removeListener(::BlockSourceListener& l) /*override*/;
 
     virtual ::gsl::span<::gsl::not_null<::Actor*>>
-    fetchEntities(::ActorType, ::AABB const&, ::Actor const*, ::std::function<bool(::Actor*)>) /*override*/;
+    fetchEntities(::Actor const* except, ::AABB const& bb, bool useHitbox, bool getDisplayEntities) /*override*/;
 
-    virtual bool hasChunksAt(::Bounds const&, bool) const /*override*/;
+    virtual ::gsl::span<::gsl::not_null<::Actor*>> fetchEntities(
+        ::ActorType                     entityTypeId,
+        ::AABB const&                   bb,
+        ::Actor const*                  except,
+        ::std::function<bool(::Actor*)> selector
+    ) /*override*/;
 
-    virtual bool hasChunksAt(::BlockPos const&, int, bool) const /*override*/;
+    virtual bool hasChunksAt(::Bounds const& bounds, bool ignoreClientChunk) const /*override*/;
 
-    virtual bool hasChunksAt(::AABB const&, bool) const /*override*/;
+    virtual bool hasChunksAt(::BlockPos const& pos, int r, bool ignoreClientChunk) const /*override*/;
+
+    virtual bool hasChunksAt(::AABB const& bb, bool ignoreClientChunk) const /*override*/;
 
     virtual bool setBlock(
-        ::BlockPos const& pos,
-        ::Block const&    block,
-        int,
-        ::ActorBlockSyncMessage const*,
-        ::BlockChangeContext const&
+        ::BlockPos const&              pos,
+        ::Block const&                 block,
+        int                            updateFlags,
+        ::ActorBlockSyncMessage const* syncMsg,
+        ::BlockChangeContext const&    changeSourceContext
     ) /*override*/;
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
-    MCNAPI void $addListener(::BlockSourceListener&);
+    MCNAPI void $addListener(::BlockSourceListener& l);
 
-    MCNAPI void $removeListener(::BlockSourceListener&);
-
-    MCNAPI ::gsl::span<::gsl::not_null<::Actor*>> $fetchEntities(::Actor const*, ::AABB const&, bool, bool);
+    MCNAPI void $removeListener(::BlockSourceListener& l);
 
     MCNAPI ::gsl::span<::gsl::not_null<::Actor*>>
-    $fetchEntities(::ActorType, ::AABB const&, ::Actor const*, ::std::function<bool(::Actor*)>);
+    $fetchEntities(::Actor const* except, ::AABB const& bb, bool useHitbox, bool getDisplayEntities);
 
-    MCNAPI bool $hasChunksAt(::Bounds const&, bool) const;
+    MCNAPI ::gsl::span<::gsl::not_null<::Actor*>> $fetchEntities(
+        ::ActorType                     entityTypeId,
+        ::AABB const&                   bb,
+        ::Actor const*                  except,
+        ::std::function<bool(::Actor*)> selector
+    );
 
-    MCNAPI bool $hasChunksAt(::BlockPos const&, int, bool) const;
+    MCNAPI bool $hasChunksAt(::Bounds const& bounds, bool ignoreClientChunk) const;
 
-    MCNAPI bool $hasChunksAt(::AABB const&, bool) const;
+    MCNAPI bool $hasChunksAt(::BlockPos const& pos, int r, bool ignoreClientChunk) const;
+
+    MCNAPI bool $hasChunksAt(::AABB const& bb, bool ignoreClientChunk) const;
 
     MCNAPI bool $setBlock(
-        ::BlockPos const& pos,
-        ::Block const&    block,
-        int,
-        ::ActorBlockSyncMessage const*,
-        ::BlockChangeContext const&
+        ::BlockPos const&              pos,
+        ::Block const&                 block,
+        int                            updateFlags,
+        ::ActorBlockSyncMessage const* syncMsg,
+        ::BlockChangeContext const&    changeSourceContext
     );
 
 

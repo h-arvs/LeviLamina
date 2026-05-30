@@ -15,7 +15,9 @@ class Vec3;
 namespace PlayerUtils {
 // functions
 // NOLINTBEGIN
-MCAPI_C bool areMonstersNearby(::BlockSource& region, ::Vec3 const& position);
+#ifdef LL_PLAT_C
+MCAPI bool areMonstersNearby(::BlockSource& region, ::Vec3 const& position);
+#endif
 
 MCAPI bool canAttackActor(::Player const& player, ::Actor const& actor);
 

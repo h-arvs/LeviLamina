@@ -21,7 +21,7 @@ class SecureStorageKey;
 class WebviewInterface;
 namespace Core { class Path; }
 namespace Core { class PathView; }
-namespace Webview { struct PlatformArguments; }
+namespace Webview { class PlatformArguments; }
 // clang-format on
 
 class AppPlatform_win32 : public ::AppPlatformWindows {
@@ -109,9 +109,9 @@ public:
 
     virtual ::std::unique_ptr<::SecureStorage> getSecureStorage() /*override*/;
 
-    virtual ::SecureStorageKey getSecureStorageKey(::std::string const&) /*override*/;
+    virtual ::SecureStorageKey getSecureStorageKey(::std::string const& key) /*override*/;
 
-    virtual void setSecureStorageKey(::std::string const&, ::SecureStorageKey const&) /*override*/;
+    virtual void setSecureStorageKey(::std::string const& key, ::SecureStorageKey const& value) /*override*/;
 
     virtual ::std::string getPlatformString() const /*override*/;
 
@@ -237,11 +237,13 @@ public:
 
     MCFOLD ::PlatformType $getPlatformType() const;
 
+    MCFOLD ::BuildPlatform $getBuildPlatform() const;
+
     MCAPI ::std::unique_ptr<::SecureStorage> $getSecureStorage();
 
-    MCAPI ::SecureStorageKey $getSecureStorageKey(::std::string const&);
+    MCAPI ::SecureStorageKey $getSecureStorageKey(::std::string const& key);
 
-    MCFOLD void $setSecureStorageKey(::std::string const&, ::SecureStorageKey const&);
+    MCFOLD void $setSecureStorageKey(::std::string const& key, ::SecureStorageKey const& value);
 
     MCAPI ::std::string $getPlatformString() const;
 

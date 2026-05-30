@@ -17,16 +17,16 @@ class BlockPos;
 class BlockSource;
 class ChunkSource;
 class Dimension;
+class IRenderChunkGarbage;
 class Level;
 class LevelChunk;
 class LevelRenderer;
 class LevelRendererCamera;
+class RenderChunkCoordinatorProxy;
+class RenderChunkPerformanceData;
+class RenderChunkShared;
 struct ActorBlockSyncMessage;
 struct BlockActorBlockSyncMessage;
-struct IRenderChunkGarbage;
-struct RenderChunkCoordinatorProxy;
-struct RenderChunkPerformanceData;
-struct RenderChunkShared;
 // clang-format on
 
 class RenderChunkCoordinator : public ::LevelListener {
@@ -93,15 +93,15 @@ public:
     virtual void onAreaChanged(::BlockSource& source, ::BlockPos const& min, ::BlockPos const& max) /*override*/;
 
     virtual void onBlockChanged(
-        ::BlockSource&,
-        ::BlockPos const&,
-        uint,
-        ::Block const&,
-        ::Block const&,
-        int,
-        ::ActorBlockSyncMessage const*,
-        ::BlockChangedEventTarget,
-        ::Actor*
+        ::BlockSource&                 source,
+        ::BlockPos const&              pos,
+        uint                           layer,
+        ::Block const&                 block,
+        ::Block const&                 oldBlock,
+        int                            updateFlags,
+        ::ActorBlockSyncMessage const* syncMsg,
+        ::BlockChangedEventTarget      eventTarget,
+        ::Actor*                       blockChangeSource
     ) /*override*/;
     // NOLINTEND
 
@@ -161,6 +161,18 @@ public:
     MCAPI void $onBrightnessChanged(::BlockSource& source, ::BlockPos const& pos);
 
     MCAPI void $onAreaChanged(::BlockSource& source, ::BlockPos const& min, ::BlockPos const& max);
+
+    MCAPI void $onBlockChanged(
+        ::BlockSource&                 source,
+        ::BlockPos const&              pos,
+        uint                           layer,
+        ::Block const&                 block,
+        ::Block const&                 oldBlock,
+        int                            updateFlags,
+        ::ActorBlockSyncMessage const* syncMsg,
+        ::BlockChangedEventTarget      eventTarget,
+        ::Actor*                       blockChangeSource
+    );
     // NOLINTEND
 
 public:

@@ -79,3 +79,12 @@ public:
     MCFOLD void $dtor();
     // NOLINTEND
 };
+
+// free functions
+// NOLINTBEGIN
+MCAPI bool operator!=(::HashedString const& lhs, ::HashedString const& rhs);
+
+MCAPI bool operator<(::HashedString const& lhs, ::HashedString const& rhs);
+
+MCFOLD bool operator==(::HashedString const& lhs, ::HashedString const& rhs);
+// NOLINTEND

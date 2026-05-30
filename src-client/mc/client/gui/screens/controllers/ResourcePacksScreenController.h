@@ -17,6 +17,7 @@
 // clang-format off
 class ContentTierIncompatibleReason;
 class ContentView;
+class DlcChecker;
 class DlcUIWrapper;
 class IContentManager;
 class IContentManagerContext;
@@ -25,7 +26,6 @@ class MultiplayerLockState;
 class ResourceLocation;
 class UIPropertyBag;
 struct ContentItem;
-struct DlcChecker;
 struct MoveResourcePackResult;
 struct PackContentItem;
 struct PackIdVersion;
@@ -35,7 +35,10 @@ struct PackMoveResult;
 class ResourcePacksScreenController : public ::SettingsScreenControllerBase {
 public:
     // ResourcePacksScreenController inner types define
-    enum class PackRestriction : int {};
+    enum class PackRestriction : int {
+        Unrestricted = 0,
+        Restricted   = 1,
+    };
 
     using ConstContentItemPtr = ::std::shared_ptr<::ContentItem const>;
 
@@ -96,7 +99,7 @@ public:
 
     virtual ::ui::DirtyFlag tick() /*override*/;
 
-    virtual ::ui::DirtyFlag handleGameEventNotification(::ui::GameEventNotification) /*override*/;
+    virtual ::ui::DirtyFlag handleGameEventNotification(::ui::GameEventNotification notification) /*override*/;
     // NOLINTEND
 
 public:
@@ -246,6 +249,8 @@ public:
     // virtual function thunks
     // NOLINTBEGIN
     MCAPI ::ui::DirtyFlag $tick();
+
+    MCAPI ::ui::DirtyFlag $handleGameEventNotification(::ui::GameEventNotification notification);
     // NOLINTEND
 
 public:

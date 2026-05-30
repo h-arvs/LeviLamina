@@ -4,7 +4,7 @@
 
 // auto generated forward declare list
 // clang-format off
-struct Config;
+class Config;
 // clang-format on
 
 class IConfigListener {
@@ -13,7 +13,7 @@ public:
     // NOLINTBEGIN
     virtual ~IConfigListener();
 
-    virtual void onConfigChanged(::Config const&) = 0;
+    virtual void onConfigChanged(::Config const& c) = 0;
     // NOLINTEND
 
 public:

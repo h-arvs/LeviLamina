@@ -7,8 +7,8 @@
 
 // auto generated forward declare list
 // clang-format off
+class LibraryCollection;
 class MainMenuScreenModel;
-struct LibraryCollection;
 // clang-format on
 
 class LibrarySearchBarScreenController : public ::MainMenuScreenController {
@@ -19,7 +19,26 @@ public:
     // clang-format on
 
     // LibrarySearchBarScreenController inner types define
-    struct SearchConfig {};
+    struct SearchConfig {
+    public:
+        // member variables
+        // NOLINTBEGIN
+        ::ll::TypedStorage<8, 32, ::std::string>                mSearchString;
+        ::ll::TypedStorage<8, 24, ::std::vector<::std::string>> mSearchTags;
+        // NOLINTEND
+
+    public:
+        // member functions
+        // NOLINTBEGIN
+        MCAPI ~SearchConfig();
+        // NOLINTEND
+
+    public:
+        // destructor thunk
+        // NOLINTBEGIN
+        MCFOLD void $dtor();
+        // NOLINTEND
+    };
 
 public:
     // member variables

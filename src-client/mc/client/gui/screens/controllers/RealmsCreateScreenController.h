@@ -15,9 +15,9 @@
 
 // auto generated forward declare list
 // clang-format off
+class IEntitlementManager;
 class MainMenuScreenModel;
 class RealmsCreateParams;
-struct IEntitlementManager;
 struct ProductSku;
 struct Purchase;
 namespace Json { class Value; }
@@ -26,7 +26,12 @@ namespace Json { class Value; }
 class RealmsCreateScreenController : public ::MainMenuScreenController {
 public:
     // RealmsCreateScreenController inner types define
-    enum class State : int {};
+    enum class State : int {
+        Initial    = 0,
+        Processing = 1,
+        Fail       = 2,
+        Success    = 3,
+    };
 
 public:
     // member variables

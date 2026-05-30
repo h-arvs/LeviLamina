@@ -73,7 +73,7 @@ public:
 
     virtual ::ItemStack const& getItem(int slot) const /*override*/;
 
-    virtual void setItem(int modelSlot, ::ItemStack const& item) /*override*/;
+    virtual void setItem(int slot, ::ItemStack const& item) /*override*/;
 
     virtual void stopOpen(::Actor& actor) /*override*/;
 
@@ -102,7 +102,9 @@ public:
 
     MCAPI ::BrushableBlockActor::BrushingState brush(::BlockSource& region, ::BlockPos const& pos, uchar face);
 
-    MCAPI_C ::Actor* tryGetOrCreateDisplayEntity(::BlockSource& region);
+#ifdef LL_PLAT_C
+    MCAPI ::Actor* tryGetOrCreateDisplayEntity(::BlockSource& region);
+#endif
 
     MCAPI void update(::BlockSource& region, ::BlockPos const& pos);
     // NOLINTEND
@@ -134,7 +136,7 @@ public:
 
     MCAPI ::ItemStack const& $getItem(int slot) const;
 
-    MCAPI void $setItem(int modelSlot, ::ItemStack const& item);
+    MCAPI void $setItem(int slot, ::ItemStack const& item);
 
     MCFOLD void $stopOpen(::Actor& actor);
 
@@ -156,8 +158,8 @@ public:
 public:
     // vftables
     // NOLINTBEGIN
-    MCNAPI static void** $vftableForContainer();
+    MCAPI static void** $vftableForContainer();
 
-    MCNAPI static void** $vftableForRandomizableBlockActorContainerBase();
+    MCAPI static void** $vftableForRandomizableBlockActorContainerBase();
     // NOLINTEND
 };

@@ -11,7 +11,16 @@ public:
     // clang-format on
 
     // StoreInventoryScreenController inner types define
-    enum class PackCategory : int {};
+    enum class PackCategory : int {
+        Skins    = 0,
+        Worlds   = 1,
+        Textures = 2,
+        Mashups  = 3,
+        Addons   = 4,
+        Total    = 5,
+        All      = 6,
+        None     = 7,
+    };
 
     struct CategoryInfo {};
 

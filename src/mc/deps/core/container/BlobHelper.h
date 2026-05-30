@@ -12,7 +12,9 @@ namespace mce::BlobHelper {
 // NOLINTBEGIN
 MCNAPI void copyStringIntoBlob(::mce::Blob& blob, ::std::string const& source);
 
-MCNAPI_C void resize(::mce::Blob& blob, uint64 newSize);
+#ifdef LL_PLAT_C
+MCNAPI void resize(::mce::Blob& blob, uint64 newSize);
+#endif
 // NOLINTEND
 
 } // namespace mce::BlobHelper

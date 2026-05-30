@@ -19,37 +19,52 @@ public:
     ::ll::TypedStorage<8, 16, ::std::weak_ptr<::ChestContainerManagerModel>> mChestContainerManagerModel;
     // NOLINTEND
 
+#ifdef LL_PLAT_S
+#else // LL_PLAT_C
+public:
+    // prevent constructor by default
+    ChestContainerManagerController();
+
+#endif
 public:
     // virtual functions
     // NOLINTBEGIN
     virtual ~ChestContainerManagerController() /*override*/ = default;
 
-    virtual void _onItemAcquired(::ItemInstance const& stack, ::SlotData const& srcSlot) /*override*/;
+    virtual void _onItemAcquired(::ItemInstance const& itemInstance, ::SlotData const& srcSlot) /*override*/;
 
-    virtual void _onItemPlaced(::ItemInstance const& stack, ::SlotData const& dstSlot) /*override*/;
+    virtual void _onItemPlaced(::ItemInstance const& itemInstance, ::SlotData const& dstSlot) /*override*/;
     // NOLINTEND
 
 public:
     // member functions
     // NOLINTBEGIN
-    MCNAPI_C void _calculateFullCobblestoneAchievement();
+#ifdef LL_PLAT_C
+    MCNAPI explicit ChestContainerManagerController(
+        ::std::weak_ptr<::ChestContainerManagerModel> containerManagerModel
+    );
 
-    MCNAPI_C void _setupCallbacks();
+    MCNAPI void _calculateFullCobblestoneAchievement();
+
+    MCNAPI void _setupCallbacks();
+#endif
     // NOLINTEND
 
 public:
     // constructor thunks
     // NOLINTBEGIN
-    MCNAPI_C void* $ctor(::std::weak_ptr<::ChestContainerManagerModel> containerManagerModel);
+#ifdef LL_PLAT_C
+    MCNAPI void* $ctor(::std::weak_ptr<::ChestContainerManagerModel> containerManagerModel);
+#endif
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
 #ifdef LL_PLAT_C
-    MCNAPI void $_onItemAcquired(::ItemInstance const& stack, ::SlotData const& srcSlot);
+    MCNAPI void $_onItemAcquired(::ItemInstance const& itemInstance, ::SlotData const& srcSlot);
 
-    MCNAPI void $_onItemPlaced(::ItemInstance const& stack, ::SlotData const& dstSlot);
+    MCNAPI void $_onItemPlaced(::ItemInstance const& itemInstance, ::SlotData const& dstSlot);
 #endif
 
 

@@ -11,7 +11,7 @@
 class Biome;
 class BlockPos;
 namespace BiomeColorSampling { class MapPolicy; }
-namespace BiomeColorSampling { struct TessellationPolicy; }
+namespace BiomeColorSampling { class TessellationPolicy; }
 // clang-format on
 
 namespace BiomeColorSampling {
@@ -33,11 +33,13 @@ MCFOLD int getMapWaterColor(::Biome const& biome, ::BlockPos const&);
 
 MCAPI ::std::vector<::BlockPos> const& getPattern(::BiomeColorSampling::Pattern pattern);
 
-MCAPI_C ::BiomeColorSampling::TessellationPolicy const& getTessellationPolicy(::TintMethod tint);
+#ifdef LL_PLAT_C
+MCAPI ::BiomeColorSampling::TessellationPolicy const& getTessellationPolicy(::TintMethod tint);
 
-MCAPI_C int getWaterColor(::Biome const& biome, ::BlockPos const&);
+MCAPI int getWaterColor(::Biome const& biome, ::BlockPos const&);
 
-MCFOLD_C int getWhite(::Biome const&, ::BlockPos const&);
+MCFOLD int getWhite(::Biome const&, ::BlockPos const&);
+#endif
 // NOLINTEND
 
 } // namespace BiomeColorSampling

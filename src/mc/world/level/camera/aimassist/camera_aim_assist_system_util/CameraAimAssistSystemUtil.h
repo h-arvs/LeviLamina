@@ -30,7 +30,8 @@ namespace SharedTypes::v1_21_90 { struct CameraPreset; }
 namespace CameraAimAssistSystemUtil {
 // functions
 // NOLINTBEGIN
-MCNAPI_C ::CameraAimAssistSystemUtil::BlockHitDetectResult blockHitDetect(
+#ifdef LL_PLAT_C
+MCNAPI ::CameraAimAssistSystemUtil::BlockHitDetectResult blockHitDetect(
     ::Vec3 const&                                    start,
     ::Vec3 const&                                    end,
     ::IConstBlockSource const&                       region,
@@ -41,10 +42,12 @@ MCNAPI_C ::CameraAimAssistSystemUtil::BlockHitDetectResult blockHitDetect(
     ::std::function<bool(::BlockType const&)> const& isBlockExcluded,
     ::std::function<int(::BlockType const&)> const&  getBlockPriority
 );
+#endif
 
 MCNAPI void clearAimAssistForServerPlayer(::ServerPlayer& player);
 
-MCNAPI_C ::Frustum createFrustumForCachedFrustumComponent(
+#ifdef LL_PLAT_C
+MCNAPI ::Frustum createFrustumForCachedFrustumComponent(
     ::Vec3 const& start,
     ::Vec3 const& direction,
     ::Vec3 const& unitLeft,
@@ -54,7 +57,7 @@ MCNAPI_C ::Frustum createFrustumForCachedFrustumComponent(
     ::Vec3 const& farCenter
 );
 
-MCNAPI_C ::CameraAimAssistSystemUtil::BlockHitDetectResult firstBlockHitDetect(
+MCNAPI ::CameraAimAssistSystemUtil::BlockHitDetectResult firstBlockHitDetect(
     ::IConstBlockSource const& region,
     ::BlockPos const&          currentBlockPos,
     ::Vec3 const&              start,
@@ -64,6 +67,7 @@ MCNAPI_C ::CameraAimAssistSystemUtil::BlockHitDetectResult firstBlockHitDetect(
     ::std::function<bool(::BlockType const&)> const& isBlockExcluded,
     ::std::function<int(::BlockType const&)> const&  getBlockPriority
 );
+#endif
 
 MCNAPI ::std::optional<::CameraAimAssistPacketPayload::TargetMode>
 getPacketTargetMode(::CameraAimAssist::TargetMode targetMode);
@@ -83,7 +87,8 @@ setAimAssistForServerPlayer(
     bool                          showDebugRender
 );
 
-MCNAPI_C ::Bedrock::Result<
+#ifdef LL_PLAT_C
+MCNAPI ::Bedrock::Result<
     void,
     ::std::variant<
         ::CameraAimAssistErrorType::UnknownPresetId,
@@ -95,14 +100,15 @@ setAimAssistFromClient(
     bool                                         allowAimAssist
 );
 
-MCNAPI_C bool shouldRotatePlayerOnProjectile(::std::string_view cameraMode, ::ControlScheme::Scheme controlScheme);
+MCNAPI bool shouldRotatePlayerOnProjectile(::std::string_view cameraMode, ::ControlScheme::Scheme controlScheme);
 
-MCNAPI_C bool stepAndUpdateCurrentBlockPos(
+MCNAPI bool stepAndUpdateCurrentBlockPos(
     ::Vec3&           currentPos,
     ::BlockPos&       currentBlockPos,
     ::Vec3 const&     endPos,
     ::BlockPos const& endBlockPos
 );
+#endif
 // NOLINTEND
 
 } // namespace CameraAimAssistSystemUtil

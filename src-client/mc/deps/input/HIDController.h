@@ -6,10 +6,12 @@
 #include "mc/deps/core/utility/NonOwnerPointer.h"
 #include "mc/deps/input/InputMode.h"
 #include "mc/deps/input/KeyboardEventProcessor.h"
+#include "mc/deps/input/TextBoxSelection.h"
 #include "mc/deps/input/TextEditContext.h"
 
 // auto generated forward declare list
 // clang-format off
+class IGamefaceTextInputProxy;
 class IKeyboardProxy;
 class ITextBoxController;
 namespace ApplicationSignal { class ClipboardPaste; }
@@ -20,14 +22,47 @@ class HIDController : public ::Bedrock::Input::KeyboardEventProcessor {
 public:
     // HIDController inner types declare
     // clang-format off
-    struct GamefaceTextEditContext;
+    class GamefaceTextEditContext;
     // clang-format on
 
     // HIDController inner types define
-    struct GamefaceTextEditContext {
+    class GamefaceTextEditContext {
     public:
         // GamefaceTextEditContext inner types define
-        enum class StateChange : int {};
+        enum class StateChange : int {
+            None             = 0,
+            Text             = 1,
+            Selection        = 2,
+            TextAndSelection = 3,
+        };
+
+    public:
+        // member variables
+        // NOLINTBEGIN
+        ::ll::TypedStorage<8, 8, ::std::unique_ptr<::IGamefaceTextInputProxy>> mTextInputProxy;
+        ::ll::TypedStorage<8, 32, ::std::string>                               mLastCheckText;
+        ::ll::TypedStorage<4, 12, ::TextBoxSelection>                          mLastCheckSelection;
+        ::ll::TypedStorage<1, 1, bool>                                         mForceApplyChanges;
+        ::ll::TypedStorage<1, 1, bool>                                         mIsComposing;
+        // NOLINTEND
+
+    public:
+        // member functions
+        // NOLINTBEGIN
+        MCAPI ::HIDController::GamefaceTextEditContext::StateChange checkForChanges();
+
+        MCAPI ::std::string getText() const;
+
+        MCAPI bool tryEnable(::Bedrock::NonOwnerPointer<::ITextBoxController> textBoxController);
+
+        MCAPI ~GamefaceTextEditContext();
+        // NOLINTEND
+
+    public:
+        // destructor thunk
+        // NOLINTBEGIN
+        MCFOLD void $dtor();
+        // NOLINTEND
     };
 
 public:
@@ -54,7 +89,7 @@ public:
     // NOLINTBEGIN
     virtual void update();
 
-    virtual void onKeyDown(int keyCode, ::Bedrock::Input::KeyboardEventProcessor::InputOrigin) /*override*/;
+    virtual void onKeyDown(int keyCode, ::Bedrock::Input::KeyboardEventProcessor::InputOrigin origin) /*override*/;
 
     virtual void onKeyUp(int keyCode) /*override*/;
 
@@ -74,7 +109,8 @@ public:
 
     virtual void onTextEditComponentLostFocus();
 
-    virtual void onShowKeyboard(::std::string_view const currentText, int maxLength, bool isMultiline, ::InputMode);
+    virtual void
+    onShowKeyboard(::std::string_view const currentText, int maxLength, bool isMultiline, ::InputMode inputMode);
 
     virtual void onHideKeyboard();
 
@@ -122,7 +158,7 @@ public:
     // NOLINTBEGIN
     MCAPI void $update();
 
-    MCAPI void $onKeyDown(int keyCode, ::Bedrock::Input::KeyboardEventProcessor::InputOrigin);
+    MCAPI void $onKeyDown(int keyCode, ::Bedrock::Input::KeyboardEventProcessor::InputOrigin origin);
 
     MCAPI void $onKeyUp(int keyCode);
 
@@ -142,7 +178,8 @@ public:
 
     MCAPI void $onTextEditComponentLostFocus();
 
-    MCAPI void $onShowKeyboard(::std::string_view const currentText, int maxLength, bool isMultiline, ::InputMode);
+    MCAPI void
+    $onShowKeyboard(::std::string_view const currentText, int maxLength, bool isMultiline, ::InputMode inputMode);
 
     MCAPI void $onHideKeyboard();
 

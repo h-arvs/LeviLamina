@@ -16,12 +16,12 @@
 class IClientInstance;
 class IMinecraftEventing;
 class IMinecraftGame;
-struct PersonaAppearance;
-struct SkinHandle;
-struct SkinRepositoryClientInterface;
+class PersonaAppearance;
+class SkinHandle;
+class SkinRepositoryClientInterface;
 namespace mce { class UUID; }
+namespace persona { class PieceOfferWrapper; }
 namespace persona { struct FreeItemState; }
-namespace persona { struct PieceOfferWrapper; }
 namespace persona::color { class ColorInfo; }
 // clang-format on
 
@@ -57,7 +57,7 @@ public:
     // NOLINTBEGIN
     virtual ~PersonaScreenModelCommon();
 
-    virtual void update(::ui::DirtyFlag&);
+    virtual void update(::ui::DirtyFlag& dirtyFlags);
 
     virtual void updateSkin(::persona::PersonaCharacterHandle const& characterHandle, ::SkinHandle handle);
     // NOLINTEND
@@ -151,7 +151,7 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
-    MCAPI void $update(::ui::DirtyFlag&);
+    MCAPI void $update(::ui::DirtyFlag& dirtyFlags);
 
     MCAPI void $updateSkin(::persona::PersonaCharacterHandle const& characterHandle, ::SkinHandle handle);
     // NOLINTEND

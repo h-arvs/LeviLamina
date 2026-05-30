@@ -20,7 +20,11 @@ struct ActorUniqueID;
 class AnvilScreenController : public ::ContainerScreenController {
 public:
     // AnvilScreenController inner types define
-    enum class SlotIndex : int {};
+    enum class SlotIndex : int {
+        Input    = 0,
+        Material = 1,
+        Result   = 2,
+    };
 
 public:
     // member variables
@@ -62,9 +66,9 @@ public:
     // NOLINTBEGIN
     MCAPI AnvilScreenController(
         ::std::shared_ptr<::ClientInstanceScreenModel> model,
-        ::Player&                                      player,
-        ::BlockPos const&                              pos,
-        ::ActorUniqueID                                uniqueId
+        ::Player&,
+        ::BlockPos const& pos,
+        ::ActorUniqueID
     );
 
     MCAPI void _initScreenControllerProxy();
@@ -77,12 +81,8 @@ public:
 public:
     // constructor thunks
     // NOLINTBEGIN
-    MCAPI void* $ctor(
-        ::std::shared_ptr<::ClientInstanceScreenModel> model,
-        ::Player&                                      player,
-        ::BlockPos const&                              pos,
-        ::ActorUniqueID                                uniqueId
-    );
+    MCAPI void*
+    $ctor(::std::shared_ptr<::ClientInstanceScreenModel> model, ::Player&, ::BlockPos const& pos, ::ActorUniqueID);
     // NOLINTEND
 
 public:

@@ -15,10 +15,10 @@
 // auto generated forward declare list
 // clang-format off
 class ClientInstanceScreenModel;
+class MinecraftglTFExporter;
 class Player;
 class StructureTemplate;
 struct ActorUniqueID;
-struct MinecraftglTFExporter;
 struct TextEditScreenEventData;
 namespace Json { class Value; }
 // clang-format on
@@ -26,7 +26,10 @@ namespace Json { class Value; }
 class StructureEditorScreenController : public ::BlockScreenController {
 public:
     // StructureEditorScreenController inner types define
-    enum class FilePickerType : uchar {};
+    enum class FilePickerType : uchar {
+        Export = 0,
+        Import = 1,
+    };
 
 public:
     // member variables

@@ -48,7 +48,7 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual void handleEntityEvent(::ActorEvent eventId, int data) /*override*/;
+    virtual void handleEntityEvent(::ActorEvent id, int data) /*override*/;
 
     virtual bool checkSpawnObstruction() const /*override*/;
 
@@ -101,9 +101,7 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
-#ifdef LL_PLAT_S
-    MCAPI void $handleEntityEvent(::ActorEvent eventId, int data);
-#endif
+    MCAPI void $handleEntityEvent(::ActorEvent id, int data);
 
     MCFOLD bool $checkSpawnObstruction() const;
 

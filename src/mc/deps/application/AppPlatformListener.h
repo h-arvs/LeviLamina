@@ -57,9 +57,9 @@ public:
 
     virtual void onAppSurfaceDestroyed();
 
-    virtual void onClipboardCopy(::std::string const&);
+    virtual void onClipboardCopy(::std::string const& clipString);
 
-    virtual void onClipboardPaste(::std::string const&);
+    virtual void onClipboardPaste(::std::string const& clipString);
 
     virtual void onLowMemory(::LowMemorySeverity);
     // NOLINTEND
@@ -95,6 +95,8 @@ public:
 
     MCFOLD void $onAppTerminated();
 
+    MCFOLD void $onOperationModeChanged(::OperationMode const operationMode);
+
     MCFOLD void $onPerformanceModeChanged(bool const boost);
 
     MCFOLD void $onPushNotificationReceived(::PushNotificationMessage const& msg);
@@ -109,13 +111,11 @@ public:
 
     MCFOLD void $onAppSurfaceDestroyed();
 
-    MCFOLD void $onClipboardCopy(::std::string const&);
+    MCFOLD void $onClipboardCopy(::std::string const& clipString);
 
-    MCFOLD void $onClipboardPaste(::std::string const&);
+    MCFOLD void $onClipboardPaste(::std::string const& clipString);
 
-#ifdef LL_PLAT_C
-    MCFOLD void $onOperationModeChanged(::OperationMode const operationMode);
-#endif
+    MCFOLD void $onLowMemory(::LowMemorySeverity);
 
 
     // NOLINTEND

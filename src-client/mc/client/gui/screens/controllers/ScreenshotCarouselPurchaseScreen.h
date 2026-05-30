@@ -10,7 +10,7 @@
 
 // auto generated forward declare list
 // clang-format off
-struct StoreCatalogItem;
+class StoreCatalogItem;
 // clang-format on
 
 class ScreenshotCarouselPurchaseScreen : public ::MainMenuScreenController {
@@ -48,7 +48,7 @@ public:
 
     virtual bool _polymorphicButtonEnabled() const;
 
-    virtual ::ui::DirtyFlag handleGameEventNotification(::ui::GameEventNotification) /*override*/;
+    virtual ::ui::DirtyFlag handleGameEventNotification(::ui::GameEventNotification notification) /*override*/;
     // NOLINTEND
 
 public:

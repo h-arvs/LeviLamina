@@ -149,11 +149,11 @@ public:
 
     virtual void releaseUsingItem();
 
-    virtual void setTrialMode(bool);
+    virtual void setTrialMode(bool isEnabled);
 
     virtual bool isInTrialMode();
 
-    virtual void registerUpsellScreenCallback(::std::function<void(bool)>);
+    virtual void registerUpsellScreenCallback(::std::function<void(bool)> callback);
     // NOLINTEND
 
 public:
@@ -250,6 +250,8 @@ public:
 
     MCAPI void $tick();
 
+    MCAPI float $getPickRange(::InputMode const& currentInputMode);
+
     MCAPI bool $useItem(::ItemStack& item);
 
     MCAPI bool $useItemAsAttack(::ItemStack& item, ::Vec3 const& aimDirection);
@@ -269,15 +271,11 @@ public:
 
     MCAPI void $releaseUsingItem();
 
-    MCFOLD void $setTrialMode(bool);
+    MCFOLD void $setTrialMode(bool isEnabled);
 
     MCFOLD bool $isInTrialMode();
 
-    MCFOLD void $registerUpsellScreenCallback(::std::function<void(bool)>);
-
-#ifdef LL_PLAT_C
-    MCAPI float $getPickRange(::InputMode const& currentInputMode);
-#endif
+    MCFOLD void $registerUpsellScreenCallback(::std::function<void(bool)> callback);
 
 
     // NOLINTEND

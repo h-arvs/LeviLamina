@@ -24,13 +24,42 @@ class CharacterSelectorModel : public ::Bedrock::EnableNonOwnerReferences {
 public:
     // CharacterSelectorModel inner types declare
     // clang-format off
-    struct CharacterSelectorFTUEModel;
+    class CharacterSelectorFTUEModel;
     // clang-format on
 
     // CharacterSelectorModel inner types define
-    enum class AppearanceCreationType : int {};
+    enum class AppearanceCreationType : int {
+        Persona     = 0,
+        ClassicSkin = 1,
+        Count       = 2,
+    };
 
-    struct CharacterSelectorFTUEModel {};
+    class CharacterSelectorFTUEModel {
+    public:
+        // member variables
+        // NOLINTBEGIN
+        ::ll::TypedStorage<4, 4, int> mCurrentPage;
+        ::ll::TypedStorage<4, 4, int> mSubPage;
+        // NOLINTEND
+
+    public:
+        // virtual functions
+        // NOLINTBEGIN
+        virtual ~CharacterSelectorFTUEModel() = default;
+        // NOLINTEND
+
+    public:
+        // member functions
+        // NOLINTBEGIN
+        MCAPI void openCurrentPage(::Bedrock::NotNullNonOwnerPtr<::MinecraftScreenController> screenController) const;
+        // NOLINTEND
+
+    public:
+        // vftables
+        // NOLINTBEGIN
+        MCNAPI static void** $vftable();
+        // NOLINTEND
+    };
 
 public:
     // member variables

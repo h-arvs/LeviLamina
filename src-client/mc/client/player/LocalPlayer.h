@@ -52,6 +52,7 @@ class Container;
 class DataLoadHelper;
 class Dimension;
 class EntityContext;
+class FrameUpdateContextBase;
 class HitResult;
 class IClientInstance;
 class IContainerManager;
@@ -65,6 +66,7 @@ class MobEffectInstance;
 class NetworkIdentifier;
 class Packet;
 class PacketSender;
+class PlayerAutomationObserver;
 class PlayerEventCoordinator;
 class SubChunkPos;
 class SubChunkRequestSubscriber;
@@ -72,12 +74,10 @@ class TextObjectRoot;
 class Vec2;
 struct ActorUniqueID;
 struct ArmorSlotAndDamagePair;
-struct FrameUpdateContextBase;
 struct INpcDialogueData;
 struct InventoryOptions;
 struct ItemStackLegacyRequestIdTag;
 struct PlayerAuthenticationInfo;
-struct PlayerAutomationObserver;
 struct Tick;
 namespace Bedrock::DDUI { class DataStoreSyncClient; }
 namespace Bedrock::PubSub::ThreadModel { struct SingleThreaded; }
@@ -269,7 +269,7 @@ public:
 
     virtual void aiStep() /*override*/;
 
-    virtual void addAdditionalSaveData(::CompoundTag& tag) const /*override*/;
+    virtual void addAdditionalSaveData(::CompoundTag& entityTag) const /*override*/;
 
     virtual void readAdditionalSaveData(::CompoundTag const& tag, ::DataLoadHelper& dataLoadHelper) /*override*/;
 
@@ -335,9 +335,9 @@ public:
 
     virtual bool swing(::ActorSwingSource swingSource) /*override*/;
 
-    virtual void setSneaking(bool value) /*override*/;
+    virtual void setSneaking(bool _isSneaking) /*override*/;
 
-    virtual void setSprinting(bool shouldSprint) /*override*/;
+    virtual void setSprinting(bool _isSprinting) /*override*/;
 
     virtual void playEmote(::std::string const& pieceId, bool const playChatMessage) /*override*/;
 
@@ -419,7 +419,7 @@ public:
 
     virtual uchar getMaxChunkBuildRadius() const /*override*/;
 
-    virtual void setBehaviorCommandStatus(::std::string const&, ::BehaviorStatus) /*override*/;
+    virtual void setBehaviorCommandStatus(::std::string const& name, ::BehaviorStatus status) /*override*/;
 
     virtual ::std::unique_ptr<::ISparseContainerSetListener> createSparseContainerListener() /*override*/;
 
@@ -561,7 +561,7 @@ public:
 
     MCAPI void $aiStep();
 
-    MCAPI void $addAdditionalSaveData(::CompoundTag& tag) const;
+    MCAPI void $addAdditionalSaveData(::CompoundTag& entityTag) const;
 
     MCAPI void $readAdditionalSaveData(::CompoundTag const& tag, ::DataLoadHelper& dataLoadHelper);
 
@@ -625,9 +625,9 @@ public:
 
     MCAPI bool $swing(::ActorSwingSource swingSource);
 
-    MCAPI void $setSneaking(bool value);
+    MCAPI void $setSneaking(bool _isSneaking);
 
-    MCAPI void $setSprinting(bool shouldSprint);
+    MCAPI void $setSprinting(bool _isSprinting);
 
     MCAPI void $playEmote(::std::string const& pieceId, bool const playChatMessage);
 
@@ -702,6 +702,8 @@ public:
     MCAPI void $requestMissingSubChunk(::SubChunkPos const& scp);
 
     MCAPI uchar $getMaxChunkBuildRadius() const;
+
+    MCAPI void $setBehaviorCommandStatus(::std::string const& name, ::BehaviorStatus status);
 
     MCAPI ::std::unique_ptr<::ISparseContainerSetListener> $createSparseContainerListener();
 

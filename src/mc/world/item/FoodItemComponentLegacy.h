@@ -93,7 +93,7 @@ public:
 
     virtual ::Item const* eatItem(::ItemStack& instance, ::Actor& actor, ::Level& level) /*override*/;
 
-    virtual void use(bool& result, ::ItemStack& item, ::Player& player) /*override*/;
+    virtual void use(bool& result, ::ItemStack& instance, ::Player& player) /*override*/;
 
     virtual ::Item const* useTimeDepleted(
         ::ItemUseMethod& itemUseMethod,
@@ -143,9 +143,8 @@ public:
 
     MCAPI ::Item const* $eatItem(::ItemStack& instance, ::Actor& actor, ::Level& level);
 
-    MCAPI void $use(bool& result, ::ItemStack& item, ::Player& player);
+    MCAPI void $use(bool& result, ::ItemStack& instance, ::Player& player);
 
-#ifdef LL_PLAT_C
     MCAPI ::Item const* $useTimeDepleted(
         ::ItemUseMethod& itemUseMethod,
         ::ItemStack const&,
@@ -153,7 +152,6 @@ public:
         ::Player&    player,
         ::Level&     level
     );
-#endif
 
 
     // NOLINTEND

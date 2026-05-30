@@ -3,7 +3,7 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
-#include "mc/deps/nbt/nbt/CompoundTag.h"
+#include "mc/deps/nbt/CompoundTag.h"
 #include "mc/world/Direction.h"
 #include "mc/world/actor/ActorDefinitionIdentifier.h"
 #include "mc/world/level/block/actor/BlockActor.h"
@@ -95,7 +95,9 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
-    MCAPI_C static void savePoseToItemForInventoryRendering(::ItemStackBase& item, int pose);
+#ifdef LL_PLAT_C
+    MCAPI static void savePoseToItemForInventoryRendering(::ItemStackBase& item, int pose);
+#endif
     // NOLINTEND
 
 public:

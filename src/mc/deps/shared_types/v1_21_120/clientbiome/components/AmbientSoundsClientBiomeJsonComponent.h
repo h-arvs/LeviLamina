@@ -4,8 +4,8 @@
 
 // auto generated inclusion list
 #include "mc/deps/shared_types/util/Reference.h"
+#include "mc/deps/shared_types/v1_21_40/clientbiome/components/ClientBiomeComponentVersion.h"
 #include "mc/deps/shared_types/v1_21_40/clientbiome/components/IClientBiomeJsonComponent.h"
-#include "mc/v1_21_40/clientbiome/components/ClientBiomeComponentVersion.h"
 
 // auto generated forward declare list
 // clang-format off
@@ -72,11 +72,18 @@ public:
     ::ll::TypedStorage<8, 32, ::SharedTypes::Reference<20>> mUnderwaterMood;
     // NOLINTEND
 
+#ifdef LL_PLAT_S
 public:
     // prevent constructor by default
     AmbientSoundsClientBiomeJsonComponent(AmbientSoundsClientBiomeJsonComponent const&);
     AmbientSoundsClientBiomeJsonComponent();
 
+#else // LL_PLAT_C
+public:
+    // prevent constructor by default
+    AmbientSoundsClientBiomeJsonComponent();
+
+#endif
 public:
     // virtual functions
     // NOLINTBEGIN
@@ -88,6 +95,10 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCAPI AmbientSoundsClientBiomeJsonComponent(::SharedTypes::v1_21_120::AmbientSoundsClientBiomeJsonComponent const&);
+#endif
+
     MCAPI ::SharedTypes::v1_21_120::AmbientSoundsClientBiomeJsonComponent&
     operator=(::SharedTypes::v1_21_120::AmbientSoundsClientBiomeJsonComponent&&);
 
@@ -110,7 +121,9 @@ public:
 public:
     // constructor thunks
     // NOLINTBEGIN
-    MCAPI_C void* $ctor(::SharedTypes::v1_21_120::AmbientSoundsClientBiomeJsonComponent const&);
+#ifdef LL_PLAT_C
+    MCAPI void* $ctor(::SharedTypes::v1_21_120::AmbientSoundsClientBiomeJsonComponent const&);
+#endif
     // NOLINTEND
 
 public:

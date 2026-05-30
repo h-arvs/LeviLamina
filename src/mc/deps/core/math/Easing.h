@@ -10,7 +10,9 @@ namespace Easing {
 // NOLINTBEGIN
 MCNAPI auto getEasingFunction(::EasingType easingType) -> float (*)(float, float, float);
 
-MCNAPI_C ::EasingType getEasingTypeFromString(::std::string const& easingName);
+#ifdef LL_PLAT_C
+MCNAPI ::EasingType getEasingTypeFromString(::std::string const& easingName);
+#endif
 // NOLINTEND
 
 } // namespace Easing

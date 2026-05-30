@@ -91,7 +91,7 @@ public:
 
     virtual void kill() /*override*/;
 
-    virtual void setOwner(::ActorUniqueID const ownerId) /*override*/;
+    virtual void setOwner(::ActorUniqueID const id) /*override*/;
 
     virtual ::ActorHurtResult
     _hurt(::ActorDamageSource const& source, float damage, bool knock, bool ignite) /*override*/;
@@ -178,7 +178,7 @@ public:
 
     MCAPI void $kill();
 
-    MCAPI void $setOwner(::ActorUniqueID const ownerId);
+    MCAPI void $setOwner(::ActorUniqueID const id);
 
     MCAPI ::ActorHurtResult $_hurt(::ActorDamageSource const& source, float damage, bool knock, bool ignite);
 

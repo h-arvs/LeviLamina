@@ -31,10 +31,12 @@
 // clang-format off
 class Actor;
 class ActorSoundIdentifier;
+class AmbientSoundController;
 class BaseActorRenderContext;
 class Block;
 class BlockActor;
 class BlockSource;
+class ClientFrameUpdateContext;
 class CompoundTag;
 class EntityContext;
 class Font;
@@ -48,27 +50,25 @@ class Mob;
 class Options;
 class Player;
 class Random;
+class RenderChunkShared;
 class ScreenContext;
+class SoundMapping;
 class SoundPlayerInterface;
 class Tessellator;
 class TextureAtlas;
 class TextureTessellator;
 struct ActorShadowRenderObjectCollection;
-struct AmbientSoundController;
 struct BlockDestructInfo;
 struct BreakingItemParticleData;
-struct ClientFrameUpdateContext;
 struct CloudRenderObject;
 struct CrackRenderObject;
 struct CrackRenderObjectCollection;
 struct DeferredSound;
 struct LevelRenderPreRenderUpdateParameters;
 struct NameTagRenderObjectCollection;
-struct RenderChunkShared;
 struct ResolvedItemIconInfo;
 struct SkyRenderObject;
 struct Sound;
-struct SoundMapping;
 struct TextureUVCoordinateSet;
 struct ViewRenderData;
 struct ViewRenderObject;
@@ -273,9 +273,9 @@ public:
 
     virtual void setupFog(::ScreenContext& screenContext, float const skyIntensityOverride) /*override*/;
 
-    virtual void levelEvent(::SharedTypes::Legacy::LevelEvent, ::Vec3 const&, int) /*override*/;
+    virtual void levelEvent(::SharedTypes::Legacy::LevelEvent type, ::Vec3 const& pos, int data) /*override*/;
 
-    virtual void levelEvent(::SharedTypes::Legacy::LevelEvent, ::CompoundTag const&) /*override*/;
+    virtual void levelEvent(::SharedTypes::Legacy::LevelEvent type, ::CompoundTag const& data) /*override*/;
 
     virtual void addCameraListenerToRenderChunkCoordinator() /*override*/;
 
@@ -549,6 +549,10 @@ public:
     MCAPI bool $getForceFog(::Actor const& cameraActor) const;
 
     MCAPI void $setupFog(::ScreenContext& screenContext, float const skyIntensityOverride);
+
+    MCAPI void $levelEvent(::SharedTypes::Legacy::LevelEvent type, ::Vec3 const& pos, int data);
+
+    MCAPI void $levelEvent(::SharedTypes::Legacy::LevelEvent type, ::CompoundTag const& data);
 
     MCFOLD void $addCameraListenerToRenderChunkCoordinator();
 

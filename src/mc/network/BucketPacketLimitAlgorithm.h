@@ -34,7 +34,7 @@ public:
     // NOLINTBEGIN
     virtual ::std::unique_ptr<::IPacketLimitAlgorithm> copy() const /*override*/;
 
-    virtual uint checkPacket(::MinecraftPacketIds) /*override*/;
+    virtual uint checkPacket(::MinecraftPacketIds packet) /*override*/;
 
 #ifdef LL_PLAT_S
     virtual ~BucketPacketLimitAlgorithm() /*override*/;
@@ -47,19 +47,25 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-
+#ifdef LL_PLAT_S
+    MCNAPI BucketPacketLimitAlgorithm(float drainRatePerSec, uint maxBucketSize);
+#endif
     // NOLINTEND
 
 public:
     // static functions
     // NOLINTBEGIN
-    MCNAPI_S static ::Bedrock::Result<::BucketPacketLimitAlgorithm> createFromJsonParams(::Json::Value& paramsNode);
+#ifdef LL_PLAT_S
+    MCNAPI static ::Bedrock::Result<::BucketPacketLimitAlgorithm> createFromJsonParams(::Json::Value& paramsNode);
+#endif
     // NOLINTEND
 
 public:
     // constructor thunks
     // NOLINTBEGIN
-    MCNAPI_S void* $ctor(float drainRatePerSec, uint maxBucketSize);
+#ifdef LL_PLAT_S
+    MCNAPI void* $ctor(float drainRatePerSec, uint maxBucketSize);
+#endif
     // NOLINTEND
 
 public:
@@ -73,6 +79,8 @@ public:
     // NOLINTBEGIN
 #ifdef LL_PLAT_S
     MCNAPI ::std::unique_ptr<::IPacketLimitAlgorithm> $copy() const;
+
+    MCNAPI uint $checkPacket(::MinecraftPacketIds packet);
 #endif
 
 

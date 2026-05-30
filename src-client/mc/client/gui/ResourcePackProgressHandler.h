@@ -10,8 +10,8 @@
 
 // auto generated forward declare list
 // clang-format off
+class DlcId;
 class MinecraftScreenModel;
-struct DlcId;
 // clang-format on
 
 class ResourcePackProgressHandler : public ::ProgressHandler {
@@ -42,7 +42,10 @@ public:
 
     virtual void onStart(::MinecraftScreenModel& minecraftScreenModel) /*override*/;
 
-    virtual void onGameEventNotification(::MinecraftScreenModel&, ::ui::GameEventNotification const&) /*override*/;
+    virtual void onGameEventNotification(
+        ::MinecraftScreenModel&            minecraftScreenModel,
+        ::ui::GameEventNotification const& notification
+    ) /*override*/;
 
     virtual void tick(::MinecraftScreenModel& minecraftScreenModel) /*override*/;
 
@@ -85,6 +88,11 @@ public:
     // virtual function thunks
     // NOLINTBEGIN
     MCAPI void $onStart(::MinecraftScreenModel& minecraftScreenModel);
+
+    MCAPI void $onGameEventNotification(
+        ::MinecraftScreenModel&            minecraftScreenModel,
+        ::ui::GameEventNotification const& notification
+    );
 
     MCAPI void $tick(::MinecraftScreenModel& minecraftScreenModel);
 

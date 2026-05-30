@@ -22,10 +22,12 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCNAPI_C void _addToMap(::std::string const& name, ::std::variant<float, bool, ::std::string> const& value);
+#ifdef LL_PLAT_C
+    MCAPI void _addToMap(::std::string const& name, ::std::variant<float, bool, ::std::string> const& value);
 
-    MCNAPI_C void _initFromPackStack(::std::vector<::PackInstance> const& stack);
+    MCAPI void _initFromPackStack(::std::vector<::PackInstance> const& stack);
 
-    MCNAPI_C void updatePackSetting(::std::string const& name, ::std::variant<float, bool, ::std::string> const& value);
+    MCAPI void updatePackSetting(::std::string const& name, ::std::variant<float, bool, ::std::string> const& value);
+#endif
     // NOLINTEND
 };

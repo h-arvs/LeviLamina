@@ -34,3 +34,8 @@ public:
     MCAPI static void bindType(::cereal::ReflectionCtx& ctx);
     // NOLINTEND
 };
+
+// free functions
+// NOLINTBEGIN
+MCFOLD bool operator==(::KineticDamageSettings const& __P0, ::KineticDamageSettings const& __P1);
+// NOLINTEND

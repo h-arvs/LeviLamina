@@ -42,7 +42,7 @@ public:
 
     virtual void setSitting(bool value) /*override*/;
 
-    virtual void handleEntityEvent(::ActorEvent eventId, int data) /*override*/;
+    virtual void handleEntityEvent(::ActorEvent id, int data) /*override*/;
 
     virtual bool isAlliedTo(::Mob* other) /*override*/;
 
@@ -59,11 +59,15 @@ public:
     // NOLINTBEGIN
     MCAPI void _avoidSnowBury();
 
-    MCAPI_S bool _isShakeAnimationOngoing() const;
+#ifdef LL_PLAT_S
+    MCAPI bool _isShakeAnimationOngoing() const;
+#endif
 
     MCAPI void _updateTintColor();
 
-    MCAPI_S bool isInterested() const;
+#ifdef LL_PLAT_S
+    MCAPI bool isInterested() const;
+#endif
 
     MCAPI void postNormalTick();
     // NOLINTEND
@@ -81,9 +85,7 @@ public:
 
     MCFOLD void $setSitting(bool value);
 
-#ifdef LL_PLAT_S
-    MCAPI void $handleEntityEvent(::ActorEvent eventId, int data);
-#endif
+    MCAPI void $handleEntityEvent(::ActorEvent id, int data);
 
     MCAPI bool $isAlliedTo(::Mob* other);
 

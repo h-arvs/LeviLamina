@@ -4,7 +4,7 @@
 
 // auto generated forward declare list
 // clang-format off
-struct IEntitlement;
+class IEntitlement;
 // clang-format on
 
 class IPremiumCachePackEntitlementValidator {
@@ -13,7 +13,7 @@ public:
     // NOLINTBEGIN
     virtual ~IPremiumCachePackEntitlementValidator() = default;
 
-    virtual bool isEntitlementValid(::IEntitlement const&) const = 0;
+    virtual bool isEntitlementValid(::IEntitlement const& entitlement) const = 0;
     // NOLINTEND
 
 public:

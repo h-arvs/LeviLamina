@@ -4,9 +4,9 @@
 
 // auto generated forward declare list
 // clang-format off
+namespace LocalServerLauncher { class IGameInterface; }
+namespace LocalServerLauncher { class IServerInstanceBuilder; }
 namespace LocalServerLauncher { struct GameDependencies; }
-namespace LocalServerLauncher { struct IGameInterface; }
-namespace LocalServerLauncher { struct IServerInstanceBuilder; }
 namespace LocalServerLauncher { struct ServerInitData; }
 namespace LocalServerLauncher { struct ServerLaunchResult; }
 // clang-format on
@@ -26,8 +26,8 @@ public:
     virtual ::std::unique_ptr<::LocalServerLauncher::GameDependencies> createGameDependencies() = 0;
 
     virtual void completeServerStartup(
-        ::std::shared_ptr<::LocalServerLauncher::ServerInitData>,
-        ::LocalServerLauncher::ServerLaunchResult&&
+        ::std::shared_ptr<::LocalServerLauncher::ServerInitData> serverInitData,
+        ::LocalServerLauncher::ServerLaunchResult&&              result
     ) = 0;
     // NOLINTEND
 

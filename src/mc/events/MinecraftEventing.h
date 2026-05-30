@@ -460,7 +460,7 @@ public:
 
     virtual ::std::chrono::steady_clock::time_point getWorldSessionIdGenerationTimestamp() const /*override*/;
 
-    virtual void fireEventDefaultGameTypeChanged(::GameType, ::GameType) /*override*/;
+    virtual void fireEventDefaultGameTypeChanged(::GameType oldGameType, ::GameType newGameType) /*override*/;
 
     virtual void fireEventWorldLoaded(
         ::Player* player,
@@ -531,26 +531,29 @@ public:
     ) /*override*/;
 
     virtual void fireEventPacketViolationDetected(
-        uint64,
-        ::std::string,
-        ::PacketViolationResponse,
-        ::MinecraftPacketIds,
-        ::NetworkIdentifier const&,
-        uint,
-        ::SubClientId,
-        ::SubClientId,
-        uint
+        uint64                     readResult,
+        ::std::string              readResultContext,
+        ::PacketViolationResponse  violationResponse,
+        ::MinecraftPacketIds       violatingPacketId,
+        ::NetworkIdentifier const& netId,
+        uint                       numViolations,
+        ::SubClientId              clientSubId,
+        ::SubClientId              senderSubId,
+        uint                       packetStreamLength
     ) /*override*/;
 
-    virtual void
-    fireEventServerReceivedValidPacket(::NetworkIdentifier const&, ::MinecraftPacketIds, ::SubClientId) /*override*/;
+    virtual void fireEventServerReceivedValidPacket(
+        ::NetworkIdentifier const& netId,
+        ::MinecraftPacketIds       packetId,
+        ::SubClientId              clientSubId
+    ) /*override*/;
 
     virtual void fireEventClientSentOrReceivedPacket(
-        ::NetworkIdentifier const&,
-        ::MinecraftPacketIds,
-        ::SubClientId,
-        ::std::string,
-        bool
+        ::NetworkIdentifier const& netId,
+        ::MinecraftPacketIds       packetId,
+        ::SubClientId              clientSubId,
+        ::std::string              correlationId,
+        bool                       isOutgoing
     ) /*override*/;
 
     virtual void fireEventJoinCanceled(::LoadingState currentState) /*override*/;
@@ -578,37 +581,37 @@ public:
     ) /*override*/;
 
     virtual void fireEventPlayerJoinWorld(
-        uint const&,
-        ::SubClientId const,
-        bool,
-        ::std::optional<bool>,
-        ::IConnectionEventing::PlayerJoinWorldAttemptState const,
-        int,
-        ::Connection::DisconnectFailReason,
-        ::Json::Value const&,
-        ::TransportLayer,
-        ::NetworkType,
-        ::Social::MultiplayerState,
-        bool,
-        bool,
-        ::Social::MultiplayerServiceIdentifier,
-        ::std::string const&,
-        ::std::string const&,
-        ::std::string const&,
-        ::std::string const&,
-        bool,
-        bool,
-        bool,
-        bool,
-        ::Social::GameConnectionInfo const&
+        uint const&                                              userId,
+        ::SubClientId const                                      subId,
+        bool                                                     isJoiningLocalServer,
+        ::std::optional<bool>                                    isUsingTURN,
+        ::IConnectionEventing::PlayerJoinWorldAttemptState const JoinState,
+        int                                                      attemptId,
+        ::Connection::DisconnectFailReason                       failReason,
+        ::Json::Value const&                                     failDebugInfo,
+        ::TransportLayer                                         transportLayer,
+        ::NetworkType                                            networkTypeOverride,
+        ::Social::MultiplayerState                               multiplayerState,
+        bool                                                     isConnectedToApplicationLayer,
+        bool                                                     isFilteringProfanity,
+        ::Social::MultiplayerServiceIdentifier                   multiplayerServiceIdentifier,
+        ::std::string const&                                     titleMessage,
+        ::std::string const&                                     errorMessage,
+        ::std::string const&                                     codeword,
+        ::std::string const&                                     partyId,
+        bool                                                     isPartyLeader,
+        bool                                                     isPartyDestination,
+        bool                                                     isServerTransfer,
+        bool                                                     isReconnect,
+        ::Social::GameConnectionInfo const&                      connectionInfo
     ) /*override*/;
 
     virtual void fireEventClientLastPackets(
-        uint const&,
-        ::SubClientId const,
-        int,
-        ::Json::Value const&,
-        ::Json::Value const&
+        uint const&          userId,
+        ::SubClientId const  subId,
+        int                  correlationId,
+        ::Json::Value const& lastSentPackets,
+        ::Json::Value const& lastReceivedPackets
     ) /*override*/;
 
     virtual void fireEventSignalServiceConnect(
@@ -627,27 +630,27 @@ public:
     ) /*override*/;
 
     virtual void fireEventOnClientDisconnect(
-        ::SubClientId,
-        bool,
-        ::Connection::DisconnectFailReason,
-        ::std::string const&,
-        ::std::string const&,
-        ::std::string const&
+        ::SubClientId                      subId,
+        bool                               isNetworked,
+        ::Connection::DisconnectFailReason reason,
+        ::std::string const&               titleMessage,
+        ::std::string const&               errorMessage,
+        ::std::string const&               codeword
     ) /*override*/;
 
     virtual void fireEventOnServerDisconnect(
-        ::Connection::DisconnectFailReason,
-        ::std::string const&,
-        ::SubClientId,
-        ::std::string const&,
-        uint64,
-        ::std::string const&
+        ::Connection::DisconnectFailReason reason,
+        ::std::string const&               disconnectedClientId,
+        ::SubClientId                      subId,
+        ::std::string const&               reasonContext,
+        uint64                             clientCount,
+        ::std::string const&               firstTimeStamp
     ) /*override*/;
 
     virtual void fireEventOnServerAsyncJoinTaskVerdict(
-        ::nonstd::expected<::AsyncJoinAllow, ::AsyncJoinDeny> const&,
-        ::SubClientId const,
-        uint
+        ::nonstd::expected<::AsyncJoinAllow, ::AsyncJoinDeny> const& joinVerdict,
+        ::SubClientId const                                          subId,
+        uint                                                         verdictQueueLength
     ) /*override*/;
 
     virtual void fireEventHttpClientError(::std::string const& error) /*override*/;
@@ -759,8 +762,11 @@ public:
         ::std::string const& serverAddress
     ) /*override*/;
 
-    virtual void
-    fireEventServerPlayerJoinedGame(::NetworkIdentifier const&, ::SubClientId, ::std::string const&) /*override*/;
+    virtual void fireEventServerPlayerJoinedGame(
+        ::NetworkIdentifier const& id,
+        ::SubClientId              subId,
+        ::std::string const&       firstConnectionTime
+    ) /*override*/;
 
     virtual void fireEventScriptPluginDiscovery(::ScriptPluginResult const& pluginResult, bool client) /*override*/;
 
@@ -1047,8 +1053,10 @@ public:
     fireEventControlRemappedByPlayer(::std::string const& actionName, ::RawInputType inputType, int keyCode) const
         /*override*/;
 
-    virtual void
-        fireEventDifficultySet(::SharedTypes::Legacy::Difficulty, ::SharedTypes::Legacy::Difficulty) /*override*/;
+    virtual void fireEventDifficultySet(
+        ::SharedTypes::Legacy::Difficulty oldDifficulty,
+        ::SharedTypes::Legacy::Difficulty newDifficulty
+    ) /*override*/;
 
     virtual void
     fireEventGameRulesUpdated(bool oldValue, bool newValue, ::std::string const& gameRuleName) /*override*/;
@@ -1207,10 +1215,10 @@ public:
     virtual void fireQuickPlayEvent() /*override*/;
 
     virtual void firePermissionsSetEvent(
-        ::PlayerPermissionLevel const,
-        ::CommandPermissionLevel const,
-        ::PlayerPermissionLevel const,
-        ::CommandPermissionLevel const
+        ::PlayerPermissionLevel const  prevPlayerPermissionLevel,
+        ::CommandPermissionLevel const prevCommandPermissionLevel,
+        ::PlayerPermissionLevel const  playerPermissionLevel,
+        ::CommandPermissionLevel const commandPermissionLevel
     ) /*override*/;
 
     virtual void fireExternalUriLaunched(::std::string const& uri) const /*override*/;
@@ -1370,7 +1378,7 @@ public:
 
     virtual void fireEventWorldImported(int64 worldSeed, uint64 worldSize) /*override*/;
 
-    virtual void fireEventWorldImportedResult(::FileArchiverOutcome) /*override*/;
+    virtual void fireEventWorldImportedResult(::FileArchiverOutcome importResult) /*override*/;
 
     virtual void
     fireGlobalResourcePackCrashRecovery(::PackInstance& packInstance, ::mce::UUID recoveryID, int order) /*override*/;
@@ -2068,11 +2076,13 @@ public:
 
     MCAPI void fireRealmsTelemetryEvent(::IRealmsTelemetry const& realmsTelemetry);
 
-    MCAPI_S void initForDedicatedServer(
+#ifdef LL_PLAT_S
+    MCAPI void initForDedicatedServer(
         ::Bedrock::NonOwnerPointer<::AppPlatform> const&                          appPlatform,
         bool                                                                      eventRecordingEnabled,
         ::brstd::move_only_function<::Identity::EduDSTelemetryIdentifier() const> getEduDSTelemetryIdentifier
     );
+#endif
 
     MCAPI void unregisterOptionsObserver();
     // NOLINTEND
@@ -2083,13 +2093,15 @@ public:
     MCAPI static void
     OnActorSetMainHand(::Actor const& actor, ::ItemInstance const& ToGoInHand, ::ItemInstance const& WasInHand);
 
-    MCAPI_C static void fireEventAgentCreated(::Player& player);
+#ifdef LL_PLAT_C
+    MCAPI static void fireEventAgentCreated(::Player& player);
 
-    MCAPI_C static void fireEventBarrelBlockUsed(
+    MCAPI static void fireEventBarrelBlockUsed(
         ::Player*                                    player,
         ::std::string const&                         itemUsed,
         ::MinecraftEventing::POIBlockInteractionType interactionType
     );
+#endif
 
     MCAPI static void fireEventBehaviorErrored(::Player* player, ::std::string const& errorMessage);
 
@@ -2106,15 +2118,17 @@ public:
 
     MCAPI static void fireEventBlockFound(::Player* player, ::BlockPos const& blockPos);
 
-    MCAPI_C static void fireEventBlockPlaced(::Player* player, ::Block const& placedBlock, bool underWater);
+#ifdef LL_PLAT_C
+    MCAPI static void fireEventBlockPlaced(::Player* player, ::Block const& placedBlock, bool underWater);
 
-    MCAPI_C static void fireEventBookCopied(::Player* player, ::ItemInstance const& book);
+    MCAPI static void fireEventBookCopied(::Player* player, ::ItemInstance const& book);
 
-    MCAPI_C static void fireEventBookEdited(::Player* player, ::ItemDescriptor const& item, uint pageCount);
+    MCAPI static void fireEventBookEdited(::Player* player, ::ItemDescriptor const& item, uint pageCount);
 
-    MCAPI_C static void fireEventBookExported(::Player* player, int textPageCount, int photoPageCount);
+    MCAPI static void fireEventBookExported(::Player* player, int textPageCount, int photoPageCount);
 
-    MCAPI_C static void fireEventBookImageImported(::Player* player);
+    MCAPI static void fireEventBookImageImported(::Player* player);
+#endif
 
     MCAPI static void fireEventCampfireBlockUsed(
         ::Player*                                    player,
@@ -2122,18 +2136,19 @@ public:
         ::MinecraftEventing::POIBlockInteractionType interactionType
     );
 
-    MCAPI_C static void fireEventCaravanChanged(::Mob& mob, int caravanSize);
+#ifdef LL_PLAT_C
+    MCAPI static void fireEventCaravanChanged(::Mob& mob, int caravanSize);
 
-    MCAPI_C static void
+    MCAPI static void
     fireEventCartographyBlockUsed(::Player* player, ::std::string const& itemUsed, ::MapOutputType mapOutputType);
 
-    MCAPI_C static void fireEventCauldronBlockUsed(
+    MCAPI static void fireEventCauldronBlockUsed(
         ::Player*                                    player,
         ::std::string const&                         itemUsed,
         ::MinecraftEventing::POIBlockInteractionType interactionType
     );
 
-    MCAPI_C static void fireEventCommandBlockEdited(
+    MCAPI static void fireEventCommandBlockEdited(
         ::Player*                 player,
         ::BaseCommandBlock const& commandBlock,
         bool                      isMinecart,
@@ -2142,21 +2157,21 @@ public:
         bool                      isRedstoneMode
     );
 
-    MCAPI_C static void fireEventComposterBlockUsed(
+    MCAPI static void fireEventComposterBlockUsed(
         ::Player*                                    player,
         ::std::string const&                         itemUsed,
         ::MinecraftEventing::POIBlockInteractionType interactionType
     );
 
-    MCAPI_C static void fireEventCraftingSessionStart(::Player* player, uint craftingType);
+    MCAPI static void fireEventCraftingSessionStart(::Player* player, uint craftingType);
 
-    MCAPI_C static void fireEventCustomContentRegistered(::Player* player, int customBlockCount);
+    MCAPI static void fireEventCustomContentRegistered(::Player* player, int customBlockCount);
 
-    MCAPI_C static void fireEventDecoratedPotCrafted(::Player* player, ::std::array<::std::string, 4> const& sides);
+    MCAPI static void fireEventDecoratedPotCrafted(::Player* player, ::std::array<::std::string, 4> const& sides);
 
-    MCAPI_C static void fireEventEndOfDay(::Player* player, ::Level& level);
+    MCAPI static void fireEventEndOfDay(::Player* player, ::Level& level);
 
-    MCAPI_C static void fireEventEntityInteracted(
+    MCAPI static void fireEventEntityInteracted(
         ::Player const*                      player,
         int                                  legacyInteractedEntityType,
         ::MinecraftEventing::InteractionType interactionType,
@@ -2165,22 +2180,22 @@ public:
         ::Actor const*                       interactedEntity
     );
 
-    MCAPI_C static void fireEventGameTypeChanged(::Player* player, ::GameType oldGameType, ::GameType newGameType);
+    MCAPI static void fireEventGameTypeChanged(::Player* player, ::GameType oldGameType, ::GameType newGameType);
 
-    MCAPI_C static void fireEventGrindstoneBlockUsed(
+    MCAPI static void fireEventGrindstoneBlockUsed(
         ::Player*                                    player,
         ::std::string const&                         itemUsed,
         ::MinecraftEventing::POIBlockInteractionType interactionType
     );
 
-    MCAPI_C static void fireEventItemAcquired(
+    MCAPI static void fireEventItemAcquired(
         ::Player*               player,
         ::ItemDescriptor const& itemDescriptor,
         uint                    amountAcquired,
         ::ItemAcquisitionMethod itemAcquisitionMethod
     );
 
-    MCAPI_C static void fireEventItemCrafted(
+    MCAPI static void fireEventItemCrafted(
         ::Player*             player,
         ::ItemInstance const& item,
         bool                  recipeBook,
@@ -2193,27 +2208,31 @@ public:
         bool                  recipeBookShown
     );
 
-    MCAPI_C static void fireEventItemEquipped(::Player* player, ::ItemInstance const& item, int slot);
+    MCAPI static void fireEventItemEquipped(::Player* player, ::ItemInstance const& item, int slot);
 
-    MCAPI_C static void fireEventItemInteracted(
+    MCAPI static void fireEventItemInteracted(
         ::Player*                               player,
         ::ItemInstance const&                   item,
         ::MinecraftEventing::ItemInteractMethod method
     );
 
-    MCAPI_C static void fireEventItemNamed(::Player* player, ::ItemDescriptor const& item);
+    MCAPI static void fireEventItemNamed(::Player* player, ::ItemDescriptor const& item);
+#endif
 
     MCAPI static void fireEventItemUsed(::Player* player, ::ItemDescriptor const& item, ::ItemUseMethod useMethod);
 
-    MCAPI_C static void fireEventLecternBlockUsed(
+#ifdef LL_PLAT_C
+    MCAPI static void fireEventLecternBlockUsed(
         ::Player*                                    player,
         ::std::string const&                         itemUsed,
         ::MinecraftEventing::POIBlockInteractionType interactionType
     );
+#endif
 
     MCAPI static void fireEventMobDied(::Mob& mob, int causeOfDeath);
 
-    MCAPI_C static void fireEventMobKilled(
+#ifdef LL_PLAT_C
+    MCAPI static void fireEventMobKilled(
         ::Player*            player,
         ::Actor*             entKiller,
         ::Mob&               mobKilled,
@@ -2221,30 +2240,35 @@ public:
         ::std::string const& traderName,
         int                  traderTier
     );
+#endif
 
     MCAPI static void fireEventMobTeleportedToOwner(::Mob& mob);
 
-    MCAPI_C static void fireEventMultiplayerRoundEnd(::Player* player, int exitStatus);
+#ifdef LL_PLAT_C
+    MCAPI static void fireEventMultiplayerRoundEnd(::Player* player, int exitStatus);
 
-    MCAPI_C static void fireEventMultiplayerRoundStart(::Player* player, ::Level& level);
+    MCAPI static void fireEventMultiplayerRoundStart(::Player* player, ::Level& level);
 
-    MCAPI_C static void fireEventPOIBlockUsed(
+    MCAPI static void fireEventPOIBlockUsed(
         ::Player*                              player,
         ::std::string const&                   itemUsed,
         ::MinecraftEventing::PoiEventBlockType blockType
     );
 
-    MCAPI_C static void
+    MCAPI static void
     fireEventPiglinBarter(::Player* player, ::std::string const& itemUsed, bool wasTargetingBarteringPlayer);
 
-    MCAPI_C static void fireEventPlayerDied(::Player* player, int killerId, int killerVariant, int reason, bool inRaid);
+    MCAPI static void fireEventPlayerDied(::Player* player, int killerId, int killerVariant, int reason, bool inRaid);
 
-    MCAPI_C static void
+    MCAPI static void
     fireEventPlayerEnchantedItem(::Player& player, ::ItemStack const& item, ::ItemEnchants const& enchants);
+#endif
 
     MCAPI static void fireEventPlayerTransform(::Player& player);
 
-    MCAPI_C static void fireEventSignedBookOpened(::Player* player, bool isAuthor);
+#ifdef LL_PLAT_C
+    MCAPI static void fireEventSignedBookOpened(::Player* player, bool isAuthor);
+#endif
 
     MCAPI static void fireEventSlashCommandExecuted(
         ::Player*            player,
@@ -2254,7 +2278,8 @@ public:
         ::std::string const& errorList
     );
 
-    MCAPI_C static void fireEventTradeCompleted(
+#ifdef LL_PLAT_C
+    MCAPI static void fireEventTradeCompleted(
         ::Player*               player,
         ::Actor*                trader,
         ::ItemDescriptor const& itemA,
@@ -2263,7 +2288,8 @@ public:
         int                     traderEmeraldCount
     );
 
-    MCAPI_C static void fireEventTrimApplied(::Player* player, ::ArmorTrim const& armorTrim);
+    MCAPI static void fireEventTrimApplied(::Player* player, ::ArmorTrim const& armorTrim);
+#endif
 
     MCAPI static void fireEventWolfArmorDamageValueChanged(
         ::Actor&                owner,
@@ -2272,9 +2298,11 @@ public:
         int                     newDamageValue
     );
 
-    MCAPI_C static void fireEventWorldUnloaded(::Player* player, ::LevelData const& levelData, uint unloadReason);
+#ifdef LL_PLAT_C
+    MCAPI static void fireEventWorldUnloaded(::Player* player, ::LevelData const& levelData, uint unloadReason);
 
-    MCAPI_C static void fireRaidEvent(::Player* player, int currentwave, int totalWaves, bool success);
+    MCAPI static void fireRaidEvent(::Player* player, int currentwave, int totalWaves, bool success);
+#endif
 
     MCAPI static void onActorSpawned(::Actor const& actor, ::std::optional<::std::string> customInit, ::Actor* spawner);
 
@@ -2376,6 +2404,8 @@ public:
 
     MCAPI ::std::chrono::steady_clock::time_point $getWorldSessionIdGenerationTimestamp() const;
 
+    MCAPI void $fireEventDefaultGameTypeChanged(::GameType oldGameType, ::GameType newGameType);
+
     MCAPI void $fireEventWorldLoaded(
         ::Player* player,
         ::brstd::function_ref<
@@ -2437,6 +2467,32 @@ public:
         ::std::string const& status
     );
 
+    MCAPI void $fireEventPacketViolationDetected(
+        uint64                     readResult,
+        ::std::string              readResultContext,
+        ::PacketViolationResponse  violationResponse,
+        ::MinecraftPacketIds       violatingPacketId,
+        ::NetworkIdentifier const& netId,
+        uint                       numViolations,
+        ::SubClientId              clientSubId,
+        ::SubClientId              senderSubId,
+        uint                       packetStreamLength
+    );
+
+    MCAPI void $fireEventServerReceivedValidPacket(
+        ::NetworkIdentifier const& netId,
+        ::MinecraftPacketIds       packetId,
+        ::SubClientId              clientSubId
+    );
+
+    MCAPI void $fireEventClientSentOrReceivedPacket(
+        ::NetworkIdentifier const& netId,
+        ::MinecraftPacketIds       packetId,
+        ::SubClientId              clientSubId,
+        ::std::string              correlationId,
+        bool                       isOutgoing
+    );
+
     MCAPI void $fireEventJoinCanceled(::LoadingState currentState);
 
     MCAPI void $fireEvent(
@@ -2461,6 +2517,40 @@ public:
         ::Social::MultiplayerServiceIdentifier const friendWorldType
     );
 
+    MCFOLD void $fireEventPlayerJoinWorld(
+        uint const&                                              userId,
+        ::SubClientId const                                      subId,
+        bool                                                     isJoiningLocalServer,
+        ::std::optional<bool>                                    isUsingTURN,
+        ::IConnectionEventing::PlayerJoinWorldAttemptState const JoinState,
+        int                                                      attemptId,
+        ::Connection::DisconnectFailReason                       failReason,
+        ::Json::Value const&                                     failDebugInfo,
+        ::TransportLayer                                         transportLayer,
+        ::NetworkType                                            networkTypeOverride,
+        ::Social::MultiplayerState                               multiplayerState,
+        bool                                                     isConnectedToApplicationLayer,
+        bool                                                     isFilteringProfanity,
+        ::Social::MultiplayerServiceIdentifier                   multiplayerServiceIdentifier,
+        ::std::string const&                                     titleMessage,
+        ::std::string const&                                     errorMessage,
+        ::std::string const&                                     codeword,
+        ::std::string const&                                     partyId,
+        bool                                                     isPartyLeader,
+        bool                                                     isPartyDestination,
+        bool                                                     isServerTransfer,
+        bool                                                     isReconnect,
+        ::Social::GameConnectionInfo const&                      connectionInfo
+    );
+
+    MCAPI void $fireEventClientLastPackets(
+        uint const&          userId,
+        ::SubClientId const  subId,
+        int                  correlationId,
+        ::Json::Value const& lastSentPackets,
+        ::Json::Value const& lastReceivedPackets
+    );
+
     MCAPI void $fireEventSignalServiceConnect(
         ::SignalServiceConnectStage stage,
         bool                        bIsSigningInAsHost,
@@ -2474,6 +2564,30 @@ public:
         ::std::string const&        signinId,
         ::MessagePerformance const& messagePerformanceEvent,
         bool                        isJsonRpc
+    );
+
+    MCAPI void $fireEventOnClientDisconnect(
+        ::SubClientId                      subId,
+        bool                               isNetworked,
+        ::Connection::DisconnectFailReason reason,
+        ::std::string const&               titleMessage,
+        ::std::string const&               errorMessage,
+        ::std::string const&               codeword
+    );
+
+    MCAPI void $fireEventOnServerDisconnect(
+        ::Connection::DisconnectFailReason reason,
+        ::std::string const&               disconnectedClientId,
+        ::SubClientId                      subId,
+        ::std::string const&               reasonContext,
+        uint64                             clientCount,
+        ::std::string const&               firstTimeStamp
+    );
+
+    MCAPI void $fireEventOnServerAsyncJoinTaskVerdict(
+        ::nonstd::expected<::AsyncJoinAllow, ::AsyncJoinDeny> const& joinVerdict,
+        ::SubClientId const                                          subId,
+        uint                                                         verdictQueueLength
     );
 
     MCAPI void $fireEventHttpClientError(::std::string const& error);
@@ -2580,6 +2694,12 @@ public:
         ::std::string const& creatorName,
         bool                 isTransfer,
         ::std::string const& serverAddress
+    );
+
+    MCAPI void $fireEventServerPlayerJoinedGame(
+        ::NetworkIdentifier const& id,
+        ::SubClientId              subId,
+        ::std::string const&       firstConnectionTime
     );
 
     MCAPI void $fireEventScriptPluginDiscovery(::ScriptPluginResult const& pluginResult, bool client);
@@ -2850,6 +2970,11 @@ public:
     MCAPI void
     $fireEventControlRemappedByPlayer(::std::string const& actionName, ::RawInputType inputType, int keyCode) const;
 
+    MCFOLD void $fireEventDifficultySet(
+        ::SharedTypes::Legacy::Difficulty oldDifficulty,
+        ::SharedTypes::Legacy::Difficulty newDifficulty
+    );
+
     MCFOLD void $fireEventGameRulesUpdated(bool oldValue, bool newValue, ::std::string const& gameRuleName);
 
     MCFOLD void $fireEventGameRulesUpdated(int oldValue, int newValue, ::std::string const& gameRuleName);
@@ -2993,9 +3118,22 @@ public:
 
     MCAPI void $fireQuickPlayEvent();
 
+    MCAPI void $firePermissionsSetEvent(
+        ::PlayerPermissionLevel const  prevPlayerPermissionLevel,
+        ::CommandPermissionLevel const prevCommandPermissionLevel,
+        ::PlayerPermissionLevel const  playerPermissionLevel,
+        ::CommandPermissionLevel const commandPermissionLevel
+    );
+
     MCAPI void $fireExternalUriLaunched(::std::string const& uri) const;
 
     MCAPI void $fireUserGeneratedUriLaunched(::UserGeneratedUriSource source) const;
+
+    MCAPI void $fireUserGeneratedUriLaunchFailed(
+        ::UserGeneratedUriSource              source,
+        ::Util::ResourceUri::ValidationStatus reasonCode,
+        ::std::string const&                  additionalData
+    ) const;
 
     MCAPI void $fireEventEmptyLibraryCategoryError(::std::string const& categoryTitle) const;
 
@@ -3138,6 +3276,8 @@ public:
     MCAPI void $fireEventWorldExported(int64 worldSeed, uint64 worldSize);
 
     MCAPI void $fireEventWorldImported(int64 worldSeed, uint64 worldSize);
+
+    MCAPI void $fireEventWorldImportedResult(::FileArchiverOutcome importResult);
 
     MCAPI void $fireGlobalResourcePackCrashRecovery(::PackInstance& packInstance, ::mce::UUID recoveryID, int order);
 
@@ -3751,14 +3891,6 @@ public:
     MCFOLD void $setShouldHaveAchievementsEnabled(bool value);
 
     MCFOLD bool $getAchievementsAlwaysEnabled();
-
-#ifdef LL_PLAT_C
-    MCAPI void $fireUserGeneratedUriLaunchFailed(
-        ::UserGeneratedUriSource              source,
-        ::Util::ResourceUri::ValidationStatus reasonCode,
-        ::std::string const&                  additionalData
-    ) const;
-#endif
 
 
     // NOLINTEND

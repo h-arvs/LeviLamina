@@ -25,23 +25,27 @@ namespace Editor {
 // NOLINTBEGIN
 MCNAPI ::std::unordered_set<uint64> _getFilteredBlockSet();
 
-MCNAPI_C ::Bedrock::Result<::CompoundTag> compoundTagFromString(::std::string_view data);
+#ifdef LL_PLAT_C
+MCNAPI ::Bedrock::Result<::CompoundTag> compoundTagFromString(::std::string_view data);
+#endif
 
 MCNAPI ::Bedrock::Result<::std::string> compoundTagToString(::CompoundTag const& tag);
 
-MCNAPI_C ::std::string getLocalizedString(::std::variant<::std::string, ::Editor::LocalizationEntry> const& locale);
+#ifdef LL_PLAT_C
+MCNAPI ::std::string getLocalizedString(::std::variant<::std::string, ::Editor::LocalizationEntry> const& locale);
 
-MCNAPI_C void
+MCNAPI void
 makeCone(::Editor::Cone const& cone, ::std::vector<::Editor::Vertex>& r_vertices, ::std::vector<ushort>& r_indices);
 
-MCNAPI_C void
+MCNAPI void
 makeCube(::Editor::Cube const& cube, ::std::vector<::Editor::Vertex>& r_vertices, ::std::vector<ushort>& r_indices);
 
-MCNAPI_C void makeHollowCylinder(
+MCNAPI void makeHollowCylinder(
     ::Editor::Cylinder const&        cylinder,
     ::std::vector<::Editor::Vertex>& r_vertices,
     ::std::vector<ushort>&           r_indices
 );
+#endif
 
 MCNAPI bool operator==(::Editor::EditorBlockPalette const& __P0, ::Editor::EditorBlockPalette const& __P1);
 

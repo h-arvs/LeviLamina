@@ -26,28 +26,30 @@ namespace cereal { struct ReflectionCtx; }
 namespace CerealHelpers {
 // functions
 // NOLINTBEGIN
-MCNAPI_C bool _beginFromFileReference(
+#ifdef LL_PLAT_C
+MCNAPI bool _beginFromFileReference(
     ::CerealHelpers::FileReference const&            fileReference,
     ::CerealHelpers::FileReferenceLoadContext const& context,
     ::std::string&                                   outJsonFileData
 );
 
-MCNAPI_C ::Core::Result _beginLoadFromJsonFile(
+MCNAPI ::Core::Result _beginLoadFromJsonFile(
     ::CerealHelpers::FileReferenceLoader& fileReferenceLoader,
     ::Core::Path const&                   path,
     ::std::string&                        outJsonFileData
 );
 
-MCNAPI_C void _endFromFileReference(
+MCNAPI void _endFromFileReference(
     ::std::optional<::std::vector<::std::string>>&&  errors,
     ::CerealHelpers::FileReferenceLoadContext const& context
 );
 
-MCNAPI_C ::Core::Result _endLoadFromJsonFile(
+MCNAPI ::Core::Result _endLoadFromJsonFile(
     ::cereal::StrictJsonLoader&           jsonLoader,
     ::CerealHelpers::FileReferenceLoader& fileReferenceLoader,
     ::Core::Path const&                   path
 );
+#endif
 
 MCNAPI void bindHelpers(::cereal::ReflectionCtx& ctx);
 
@@ -116,18 +118,20 @@ legacyParseFilterGroupData(::SharedTypes::v1_21_20::FilterGroupData& data, ::Jso
 MCNAPI ::std::vector<::std::string>
 legacyParseFilterTestData(::SharedTypes::v1_21_20::FilterTestData& data, ::Json::Value const& json);
 
-MCNAPI_C bool
+#ifdef LL_PLAT_C
+MCNAPI bool
 operator==(::CerealHelpers::Keyframes<float, float> const& __P0, ::CerealHelpers::Keyframes<float, float> const& __P1);
 
-MCNAPI_C bool operator==(
+MCNAPI bool operator==(
     ::CerealHelpers::Keyframes<float, ::SharedTypes::Color255RGB> const& __P0,
     ::CerealHelpers::Keyframes<float, ::SharedTypes::Color255RGB> const& __P1
 );
 
-MCNAPI_C bool operator==(
+MCNAPI bool operator==(
     ::CerealHelpers::Keyframes<float, ::SharedTypes::Color255RGBA> const& __P0,
     ::CerealHelpers::Keyframes<float, ::SharedTypes::Color255RGBA> const& __P1
 );
+#endif
 // NOLINTEND
 
 // static variables
@@ -136,7 +140,9 @@ MCNAPI ::std::add_lvalue_reference_t<char const[]> REGEX_MATERIAL_NAME();
 
 MCNAPI ::std::add_lvalue_reference_t<char const[]> REGEX_NAMESPACE_NAME();
 
-MCNAPI_C ::std::add_lvalue_reference_t<char const[]> REGEX_NO_MINECRAFT_NAMESPACE_NAME();
+#ifdef LL_PLAT_C
+MCNAPI ::std::add_lvalue_reference_t<char const[]> REGEX_NO_MINECRAFT_NAMESPACE_NAME();
+#endif
 // NOLINTEND
 
 } // namespace CerealHelpers

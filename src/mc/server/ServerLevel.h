@@ -134,13 +134,13 @@ public:
     runCommand(::Command& command, ::CommandOrigin& origin, ::CommandOriginSystem originSystem) /*override*/;
 
     virtual void decrementTagCache(
-        ::std::string const& tag,
-        ::TagRegistry<::IDType<::LevelTagIDType>, ::IDType<::LevelTagSetIDType>>&
+        ::std::string const&                                                      tag,
+        ::TagRegistry<::IDType<::LevelTagIDType>, ::IDType<::LevelTagSetIDType>>& tagRegistry
     ) /*override*/;
 
     virtual void incrementTagCache(
-        ::std::string const& tag,
-        ::TagRegistry<::IDType<::LevelTagIDType>, ::IDType<::LevelTagSetIDType>>&
+        ::std::string const&                                                      tag,
+        ::TagRegistry<::IDType<::LevelTagIDType>, ::IDType<::LevelTagSetIDType>>& tagRegistry
     ) /*override*/;
 
     virtual ::Bedrock::NonOwnerPointer<::TagCacheManager> getTagCacheManager() /*override*/;
@@ -242,16 +242,23 @@ public:
 
     MCAPI ::TradeTables* $getTradeTables();
 
+    MCAPI void $runCommand(
+        ::HashedString const&     commandStr,
+        ::CommandOrigin&          origin,
+        ::CommandOriginSystem     originSystem,
+        ::CurrentCmdVersion const commandVersion
+    );
+
     MCAPI void $runCommand(::Command& command, ::CommandOrigin& origin, ::CommandOriginSystem originSystem);
 
     MCAPI void $decrementTagCache(
-        ::std::string const& tag,
-        ::TagRegistry<::IDType<::LevelTagIDType>, ::IDType<::LevelTagSetIDType>>&
+        ::std::string const&                                                      tag,
+        ::TagRegistry<::IDType<::LevelTagIDType>, ::IDType<::LevelTagSetIDType>>& tagRegistry
     );
 
     MCAPI void $incrementTagCache(
-        ::std::string const& tag,
-        ::TagRegistry<::IDType<::LevelTagIDType>, ::IDType<::LevelTagSetIDType>>&
+        ::std::string const&                                                      tag,
+        ::TagRegistry<::IDType<::LevelTagIDType>, ::IDType<::LevelTagSetIDType>>& tagRegistry
     );
 
     MCAPI ::Bedrock::NonOwnerPointer<::TagCacheManager> $getTagCacheManager();
@@ -289,15 +296,6 @@ public:
     MCAPI ::MapDataManager& $_getMapDataManager();
 
     MCAPI void $_initializeMapDataManager();
-
-#ifdef LL_PLAT_C
-    MCAPI void $runCommand(
-        ::HashedString const&     commandStr,
-        ::CommandOrigin&          origin,
-        ::CommandOriginSystem     originSystem,
-        ::CurrentCmdVersion const commandVersion
-    );
-#endif
 
 
     // NOLINTEND

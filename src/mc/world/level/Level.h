@@ -237,12 +237,12 @@ namespace cereal { struct ReflectionCtx; }
 namespace cg { class ImageBuffer; }
 namespace mce { class Color; }
 namespace mce { class UUID; }
+class ArmorTrimUnloader;
 class BaseLightTextureImageBuilder;
+class CameraRegistry;
 class Particle;
-struct ArmorTrimUnloader;
-struct CameraRegistry;
-struct SubChunkManager;
-struct TrustedSkinHelper;
+class SubChunkManager;
+class TrustedSkinHelper;
 // clang-format on
 
 class Level : public ::ILevel, public ::BlockSourceListener, public ::IWorldRegistriesProvider {
@@ -528,9 +528,9 @@ public:
 
     virtual void addUser(::OwnerPtr<::EntityContext> userEntity) /*override*/;
 
-    virtual ::Actor* addDisplayEntity(::BlockSource&, ::OwnerPtr<::EntityContext>) /*override*/;
+    virtual ::Actor* addDisplayEntity(::BlockSource& region, ::OwnerPtr<::EntityContext> entity) /*override*/;
 
-    virtual void removeDisplayEntity(::WeakEntityRef) /*override*/;
+    virtual void removeDisplayEntity(::WeakEntityRef entity) /*override*/;
 
     virtual ::Bedrock::NonOwnerPointer<::DisplayActorManager> getDisplayActorManager() /*override*/;
 
@@ -1405,7 +1405,7 @@ public:
 
     virtual ::Bedrock::NonOwnerPointer<::ChunkGenerationManager const> getChunkGenerationManager() const /*override*/;
 
-    virtual void clearAllGenerationRequests(::NetworkIdentifier const&, ::SubClientId) /*override*/;
+    virtual void clearAllGenerationRequests(::NetworkIdentifier const& player, ::SubClientId clientId) /*override*/;
 
     virtual void digestServerBlockProperties(::StartGamePacket const& packet) /*override*/;
 
@@ -1513,7 +1513,9 @@ public:
 
     MCAPI ::Bedrock::NotNullNonOwnerPtr<::ActorManager> getActorManager();
 
-    MCAPI_C ::NpcEventCoordinator& getNpcEventCoordinator();
+#ifdef LL_PLAT_C
+    MCAPI ::NpcEventCoordinator& getNpcEventCoordinator();
+#endif
 
     MCAPI ::ServerLevelEventCoordinator& getServerLevelEventCoordinator();
 
@@ -1648,9 +1650,9 @@ public:
 
     MCAPI void $addUser(::OwnerPtr<::EntityContext> userEntity);
 
-    MCAPI ::Actor* $addDisplayEntity(::BlockSource&, ::OwnerPtr<::EntityContext>);
+    MCAPI ::Actor* $addDisplayEntity(::BlockSource& region, ::OwnerPtr<::EntityContext> entity);
 
-    MCFOLD void $removeDisplayEntity(::WeakEntityRef);
+    MCFOLD void $removeDisplayEntity(::WeakEntityRef entity);
 
     MCFOLD ::Bedrock::NonOwnerPointer<::DisplayActorManager> $getDisplayActorManager();
 
@@ -1846,6 +1848,8 @@ public:
     MCFOLD ::BlockPos const& $getDefaultSpawn() const;
 
     MCAPI void $setDefaultGameType(::GameType gameType);
+
+    MCAPI ::GameType $getDefaultGameType() const;
 
     MCAPI void $setDifficulty(::SharedTypes::Legacy::Difficulty difficulty);
 
@@ -2131,9 +2135,7 @@ public:
 
     MCAPI ::Bedrock::NotNullNonOwnerPtr<::LevelBlockDestroyer> $getLevelBlockDestroyer();
 
-#ifdef LL_PLAT_S
     MCAPI void $upgradeStorageVersion(::StorageVersion v);
-#endif
 
     MCAPI void $suspendAndSave();
 
@@ -2283,7 +2285,6 @@ public:
 
     MCFOLD ::Bedrock::NonOwnerPointer<::VolumeEntityManagerServer> $tryGetVolumeEntityManagerServer() const;
 
-#ifdef LL_PLAT_S
     MCFOLD void $runCommand(
         ::HashedString const&     commandStr,
         ::CommandOrigin&          origin,
@@ -2292,7 +2293,6 @@ public:
     );
 
     MCFOLD void $runCommand(::Command& command, ::CommandOrigin& origin, ::CommandOriginSystem originSystem);
-#endif
 
     MCAPI ::PlayerCapabilities::ISharedController const& $getCapabilities() const;
 
@@ -2495,7 +2495,7 @@ public:
 
     MCFOLD ::Bedrock::NonOwnerPointer<::ChunkGenerationManager const> $getChunkGenerationManager() const;
 
-    MCFOLD void $clearAllGenerationRequests(::NetworkIdentifier const&, ::SubClientId);
+    MCFOLD void $clearAllGenerationRequests(::NetworkIdentifier const& player, ::SubClientId clientId);
 
     MCAPI void $digestServerBlockProperties(::StartGamePacket const& packet);
 
