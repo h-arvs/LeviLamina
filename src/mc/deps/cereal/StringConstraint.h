@@ -5,6 +5,7 @@
 // auto generated inclusion list
 #include "mc/deps/cereal/ConstraintHandle.h"
 #include "mc/deps/cereal/ContextArea.h"
+#include "mc/deps/cereal/internal/StringConstraint.h"
 
 // auto generated forward declare list
 // clang-format off
@@ -18,52 +19,31 @@ class StringConstraint : public ::cereal::ConstraintHandle<::cereal::StringConst
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 80> mUnke1d8a5;
-    // NOLINTEND
-
-public:
-    // prevent constructor by default
-    StringConstraint& operator=(StringConstraint const&);
-    StringConstraint();
-
-public:
-    // virtual functions
-    // NOLINTBEGIN
-    virtual ~StringConstraint() /*override*/;
+    ::ll::TypedStorage<8, 80, ::cereal::internal::StringConstraint> mConstraint;
     // NOLINTEND
 
 public:
     // member functions
     // NOLINTBEGIN
-    MCNAPI StringConstraint(::cereal::StringConstraint&&);
+    MCAPI ::cereal::internal::ConstraintDescription description(::cereal::ContextArea) const;
 
-    MCNAPI StringConstraint(::cereal::StringConstraint const&);
+    MCFOLD ::cereal::StringConstraint& maxSize(uint64 size);
 
-    MCNAPI ::cereal::internal::ConstraintDescription description(::cereal::ContextArea) const;
+    MCFOLD uint64 maxSize() const;
 
-    MCNAPI ::cereal::StringConstraint& regex(::std::string str, ::std::regex_constants::syntax_option_type flag);
+    MCAPI ::cereal::StringConstraint& minSize(uint64 size);
 
-    MCNAPI void validateValue(::std::string_view str, ::cereal::SerializerContext& context) const;
+    MCAPI ::cereal::StringConstraint& regex(::std::string str, ::std::regex_constants::syntax_option_type flag);
+
+    MCAPI ::cereal::StringConstraint& rejectEmpty();
+
+    MCAPI void validateValue(::std::string_view str, ::cereal::SerializerContext& context) const;
     // NOLINTEND
 
 public:
     // static functions
     // NOLINTBEGIN
-    MCNAPI static ::std::string flagsToString(::std::regex_constants::syntax_option_type flags);
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCNAPI void* $ctor(::cereal::StringConstraint&&);
-
-    MCNAPI void* $ctor(::cereal::StringConstraint const&);
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCNAPI void $dtor();
+    MCAPI static ::std::string flagsToString(::std::regex_constants::syntax_option_type flags);
     // NOLINTEND
 
 public:

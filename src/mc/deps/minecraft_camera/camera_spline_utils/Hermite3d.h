@@ -12,46 +12,31 @@ struct Hermite3d : public ::CameraSplineUtils::Spline3d {
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 24> mUnk6c3931;
-    ::ll::UntypedStorage<8, 24> mUnk91424b;
-    ::ll::UntypedStorage<8, 24> mUnk524a18;
-    ::ll::UntypedStorage<1, 1>  mUnkf32b7d;
+    ::ll::TypedStorage<8, 24, ::std::vector<::glm::vec3>>           mControlPoints;
+    ::ll::TypedStorage<8, 24, ::std::vector<::glm::vec3>>           mVelocities;
+    ::ll::TypedStorage<8, 24, ::std::vector<float>>                 mSegStart;
+    ::ll::TypedStorage<1, 1, ::CameraSplineUtils::SplineType const> type;
     // NOLINTEND
-
-public:
-    // prevent constructor by default
-    Hermite3d& operator=(Hermite3d const&);
-    Hermite3d(Hermite3d const&);
-    Hermite3d();
 
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual ::glm::vec3 eval(float t) const /*override*/;
-
-    virtual ::CameraSplineUtils::SplineType getType() const /*override*/;
-
 #ifdef LL_PLAT_S
-    virtual ~Hermite3d() /*override*/ = default;
+    virtual ::glm::vec3 eval(float) const /*override*/;
 #else // LL_PLAT_C
-    virtual ~Hermite3d() /*override*/;
+    virtual ::glm::vec3 eval(float t) const /*override*/;
 #endif
 
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCNAPI void $dtor();
+    virtual ::CameraSplineUtils::SplineType getType() const /*override*/;
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
 #ifdef LL_PLAT_C
-    MCNAPI ::glm::vec3 $eval(float t) const;
+    MCAPI ::glm::vec3 $eval(float t) const;
 
-    MCNAPI ::CameraSplineUtils::SplineType $getType() const;
+    MCFOLD ::CameraSplineUtils::SplineType $getType() const;
 #endif
 
 

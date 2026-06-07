@@ -119,6 +119,7 @@
 #include "stb_truetype.h"
 
 struct HWND__;
+struct HKEY__;
 struct HICON__;
 struct tagRECT;
 struct _TP_CALLBACK_INSTANCE;
@@ -144,6 +145,49 @@ struct _INITIALIZE_OPTIONS;
 struct HC_CALL;
 struct tagWNDCLASSEXW;
 struct HINSTANCE__;
+
+// DirectX definitions
+typedef enum D3D_FEATURE_LEVEL;
+typedef enum DXGI_SWAP_EFFECT;
+typedef enum DXGI_FORMAT;
+typedef enum D3D12_RAYTRACING_ACCELERATION_STRUCTURE_BUILD_FLAGS;
+typedef enum D3D_SHADER_MODEL;
+typedef enum D3D_DRIVER_TYPE;
+typedef enum D3D12_RESOURCE_STATES;
+typedef enum D3D12_RESOURCE_FLAGS;
+struct IDXGISwapChain3;
+struct ID3D11Texture2D;
+struct ID3D11Device;
+struct ID3D11DeviceContext;
+struct ID3DUserDefinedAnnotation;
+struct ID3D11InfoQueue;
+struct ID3D11RenderTargetView;
+struct ID3D11DepthStencilView;
+struct ID3D11BlendState;
+struct ID3D11DepthStencilState;
+struct ID3D11InputLayout;
+struct ID3D11RasterizerState;
+struct ID3D11SamplerState;
+struct IUnknown;
+struct ID3D11ShaderResourceView;
+struct ID3D11UnorderedAccessView;
+struct ID3D12DescriptorHeap;
+struct ID3D12Resource;
+struct ID3D12Device;
+struct ID3D12Device5;
+struct ID3D12CommandSignature;
+struct D3D12_CPU_DESCRIPTOR_HANDLE;
+// Because these are used in TypedStorage, we need to define them here to avoid compilation errors.
+#ifndef D3D12_RAYTRACING_GEOMETRY_DESC
+struct D3D12_RAYTRACING_GEOMETRY_DESC {};
+#endif
+#ifndef D3D12_FEATURE_DATA_ARCHITECTURE
+struct D3D12_FEATURE_DATA_ARCHITECTURE {};
+#endif
+#ifndef D3D12_FEATURE_DATA_D3D12_OPTIONS
+struct D3D12_FEATURE_DATA_D3D12_OPTIONS {};
+#endif
+
 namespace GameInput::v2 {
     class IGameInput;
 }
@@ -192,7 +236,10 @@ using ldouble  = long double;
 using FacingID = uchar;
 
 template <typename T0, typename T1>
-class AutomaticID;
+class AutomaticID {
+public:
+    T1 mValue;
+};
 class Dimension;
 using DimensionType = AutomaticID<Dimension, int>;
 
@@ -324,7 +371,7 @@ namespace ll {
 
 template <size_t Align, size_t Size>
 struct UntypedStorage {
-    alignas(Align) std::byte data[Size];
+    alignas(Align) std::byte data[Size == 0 ? 1 : Size];
 
     template <class T>
     [[nodiscard]] T& as() & {

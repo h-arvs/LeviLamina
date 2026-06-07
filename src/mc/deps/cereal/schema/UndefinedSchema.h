@@ -23,36 +23,34 @@ public:
     // virtual functions
     // NOLINTBEGIN
     virtual void doLoad(
-        ::cereal::SchemaReader&,
+        ::cereal::SchemaReader& state,
         ::entt::meta_any&,
         ::entt::meta_any const&,
-        ::cereal::internal::LoadState const& state
+        ::cereal::internal::LoadState const&
     ) const /*override*/;
 
     virtual void
-    doSave(::cereal::SchemaWriter&, ::entt::meta_any const& any, ::cereal::internal::SaveState const& state) const
+    doSave(::cereal::SchemaWriter& any, ::entt::meta_any const& state, ::cereal::internal::SaveState const&) const
         /*override*/;
 
     virtual ::cereal::SchemaDescription
     makeDescription(::cereal::internal::ReflectionContext const&, ::cereal::DescriptionConfig) const /*override*/;
-
-    virtual ~UndefinedSchema() /*override*/ = default;
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
-    MCNAPI void $doLoad(
-        ::cereal::SchemaReader&,
+    MCAPI void $doLoad(
+        ::cereal::SchemaReader& state,
         ::entt::meta_any&,
         ::entt::meta_any const&,
-        ::cereal::internal::LoadState const& state
+        ::cereal::internal::LoadState const&
     ) const;
 
-    MCNAPI void
-    $doSave(::cereal::SchemaWriter&, ::entt::meta_any const& any, ::cereal::internal::SaveState const& state) const;
+    MCAPI void
+    $doSave(::cereal::SchemaWriter& any, ::entt::meta_any const& state, ::cereal::internal::SaveState const&) const;
 
-    MCNAPI ::cereal::SchemaDescription
+    MCAPI ::cereal::SchemaDescription
     $makeDescription(::cereal::internal::ReflectionContext const&, ::cereal::DescriptionConfig) const;
 
 

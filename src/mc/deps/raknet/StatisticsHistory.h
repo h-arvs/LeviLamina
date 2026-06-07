@@ -2,6 +2,11 @@
 
 #include "mc/_HeaderOutputPredefine.h"
 
+// auto generated forward declare list
+// clang-format off
+namespace DataStructures { class OrderedList; }
+// clang-format on
+
 namespace RakNet {
 
 class StatisticsHistory {
@@ -118,18 +123,18 @@ public:
         TrackedObject();
     };
 
+    using TimeAndValue = ::RakNet::StatisticsHistory::TimeAndValue;
+
+    using TimeAndValueQueue = ::RakNet::StatisticsHistory::TimeAndValueQueue;
+
+    using TrackedObject = ::RakNet::StatisticsHistory::TrackedObject;
+
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 16> mUnk710e99;
-    ::ll::UntypedStorage<8, 8>  mUnkb5f4a4;
+    ::ll::UntypedStorage<8, 16>      objects;
+    ::ll::TypedStorage<8, 8, uint64> timeToTrack;
     // NOLINTEND
-
-public:
-    // prevent constructor by default
-    StatisticsHistory& operator=(StatisticsHistory const&);
-    StatisticsHistory(StatisticsHistory const&);
-    StatisticsHistory();
 
 public:
     // virtual functions

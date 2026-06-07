@@ -12,45 +12,30 @@ struct Linear3d : public ::CameraSplineUtils::Spline3d {
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 24> mUnkfce2db;
-    ::ll::UntypedStorage<8, 24> mUnk4495fb;
-    ::ll::UntypedStorage<1, 1>  mUnkc640a8;
+    ::ll::TypedStorage<8, 24, ::std::vector<::glm::vec3>>           mControlPoints;
+    ::ll::TypedStorage<8, 24, ::std::vector<float>>                 mSegStart;
+    ::ll::TypedStorage<1, 1, ::CameraSplineUtils::SplineType const> type;
     // NOLINTEND
-
-public:
-    // prevent constructor by default
-    Linear3d& operator=(Linear3d const&);
-    Linear3d(Linear3d const&);
-    Linear3d();
 
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual ::glm::vec3 eval(float t) const /*override*/;
-
-    virtual ::CameraSplineUtils::SplineType getType() const /*override*/;
-
 #ifdef LL_PLAT_S
-    virtual ~Linear3d() /*override*/ = default;
+    virtual ::glm::vec3 eval(float) const /*override*/;
 #else // LL_PLAT_C
-    virtual ~Linear3d() /*override*/;
+    virtual ::glm::vec3 eval(float t) const /*override*/;
 #endif
 
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCNAPI void $dtor();
+    virtual ::CameraSplineUtils::SplineType getType() const /*override*/;
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
 #ifdef LL_PLAT_C
-    MCNAPI ::glm::vec3 $eval(float t) const;
+    MCAPI ::glm::vec3 $eval(float t) const;
 
-    MCNAPI ::CameraSplineUtils::SplineType $getType() const;
+    MCFOLD ::CameraSplineUtils::SplineType $getType() const;
 #endif
 
 

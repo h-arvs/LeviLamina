@@ -2,10 +2,8 @@
 
 #include "mc/_HeaderOutputPredefine.h"
 
-// auto generated forward declare list
-// clang-format off
-namespace cereal { struct NullType; }
-// clang-format on
+// auto generated inclusion list
+#include "mc/deps/cereal/schema/dynamic/NullType.h"
 
 namespace cereal {
 
@@ -22,56 +20,80 @@ public:
         Object  = 6,
     };
 
+    using Array = ::std::vector<::cereal::DynamicValue>;
+
+    using Bool = bool;
+
+    using Integer = int64;
+
+    using Null = ::cereal::NullType;
+
+    using Number = double;
+
+    using Object = ::std::unordered_map<::std::string, ::cereal::DynamicValue>;
+
+    using String = ::std::string;
+
+    using Variant = ::std::variant<
+        ::cereal::NullType,
+        bool,
+        int64,
+        double,
+        ::std::string,
+        ::std::vector<::cereal::DynamicValue>,
+        ::std::unordered_map<::std::string, ::cereal::DynamicValue>>;
+
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 72> mUnk82a702;
+    ::ll::TypedStorage<
+        8,
+        72,
+        ::std::variant<
+            ::cereal::NullType,
+            bool,
+            int64,
+            double,
+            ::std::string,
+            ::std::vector<::cereal::DynamicValue>,
+            ::std::unordered_map<::std::string, ::cereal::DynamicValue>>>
+        mValue;
     // NOLINTEND
-
-public:
-    // prevent constructor by default
-    DynamicValue& operator=(DynamicValue const&);
-    DynamicValue(DynamicValue const&);
-    DynamicValue();
 
 public:
     // member functions
     // NOLINTBEGIN
-    MCNAPI DynamicValue(::cereal::DynamicValue&&);
+    MCAPI ::std::vector<::cereal::DynamicValue> const& asArray() const;
 
-    MCNAPI ::std::vector<::cereal::DynamicValue> const& asArray() const;
+    MCAPI ::std::vector<::cereal::DynamicValue>& asArray();
 
-    MCNAPI ::std::vector<::cereal::DynamicValue>& asArray();
+    MCAPI bool const& asBool() const;
 
-    MCNAPI bool const& asBool() const;
+    MCAPI int64 const& asInteger() const;
 
-    MCNAPI int64 const& asInteger() const;
+    MCAPI double const& asNumber() const;
 
-    MCNAPI double const& asNumber() const;
+    MCAPI ::std::unordered_map<::std::string, ::cereal::DynamicValue> const& asObject() const;
 
-    MCNAPI ::std::unordered_map<::std::string, ::cereal::DynamicValue> const& asObject() const;
+    MCAPI ::std::unordered_map<::std::string, ::cereal::DynamicValue>& asObject();
 
-    MCNAPI ::std::unordered_map<::std::string, ::cereal::DynamicValue>& asObject();
+    MCAPI ::std::string const& asString() const;
 
-    MCNAPI ::std::string const& asString() const;
+#ifdef LL_PLAT_C
+    MCAPI ::std::string& asString();
 
-    MCNAPI uint64 hash() const;
+    MCAPI bool hasMember(::std::string const& member) const;
+#endif
 
-    MCNAPI ::cereal::DynamicValue& operator=(::cereal::DynamicValue&&);
+    MCAPI uint64 hash() const;
 
-    MCNAPI ~DynamicValue();
-    // NOLINTEND
+#ifdef LL_PLAT_C
+    MCAPI ::cereal::DynamicValue const& operator[](::std::string const& member) const;
 
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCNAPI void* $ctor(::cereal::DynamicValue&&);
-    // NOLINTEND
+    MCAPI ::cereal::DynamicValue& operator[](::std::string const& member);
+#endif
 
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCNAPI void $dtor();
+    MCAPI ::cereal::DynamicValue::Type type() const;
     // NOLINTEND
 };
 

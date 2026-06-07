@@ -9,29 +9,62 @@ namespace cereal {
 
 class ComponentStorage {
 public:
-    // member variables
-    // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 48> mUnk202b55;
-    // NOLINTEND
+    // ComponentStorage inner types define
+    using KeyIterable = ::entt::iterable_adaptor<
+        ::std::_Vector_const_iterator<::std::_Vector_val<::std::_Simple_types<::std::string>>>,
+        ::std::_Vector_const_iterator<::std::_Vector_val<::std::_Simple_types<::std::string>>>>;
+
+    using StorageType = ::brstd::flat_map<
+        ::std::string,
+        ::entt::meta_any,
+        ::std::less<void>,
+        ::std::vector<::std::string>,
+        ::std::vector<::entt::meta_any>>;
 
 public:
-    // prevent constructor by default
-    ComponentStorage& operator=(ComponentStorage const&);
-    ComponentStorage(ComponentStorage const&);
-    ComponentStorage();
+    // member variables
+    // NOLINTBEGIN
+    ::ll::TypedStorage<
+        8,
+        48,
+        ::brstd::flat_map<
+            ::std::string,
+            ::entt::meta_any,
+            ::std::less<void>,
+            ::std::vector<::std::string>,
+            ::std::vector<::entt::meta_any>>>
+        mComponents;
+    // NOLINTEND
 
 public:
     // member functions
     // NOLINTBEGIN
-    MCNAPI bool eraseComponent(::std::string_view name);
+    MCFOLD bool empty() const;
 
-    MCNAPI ::entt::meta_any getComponent(::std::string_view name);
+    MCAPI bool eraseComponent(::std::string_view name);
 
-    MCNAPI bool hasComponent(::std::string_view name) const;
+    MCAPI ::entt::meta_any getComponent(::std::string_view name);
 
-    MCNAPI ::cereal::ComponentStorage& operator=(::cereal::ComponentStorage&&);
+    MCAPI ::entt::meta_any getComponent(::std::string_view name) const;
 
-    MCNAPI bool operator==(::cereal::ComponentStorage const& other) const;
+    MCAPI bool hasComponent(::std::string_view name) const;
+
+    MCFOLD ::entt::iterable_adaptor<
+        ::std::_Vector_const_iterator<::std::_Vector_val<::std::_Simple_types<::std::string>>>,
+        ::std::_Vector_const_iterator<::std::_Vector_val<::std::_Simple_types<::std::string>>>>
+    keys() const;
+
+    MCAPI bool operator==(::cereal::ComponentStorage const& other) const;
+
+    MCFOLD uint64 size() const;
+
+    MCAPI ~ComponentStorage();
+    // NOLINTEND
+
+public:
+    // destructor thunk
+    // NOLINTBEGIN
+    MCAPI void $dtor();
     // NOLINTEND
 };
 

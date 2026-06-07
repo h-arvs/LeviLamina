@@ -26,63 +26,45 @@ public:
     public:
         // member variables
         // NOLINTBEGIN
-        ::ll::UntypedStorage<8, 8> mUnk9b7aba;
+        ::ll::TypedStorage<8, 8, ::cereal::SerializerContext*> mContext;
         // NOLINTEND
-
-    public:
-        // prevent constructor by default
-        ScopedPop& operator=(ScopedPop const&);
-        ScopedPop(ScopedPop const&);
-        ScopedPop();
 
     public:
         // member functions
         // NOLINTBEGIN
-        MCNAPI ~ScopedPop();
+        MCAPI ~ScopedPop();
         // NOLINTEND
 
     public:
         // destructor thunk
         // NOLINTBEGIN
-        MCNAPI void $dtor();
+        MCAPI void $dtor();
         // NOLINTEND
     };
 
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<4, 4> mUnk3e0f77;
-    ::ll::UntypedStorage<4, 4> mUnk2db00f;
+    ::ll::TypedStorage<4, 4, uint> mGeneration;
+    ::ll::TypedStorage<4, 4, uint> mLastError;
     // NOLINTEND
-
-public:
-    // prevent constructor by default
-    SerializerContext& operator=(SerializerContext const&);
-    SerializerContext(SerializerContext const&);
-    SerializerContext();
 
 public:
     // member functions
     // NOLINTBEGIN
-    MCNAPI void clearGenerations(uint from, uint to, ::cereal::ResultCode filter);
+    MCAPI void clearGenerations(uint from, uint to, ::cereal::ResultCode filter);
 
-    MCNAPI ::cereal::LogCheckpoint getLogCheckpoint();
+    MCAPI ::cereal::LogCheckpoint getLogCheckpoint();
 
-    MCNAPI void log(::cereal::ResultCode res, ::Bedrock::StaticOptimizedString msg);
+    MCAPI bool hasErrors() const;
 
-    MCNAPI void popContext();
+    MCAPI void log(::cereal::ResultCode res, ::Bedrock::StaticOptimizedString msg);
 
-    MCNAPI ::cereal::SerializerContext& pushContext(uint containerIndex);
+    MCAPI void popContext();
 
-    MCNAPI ::cereal::SerializerContext& pushContext(::Bedrock::StaticOptimizedString propertyName);
+    MCAPI ::cereal::SerializerContext& pushContext(uint containerIndex);
 
-    MCNAPI ~SerializerContext();
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCNAPI void $dtor();
+    MCAPI ::cereal::SerializerContext& pushContext(::Bedrock::StaticOptimizedString propertyName);
     // NOLINTEND
 };
 

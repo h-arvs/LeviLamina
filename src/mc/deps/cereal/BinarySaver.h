@@ -4,6 +4,13 @@
 
 // auto generated inclusion list
 #include "mc/deps/cereal/BasicSaver.h"
+#include "mc/deps/cereal/BinarySchemaWriter.h"
+
+// auto generated forward declare list
+// clang-format off
+class BinaryStream;
+namespace cereal { struct ReflectionCtx; }
+// clang-format on
 
 namespace cereal {
 
@@ -11,25 +18,23 @@ class BinarySaver : public ::cereal::BasicSaver {
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 24> mUnk40d3c8;
+    ::ll::TypedStorage<8, 24, ::cereal::BinarySchemaWriter> mWriter;
     // NOLINTEND
 
 public:
     // prevent constructor by default
-    BinarySaver& operator=(BinarySaver const&);
-    BinarySaver(BinarySaver const&);
     BinarySaver();
 
 public:
-    // virtual functions
+    // member functions
     // NOLINTBEGIN
-    virtual ~BinarySaver() /*override*/;
+    MCAPI BinarySaver(::BinaryStream& stream, ::cereal::ReflectionCtx const& reflectionCtx);
     // NOLINTEND
 
 public:
-    // destructor thunk
+    // constructor thunks
     // NOLINTBEGIN
-    MCNAPI void $dtor();
+    MCAPI void* $ctor(::BinaryStream& stream, ::cereal::ReflectionCtx const& reflectionCtx);
     // NOLINTEND
 
 public:

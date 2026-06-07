@@ -4,6 +4,13 @@
 
 // auto generated inclusion list
 #include "mc/deps/cereal/ConstraintHandle.h"
+#include "mc/deps/cereal/ContextArea.h"
+
+// auto generated forward declare list
+// clang-format off
+namespace cereal { class SerializerContext; }
+namespace cereal::internal { struct ConstraintDescription; }
+// clang-format on
 
 namespace cereal {
 
@@ -11,25 +18,15 @@ class EnumConstraint : public ::cereal::ConstraintHandle<::cereal::EnumConstrain
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 24> mUnk533231;
+    ::ll::TypedStorage<8, 24, ::std::vector<int64>> mValues;
     // NOLINTEND
 
 public:
-    // prevent constructor by default
-    EnumConstraint& operator=(EnumConstraint const&);
-    EnumConstraint(EnumConstraint const&);
-    EnumConstraint();
-
-public:
-    // virtual functions
+    // member functions
     // NOLINTBEGIN
-    virtual ~EnumConstraint() /*override*/;
-    // NOLINTEND
+    MCAPI ::cereal::internal::ConstraintDescription description(::cereal::ContextArea) const;
 
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCNAPI void $dtor();
+    MCAPI void validateValue(int64 value, ::cereal::SerializerContext& context) const;
     // NOLINTEND
 
 public:

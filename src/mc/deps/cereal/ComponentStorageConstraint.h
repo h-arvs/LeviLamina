@@ -27,43 +27,18 @@ public:
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 64> mUnk392c85;
-    ::ll::UntypedStorage<1, 1>  mUnka00334;
-    // NOLINTEND
-
-public:
-    // prevent constructor by default
-    ComponentStorageConstraint& operator=(ComponentStorageConstraint const&);
-    ComponentStorageConstraint();
-
-public:
-    // virtual functions
-    // NOLINTBEGIN
-    virtual ~ComponentStorageConstraint() /*override*/;
+    ::ll::TypedStorage<8, 64, ::std::unordered_set<::std::string>>                     mKeys;
+    ::ll::TypedStorage<1, 1, ::cereal::ComponentStorageConstraint::ConstraintKeysMode> mKeysMode;
     // NOLINTEND
 
 public:
     // member functions
     // NOLINTBEGIN
-    MCNAPI ComponentStorageConstraint(::cereal::ComponentStorageConstraint const&);
+    MCAPI ::cereal::internal::ConstraintDescription description(::cereal::ContextArea) const;
 
-    MCNAPI ::cereal::internal::ConstraintDescription description(::cereal::ContextArea) const;
+    MCAPI ::cereal::ComponentStorageConstraint& rejectKeys(::std::initializer_list<::std::string> keys);
 
-    MCNAPI ::cereal::ComponentStorageConstraint& rejectKeys(::std::initializer_list<::std::string> keys);
-
-    MCNAPI void validateValue(::cereal::ComponentStorage const& storage, ::cereal::SerializerContext& context) const;
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCNAPI void* $ctor(::cereal::ComponentStorageConstraint const&);
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCNAPI void $dtor();
+    MCAPI void validateValue(::cereal::ComponentStorage const& storage, ::cereal::SerializerContext& context) const;
     // NOLINTEND
 
 public:

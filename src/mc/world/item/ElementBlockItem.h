@@ -15,8 +15,6 @@ public:
     // virtual functions
     // NOLINTBEGIN
     virtual void fixupCommon(::ItemStackBase& stack) const /*override*/;
-
-    virtual ~ElementBlockItem() /*override*/ = default;
     // NOLINTEND
 
 public:
@@ -30,6 +28,6 @@ public:
 public:
     // vftables
     // NOLINTBEGIN
-    MCNAPI static void** $vftable();
+    MCAPI static void** $vftable();
     // NOLINTEND
 };

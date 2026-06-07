@@ -5,6 +5,8 @@
 // auto generated inclusion list
 #include "mc/deps/cereal/schema/SchemaRWType.h"
 #include "mc/deps/cereal/schema/SchemaReader.h"
+#include "mc/deps/json/Value.h"
+#include "mc/deps/json/ValueConstIterator.h"
 #include "mc/platform/Result.h"
 
 namespace cereal {
@@ -21,40 +23,20 @@ public:
     public:
         // member variables
         // NOLINTBEGIN
-        ::ll::UntypedStorage<8, 8>  mUnke8c05a;
-        ::ll::UntypedStorage<8, 16> mUnka2d671;
-        // NOLINTEND
-
-    public:
-        // prevent constructor by default
-        State& operator=(State const&);
-        State(State const&);
-        State();
-
-    public:
-        // member functions
-        // NOLINTBEGIN
-        MCNAPI ~State();
-        // NOLINTEND
-
-    public:
-        // destructor thunk
-        // NOLINTBEGIN
-        MCNAPI void $dtor();
+        ::ll::TypedStorage<8, 8, ::Json::Value const*>        mValue;
+        ::ll::TypedStorage<8, 16, ::Json::ValueConstIterator> mIt;
         // NOLINTEND
     };
 
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 24> mUnk409142;
-    ::ll::UntypedStorage<8, 16> mUnk92aa2c;
+    ::ll::TypedStorage<8, 24, ::std::vector<::cereal::JSONCppSchemaReaderBase::State>> mState;
+    ::ll::TypedStorage<8, 16, ::Json::Value>                                           mValue;
     // NOLINTEND
 
 public:
     // prevent constructor by default
-    JSONCppSchemaReaderBase& operator=(JSONCppSchemaReaderBase const&);
-    JSONCppSchemaReaderBase(JSONCppSchemaReaderBase const&);
     JSONCppSchemaReaderBase();
 
 public:
@@ -101,7 +83,7 @@ public:
 
     virtual uint64 members() /*override*/;
 
-    virtual uint64 length(uint64 expectedSize) /*override*/;
+    virtual uint64 length(uint64) /*override*/;
 
     virtual bool pushMember(::std::string_view const name) /*override*/;
 
@@ -132,81 +114,77 @@ public:
     virtual bool _allowAsFloat() = 0;
 
     virtual bool _allowAsDouble() = 0;
-
-    virtual ~JSONCppSchemaReaderBase() /*override*/;
     // NOLINTEND
 
 public:
     // member functions
     // NOLINTBEGIN
-    MCNAPI explicit JSONCppSchemaReaderBase(::std::string const& data);
+    MCAPI explicit JSONCppSchemaReaderBase(::std::string const& data);
+
+    MCAPI explicit JSONCppSchemaReaderBase(::std::reference_wrapper<::Json::Value const> value);
     // NOLINTEND
 
 public:
     // constructor thunks
     // NOLINTBEGIN
-    MCNAPI void* $ctor(::std::string const& data);
-    // NOLINTEND
+    MCAPI void* $ctor(::std::string const& data);
 
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCNAPI void $dtor();
+    MCAPI void* $ctor(::std::reference_wrapper<::Json::Value const> value);
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
-    MCNAPI bool $isValid() const;
+    MCAPI bool $isValid() const;
 
-    MCNAPI ::cereal::SchemaRWType $expectedType() const;
+    MCAPI ::cereal::SchemaRWType $expectedType() const;
 
-    MCNAPI ::Bedrock::Result<void> $asNull();
+    MCAPI ::Bedrock::Result<void> $asNull();
 
-    MCNAPI ::Bedrock::Result<bool> $asBool();
+    MCAPI ::Bedrock::Result<bool> $asBool();
 
-    MCNAPI ::Bedrock::Result<schar> $asInt8();
+    MCAPI ::Bedrock::Result<schar> $asInt8();
 
-    MCNAPI ::Bedrock::Result<uchar> $asUInt8();
+    MCAPI ::Bedrock::Result<uchar> $asUInt8();
 
-    MCNAPI ::Bedrock::Result<short> $asInt16();
+    MCAPI ::Bedrock::Result<short> $asInt16();
 
-    MCNAPI ::Bedrock::Result<ushort> $asUInt16();
+    MCAPI ::Bedrock::Result<ushort> $asUInt16();
 
-    MCNAPI ::Bedrock::Result<int> $asInt32();
+    MCAPI ::Bedrock::Result<int> $asInt32();
 
-    MCNAPI ::Bedrock::Result<uint> $asUInt32();
+    MCAPI ::Bedrock::Result<uint> $asUInt32();
 
-    MCNAPI ::Bedrock::Result<int64> $asInt64();
+    MCAPI ::Bedrock::Result<int64> $asInt64();
 
-    MCNAPI ::Bedrock::Result<uint64> $asUInt64();
+    MCAPI ::Bedrock::Result<uint64> $asUInt64();
 
-    MCNAPI ::Bedrock::Result<float> $asFloat();
+    MCAPI ::Bedrock::Result<float> $asFloat();
 
-    MCNAPI ::Bedrock::Result<double> $asDouble();
+    MCAPI ::Bedrock::Result<double> $asDouble();
 
-    MCNAPI ::Bedrock::Result<::std::string> $asString(uint64 maxInputLength);
+    MCAPI ::Bedrock::Result<::std::string> $asString(uint64 maxInputLength);
 
-    MCNAPI ::Bedrock::Result<void>
+    MCAPI ::Bedrock::Result<void>
     $asRawBytes(::std::function<::gsl::span<uchar>(uint64)> storage, uint64 maxInputLength);
 
-    MCNAPI ::std::optional<bool> $additionalDataAsBool();
+    MCFOLD ::std::optional<bool> $additionalDataAsBool();
 
-    MCNAPI ::std::optional<uint> $additionalDataAsUInt32();
+    MCFOLD ::std::optional<uint> $additionalDataAsUInt32();
 
-    MCNAPI ::std::optional<::std::string> $additionalDataAsString(uint64);
+    MCFOLD ::std::optional<::std::string> $additionalDataAsString(uint64);
 
-    MCNAPI uint64 $members();
+    MCFOLD uint64 $members();
 
-    MCNAPI uint64 $length(uint64 expectedSize);
+    MCFOLD uint64 $length(uint64);
 
-    MCNAPI bool $pushMember(::std::string_view const name);
+    MCAPI bool $pushMember(::std::string_view const name);
 
-    MCNAPI ::std::string_view $pushNextMember();
+    MCAPI ::std::string_view $pushNextMember();
 
-    MCNAPI void $pushElement(uint64 index);
+    MCAPI void $pushElement(uint64 index);
 
-    MCNAPI void $pop();
+    MCAPI void $pop();
 
 
     // NOLINTEND

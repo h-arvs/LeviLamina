@@ -4,10 +4,13 @@
 
 // auto generated inclusion list
 #include "mc/deps/cereal/BasicContextOwner.h"
+#include "mc/deps/cereal/SaverConfig.h"
+#include "mc/deps/cereal/schema/Schema.h"
 
 // auto generated forward declare list
 // clang-format off
-namespace cereal { struct SaverConfig; }
+namespace cereal { class BasicSerializerContext; }
+namespace cereal { struct ReflectionCtx; }
 namespace cereal { struct SchemaWriter; }
 namespace cereal::internal { class BasicSchema; }
 // clang-format on
@@ -18,14 +21,12 @@ class BasicSaver : public ::cereal::BasicContextOwner {
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 144> mUnke6b1a6;
-    ::ll::UntypedStorage<1, 2>   mUnkfed958;
+    ::ll::TypedStorage<8, 144, ::cereal::internal::Schema> mSchema;
+    ::ll::TypedStorage<1, 2, ::cereal::SaverConfig>        mConfig;
     // NOLINTEND
 
 public:
     // prevent constructor by default
-    BasicSaver& operator=(BasicSaver const&);
-    BasicSaver(BasicSaver const&);
     BasicSaver();
 
 public:
@@ -37,7 +38,11 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCNAPI bool saveImpl(
+    MCAPI BasicSaver(::cereal::ReflectionCtx const& reflectionCtx, ::cereal::SaverConfig const& config);
+
+    MCFOLD ::cereal::BasicSerializerContext& getLog();
+
+    MCAPI bool saveImpl(
         ::cereal::SchemaWriter&                writer,
         ::entt::meta_handle                    handle,
         ::cereal::internal::BasicSchema const& fallback,
@@ -46,9 +51,15 @@ public:
     // NOLINTEND
 
 public:
+    // constructor thunks
+    // NOLINTBEGIN
+    MCAPI void* $ctor(::cereal::ReflectionCtx const& reflectionCtx, ::cereal::SaverConfig const& config);
+    // NOLINTEND
+
+public:
     // destructor thunk
     // NOLINTBEGIN
-    MCNAPI void $dtor();
+    MCFOLD void $dtor();
     // NOLINTEND
 
 public:

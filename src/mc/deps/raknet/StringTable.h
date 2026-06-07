@@ -2,20 +2,28 @@
 
 #include "mc/_HeaderOutputPredefine.h"
 
+// auto generated forward declare list
+// clang-format off
+struct StrAndBool;
+namespace DataStructures { class OrderedList; }
+// clang-format on
+
 namespace RakNet {
 
 class StringTable {
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 16> mUnkdc9695;
+    ::ll::UntypedStorage<8, 16> orderedStringList;
     // NOLINTEND
 
 public:
-    // prevent constructor by default
-    StringTable& operator=(StringTable const&);
-    StringTable(StringTable const&);
-    StringTable();
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static void AddReference();
+
+    MCAPI static void RemoveReference();
+    // NOLINTEND
 
 public:
     // static variables
