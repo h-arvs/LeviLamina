@@ -391,9 +391,20 @@ struct UntypedStorage {
     }
 };
 
-template <size_t Align, size_t Size, class T>
+
+template <size_t Align, size_t Size, class T, class Enable = void>
 struct TypedStorageImpl {
-    using type = T;
+    using type = ::ll::UntypedStorage<Align, Size>;
+};
+
+template <size_t Align, size_t Size, class T>
+struct TypedStorageImpl<Align, Size, T, std::void_t< decltype(sizeof(T)), decltype(alignof(T)) >> {
+    using type = std::conditional_t<
+        sizeof(T) == Size &&
+        alignof(T) == Align,
+        T,
+        ::ll::UntypedStorage<Align, Size>
+    >;
 };
 
 template <size_t Align, size_t Size>
