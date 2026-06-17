@@ -9,7 +9,7 @@
 #include "mc/server/ChunkPositionAndDimension.h"
 #include "mc/server/ClientGenerationRequestHandler.h"
 #include "mc/world/level/BlockPos.h"
-
+#include "mc/server/ClientGenerationRequestHandler.h"
 // auto generated forward declare list
 // clang-format off
 class ChunkPos;
@@ -21,6 +21,8 @@ class LevelChunkPacket;
 class ServerNetworkSystem;
 class VarIntDataOutput;
 class Vec3;
+struct ChunkPositionAndDimension;
+
 namespace ClientBlobCache::Server { class ActiveTransfersManager; }
 namespace ClientBlobCache::Server { class TransferBuilder; }
 // clang-format on

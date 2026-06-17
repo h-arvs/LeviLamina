@@ -9,5 +9,8 @@ src/mc1
 /bin/
 /cmake-build-*/
 /src-test/
+/test/
 *.txt
-/vsxmake2026
+*.db
+*.so
+
