@@ -5,20 +5,21 @@
 // auto generated inclusion list
 #include "mc/deps/minecraft_renderer/constantbuffers/ConstantBufferConstantsBase.h"
 
+// auto generated forward declare list
+// clang-format off
+namespace mce { class ShaderConstantFloat1; }
+namespace mce { class ShaderConstantFloat4; }
+// clang-format on
+
 namespace mce {
 
 class RenderChunkConstants : public ::mce::ConstantBufferConstantsBase {
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 8> mUnk33a3d2;
-    ::ll::UntypedStorage<8, 8> mUnk4da133;
+    ::ll::TypedStorage<8, 8, ::mce::ShaderConstantFloat4*> CHUNK_ORIGIN_AND_SCALE;
+    ::ll::TypedStorage<8, 8, ::mce::ShaderConstantFloat1*> RENDER_CHUNK_FOG_ALPHA;
     // NOLINTEND
-
-public:
-    // prevent constructor by default
-    RenderChunkConstants& operator=(RenderChunkConstants const&);
-    RenderChunkConstants(RenderChunkConstants const&);
 
 public:
     // virtual functions
@@ -27,21 +28,9 @@ public:
     // NOLINTEND
 
 public:
-    // member functions
-    // NOLINTBEGIN
-    MCNAPI RenderChunkConstants();
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCNAPI void* $ctor();
-    // NOLINTEND
-
-public:
     // virtual function thunks
     // NOLINTBEGIN
-    MCNAPI void $init();
+    MCAPI void $init();
     // NOLINTEND
 
 public:

@@ -4,14 +4,13 @@
 
 // auto generated inclusion list
 #include "mc/util/IntRange.h"
+#include "mc/world/level/block/BlockDescriptor.h"
 #include "mc/world/level/levelgen/feature/IFeature.h"
 
 // auto generated forward declare list
 // clang-format off
 class Block;
-class BlockDescriptor;
 class BlockPos;
-class IBlockWorldGenAPI;
 // clang-format on
 
 class SculkPatchFeature : public ::IFeature {
@@ -38,22 +37,10 @@ public:
     // NOLINTEND
 
 public:
-    // member functions
-    // NOLINTBEGIN
-    MCAPI bool _canSpreadFrom(::IBlockWorldGenAPI& target, ::BlockPos const& originPos) const;
-    // NOLINTEND
-
-public:
     // virtual function thunks
     // NOLINTBEGIN
     MCAPI ::std::optional<::BlockPos> $place(::IFeature::PlacementContext const& context) const;
 
 
-    // NOLINTEND
-
-public:
-    // vftables
-    // NOLINTBEGIN
-    MCNAPI static void** $vftable();
     // NOLINTEND
 };

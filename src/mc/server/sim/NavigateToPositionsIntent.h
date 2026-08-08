@@ -2,9 +2,6 @@
 
 #include "mc/_HeaderOutputPredefine.h"
 
-// auto generated inclusion list
-#include "mc/server/sim/ExecutionResult.h"
-
 // auto generated forward declare list
 // clang-format off
 class SimulatedPlayer;
@@ -24,17 +21,7 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCNAPI ::sim::ExecutionResult execute(::SimulatedPlayer& player);
-
-    MCNAPI void finalize(::SimulatedPlayer& player);
-
-    MCNAPI ~NavigateToPositionsIntent();
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCNAPI void $dtor();
+    MCFOLD void finalize(::SimulatedPlayer& player);
     // NOLINTEND
 };
 

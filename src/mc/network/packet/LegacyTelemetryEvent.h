@@ -17,6 +17,7 @@ class Mob;
 class Player;
 class Raid;
 struct ActorUniqueID;
+struct DimensionType;
 // clang-format on
 
 namespace LegacyTelemetryEvent {
@@ -63,14 +64,6 @@ MCAPI ::LegacyTelemetryEventPacket
 packetForItemUsed(::Player const& player, ::ItemStackBase const& item, ::ItemUseMethod useMethod, int useCount);
 
 MCAPI ::LegacyTelemetryEventPacket packetForMobBorn(::Player const& player, ::gsl::not_null<::Mob const*> baby);
-
-MCAPI ::LegacyTelemetryEventPacket packetForMobKilled(
-    ::Player const&                         player,
-    ::Actor const*                          killerEntity,
-    ::ActorUniqueID const&                  killedMobID,
-    ::SharedTypes::Legacy::ActorDamageCause cause,
-    ::ActorType                             damageChildType
-);
 
 MCAPI ::LegacyTelemetryEventPacket packetForMobKilled(
     ::Player const&                         player,

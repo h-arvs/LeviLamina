@@ -9,10 +9,6 @@
 // clang-format off
 class CommandOrigin;
 class CommandOutput;
-class CommandRegistry;
-class Level;
-struct SnapshotFilenameAndLength;
-namespace Bedrock::Threading { class Mutex; }
 // clang-format on
 
 class SaveCommand : public ::ServerCommand {
@@ -39,38 +35,12 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual void execute(::CommandOrigin const& output, ::CommandOutput&) const /*override*/;
-    // NOLINTEND
-
-public:
-    // static functions
-    // NOLINTBEGIN
-    MCAPI static bool saveHold(::Level& level);
-
-    MCAPI static bool saveResume(::Level& level);
-
-    MCAPI static void setup(::CommandRegistry& registry);
-    // NOLINTEND
-
-public:
-    // static variables
-    // NOLINTBEGIN
-    MCAPI static ::std::vector<::SnapshotFilenameAndLength>& mSaveAllFileList();
-
-    MCAPI static ::Bedrock::Threading::Mutex& mSaveAllMutex();
-
-    MCAPI static ::SaveCommand::State& mState();
+    virtual void execute(::CommandOrigin const&, ::CommandOutput&) const /*override*/;
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
-    MCAPI void $execute(::CommandOrigin const& output, ::CommandOutput&) const;
-    // NOLINTEND
 
-public:
-    // vftables
-    // NOLINTBEGIN
-    MCNAPI static void** $vftable();
     // NOLINTEND
 };

@@ -7,6 +7,7 @@
 #include "mc/deps/nbt/CompoundTag.h"
 #include "mc/resources/MinEngineVersion.h"
 #include "mc/world/level/BlockPos.h"
+#include "mc/world/level/dimension/DimensionType.h"
 
 // auto generated forward declare list
 // clang-format off
@@ -34,17 +35,11 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCAPI AddVolumeEntityPacketPayload(::AddVolumeEntityPacketPayload const& other);
-
     MCAPI AddVolumeEntityPacketPayload(
         ::EntityContext const&    entity,
         ::CompoundTag             components,
         ::MinEngineVersion const& minEngineVersion
     );
-
-    MCAPI ::AddVolumeEntityPacketPayload& operator=(::AddVolumeEntityPacketPayload&& other);
-
-    MCAPI ::AddVolumeEntityPacketPayload& operator=(::AddVolumeEntityPacketPayload const& other);
 
     MCAPI ~AddVolumeEntityPacketPayload();
     // NOLINTEND
@@ -52,8 +47,6 @@ public:
 public:
     // constructor thunks
     // NOLINTBEGIN
-    MCAPI void* $ctor(::AddVolumeEntityPacketPayload const& other);
-
     MCAPI void*
     $ctor(::EntityContext const& entity, ::CompoundTag components, ::MinEngineVersion const& minEngineVersion);
     // NOLINTEND

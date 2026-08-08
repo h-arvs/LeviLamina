@@ -16,10 +16,7 @@ class CommandOrigin;
 class CommandOutput;
 class CommandRegistry;
 class ItemRegistryRef;
-class ItemStack;
-class Level;
 class Player;
-namespace Util { struct ReplacementResults; }
 // clang-format on
 
 class LootCommand : public ::Command {
@@ -69,34 +66,7 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual void execute(::CommandOrigin const& origin, ::CommandOutput& output) const /*override*/;
-    // NOLINTEND
-
-public:
-    // member functions
-    // NOLINTBEGIN
-    MCAPI LootCommand();
-
-    MCAPI ::std::optional<::std::vector<::ItemStack>> _getItemsFromSource(
-        ::CommandOrigin const& origin,
-        ::CommandOutput&       output,
-        ::ItemStack const&     tool,
-        ::Level&               level,
-        ::DimensionType        dimensionId
-    ) const;
-
-    MCAPI void
-    _outputError(::CommandOutput& output, ::Util::ReplacementResults errorDetails, ::Actor const* entity) const;
-
-    MCAPI void _outputSuccess(::CommandOutput& output, int numItemsDropped) const;
-
-    MCAPI void _placeItemsInTarget(
-        ::CommandOrigin const&      origin,
-        ::CommandOutput&            output,
-        ::std::vector<::ItemStack>& items
-    ) const;
-
-    MCAPI ::std::optional<::ItemStack> getToolItemStack(::CommandOrigin const& origin) const;
+    virtual void execute(::CommandOrigin const&, ::CommandOutput&) const /*override*/;
     // NOLINTEND
 
 public:
@@ -106,22 +76,8 @@ public:
     // NOLINTEND
 
 public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCAPI void* $ctor();
-    // NOLINTEND
-
-public:
     // virtual function thunks
     // NOLINTBEGIN
-    MCAPI void $execute(::CommandOrigin const& origin, ::CommandOutput& output) const;
 
-
-    // NOLINTEND
-
-public:
-    // vftables
-    // NOLINTBEGIN
-    MCNAPI static void** $vftable();
     // NOLINTEND
 };

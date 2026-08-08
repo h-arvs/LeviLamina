@@ -11,8 +11,53 @@
 #define MCNAPI [[deprecated("This API is not available. Open an issue if you need it. "\
                             "https://github.com/LiteLDev/mcapi-requests/issues/new")]] MCAPI
 
+#ifndef LL_CC_V
+#if defined(_MSC_VER) || defined(__clang__)
+#define LL_CC_V __vectorcall
+#else
+#define LL_CC_V
+#endif
+#endif
+
+#ifndef LL_CC_S
+#if defined(_MSC_VER) && (defined(_M_IX86) || defined(__i386__))
+#define LL_CC_S __stdcall
+#else
+#define LL_CC_S
+#endif
+#endif
+
+#ifndef LL_CC_F
+#if defined(_MSC_VER) && (defined(_M_IX86) || defined(__i386__))
+#define LL_CC_F __fastcall
+#else
+#define LL_CC_F
+#endif
+#endif
+
+#ifndef LL_CC_R
+#if defined(__clang__)
+#define LL_CC_R __regcall
+#else
+#define LL_CC_R
+#endif
+#endif
+
+namespace ll {
+class type_id_ref;
+}
+
+namespace Bedrock {
+template <typename Category, typename Type>
+::ll::type_id_ref typeid_storage_impl();
+}
+
 #ifndef LL_NO_UNIQUE_ADDRESS
+#ifdef _MSC_VER
+#define LL_NO_UNIQUE_ADDRESS [[msvc::no_unique_address]]
+#else
 #define LL_NO_UNIQUE_ADDRESS [[no_unique_address]]
+#endif
 #endif
 
 #include <algorithm>     // STL general algorithms
@@ -117,6 +162,7 @@
 
 // stb C++ Library
 #include "stb_truetype.h"
+struct stbi__context;
 
 struct HWND__;
 struct HKEY__;
@@ -188,6 +234,33 @@ struct D3D12_FEATURE_DATA_ARCHITECTURE {};
 struct D3D12_FEATURE_DATA_D3D12_OPTIONS {};
 #endif
 
+// Nvidia SDK definitions
+typedef enum NVSDK_NGX_Logging_Level;
+typedef enum NVSDK_NGX_Feature;
+
+// OpenSSL definitions
+struct ssl_ctx_st;
+struct ssl_st;
+struct ssl_session_st;
+struct x509_store_ctx_st;
+struct x509_st;
+struct evp_md_st;
+struct ssl_session_st;
+
+// abseil definitions
+namespace absl::hash_internal {
+template <typename T>
+struct Hash;
+}
+
+// Ungenerated cereal definitions
+namespace cereal {
+namespace internal {
+template<typename It, typename Type>
+class ComponentStorageIterator;
+}
+}
+
 namespace GameInput::v2 {
     class IGameInput;
 }
@@ -234,14 +307,6 @@ using int64 = int64_t;
 
 using ldouble  = long double;
 using FacingID = uchar;
-
-template <typename T0, typename T1>
-class AutomaticID {
-public:
-    T1 mValue;
-};
-class Dimension;
-using DimensionType = AutomaticID<Dimension, int>;
 
 struct RecipeNetIdTag;
 struct CreativeItemNetIdTag;
@@ -437,6 +502,18 @@ struct TypedStorageImpl<Align, Size, ::tagPOINT> {
 };
 template <size_t Align, size_t Size>
 struct TypedStorageImpl<Align, Size, ::tagRECT> {
+    using type = ::ll::UntypedStorage<Align, Size>;
+};
+template <size_t Align, size_t Size>
+struct TypedStorageImpl<Align, Size, ::std::unique_ptr<::evp_md_ctx_st>> {
+    using type = ::ll::UntypedStorage<Align, Size>;
+};
+template <size_t Align, size_t Size, class C, class R, class... Args>
+struct TypedStorageImpl<Align, Size, R (C::*)(Args...)> {
+    using type = ::ll::UntypedStorage<Align, Size>;
+};
+template <size_t Align, size_t Size, class C, class R, class... Args>
+struct TypedStorageImpl<Align, Size, R (C::*)(Args...) const> {
     using type = ::ll::UntypedStorage<Align, Size>;
 };
 

@@ -3,6 +3,7 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
+#include "mc/world/level/chunk/RuleSet.h"
 #include "mc/world/level/levelgen/v2/processors/StructureProcessor.h"
 #include "mc/world/level/levelgen/v2/processors/StructureProcessorType.h"
 
@@ -13,7 +14,6 @@ class IBlockSource;
 namespace Util { class XXHash; }
 namespace br::worldgen { struct StructureBlockInfo; }
 namespace br::worldgen { struct StructurePlaceSettings; }
-namespace br::worldgen::processors { struct RuleSet; }
 // clang-format on
 
 namespace br::worldgen::processors {
@@ -29,11 +29,11 @@ public:
     // virtual functions
     // NOLINTBEGIN
     virtual ::std::optional<::br::worldgen::StructureBlockInfo> process(
-        ::IBlockSource&                           region,
+        ::IBlockSource& region,
+        ::BlockPos,
         ::BlockPos                                structurePos,
-        ::BlockPos                                originalBlockInfo,
-        ::br::worldgen::StructureBlockInfo const& processedBlockInfo,
-        ::br::worldgen::StructureBlockInfo&&,
+        ::br::worldgen::StructureBlockInfo const& originalBlockInfo,
+        ::br::worldgen::StructureBlockInfo&&      processedBlockInfo,
         ::br::worldgen::StructurePlaceSettings const&
     ) const /*override*/;
 
@@ -43,20 +43,14 @@ public:
     // NOLINTEND
 
 public:
-    // static functions
-    // NOLINTBEGIN
-    MCAPI static ::br::worldgen::processors::Rule from(::std::vector<::br::worldgen::processors::RuleSet> rules);
-    // NOLINTEND
-
-public:
     // virtual function thunks
     // NOLINTBEGIN
     MCAPI ::std::optional<::br::worldgen::StructureBlockInfo> $process(
-        ::IBlockSource&                           region,
+        ::IBlockSource& region,
+        ::BlockPos,
         ::BlockPos                                structurePos,
-        ::BlockPos                                originalBlockInfo,
-        ::br::worldgen::StructureBlockInfo const& processedBlockInfo,
-        ::br::worldgen::StructureBlockInfo&&,
+        ::br::worldgen::StructureBlockInfo const& originalBlockInfo,
+        ::br::worldgen::StructureBlockInfo&&      processedBlockInfo,
         ::br::worldgen::StructurePlaceSettings const&
     ) const;
 

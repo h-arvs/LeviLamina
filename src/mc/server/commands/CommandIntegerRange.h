@@ -11,22 +11,4 @@ public:
     ::ll::TypedStorage<1, 1, bool> mInvert;
     ::ll::TypedStorage<1, 1, bool> mInclusive;
     // NOLINTEND
-
-public:
-    // member functions
-    // NOLINTBEGIN
-    MCAPI CommandIntegerRange();
-
-    MCAPI CommandIntegerRange(int minVal, int maxVal, bool invert, bool inclusive);
-
-    MCAPI bool isWithinRange(int value) const;
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCAPI void* $ctor();
-
-    MCFOLD void* $ctor(int minVal, int maxVal, bool invert, bool inclusive);
-    // NOLINTEND
 };

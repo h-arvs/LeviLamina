@@ -9,6 +9,7 @@
 // auto generated forward declare list
 // clang-format off
 class BiomeTintCache;
+struct DimensionType;
 namespace ClientBlockPipeline { class Description; }
 namespace ClientBlockPipeline { class Material; }
 namespace ClientBlockPipeline { class MaterialRepository; }
@@ -33,20 +34,6 @@ MCAPI ::VanillaBlockTessellation::Config createCrackPipelineConfig(
     ::std::shared_ptr<::ClientBlockPipeline::MaterialRepository>      materialRepository,
     ::Bedrock::NonOwnerPointer<::ClientBlockPipeline::Material const> materialOverride
 );
-
-MCAPI ::VanillaBlockTessellation::Config createGuiPipelineConfig(
-    ::std::shared_ptr<::ClientBlockPipeline::MaterialRepository> materialRepository,
-    ::std::array<float, 6> const&                                dimensionDimmingScalars
-);
-
-MCAPI ::VanillaBlockTessellation::Config
-createHighlightPipelineConfig(::std::shared_ptr<::ClientBlockPipeline::MaterialRepository> materialRepository);
-
-MCAPI ::VanillaBlockTessellation::Config
-createItemInHandPipelineConfig(::std::shared_ptr<::ClientBlockPipeline::MaterialRepository> materialRepository);
-
-MCAPI ::std::unique_ptr<::ClientBlockPipeline::Description>
-createPipelineFromConfig(::VanillaBlockTessellation::Config&& config);
 
 MCAPI ::VanillaBlockTessellation::Config createWorldPipelineConfig(
     ::std::shared_ptr<::ClientBlockPipeline::MaterialRepository> materialRepository,

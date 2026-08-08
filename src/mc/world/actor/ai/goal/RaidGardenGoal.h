@@ -4,13 +4,12 @@
 
 // auto generated inclusion list
 #include "mc/world/actor/ai/goal/BaseMoveToBlockGoal.h"
+#include "mc/world/level/block/BlockDescriptor.h"
 
 // auto generated forward declare list
 // clang-format off
-class BlockDescriptor;
 class BlockPos;
 class BlockSource;
-class Mob;
 // clang-format on
 
 class RaidGardenGoal : public ::BaseMoveToBlockGoal {
@@ -28,10 +27,6 @@ public:
     // NOLINTEND
 
 public:
-    // prevent constructor by default
-    RaidGardenGoal();
-
-public:
     // virtual functions
     // NOLINTBEGIN
     virtual bool canUse() /*override*/;
@@ -45,18 +40,6 @@ public:
     virtual bool isValidTarget(::BlockSource& region, ::BlockPos const& pos) /*override*/;
 
     virtual void appendDebugInfo(::std::string& str) const /*override*/;
-    // NOLINTEND
-
-public:
-    // member functions
-    // NOLINTBEGIN
-    MCAPI explicit RaidGardenGoal(::Mob& mob);
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCAPI void* $ctor(::Mob& mob);
     // NOLINTEND
 
 public:

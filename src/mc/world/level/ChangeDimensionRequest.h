@@ -4,6 +4,7 @@
 
 // auto generated inclusion list
 #include "mc/deps/core/math/Vec3.h"
+#include "mc/world/level/dimension/DimensionType.h"
 
 // auto generated forward declare list
 // clang-format off
@@ -30,54 +31,5 @@ public:
     ::ll::TypedStorage<1, 1, bool>                             mUsePortal;
     ::ll::TypedStorage<1, 1, bool>                             mRespawn;
     ::ll::TypedStorage<8, 8, ::std::unique_ptr<::CompoundTag>> mAgentTag;
-    // NOLINTEND
-
-public:
-    // prevent constructor by default
-    ChangeDimensionRequest& operator=(ChangeDimensionRequest const&);
-    ChangeDimensionRequest(ChangeDimensionRequest const&);
-
-public:
-    // member functions
-    // NOLINTBEGIN
-    MCAPI ChangeDimensionRequest();
-
-    MCAPI ChangeDimensionRequest(::ChangeDimensionRequest&& other);
-
-    MCAPI ChangeDimensionRequest(
-        ::DimensionType fromId,
-        ::DimensionType toId,
-        ::Vec3          fromLocation,
-        ::Vec3          toLocation,
-        bool            usePortal,
-        bool            respawn
-    );
-
-    MCAPI ::ChangeDimensionRequest& operator=(::ChangeDimensionRequest&& other);
-
-    MCAPI ~ChangeDimensionRequest();
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCAPI void* $ctor();
-
-    MCAPI void* $ctor(::ChangeDimensionRequest&& other);
-
-    MCAPI void* $ctor(
-        ::DimensionType fromId,
-        ::DimensionType toId,
-        ::Vec3          fromLocation,
-        ::Vec3          toLocation,
-        bool            usePortal,
-        bool            respawn
-    );
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCAPI void $dtor();
     // NOLINTEND
 };

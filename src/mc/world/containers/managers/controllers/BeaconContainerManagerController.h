@@ -16,7 +16,7 @@ class BeaconContainerManagerController : public ::ContainerManagerController {
 public:
     // BeaconContainerManagerController inner types define
     enum class ButtonId : int {
-        IdInvalid   = 4294967295,
+        IdInvalid   = -1,
         IdConfirm   = 0,
         IdCancel    = 1,
         IdSpeed     = 2,
@@ -60,9 +60,9 @@ public:
     virtual ~BeaconContainerManagerController() /*override*/ = default;
 
 #ifdef LL_PLAT_S
-    virtual void handlePlaceAll(::SelectedSlotInfo const&, ::SlotData const&) /*override*/;
+    virtual bool handlePlaceAll(::SelectedSlotInfo const&, ::SlotData const&) /*override*/;
 #else // LL_PLAT_C
-    virtual void handlePlaceAll(::SelectedSlotInfo const& selected, ::SlotData const& dstSlot) /*override*/;
+    virtual bool handlePlaceAll(::SelectedSlotInfo const& selected, ::SlotData const& dstSlot) /*override*/;
 #endif
 
     // NOLINTEND
@@ -108,7 +108,7 @@ public:
     // virtual function thunks
     // NOLINTBEGIN
 #ifdef LL_PLAT_C
-    MCNAPI void $handlePlaceAll(::SelectedSlotInfo const& selected, ::SlotData const& dstSlot);
+    MCNAPI bool $handlePlaceAll(::SelectedSlotInfo const& selected, ::SlotData const& dstSlot);
 #endif
 
 

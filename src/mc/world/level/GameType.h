@@ -3,7 +3,7 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 enum class GameType : int {
-    Undefined    = 4294967295,
+    Undefined    = -1,
     Survival     = 0,
     Creative     = 1,
     Adventure    = 2,
@@ -11,3 +11,8 @@ enum class GameType : int {
     Spectator    = 6,
     WorldDefault = 0,
 };
+
+// clang-format off
+template <>
+MCAPI ::ll::type_id_ref Bedrock::typeid_storage_impl<class CommandRegistry, ::GameType>();
+// clang-format on

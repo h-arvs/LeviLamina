@@ -5,13 +5,14 @@
 // auto generated inclusion list
 #include "mc/common/editor/EditorProjectRegionManagerServiceProvider.h"
 #include "mc/deps/game_refs/WeakRef.h"
-#include "mc/deps/scripting/runtime/Result_deprecated.h"
+#include "mc/deps/script_core/runtime/scripting/Result_deprecated.h"
 #include "mc/editor/services/IEditorService.h"
 
 // auto generated forward declare list
 // clang-format off
 class Dimension;
 struct Bounds;
+struct DimensionType;
 namespace Bedrock::PubSub { class Subscription; }
 namespace Editor { class ProjectRegion; }
 namespace Editor { class ServiceProviderCollection; }
@@ -44,7 +45,7 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual ~EditorProjectRegionManagerService() /*override*/;
+    virtual ~EditorProjectRegionManagerService() /*override*/ = default;
 
     virtual ::Scripting::Result_deprecated<void> init() /*override*/;
 
@@ -96,12 +97,6 @@ public:
     // constructor thunks
     // NOLINTBEGIN
     MCNAPI void* $ctor(::Editor::ServiceProviderCollection& providers);
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCNAPI void $dtor();
     // NOLINTEND
 
 public:

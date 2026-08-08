@@ -7,7 +7,6 @@
 
 // auto generated forward declare list
 // clang-format off
-class BlockPos;
 class Level;
 class LevelStorage;
 class PositionTrackingDBClientRequestPacket;
@@ -49,8 +48,6 @@ public:
     MCAPI void _broadcastUpdateToClients(::PositionTrackingDB::TrackingRecord const* record);
 
     MCAPI void _initializeNewPositionTrackerId(::PositionTrackingId& inOut, bool writeToPersistent);
-
-    MCAPI ::PositionTrackingId createTracker(::BlockPos const& positionToTrack, ::DimensionType const& dimension);
 
     MCAPI ::PositionTrackingDB::ResultCode destroyTracker(::PositionTrackingId const& id, bool forceLocalCacheEntry);
 

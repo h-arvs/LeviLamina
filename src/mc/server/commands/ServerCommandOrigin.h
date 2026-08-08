@@ -6,6 +6,7 @@
 #include "mc/server/commands/CommandOrigin.h"
 #include "mc/server/commands/CommandOriginType.h"
 #include "mc/server/commands/CommandPermissionLevel.h"
+#include "mc/world/level/dimension/DimensionType.h"
 
 // auto generated forward declare list
 // clang-format off
@@ -80,12 +81,6 @@ public:
         ::CommandPermissionLevel permission,
         ::DimensionType          dimensionType
     );
-    // NOLINTEND
-
-public:
-    // static functions
-    // NOLINTBEGIN
-    MCAPI static ::std::unique_ptr<::ServerCommandOrigin> load(::CompoundTag const& tag, ::ServerLevel& level);
     // NOLINTEND
 
 public:

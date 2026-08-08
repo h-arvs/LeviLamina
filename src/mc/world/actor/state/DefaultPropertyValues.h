@@ -2,10 +2,8 @@
 
 #include "mc/_HeaderOutputPredefine.h"
 
-// auto generated forward declare list
-// clang-format off
-class ExpressionNode;
-// clang-format on
+// auto generated inclusion list
+#include "mc/util/molang/ExpressionNode.h"
 
 struct DefaultPropertyValues {
 public:
@@ -25,19 +23,5 @@ public:
     ::ll::TypedStorage<8, 24, ::std::vector<::std::variant<float, ::ExpressionNode>>>  mFloatValueOrExpressions;
     ::ll::TypedStorage<8, 24, ::std::vector<::std::variant<bool, ::ExpressionNode>>>   mBoolValueOrExpressions;
     ::ll::TypedStorage<8, 24, ::std::vector<::std::variant<uint64, ::ExpressionNode>>> mEnumIndexValueOrExpressions;
-    // NOLINTEND
-
-public:
-    // member functions
-    // NOLINTBEGIN
-    MCAPI void reserve(uint64 intCapacity, uint64 floatCapacity, uint64 boolCapacity, uint64 enumIndexCapacity);
-
-    MCAPI ~DefaultPropertyValues();
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCAPI void $dtor();
     // NOLINTEND
 };

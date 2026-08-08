@@ -6,6 +6,7 @@
 #include "mc/deps/core/file/PathBuffer.h"
 #include "mc/deps/core/resource/ResourceLoader.h"
 #include "mc/deps/core/resource/ResourcePackStackType.h"
+#include "mc/deps/core/sem_ver/SemVersion.h"
 #include "mc/deps/core/utility/NonOwnerPointer.h"
 #include "mc/platform/brstd/move_only_function.h"
 
@@ -17,18 +18,17 @@ class IContentTierManager;
 class LinkedAssetValidator;
 class LoadedResourceData;
 class PackInstance;
-class PackReport;
 class PackSourceReport;
 class ResourceGroup;
 class ResourceLocation;
 class ResourceLocationPair;
 class ResourcePack;
 class ResourcePackListener;
-class ResourcePackMergeStrategy;
 class ResourcePackStack;
-class SemVersion;
 struct PackIdVersion;
+struct StreamableAssetSource;
 namespace Core { class Path; }
+namespace Core { class PathView; }
 namespace mce { struct Image; }
 // clang-format on
 
@@ -36,238 +36,157 @@ class ResourcePackManager : public ::ResourceLoader {
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 64> mUnkb96c8d;
-    ::ll::UntypedStorage<8, 8>  mUnk5e01de;
-    ::ll::UntypedStorage<8, 8>  mUnkbc5636;
-    ::ll::UntypedStorage<8, 8>  mUnk179563;
-    ::ll::UntypedStorage<8, 8>  mUnkca2a01;
-    ::ll::UntypedStorage<8, 8>  mUnk828950;
-    ::ll::UntypedStorage<8, 8>  mUnkd627e1;
-    ::ll::UntypedStorage<8, 32> mUnk1a684d;
-    ::ll::UntypedStorage<1, 1>  mUnk84ade0;
-    ::ll::UntypedStorage<1, 1>  mUnkacc084;
-    ::ll::UntypedStorage<1, 1>  mUnk384e00;
-    ::ll::UntypedStorage<1, 1>  mUnk6891be;
-    ::ll::UntypedStorage<8, 8>  mUnk661f94;
-    ::ll::UntypedStorage<8, 24> mUnk77052a;
-    ::ll::UntypedStorage<8, 24> mUnk3bf93e;
+    ::ll::TypedStorage<8, 64, ::std::unordered_set<::gsl::not_null<::ResourcePackListener*>>> mListeners;
+    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::ResourcePackStack>>                          mLevelStack;
+    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::ResourcePackStack>>                          mGlobalStack;
+    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::ResourcePackStack>>                          mTreatmentStack;
+    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::ResourcePackStack>>                          mBaseGameStack;
+    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::ResourcePackStack>>                          mFullStack;
+    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::PackSourceReport>>                           mLoadingReport;
+    ::ll::TypedStorage<8, 32, ::std::string>                                                  mLocaleCode;
+    ::ll::TypedStorage<1, 1, bool>                                                            mInitializing;
+    ::ll::TypedStorage<1, 1, bool>                                                            mPendingRestack;
+    ::ll::TypedStorage<1, 1, bool>                                                            mUseGlobalPackStack;
+    ::ll::TypedStorage<1, 1, bool>                                                            mGameplayResourcesLoaded;
+    ::ll::TypedStorage<8, 8, ::std::shared_mutex>                                             mFullStackAccess;
+    ::ll::TypedStorage<8, 24, ::Bedrock::NotNullNonOwnerPtr<::IContentTierManager const>>     mContentTierManager;
+    ::ll::TypedStorage<8, 24, ::SemVersion> mFullStackMinEngineVersion_DEPRECATED_DONOTUSE;
     // NOLINTEND
 
 public:
     // prevent constructor by default
-    ResourcePackManager& operator=(ResourcePackManager const&);
-    ResourcePackManager(ResourcePackManager const&);
     ResourcePackManager();
 
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual ~ResourcePackManager() /*override*/;
+    virtual ~ResourcePackManager() /*override*/ = default;
 
-    virtual bool load(::ResourceLocation const& resourceLocation, ::std::string& resourceStream) const /*override*/;
+    virtual bool load(::ResourceLocation const&, ::std::string&) const /*override*/;
 
-    virtual bool load(
-        ::ResourceLocation const&        resourceLocation,
-        ::std::string&                   resourceStream,
-        ::gsl::span<::std::string const> extensionList
-    ) const /*override*/;
+    virtual bool load(::ResourceLocation const&, ::std::string&, ::gsl::span<::std::string const>) const /*override*/;
 
-    virtual bool load(
-        ::ResourceLocationPair const&    resourceLocationPair,
-        ::std::string&                   resourceStream,
-        ::gsl::span<::std::string const> extensionList
-    ) const /*override*/;
-
-    virtual bool loadText(::ResourceLocation const& resourceLocation, ::std::string& resourceStream) const /*override*/;
-
-    virtual ::std::vector<::LoadedResourceData> loadAllVersionsOf(::ResourceLocation const& resourceLocation) const
+    virtual bool load(::ResourceLocationPair const&, ::std::string&, ::gsl::span<::std::string const>) const
         /*override*/;
 
+    virtual bool loadText(::ResourceLocation const&, ::std::string&) const /*override*/;
+
+    virtual ::std::vector<::LoadedResourceData> loadAllVersionsOf(::ResourceLocation const&) const /*override*/;
+
 #ifdef LL_PLAT_C
-    virtual ::mce::Image loadTexture(::ResourceLocation const& resourceLocation) const /*override*/;
+    virtual ::mce::Image loadTexture(::ResourceLocation const&) const /*override*/;
 
 #endif
-    virtual bool isInStreamableLocation(::ResourceLocation const& resourceLocation) const /*override*/;
+    virtual bool isInStreamableLocation(::ResourceLocation const&) const /*override*/;
 
-    virtual bool isInStreamableLocation(
-        ::ResourceLocation const&        resourceLocation,
-        ::gsl::span<::std::string const> extensionList
-    ) const /*override*/;
+    virtual bool isInStreamableLocation(::ResourceLocation const&, ::gsl::span<::std::string const>) const /*override*/;
 
     virtual ::Core::PathBuffer<::std::string> getPath(::ResourceLocation const& resourceLocation) const /*override*/;
 
-    virtual ::Core::PathBuffer<::std::string>
-    getPath(::ResourceLocation const& resourceLocation, ::gsl::span<::std::string const> extensionList) const
+    virtual ::Core::PathBuffer<::std::string> getPath(::ResourceLocation const&, ::gsl::span<::std::string const>) const
         /*override*/;
 
+    virtual ::Core::PathBuffer<::std::string> getPathContainingResource(::ResourceLocation const&) const /*override*/;
+
     virtual ::Core::PathBuffer<::std::string>
-    getPathContainingResource(::ResourceLocation const& resourceLocation) const /*override*/;
+    getPathContainingResource(::ResourceLocation const&, ::gsl::span<::std::string const>) const /*override*/;
 
-    virtual ::Core::PathBuffer<::std::string> getPathContainingResource(
-        ::ResourceLocation const&        resourceLocation,
-        ::gsl::span<::std::string const> extensionList
-    ) const /*override*/;
+    virtual ::std::pair<int, ::std::string_view>
+    getPackStackIndexOfResource(::ResourceLocation const&, ::gsl::span<::std::string const>) const /*override*/;
 
-    virtual ::std::pair<int, ::std::string_view> getPackStackIndexOfResource(
-        ::ResourceLocation const&        resourceLocation,
-        ::gsl::span<::std::string const> extensionList
-    ) const /*override*/;
-
-    virtual bool hasCapability(::std::string_view requiredCapability) const;
+    virtual bool hasCapability(::std::string_view) const;
     // NOLINTEND
 
 public:
     // member functions
     // NOLINTBEGIN
-    MCNAPI ResourcePackManager(
+    MCAPI ResourcePackManager(
         ::std::function<::Core::PathBuffer<::std::string>()>              getPath,
         ::Bedrock::NotNullNonOwnerPtr<::IContentTierManager const> const& contentTierManager,
         bool                                                              needsToInitialize
     );
 
-    MCNAPI void _calculateMinEngineVersionFromFullStack();
+    MCAPI void _composeFullStack();
 
-    MCNAPI void _composeFullStack();
-
-    MCNAPI bool _doStackOperation(
+    MCAPI bool _doStackOperation(
         ::ResourcePackStackType                                                          stackType,
         ::brstd::move_only_function<bool(::std::unique_ptr<::ResourcePackStack>*) const> operation
     );
 
-    MCNAPI void _getResourcesOfGroup(
-        ::PackInstance const&        packInstance,
-        ::std::string const&         group,
-        ::std::vector<::Core::Path>& resources
-    ) const;
-
-    MCNAPI void _updateLanguageSubpacks();
-
 #ifdef LL_PLAT_C
-    MCNAPI bool areGameplayResourcesLoaded() const;
+    MCAPI ::ContentTierIncompatibleReason canSupportPacks();
 
-    MCNAPI ::ContentTierIncompatibleReason canSupportPacks();
+    MCAPI void clearPackReports();
 
-    MCNAPI void clearPackReports();
-#endif
-
-    MCNAPI void clearStack(::ResourcePackStackType stackType);
-
-    MCNAPI int composeFullStack(
+    MCAPI int composeFullStack(
         ::ResourcePackStack&       output,
         ::ResourcePackStack const& globalStack,
         ::ResourcePackStack const& levelStack
     ) const;
 
-#ifdef LL_PLAT_C
-    MCNAPI void ensureSupportedSubpacks();
+    MCAPI void ensureSupportedSubpacks();
 
-    MCNAPI ::std::vector<::ResourceLocationPair> findAllTexturesInUse() const;
+    MCAPI ::std::vector<::ResourceLocationPair> findAllTexturesInUse() const;
 
-    MCNAPI ::std::vector<::PackIdVersion> findInPacks(::ResourceLocation const& resourceLocation) const;
+    MCAPI ::std::vector<::PackIdVersion> findInPacks(::ResourceLocation const& resourceLocation) const;
 
-    MCNAPI void finishLoadingLinkedAssets(::LinkedAssetValidator& validator);
+    MCAPI void finishLoadingLinkedAssets(::LinkedAssetValidator& validator);
 
-    MCNAPI void forceStackCompose_DEPRECATED();
+    MCAPI ::SemVersion getFullStackMinEngineVersion_DEPRECATED() const;
 
-    MCNAPI ::std::shared_mutex& getFullStackAccess() const;
-
-    MCNAPI ::SemVersion getFullStackMinEngineVersion_DEPRECATED() const;
-
-    MCNAPI ::std::vector<::PackInstance> getIncompatiblePacks() const;
+    MCAPI ::std::vector<::PackInstance> getIncompatiblePacks() const;
 #endif
 
-    MCNAPI ::PackInstance* getPackForResource(::Core::Path const& resourceName) const;
+    MCAPI ::PackInstance* getPackForResource(::Core::Path const& resourceName) const;
 
-    MCNAPI ::PackSourceReport const* getPackSourceReport() const;
+    MCAPI ::ResourceGroup getResourcesOfGroup(::std::string const& group) const;
+
+    MCAPI ::ResourceGroup getResourcesOfGroup(::PackInstance const& packInstance, ::std::string const& group) const;
 
 #ifdef LL_PLAT_C
-    MCNAPI ::std::vector<::PackInstance> getPacksWhereAssetExtractionNotViable(
-        ::std::function<::std::string(::ContentIdentity const&)> getContentKey,
-        ::std::string const&                                     sourceContext
+    MCAPI ::std::optional<::StreamableAssetSource> getStreamableSource(
+        ::ResourceLocation const&         resourceLocation,
+        ::gsl::span<::std::string const>  extensionList,
+        ::std::optional<::Core::PathView> tempDirectory
     ) const;
-#endif
 
-    MCNAPI ::ResourceGroup getResourcesOfGroup(::std::string const& group) const;
+    MCAPI bool hasResource(::ResourceLocation const& resourceLocation) const;
 
-    MCNAPI ::ResourceGroup getResourcesOfGroup(::PackInstance const& packInstance, ::std::string const& group) const;
-
-    MCNAPI ::ResourcePackStack const& getStack(::ResourcePackStackType stackType) const;
-
-    MCNAPI void handlePendingStackChanges();
-
-#ifdef LL_PLAT_C
-    MCNAPI bool hasResource(::ResourceLocation const& resourceLocation) const;
-
-    MCNAPI bool hasResource(
+    MCAPI bool hasResource(
         ::ResourcePackStack const&       resourcePackStack,
         ::ResourceLocation const&        resourceLocation,
         ::gsl::span<::std::string const> extensionList
     ) const;
-
-    MCNAPI bool hasTexture(::ResourceLocation const& resourceLocation) const;
-
-    MCNAPI bool hasTexture(::ResourcePackStackType stackType, ::ResourceLocation const& resourceLocation) const;
 #endif
 
-    MCNAPI bool isAssetExtractionViableForFullStack(
+    MCAPI bool isAssetExtractionViableForFullStack(
         ::std::function<::std::string(::ContentIdentity const&)> getContentKey,
         ::std::string const&                                     sourceContext
     ) const;
 
-    MCNAPI bool isOnlyBaseGamePacks() const;
-
-    MCNAPI void iteratePacks(::std::function<void(::PackInstance const&)> const& pred) const;
+    MCAPI void iteratePacks(::std::function<void(::PackInstance const&)> const& pred) const;
 
 #ifdef LL_PLAT_C
-    MCNAPI bool
-    loadAllVersionsOf(::ResourceLocation const& resourceLocation, ::ResourcePackMergeStrategy& mergeStrategy) const;
-
-    MCNAPI void mergePackReports(::std::vector<::PackReport>& packReports);
-
-    MCNAPI void notifyJsonResourcesChanged();
-
-    MCNAPI void onBaseGamePackDownloadComplete();
-
-    MCNAPI void onLanguageChanged();
-
-    MCNAPI void onLoadingFinished();
-
-    MCNAPI bool refreshStack(::ResourcePackStackType stackType);
-
-    MCNAPI void regeneratePackAssetSet();
+    MCAPI void onLanguageChanged();
 #endif
 
-    MCNAPI void registerResourcePackListener(::ResourcePackListener& listener);
-
-    MCNAPI void removeIf(::std::function<bool(::PackInstance const&)> const& pred);
+    MCAPI void removeIf(::std::function<bool(::PackInstance const&)> const& pred);
 
 #ifdef LL_PLAT_C
-    MCNAPI void removePacks(::std::vector<::gsl::not_null<::ResourcePack const*>> const& packs);
+    MCAPI void removePacks(::std::vector<::gsl::not_null<::ResourcePack const*>> const& packs);
 
-    MCNAPI void removeUnsupportedPacks();
-
-    MCNAPI void setCanUseGlobalPackStack(bool canUseGlobalPackStack);
+    MCAPI void removeUnsupportedPacks();
 #endif
 
-    MCNAPI void setGameplayResourcesLoaded(bool gameplayResourcesLoaded);
+    MCAPI void setPackSourceReport(::PackSourceReport&& report);
 
-    MCNAPI void setPackSourceReport(::PackSourceReport&& report);
-
-    MCNAPI bool setStack(::std::unique_ptr<::ResourcePackStack> stack, ::ResourcePackStackType stackType);
-
-#ifdef LL_PLAT_C
-    MCNAPI bool supportsVibrantVisuals() const;
-
-    MCNAPI void unRegisterAllResourcePackListener();
-#endif
-
-    MCNAPI void unRegisterResourcePackListener(::ResourcePackListener& listener);
+    MCAPI bool setStack(::std::unique_ptr<::ResourcePackStack> stack, ::ResourcePackStackType stackType);
     // NOLINTEND
 
 public:
     // constructor thunks
     // NOLINTBEGIN
-    MCNAPI void* $ctor(
+    MCAPI void* $ctor(
         ::std::function<::Core::PathBuffer<::std::string>()>              getPath,
         ::Bedrock::NotNullNonOwnerPtr<::IContentTierManager const> const& contentTierManager,
         bool                                                              needsToInitialize
@@ -275,69 +194,8 @@ public:
     // NOLINTEND
 
 public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCNAPI void $dtor();
-    // NOLINTEND
-
-public:
     // virtual function thunks
     // NOLINTBEGIN
-    MCNAPI bool $load(::ResourceLocation const& resourceLocation, ::std::string& resourceStream) const;
 
-    MCNAPI bool $load(
-        ::ResourceLocation const&        resourceLocation,
-        ::std::string&                   resourceStream,
-        ::gsl::span<::std::string const> extensionList
-    ) const;
-
-    MCNAPI bool $load(
-        ::ResourceLocationPair const&    resourceLocationPair,
-        ::std::string&                   resourceStream,
-        ::gsl::span<::std::string const> extensionList
-    ) const;
-
-    MCNAPI bool $loadText(::ResourceLocation const& resourceLocation, ::std::string& resourceStream) const;
-
-    MCNAPI ::std::vector<::LoadedResourceData> $loadAllVersionsOf(::ResourceLocation const& resourceLocation) const;
-
-    MCNAPI bool $isInStreamableLocation(::ResourceLocation const& resourceLocation) const;
-
-    MCNAPI bool $isInStreamableLocation(
-        ::ResourceLocation const&        resourceLocation,
-        ::gsl::span<::std::string const> extensionList
-    ) const;
-
-    MCNAPI ::Core::PathBuffer<::std::string> $getPath(::ResourceLocation const& resourceLocation) const;
-
-    MCNAPI ::Core::PathBuffer<::std::string>
-    $getPath(::ResourceLocation const& resourceLocation, ::gsl::span<::std::string const> extensionList) const;
-
-    MCNAPI ::Core::PathBuffer<::std::string>
-    $getPathContainingResource(::ResourceLocation const& resourceLocation) const;
-
-    MCNAPI ::Core::PathBuffer<::std::string> $getPathContainingResource(
-        ::ResourceLocation const&        resourceLocation,
-        ::gsl::span<::std::string const> extensionList
-    ) const;
-
-    MCNAPI ::std::pair<int, ::std::string_view> $getPackStackIndexOfResource(
-        ::ResourceLocation const&        resourceLocation,
-        ::gsl::span<::std::string const> extensionList
-    ) const;
-
-    MCNAPI bool $hasCapability(::std::string_view requiredCapability) const;
-
-#ifdef LL_PLAT_C
-    MCNAPI ::mce::Image $loadTexture(::ResourceLocation const& resourceLocation) const;
-#endif
-
-
-    // NOLINTEND
-
-public:
-    // vftables
-    // NOLINTBEGIN
-    MCNAPI static void** $vftable();
     // NOLINTEND
 };

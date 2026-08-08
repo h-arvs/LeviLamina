@@ -5,6 +5,7 @@
 // auto generated inclusion list
 #include "mc/world/level/BlockPos.h"
 #include "mc/world/level/chunk/IRequestAction.h"
+#include "mc/world/level/dimension/DimensionType.h"
 #include "mc/world/level/levelgen/structure/StructureSettings.h"
 
 // auto generated forward declare list
@@ -44,11 +45,6 @@ public:
     // member functions
     // NOLINTBEGIN
     MCAPI StructureAnimationAction(
-        ::std::unique_ptr<::StructureAnimationData> structureAnimationData,
-        ::DimensionType                             dimensionType
-    );
-
-    MCAPI StructureAnimationAction(
         ::StructureSettings const& structureSettings,
         ::DimensionType            dimensionType,
         ::BlockPos const&          loadPosition,
@@ -66,9 +62,6 @@ public:
 public:
     // constructor thunks
     // NOLINTBEGIN
-    MCAPI void*
-    $ctor(::std::unique_ptr<::StructureAnimationData> structureAnimationData, ::DimensionType dimensionType);
-
     MCAPI void* $ctor(
         ::StructureSettings const& structureSettings,
         ::DimensionType            dimensionType,

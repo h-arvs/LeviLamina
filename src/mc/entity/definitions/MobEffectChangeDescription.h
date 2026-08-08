@@ -4,10 +4,10 @@
 
 // auto generated inclusion list
 #include "mc/world/actor/AttributeDescription.h"
+#include "mc/world/effect/MobEffectInstance.h"
 
 // auto generated forward declare list
 // clang-format off
-class MobEffectInstance;
 struct DeserializeDataParams;
 // clang-format on
 
@@ -35,11 +35,5 @@ public:
     MCAPI void $deserializeData(::DeserializeDataParams deserializeDataParams);
 
 
-    // NOLINTEND
-
-public:
-    // vftables
-    // NOLINTBEGIN
-    MCNAPI static void** $vftable();
     // NOLINTEND
 };

@@ -15,7 +15,7 @@ public:
     // member variables
     // NOLINTBEGIN
     ::ll::UntypedStorage<8, 160> mUnk7e5019;
-    ::ll::UntypedStorage<1, 1>   mUnkfd47eb;
+    ::ll::UntypedStorage<1, 112> mUnkfd47eb;
     // NOLINTEND
 
 public:
@@ -34,11 +34,7 @@ public:
     MCNAPI FileStream(uint64 bufferSize, ::Core::PathView filename, int openMode);
 #endif
 
-    MCNAPI void open(::Core::PathView filename, int om);
-
     MCNAPI void open(::Core::PathView filename, ::Core::FileOpenMode openMode);
-
-    MCNAPI void setLoggingEnabled(bool enabled);
     // NOLINTEND
 
 public:

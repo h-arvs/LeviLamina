@@ -16,14 +16,11 @@ class ChunkSource;
 class ChunkViewSource;
 class ILevel;
 class LevelChunk;
-class LevelChunkPacket;
 class ServerNetworkSystem;
-class VarIntDataOutput;
 class Vec3;
 struct ChunkPositionAndDimension;
 
 namespace ClientBlobCache::Server { class ActiveTransfersManager; }
-namespace ClientBlobCache::Server { class TransferBuilder; }
 // clang-format on
 
 class NetworkChunkPublisher {
@@ -64,7 +61,7 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual ~NetworkChunkPublisher();
+    virtual ~NetworkChunkPublisher() = default;
     // NOLINTEND
 
 public:
@@ -72,32 +69,17 @@ public:
     // NOLINTBEGIN
     MCAPI NetworkChunkPublisher(::ILevel& level, ::NetworkIdentifier const& owner, ::SubClientId subClientId);
 
-    MCAPI bool _sendQueuedChunk(
-        ::ChunkPositionAndDimension const&          queuedChunk,
-        ::ClientBlobCache::Server::TransferBuilder* cachedTransfer
-    );
-
-    MCAPI void _serializeAndCache(
-        ::LevelChunkPacket&                          packet,
-        ::ClientBlobCache::Server::TransferBuilder&  transfer,
-        ::std::function<void(::VarIntDataOutput&)>&& serialize
-    );
-
     MCAPI void clearRegion();
 
     MCAPI void destroyRegion();
-
-#ifdef LL_PLAT_S
-    MCAPI int getChunksSentSinceStart() const;
-#endif
 
 #ifdef LL_PLAT_C
     MCAPI void handleGenerationRequests();
 #endif
 
-    MCAPI bool is2DPositionRelevant(::BlockPos const& position) const;
-
+#ifdef LL_PLAT_S
     MCAPI void moveRegion(::BlockPos const& position, uint blockRadius, ::Vec3 const& direction, float minDistance);
+#endif
 
     MCAPI void prepareRegion(::ChunkSource& mainChunkSource, ::ChunkPos const& center);
 
@@ -110,19 +92,10 @@ public:
     );
 #endif
 
-    MCAPI void resetInitialSpawn();
-
     MCAPI void sendQueuedChunks();
 
 #ifdef LL_PLAT_C
     MCAPI void setClientsNetworkChunkSource(::std::shared_ptr<::ChunkSource> networkChunkSource);
-
-    MCAPI void setPlayerNetworkId(::NetworkIdentifier const& id);
-#endif
-
-#ifdef LL_PLAT_S
-    MCAPI void
-    setServerSettings(::ServerNetworkSystem& network, ::ClientBlobCache::Server::ActiveTransfersManager& cacheManager);
 #endif
     // NOLINTEND
 
@@ -130,12 +103,6 @@ public:
     // constructor thunks
     // NOLINTBEGIN
     MCAPI void* $ctor(::ILevel& level, ::NetworkIdentifier const& owner, ::SubClientId subClientId);
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCAPI void $dtor();
     // NOLINTEND
 
 public:

@@ -4,12 +4,12 @@
 
 // auto generated inclusion list
 #include "mc/resources/ResourcePackMergeStrategy.h"
+#include "mc/world/level/PackInstanceId.h"
 
 // auto generated forward declare list
 // clang-format off
 class LoadedResourceData;
 struct PackIdVersion;
-struct PackInstanceId;
 namespace OreUI { struct RouteData; }
 // clang-format on
 
@@ -34,14 +34,6 @@ public:
     // virtual functions
     // NOLINTBEGIN
     virtual void mergeFiles(::std::vector<::LoadedResourceData> const& fileStack) /*override*/;
-    // NOLINTEND
-
-public:
-    // member functions
-    // NOLINTBEGIN
-    MCAPI void _addRoutes(::OreUI::RouteData const& newRouteData);
-
-    MCAPI void _removeRoutes(::OreUI::RouteData const& newRouteData);
     // NOLINTEND
 
 public:

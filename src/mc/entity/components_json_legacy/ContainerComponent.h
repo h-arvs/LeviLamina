@@ -14,12 +14,12 @@ class Actor;
 class BlockSource;
 class CompoundTag;
 class DataLoadHelper;
-class ItemActor;
 class ItemStack;
 class Level;
 class Player;
 class Vec3;
 struct ContainerDescription;
+struct DimensionType;
 // clang-format on
 
 class ContainerComponent : public ::ContainerContentChangeListener, public ::ContainerCloseListener {
@@ -39,6 +39,7 @@ public:
     // prevent constructor by default
     ContainerComponent& operator=(ContainerComponent const&);
     ContainerComponent(ContainerComponent const&);
+    ContainerComponent();
 
 public:
     // virtual functions
@@ -51,23 +52,13 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCAPI ContainerComponent();
-
     MCAPI ContainerComponent(::ContainerComponent&& other);
-
-    MCFOLD ::FillingContainer* _getRawContainerPtr();
 
     MCAPI bool _tryMoveInItem(::ItemStack& item, int slot, int face, int itemCount);
 
     MCAPI void addAdditionalSaveData(::CompoundTag& tag) const;
 
-    MCAPI bool addItem(::ItemActor& entity);
-
-    MCAPI bool addItem(::ItemStack& item);
-
     MCAPI bool addItem(::ItemStack& item, int face, int itemCount);
-
-    MCAPI bool canBeSiphonedFrom() const;
 
     MCAPI bool canOpenContainer(::Actor const& containerActor, ::Player& player) const;
 
@@ -77,27 +68,11 @@ public:
 
     MCAPI void dropSlotContent(::BlockSource& region, ::Vec3 const& pos, bool randomizeDrop, int slot);
 
-    MCAPI int findFirstSlotForItem(::ItemStack const& item) const;
-
-    MCAPI int getContainerSize() const;
-
     MCAPI int getEmptySlotsCount() const;
-
-    MCAPI ::ItemStack const& getItem(int slot) const;
-
-    MCAPI ::std::vector<::ItemStack const*> const getSlots() const;
-
-    MCAPI bool hasRoomForItem(::ItemActor const& entity) const;
-
-    MCAPI bool hasRoomForItem(::ItemStack const& item) const;
-
-    MCAPI void initFromDefinition(::Actor& actor);
 
     MCAPI void initFromDefinition(::Actor& actor, ::ContainerDescription const& desc);
 
     MCAPI bool isEmpty() const;
-
-    MCAPI bool isPrivate() const;
 
     MCAPI bool openContainer(::Actor& containerActor, ::Player& player);
 
@@ -110,11 +85,9 @@ public:
         ::SharedTypes::Legacy::ContainerType type,
         int                                  size,
         bool                                 canBesiphonedFrom,
-        int                                  isPrivate,
-        bool
+        int,
+        bool isPrivate
     );
-
-    MCAPI void removeItem(int slot, int count);
 
     MCAPI void removeItemsOfType(::ItemStack const& item, int count);
 
@@ -123,18 +96,14 @@ public:
 
     MCAPI void setCustomName(::std::string const& name);
 
-    MCAPI bool setItem(int slot, ::ItemStack const& item);
-
     MCAPI void setLootTable(::std::string const& lootTable, int lootTableSeed);
 
-    MCAPI void unpackLootTable(::Level& level, ::DimensionType dimensionId);
+    MCAPI void unpackLootTable(::Level& level, ::DimensionType dimensionId, ::Actor& owner);
     // NOLINTEND
 
 public:
     // constructor thunks
     // NOLINTBEGIN
-    MCAPI void* $ctor();
-
     MCAPI void* $ctor(::ContainerComponent&& other);
     // NOLINTEND
 

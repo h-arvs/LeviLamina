@@ -9,7 +9,7 @@ class PropertyMetadata {
 public:
     // PropertyMetadata inner types define
     enum class ContainedType : schar {
-        None              = 255,
+        None              = -1,
         IntProperty       = 0,
         FloatProperty     = 1,
         BoolProperty      = 2,
@@ -25,17 +25,5 @@ public:
     ::ll::TypedStorage<8, 8, uint64>                            mOverallIndex;
     ::ll::TypedStorage<8, 8, uint64>                            mTypeArrayIndex;
     ::ll::TypedStorage<1, 1, bool>                              mClientSync;
-    // NOLINTEND
-
-public:
-    // member functions
-    // NOLINTBEGIN
-    MCAPI ~PropertyMetadata();
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCFOLD void $dtor();
     // NOLINTEND
 };

@@ -7,6 +7,7 @@
 #include "mc/server/commands/CommandOriginType.h"
 #include "mc/server/commands/CommandPermissionLevel.h"
 #include "mc/world/level/BlockPos.h"
+#include "mc/world/level/dimension/DimensionType.h"
 
 // auto generated forward declare list
 // clang-format off
@@ -104,11 +105,11 @@ public:
 
     MCFOLD ::std::string $getName() const;
 
-    MCFOLD ::BlockPos $getBlockPosition() const;
+    MCAPI ::BlockPos $getBlockPosition() const;
 
     MCAPI ::Vec3 $getWorldPosition() const;
 
-    MCAPI ::std::optional<::Vec2> $getRotation() const;
+    MCFOLD ::std::optional<::Vec2> $getRotation() const;
 
     MCFOLD ::Level* $getLevel() const;
 

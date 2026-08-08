@@ -11,7 +11,7 @@ class IConnectionEventing {
 public:
     // IConnectionEventing inner types define
     enum class ConnectionFailureReason : int {
-        Unknown                     = 4294967295,
+        Unknown                     = -1,
         MismatchedMinecraftProtocol = 1,
         MismatchedRaknetVersion     = 2,
     };
@@ -23,6 +23,7 @@ public:
         FailedToJoin           = 3,
         SuccessfulJoin         = 4,
         Canceled               = 5,
+        MissingEventDetected   = 6,
     };
 
     enum class ServerConnectionOutcome : int {
@@ -46,7 +47,7 @@ public:
         ::std::string const&
     ) = 0;
 
-    virtual void fireEventOnSuccessfulClientLogin(::Level const* level) = 0;
+    virtual void fireEventOnSuccessfulClientLogin(::Level const*) = 0;
     // NOLINTEND
 
 public:

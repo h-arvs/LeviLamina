@@ -2,18 +2,18 @@
 
 #include "mc/_HeaderOutputPredefine.h"
 
+// auto generated forward declare list
+// clang-format off
+class MeshRenderData;
+namespace mce { struct ClientTexture; }
+// clang-format on
+
 class DrawsByTexture {
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 8>  mUnk98c03c;
-    ::ll::UntypedStorage<8, 24> mUnka1ebe1;
-    ::ll::UntypedStorage<8, 24> mUnk7109c9;
+    ::ll::TypedStorage<8, 8, ::mce::ClientTexture const*>      mTexture;
+    ::ll::TypedStorage<8, 24, ::std::vector<::MeshRenderData>> mMeshes;
+    ::ll::TypedStorage<8, 24, ::std::vector<::DrawsByTexture>> mDrawsByTexture;
     // NOLINTEND
-
-public:
-    // prevent constructor by default
-    DrawsByTexture& operator=(DrawsByTexture const&);
-    DrawsByTexture(DrawsByTexture const&);
-    DrawsByTexture();
 };

@@ -4,10 +4,10 @@
 
 // auto generated inclusion list
 #include "mc/util/json_util/JsonSchemaObjectNode.h"
+#include "mc/world/level/block/BlockDescriptor.h"
 
 // auto generated forward declare list
 // clang-format off
-class BlockDescriptor;
 class BreathableComponent;
 class EntityContext;
 namespace JsonUtil { class EmptyClass; }
@@ -32,15 +32,7 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCAPI BreathableDefinition();
-
-    MCAPI void addBreathableBlockDescriptor(::BlockDescriptor const& blockDescriptor);
-
-    MCAPI void addNonBreathableBlockDescriptor(::BlockDescriptor const& blockDescriptor);
-
     MCAPI void initialize(::EntityContext& entity, ::BreathableComponent& component) const;
-
-    MCAPI ~BreathableDefinition();
     // NOLINTEND
 
 public:
@@ -49,17 +41,5 @@ public:
     MCAPI static void buildSchema(
         ::std::shared_ptr<::JsonUtil::JsonSchemaObjectNode<::JsonUtil::EmptyClass, ::BreathableDefinition>>& root
     );
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCAPI void* $ctor();
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCFOLD void $dtor();
     // NOLINTEND
 };

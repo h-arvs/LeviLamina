@@ -15,13 +15,14 @@ class MovePlayerPacket;
 class Player;
 class SubChunkPos;
 class Vec3;
+struct DimensionType;
 // clang-format on
 
 class PlayerDimensionTransferProxy : public ::IPlayerDimensionTransferProxy {
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual ~PlayerDimensionTransferProxy() /*override*/;
+    virtual ~PlayerDimensionTransferProxy() /*override*/ = default;
 
     virtual void playerDimensionChangedEvent(
         ::Player&       player,
@@ -68,12 +69,6 @@ public:
     // NOLINTEND
 
 public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCFOLD void $dtor();
-    // NOLINTEND
-
-public:
     // virtual function thunks
     // NOLINTBEGIN
     MCAPI void
@@ -116,11 +111,5 @@ public:
     MCFOLD void $transferTickingArea(::Actor& actor, ::Dimension& dimension);
 
 
-    // NOLINTEND
-
-public:
-    // vftables
-    // NOLINTBEGIN
-    MCAPI static void** $vftable();
     // NOLINTEND
 };

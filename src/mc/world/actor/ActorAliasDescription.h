@@ -3,11 +3,11 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
+#include "mc/world/actor/AliasInfoDescription.h"
 #include "mc/world/actor/DefintionDescription.h"
 
 // auto generated forward declare list
 // clang-format off
-struct AliasInfoDescription;
 namespace Json { class Value; }
 // clang-format on
 
@@ -29,7 +29,9 @@ public:
     // NOLINTBEGIN
     MCAPI ::AliasInfoDescription const* getAliasInfo(::std::string const& name) const;
 
+#ifdef LL_PLAT_S
     MCAPI void parse(::Json::Value& root, bool isVanilla);
+#endif
     // NOLINTEND
 
 public:

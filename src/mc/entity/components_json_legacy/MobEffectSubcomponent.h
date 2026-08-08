@@ -4,11 +4,11 @@
 
 // auto generated inclusion list
 #include "mc/entity/components_json_legacy/OnHitSubcomponent.h"
+#include "mc/world/effect/MobEffectInstance.h"
 
 // auto generated forward declare list
 // clang-format off
 class Actor;
-class MobEffectInstance;
 class ProjectileComponent;
 namespace Json { class Value; }
 // clang-format on
@@ -23,7 +23,7 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual ~MobEffectSubcomponent() /*override*/;
+    virtual ~MobEffectSubcomponent() /*override*/ = default;
 
     virtual void readfromJSON(::Json::Value& component) /*override*/;
 
@@ -32,26 +32,6 @@ public:
     virtual void doOnHitEffect(::Actor& owner, ::ProjectileComponent& component) /*override*/;
 
     virtual char const* getName() const /*override*/;
-    // NOLINTEND
-
-public:
-    // member functions
-    // NOLINTBEGIN
-    MCAPI MobEffectSubcomponent();
-
-    MCAPI void _addEffectFromJSON(::Json::Value& component);
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCAPI void* $ctor();
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCAPI void $dtor();
     // NOLINTEND
 
 public:

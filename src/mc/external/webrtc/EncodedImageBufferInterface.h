@@ -11,13 +11,17 @@ class EncodedImageBufferInterface : public ::webrtc::RefCountInterface {
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual uchar* data() = 0;
-
     virtual uchar const* data() const = 0;
 
     virtual uint64 size() const = 0;
 
-    virtual ~EncodedImageBufferInterface() /*override*/ = default;
+    virtual ~EncodedImageBufferInterface() /*override*/;
+    // NOLINTEND
+
+public:
+    // destructor thunk
+    // NOLINTBEGIN
+    MCNAPI void $dtor();
     // NOLINTEND
 
 public:

@@ -19,6 +19,7 @@ class MapDecoration;
 class MapItemSavedData;
 class ReadOnlyBinaryStream;
 struct ActorUniqueID;
+struct DimensionType;
 // clang-format on
 
 class ClientboundMapItemDataPacket : public ::Packet {
@@ -85,24 +86,6 @@ public:
 
 #ifdef LL_PLAT_C
     MCAPI void applyToMap(::MapItemSavedData& map, bool resampleMap) const;
-
-    MCAPI ::DimensionType getDimensionId() const;
-
-    MCAPI ::ActorUniqueID getMapId() const;
-
-    MCFOLD ::std::vector<::ActorUniqueID> const& getMapIds() const;
-
-    MCAPI ::BlockPos getMapOrigin() const;
-
-    MCFOLD schar getScale() const;
-
-    MCAPI bool hasEmptyOrBlackPixels() const;
-
-    MCFOLD bool isLocked() const;
-
-    MCAPI bool isOfType(::ClientboundMapItemDataPacket::Type type) const;
-
-    MCAPI bool isTextureUpdate() const;
 
     MCAPI void resampleClientMap(
         ::MapItemSavedData& map,

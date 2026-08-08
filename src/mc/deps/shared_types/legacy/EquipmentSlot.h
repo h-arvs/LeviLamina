@@ -5,7 +5,7 @@
 namespace SharedTypes::Legacy {
 
 enum class EquipmentSlot : int {
-    None          = 4294967295,
+    None          = -1,
     Begin         = 0,
     HandSlot      = 0,
     Mainhand      = 0,
@@ -28,3 +28,8 @@ enum class EquipmentSlot : int {
 };
 
 }
+
+// clang-format off
+template <>
+MCAPI ::ll::type_id_ref Bedrock::typeid_storage_impl<class CommandRegistry, ::SharedTypes::Legacy::EquipmentSlot>();
+// clang-format on

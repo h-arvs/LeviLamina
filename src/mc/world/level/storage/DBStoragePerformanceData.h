@@ -36,43 +36,13 @@ public:
             Snapshot(Snapshot const&);
             Snapshot();
         };
-
-    public:
-// member variables
-// NOLINTBEGIN
-#ifdef LL_PLAT_C
-        ::ll::UntypedStorage<8, 8>  mUnkdfaa44;
-        ::ll::UntypedStorage<8, 8>  mUnk8f7f93;
-        ::ll::UntypedStorage<8, 8>  mUnk7e1320;
-        ::ll::UntypedStorage<8, 8>  mUnk25731e;
-        ::ll::UntypedStorage<4, 4>  mUnk543c4c;
-        ::ll::UntypedStorage<8, 40> mUnk2ac1de;
-        ::ll::UntypedStorage<8, 80> mUnkd17500;
-#endif
-        // NOLINTEND
-
-    public:
-        // prevent constructor by default
-        AtomicAccumulator& operator=(AtomicAccumulator const&);
-        AtomicAccumulator(AtomicAccumulator const&);
-        AtomicAccumulator();
-
-    public:
-        // member functions
-        // NOLINTBEGIN
-        MCNAPI void reset();
-        // NOLINTEND
     };
 
     struct DBStorageAccumulator {
     public:
-// member variables
-// NOLINTBEGIN
-#ifdef LL_PLAT_S
-        ::ll::UntypedStorage<1, 640> mUnk7892b7;
-#else // LL_PLAT_C
+        // member variables
+        // NOLINTBEGIN
         ::ll::UntypedStorage<8, 640> mUnk7892b7;
-#endif
         // NOLINTEND
 
     public:
@@ -80,22 +50,6 @@ public:
         DBStorageAccumulator& operator=(DBStorageAccumulator const&);
         DBStorageAccumulator(DBStorageAccumulator const&);
         DBStorageAccumulator();
-
-    public:
-        // member functions
-        // NOLINTBEGIN
-#ifdef LL_PLAT_C
-        MCNAPI ~DBStorageAccumulator();
-#endif
-        // NOLINTEND
-
-    public:
-        // destructor thunk
-        // NOLINTBEGIN
-#ifdef LL_PLAT_C
-        MCNAPI void $dtor();
-#endif
-        // NOLINTEND
     };
 
 public:
@@ -117,11 +71,5 @@ public:
     // member functions
     // NOLINTBEGIN
     MCNAPI void resetAll();
-    // NOLINTEND
-
-public:
-    // vftables
-    // NOLINTBEGIN
-    MCNAPI static void** $vftable();
     // NOLINTEND
 };

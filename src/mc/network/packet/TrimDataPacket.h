@@ -6,6 +6,8 @@
 #include "mc/network/MinecraftPacketIds.h"
 #include "mc/network/Packet.h"
 #include "mc/platform/Result.h"
+#include "mc/world/item/registry/TrimMaterial.h"
+#include "mc/world/item/registry/TrimPattern.h"
 
 // auto generated forward declare list
 // clang-format off
@@ -13,8 +15,6 @@ class BinaryStream;
 class ReadOnlyBinaryStream;
 class TrimMaterialRegistry;
 class TrimPatternRegistry;
-struct TrimMaterial;
-struct TrimPattern;
 // clang-format on
 
 class TrimDataPacket : public ::Packet {
@@ -38,28 +38,10 @@ public:
     // NOLINTEND
 
 public:
-    // member functions
-    // NOLINTBEGIN
-    MCAPI TrimDataPacket();
-
-#ifdef LL_PLAT_C
-    MCFOLD ::std::vector<::TrimMaterial> const& getTrimMaterials() const;
-
-    MCFOLD ::std::vector<::TrimPattern> const& getTrimPatterns() const;
-#endif
-    // NOLINTEND
-
-public:
     // static functions
     // NOLINTBEGIN
     MCAPI static ::TrimDataPacket
     prepareFromRegistries(::TrimPatternRegistry const& patternRegistry, ::TrimMaterialRegistry const& materialRegistry);
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCAPI void* $ctor();
     // NOLINTEND
 
 public:

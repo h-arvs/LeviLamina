@@ -3,15 +3,14 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
+#include "mc/deps/shared_types/v1_21_20/structure/BlockIgnore.h"
+#include "mc/deps/shared_types/v1_21_20/structure/BlockRules.h"
+#include "mc/deps/shared_types/v1_21_20/structure/Capped.h"
+#include "mc/deps/shared_types/v1_21_20/structure/ProtectedBlock.h"
 #include "mc/deps/shared_types/v1_21_20/structure/processor_list/Description.h"
 
 // auto generated forward declare list
 // clang-format off
-class SemVersionConstant;
-namespace SharedTypes::v1_21_20::JigsawStructure::Processors { struct BlockIgnore; }
-namespace SharedTypes::v1_21_20::JigsawStructure::Processors { struct BlockRules; }
-namespace SharedTypes::v1_21_20::JigsawStructure::Processors { struct Capped; }
-namespace SharedTypes::v1_21_20::JigsawStructure::Processors { struct ProtectedBlock; }
 namespace cereal { struct ReflectionCtx; }
 // clang-format on
 
@@ -43,12 +42,6 @@ public:
     // static functions
     // NOLINTBEGIN
     MCAPI static void bindType(::cereal::ReflectionCtx& ctx);
-    // NOLINTEND
-
-public:
-    // static variables
-    // NOLINTBEGIN
-    MCAPI static ::SemVersionConstant const& VERSION();
     // NOLINTEND
 
 public:

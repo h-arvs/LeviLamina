@@ -37,7 +37,7 @@ public:
     // member variables
     // NOLINTBEGIN
     ::ll::TypedStorage<8, 8, ::bgfx::Frame*>                                              m_frame;
-    ::ll::TypedStorage<4, 16, ::bgfx::SortKey>                                            m_key;
+    ::ll::TypedStorage<4, 56, ::bgfx::SortKey>                                            m_key;
     ::ll::TypedStorage<8, 128, ::bgfx::RenderDraw>                                        m_draw;
     ::ll::TypedStorage<4, 64, ::bgfx::RenderCompute>                                      m_compute;
     ::ll::TypedStorage<4, 1344, ::bgfx::RenderBind>                                       m_bind;
@@ -59,8 +59,6 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCAPI EncoderImpl();
-
     MCAPI void discard();
 
     MCAPI void dispatch(ushort _id, ::bgfx::ProgramHandle _handle, uint _numX, uint _numY, uint _numZ, uchar _flags);
@@ -119,20 +117,6 @@ public:
         int                          _depth,
         bool                         _preserveState
     );
-
-    MCAPI ~EncoderImpl();
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCAPI void* $ctor();
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCAPI void $dtor();
     // NOLINTEND
 };
 

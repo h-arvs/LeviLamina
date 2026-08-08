@@ -2,13 +2,8 @@
 
 #include "mc/_HeaderOutputPredefine.h"
 
-// auto generated forward declare list
-// clang-format off
-class BlockDescriptor;
-class BlockPos;
-class IBlockWorldGenAPI;
-class Random;
-// clang-format on
+// auto generated inclusion list
+#include "mc/world/level/block/BlockDescriptor.h"
 
 namespace TreeHelper {
 
@@ -23,23 +18,6 @@ public:
     ::ll::TypedStorage<8, 24, ::std::vector<::BlockDescriptor>> mMayGrowOn;
     ::ll::TypedStorage<8, 24, ::std::vector<::BlockDescriptor>> mMayReplace;
     ::ll::TypedStorage<8, 24, ::std::vector<::BlockDescriptor>> mMayGrowThrough;
-    // NOLINTEND
-
-public:
-    // member functions
-    // NOLINTBEGIN
-    MCAPI void _replaceBaseBlockAt(::IBlockWorldGenAPI& target, ::BlockPos const& pos) const;
-
-    MCAPI void
-    placeBaseCluster(::IBlockWorldGenAPI& target, ::BlockPos const& pos, ::Random& random, int trunkWidth) const;
-
-    MCAPI ~TreeParams();
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCAPI void $dtor();
     // NOLINTEND
 };
 

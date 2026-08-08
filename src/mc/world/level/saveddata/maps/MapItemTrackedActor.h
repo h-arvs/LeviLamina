@@ -5,13 +5,12 @@
 // auto generated inclusion list
 #include "mc/legacy/ActorUniqueID.h"
 #include "mc/world/level/BlockPos.h"
+#include "mc/world/level/dimension/DimensionType.h"
 #include "mc/world/level/saveddata/maps/MapDecoration.h"
 
 // auto generated forward declare list
 // clang-format off
-class BlockSource;
 class ChunkViewSource;
-class CompoundTag;
 class MapItemSavedData;
 class Packet;
 // clang-format on
@@ -38,14 +37,6 @@ public:
         ::ll::TypedStorage<8, 8, ::ActorUniqueID>             keyEntityId;
         ::ll::TypedStorage<4, 12, ::BlockPos>                 keyBlockPos;
         // NOLINTEND
-
-    public:
-        // member functions
-        // NOLINTBEGIN
-        MCAPI void load(::CompoundTag const& tag);
-
-        MCAPI void save(::CompoundTag& tag) const;
-        // NOLINTEND
     };
 
 public:
@@ -65,24 +56,8 @@ public:
     // NOLINTEND
 
 public:
-    // prevent constructor by default
-    MapItemTrackedActor();
-
-public:
     // member functions
     // NOLINTBEGIN
-    MCAPI MapItemTrackedActor(::MapItemTrackedActor::UniqueId const& id, ::BlockSource& region);
-
-    MCAPI float getDecorationRotation(::BlockSource& region);
-
     MCAPI ::std::unique_ptr<::Packet> nextUpdatePacket(::MapItemSavedData const& savedData);
-
-    MCFOLD void setNeedsResend();
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCAPI void* $ctor(::MapItemTrackedActor::UniqueId const& id, ::BlockSource& region);
     // NOLINTEND
 };

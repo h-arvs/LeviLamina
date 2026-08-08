@@ -4,13 +4,12 @@
 
 // auto generated inclusion list
 #include "mc/deps/game_refs/WeakRef.h"
+#include "mc/world/level/block/BlockDescriptor.h"
 #include "mc/world/level/levelgen/feature/IFeature.h"
 
 // auto generated forward declare list
 // clang-format off
-class BlockDescriptor;
 class BlockPos;
-class IBlockWorldGenAPI;
 // clang-format on
 
 class SnapToSurfaceFeature : public ::IFeature {
@@ -40,24 +39,6 @@ public:
     virtual ~SnapToSurfaceFeature() /*override*/ = default;
 
     virtual ::std::optional<::BlockPos> place(::IFeature::PlacementContext const& context) const /*override*/;
-    // NOLINTEND
-
-public:
-    // member functions
-    // NOLINTBEGIN
-    MCAPI SnapToSurfaceFeature();
-
-    MCAPI ::std::optional<::BlockPos> _findSnapPos(
-        ::IBlockWorldGenAPI&            target,
-        ::BlockPos const&               pos,
-        ::SnapToSurfaceFeature::Surface targetSurface
-    ) const;
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCAPI void* $ctor();
     // NOLINTEND
 
 public:

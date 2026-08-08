@@ -4,12 +4,13 @@
 
 // auto generated inclusion list
 #include "mc/deps/game_refs/WeakRef.h"
-#include "mc/deps/scripting/runtime/Result_deprecated.h"
+#include "mc/deps/script_core/runtime/scripting/Result_deprecated.h"
 
 // auto generated forward declare list
 // clang-format off
 class Dimension;
 struct Bounds;
+struct DimensionType;
 namespace Bedrock::PubSub { class Subscription; }
 namespace Editor { class ProjectRegion; }
 namespace Editor { struct ProjectRegionConfig; }

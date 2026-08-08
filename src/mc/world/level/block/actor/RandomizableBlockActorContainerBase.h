@@ -3,7 +3,7 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
-#include "mc/world/level/block/actor/BlockActor.h"
+#include "mc/world/level/block/actor/VanillaBlockActor.h"
 
 // auto generated forward declare list
 // clang-format off
@@ -14,9 +14,10 @@ class DataLoadHelper;
 class ILevel;
 class Level;
 class SaveContext;
+struct DimensionType;
 // clang-format on
 
-class RandomizableBlockActorContainerBase : public ::BlockActor {
+class RandomizableBlockActorContainerBase : public ::VanillaBlockActor {
 public:
     // member variables
     // NOLINTBEGIN
@@ -65,6 +66,12 @@ public:
 public:
     // vftables
     // NOLINTBEGIN
-    MCAPI static void** $vftable();
+    MCNAPI static void** $vftableForIVanillaRenderBlockActorComponent();
+
+    MCNAPI static void** $vftableForBlockActor();
+
+    MCNAPI static void** $vftableForIVanillaMainBlockActorComponent();
+
+    MCNAPI static void** $vftableForIVanillaTickBlockActorComponent();
     // NOLINTEND
 };

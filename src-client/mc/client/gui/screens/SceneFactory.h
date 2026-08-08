@@ -77,13 +77,14 @@ class VisualTree;
 struct ActiveDirectoryModalArgs;
 struct ActorUniqueID;
 struct ContentItem;
+struct DimensionType;
 struct EDULibraryCategory;
 struct INpcDialogueData;
 struct LevelSummary;
+struct ModalScreenData;
 struct PackContentItem;
 struct PackSettingsInfo;
 struct StoreDataDrivenScreenParams;
-struct UserManagementModalScreenData;
 struct WorldTemplateInfo;
 namespace Bedrock::StorageMigration { class StorageMigrationService; }
 namespace Core { class Path; }
@@ -111,18 +112,6 @@ public:
         ::ll::TypedStorage<8, 8, ::std::unique_ptr<::LayoutManager>>     layoutManager;
         ::ll::TypedStorage<8, 16, ::std::shared_ptr<::UIControl>>        rootControl;
         ::ll::TypedStorage<8, 16, ::Bedrock::Threading::Async<void>>     taskHandle;
-        // NOLINTEND
-
-    public:
-        // member functions
-        // NOLINTBEGIN
-        MCAPI ~PreCachePackage();
-        // NOLINTEND
-
-    public:
-        // destructor thunk
-        // NOLINTBEGIN
-        MCAPI void $dtor();
         // NOLINTEND
     };
 
@@ -183,6 +172,8 @@ public:
     // NOLINTBEGIN
     virtual ~SceneFactory() /*override*/;
 
+    virtual ::std::shared_ptr<::AbstractScene> createDevConsole();
+
     virtual ::std::shared_ptr<::AbstractScene>
     createTabbedUpsellScreen(::TabbedUpsellScreenDefaultTab tab) /*override*/;
 
@@ -194,8 +185,7 @@ public:
 
     virtual ::std::shared_ptr<::AbstractScene> createStartMenuScreen(bool shouldSendEvent) /*override*/;
 
-    virtual ::Json::Value
-    createGlobalVars(::Bedrock::NotNullNonOwnerPtr<::IUIDefRepository const> defRepository) const = 0;
+    virtual ::Json::Value createGlobalVars(::Bedrock::NotNullNonOwnerPtr<::IUIDefRepository const>) const = 0;
     // NOLINTEND
 
 public:
@@ -215,8 +205,6 @@ public:
         bool  isToporLeft
     ) const;
 
-    MCAPI void _createInventoryScreenCache();
-
     MCAPI ::std::shared_ptr<::AbstractScene> _createPlayScreenImpl(
         ::PlayScreenDefaultTab  tab,
         ::std::string const&    dirtyLevelId,
@@ -231,14 +219,6 @@ public:
     ) const;
 
     MCAPI ::std::shared_ptr<::AbstractScene> _createScreen(::std::shared_ptr<::BaseScreen> newScreen);
-
-    MCAPI ::std::shared_ptr<::AbstractScene> _createStartMenuScreenForEditor(::std::function<void()> loadCallback);
-
-    MCAPI void _createWorldSettingsScreenCache();
-
-    MCAPI void _preCacheScreen(::Json::Value const& globalVars, ::std::string const& screenName);
-
-    MCAPI void _setUseClientInstanceStack(bool useClientInstanceStack);
 
     MCAPI ::std::shared_ptr<::AbstractScene> createAcceptDeclineInvitationScreen(
         ::std::string const&              title,
@@ -322,8 +302,6 @@ public:
         ::IContentManager&                                      contentManager,
         ::std::vector<::std::shared_ptr<::ContentItem const>>&& itemsToDelete
     );
-
-    MCAPI ::std::shared_ptr<::AbstractScene> createDevConsole();
 
     MCAPI ::std::shared_ptr<::AbstractScene>
     createDimensionChangeProgressScreen(bool localServer, ::DimensionType targetDimensionID);
@@ -551,6 +529,8 @@ public:
         float                                backgroundFillAlpha
     );
 
+    MCAPI ::std::shared_ptr<::AbstractScene> createModalScreen(::ModalScreenData const& modalScreenData);
+
     MCAPI ::std::shared_ptr<::AbstractScene> createNetworkProgressScreen(
         ::std::string const&                 uniqueEventName,
         ::std::unique_ptr<::ProgressHandler> connectHandler,
@@ -560,11 +540,11 @@ public:
     );
 
     MCAPI ::std::shared_ptr<::AbstractScene> createNetworkProgressScreen(
-        ::std::string const&                               uniqueEventName,
-        ::std::deque<::std::unique_ptr<::ProgressHandler>> connectHandlers,
-        bool                                               allowSmallDownloads,
-        bool                                               sendProgressTelem,
-        ::OnlineSafetyDialogVisibility                     onlineSafetyDialogVisibility
+        ::std::string const&                                 uniqueEventName,
+        ::std::deque<::std::unique_ptr<::ProgressHandler>>&& connectHandlers,
+        bool                                                 allowSmallDownloads,
+        bool                                                 sendProgressTelem,
+        ::OnlineSafetyDialogVisibility                       onlineSafetyDialogVisibility
     );
 
     MCAPI ::std::shared_ptr<::AbstractScene> createNoInvitesOrJoiningScreen();
@@ -586,20 +566,13 @@ public:
     MCAPI ::std::shared_ptr<::AbstractScene> createOnlineSafetyDialogScreen(::OnlineSafetyProgressHandler& handler);
 
     MCAPI ::std::shared_ptr<::AbstractScene> createOptionsScreen(
-        ::SettingsTabIndex   startingTabIndex,
-        bool                 navToMenuOnExit,
-        bool                 maintainOldFocus,
-        ::std::string const& initialPackId,
-        bool                 fullscreen
-    );
-
-    MCAPI ::std::shared_ptr<::AbstractScene> createOptionsScreen(
         ::LevelSummary const& levelSummary,
         ::SettingsTabIndex    startingTabIndex,
         bool                  navToMenuOnExit,
         bool                  maintainOldFocus,
         ::std::string const&  initialPackId,
-        bool                  fullscreen
+        bool                  fullscreen,
+        bool                  legacySyncOnly
     );
 
     MCAPI ::std::shared_ptr<::AbstractScene> createPackSettingsScreen(::PackSettingsInfo packSettingsInfo);
@@ -617,9 +590,6 @@ public:
     MCAPI ::std::shared_ptr<::AbstractScene>
     createPlatformStoreConnectConfirmationScreen(::std::function<void(bool)> callback);
 
-    MCAPI ::std::shared_ptr<::AbstractScene>
-    createPlayScreen(::PlayScreenDefaultTab tab, ::std::string const& dirtyLevelId);
-
     MCAPI ::std::shared_ptr<::AbstractScene> createPortfolioScreen();
 
     MCAPI ::std::shared_ptr<::AbstractScene> createProgressScreen(
@@ -628,14 +598,6 @@ public:
         bool                                 loadAssets,
         bool                                 sendProgressTelem,
         ::std::string const&                 overrideScreen
-    );
-
-    MCAPI ::std::shared_ptr<::AbstractScene> createProgressScreen(
-        ::std::string const&                                 uniqueEventName,
-        ::std::deque<::std::unique_ptr<::ProgressHandler>>&& progressHandlerList,
-        bool                                                 loadAssets,
-        bool                                                 sendProgressTelem,
-        ::std::string const&                                 overrideScreen
     );
 
     MCAPI ::std::shared_ptr<::AbstractScene> createProgressScreen(
@@ -781,11 +743,6 @@ public:
 
     MCAPI ::std::shared_ptr<::AbstractScene> createUpsellScreen(bool isNewWorld, bool timeExpired);
 
-    MCAPI ::std::shared_ptr<::AbstractScene> createUserManagementModalScreen(
-        ::UserManagementModalScreenData const& screenData,
-        ::std::function<void(bool)>            callback
-    );
-
     MCAPI ::std::shared_ptr<::AbstractScene> createVersionUpdateScreen(::UpdateVersionScreenContext context);
 
     MCAPI ::std::shared_ptr<::AbstractScene> createWin10TrialConversionScreen();
@@ -800,8 +757,6 @@ public:
     );
 
     MCAPI ::std::shared_ptr<::AbstractScene> createWorldTemplateScreen(bool hideTopBar);
-
-    MCAPI ::std::shared_ptr<::AbstractScene> createXblConsoleQrSignInScreen(::std::string const& code);
 
     MCAPI ::std::shared_ptr<::AbstractScene> createXblConsoleSignInScreen(::std::string const& code);
 
@@ -821,25 +776,7 @@ public:
 
     MCAPI ::Bedrock::NotNullNonOwnerPtr<::ISceneStack> getCurrentSceneStack();
 
-    MCFOLD bool isUsingClientSceneStack();
-
     MCAPI void precacheGameplayScreens();
-
-    MCAPI void precacheOreUIGameplayViews();
-
-    MCAPI void registerInGameScreen(
-        ::std::string const& name,
-        ::std::function<::std::shared_ptr<::UIScene>(
-            ::SceneFactory&,
-            ::IMinecraftGame&,
-            ::IClientInstance&,
-            ::Bedrock::NotNullNonOwnerPtr<::IAdvancedGraphicsOptions> const&,
-            ::std::string const&,
-            ::Player&,
-            ::BlockPos const&,
-            ::ActorUniqueID
-        )>                   creationFunc
-    );
 
     MCAPI void registerInGameScreen(
         ::std::string const& registeredName,
@@ -858,11 +795,7 @@ public:
 
     MCAPI void resetSceneStackForOutOfGameUse();
 
-    MCAPI bool screenPrecacheInProgress() const;
-
-    MCFOLD void setIsEditorModeEnabled(bool isEditorModeEnabled);
-
-    MCAPI void terminateAsyncUILoading();
+    MCAPI void setUseClientInstanceStack(bool useClientInstanceStack);
 
     MCAPI void unregisterInGameScreens();
     // NOLINTEND
@@ -896,11 +829,5 @@ public:
     );
 
     MCAPI ::std::shared_ptr<::AbstractScene> $createStartMenuScreen(bool shouldSendEvent);
-    // NOLINTEND
-
-public:
-    // vftables
-    // NOLINTBEGIN
-    MCNAPI static void** $vftable();
     // NOLINTEND
 };

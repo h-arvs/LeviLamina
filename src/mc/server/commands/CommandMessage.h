@@ -28,32 +28,6 @@ public:
         ::ll::TypedStorage<8, 32, ::std::string>                                string;
         ::ll::TypedStorage<8, 8, ::std::unique_ptr<::CommandSelector<::Actor>>> selection;
         // NOLINTEND
-
-    public:
-        // prevent constructor by default
-        MessageComponent& operator=(MessageComponent const&);
-        MessageComponent(MessageComponent const&);
-        MessageComponent();
-
-    public:
-        // member functions
-        // NOLINTBEGIN
-        MCAPI MessageComponent(::CommandMessage::MessageComponent&& m);
-
-        MCAPI explicit MessageComponent(::std::string&& s);
-
-        MCAPI explicit MessageComponent(::std::unique_ptr<::CommandSelector<::Actor>>&& s);
-        // NOLINTEND
-
-    public:
-        // constructor thunks
-        // NOLINTBEGIN
-        MCAPI void* $ctor(::CommandMessage::MessageComponent&& m);
-
-        MCAPI void* $ctor(::std::string&& s);
-
-        MCAPI void* $ctor(::std::unique_ptr<::CommandSelector<::Actor>>&& s);
-        // NOLINTEND
     };
 
 public:
@@ -64,28 +38,13 @@ public:
     // NOLINTEND
 
 public:
-    // prevent constructor by default
-    CommandMessage();
-
-public:
     // member functions
     // NOLINTBEGIN
-    MCAPI explicit CommandMessage(::std::optional<::CommandMessageParams> params);
-
     MCAPI ::GenerateMessageResult generateMessage(::CommandOrigin const& origin, int maxLength) const;
-
-    MCAPI ~CommandMessage();
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCAPI void* $ctor(::std::optional<::CommandMessageParams> params);
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCAPI void $dtor();
     // NOLINTEND
 };
+
+// clang-format off
+template <>
+MCAPI ::ll::type_id_ref Bedrock::typeid_storage_impl<class CommandRegistry, ::CommandMessage>();
+// clang-format on

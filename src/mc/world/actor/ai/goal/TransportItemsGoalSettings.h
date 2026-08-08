@@ -4,10 +4,10 @@
 
 // auto generated inclusion list
 #include "mc/deps/core/math/Vec2.h"
+#include "mc/world/level/block/BlockDescriptor.h"
 
 // auto generated forward declare list
 // clang-format off
-class BlockDescriptor;
 class ItemDescriptor;
 // clang-format on
 
@@ -43,16 +43,8 @@ public:
     // NOLINTEND
 
 public:
-    // prevent constructor by default
-    TransportItemsGoalSettings& operator=(TransportItemsGoalSettings const&);
-    TransportItemsGoalSettings(TransportItemsGoalSettings const&);
-    TransportItemsGoalSettings();
-
-public:
     // member functions
     // NOLINTBEGIN
-    MCAPI ::TransportItemsGoalSettings& operator=(::TransportItemsGoalSettings&&);
-
     MCAPI ~TransportItemsGoalSettings();
     // NOLINTEND
 

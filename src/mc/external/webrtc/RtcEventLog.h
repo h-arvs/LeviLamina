@@ -34,11 +34,11 @@ public:
 
     virtual bool StartLogging(::std::unique_ptr<::webrtc::RtcEventLogOutput>, int64) = 0;
 
-    virtual void StopLogging(::std::function<void()> callback);
-
     virtual void StopLogging() = 0;
 
-    virtual void Log(::std::unique_ptr<::webrtc::RtcEvent> event) = 0;
+    virtual void StopLogging(::std::function<void()> callback);
+
+    virtual void Log(::std::unique_ptr<::webrtc::RtcEvent>) = 0;
     // NOLINTEND
 
 public:

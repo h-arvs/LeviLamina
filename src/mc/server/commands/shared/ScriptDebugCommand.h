@@ -41,8 +41,6 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCAPI ScriptDebugCommand();
-
     MCAPI void _handleDebuggerAttach(
         ::IScriptDebugger*                   debugger,
         ::std::string const&                 locPrefix,
@@ -65,17 +63,5 @@ public:
         ::ScriptDebugCommand::ProfilerAction action,
         ::CommandOutput&                     output
     ) const;
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCAPI void* $ctor();
-    // NOLINTEND
-
-public:
-    // vftables
-    // NOLINTBEGIN
-    MCNAPI static void** $vftable();
     // NOLINTEND
 };

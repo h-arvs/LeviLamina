@@ -12,11 +12,13 @@ class AABB;
 class Block;
 class BlockActor;
 class BlockPos;
+class ChunkPos;
 class GetCollisionShapeInterface;
 class LevelChunk;
 class Material;
 class Vec3;
 struct Bounds;
+struct DimensionType;
 namespace BlockSourceVisitor { struct CollisionShape; }
 // clang-format on
 
@@ -51,6 +53,8 @@ public:
     virtual ::Material const& getMaterial(int x, int y, int z) const = 0;
 
     virtual bool hasBorderBlock(::BlockPos const pos) const = 0;
+
+    virtual bool hasChunk(::ChunkPos const& pos, bool serverSideOnly) const = 0;
 
     virtual bool hasChunksAt(::Bounds const& bounds, bool ignoreClientChunk) const = 0;
 

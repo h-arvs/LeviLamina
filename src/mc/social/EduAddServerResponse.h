@@ -6,13 +6,9 @@ namespace Social {
 
 struct EduAddServerResponse {
 public:
-// member variables
-// NOLINTBEGIN
-#ifdef LL_PLAT_S
-    ::ll::UntypedStorage<1, 72> mUnk95caf4;
-#else // LL_PLAT_C
+    // member variables
+    // NOLINTBEGIN
     ::ll::UntypedStorage<8, 72> mUnk95caf4;
-#endif
     // NOLINTEND
 
 public:
@@ -20,22 +16,6 @@ public:
     EduAddServerResponse& operator=(EduAddServerResponse const&);
     EduAddServerResponse(EduAddServerResponse const&);
     EduAddServerResponse();
-
-public:
-    // member functions
-    // NOLINTBEGIN
-#ifdef LL_PLAT_C
-    MCNAPI ~EduAddServerResponse();
-#endif
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-#ifdef LL_PLAT_C
-    MCNAPI void $dtor();
-#endif
-    // NOLINTEND
 };
 
 } // namespace Social
