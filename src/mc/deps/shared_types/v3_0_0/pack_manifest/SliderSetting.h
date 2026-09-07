@@ -29,6 +29,14 @@ public:
     // member functions
     // NOLINTBEGIN
     MCAPI SliderSetting(::SharedTypes::v3_0_0::PackManifestDefinition::SliderSetting const&);
+
+    MCAPI bool operator==(::SharedTypes::v3_0_0::PackManifestDefinition::SliderSetting const& other) const;
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::std::string_view const& TYPE_NAME();
     // NOLINTEND
 
 public:

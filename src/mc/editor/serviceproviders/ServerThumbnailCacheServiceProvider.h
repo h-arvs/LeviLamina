@@ -15,13 +15,7 @@ public:
     // NOLINTBEGIN
     virtual ~ServerThumbnailCacheServiceProvider() = default;
 
-    virtual bool remove(::mce::UUID, ::std::optional<uint>) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual bool remove(::mce::UUID id, ::std::optional<uint> hash) = 0;
     // NOLINTEND
 };
 

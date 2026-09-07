@@ -17,6 +17,8 @@ public:
     ::ll::TypedStorage<4, 4, float>               _v1;
     ::ll::TypedStorage<2, 2, ushort>              _texSizeW;
     ::ll::TypedStorage<2, 2, ushort>              _texSizeH;
+    ::ll::TypedStorage<2, 2, ushort>              _sourceImageWidth;
+    ::ll::TypedStorage<2, 2, ushort>              _sourceImageHeight;
     ::ll::TypedStorage<8, 56, ::ResourceLocation> sourceFileLocation;
     ::ll::TypedStorage<1, 1, ::IsotropicFaceData> mIsotropicFaceData;
     ::ll::TypedStorage<2, 2, short>               textureSetTranslationIndex;
@@ -41,10 +43,18 @@ public:
         ushort             texHeight,
         ::ResourceLocation file,
         float              w,
-        ushort             pbrTextureDataHandle
+        ushort             pbrTextureDataHandle,
+        ushort             sourceImageWidth,
+        ushort             sourceImageHeight
     );
 
+    MCAPI ::TextureUVCoordinateSet getFlippedHorizontal() const;
+
+    MCAPI ::TextureUVCoordinateSet getFlippedVertically() const;
+
     MCAPI ::TextureUVCoordinateSet& operator=(::TextureUVCoordinateSet const&);
+
+    MCAPI bool operator==(::TextureUVCoordinateSet const& other) const;
 
     MCAPI ::TextureUVCoordinateSet subTexture(float u0ffset, float v0ffset, int sizeW, int sizeH) const;
 
@@ -65,7 +75,9 @@ public:
         ushort             texHeight,
         ::ResourceLocation file,
         float              w,
-        ushort             pbrTextureDataHandle
+        ushort             pbrTextureDataHandle,
+        ushort             sourceImageWidth,
+        ushort             sourceImageHeight
     );
     // NOLINTEND
 

@@ -88,9 +88,9 @@ public:
 
     virtual void OnConnectionDestroyed(::webrtc::Connection const* connection) = 0;
 
-    virtual ::webrtc::ArrayView<::webrtc::Connection const* const, 18446744073709546905> GetConnections() const;
+    virtual ::webrtc::ArrayView<::webrtc::Connection const* const> GetConnections() const;
 
-    virtual ::webrtc::ArrayView<::webrtc::Connection const*, 18446744073709546905> connections() const;
+    virtual ::webrtc::ArrayView<::webrtc::Connection const*> connections() const;
 
     virtual bool HasPingableConnection() const = 0;
 
@@ -113,12 +113,6 @@ public:
     SortAndSwitchConnection(::webrtc::IceSwitchReason reason) = 0;
 
     virtual ::std::vector<::webrtc::Connection const*> PruneConnections() = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };
 

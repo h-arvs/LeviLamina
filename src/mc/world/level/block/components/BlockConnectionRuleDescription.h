@@ -32,18 +32,32 @@ public:
     virtual void initializeComponent(::BlockComponentStorage& blockComponentStorage) const /*override*/;
 
     virtual void initializeComponentFromCode(::BlockComponentStorage& blockComponentStorage) const /*override*/;
+
+    virtual ~BlockConnectionRuleDescription() /*override*/;
     // NOLINTEND
 
 public:
     // static functions
     // NOLINTBEGIN
+#ifdef LL_PLAT_S
     MCAPI static void bindType(::cereal::ReflectionCtx& ctx);
+#endif
     // NOLINTEND
 
 public:
     // static variables
     // NOLINTBEGIN
+    MCAPI static ::std::
+        unordered_map<::SharedTypes::v1_26_20::ConnectionType, ::Bedrock::EnumSet<::ConnectionID, 4> const> const&
+        CONNECTION_TO_MASK();
+
     MCAPI static ::std::string const& NameID();
+    // NOLINTEND
+
+public:
+    // destructor thunk
+    // NOLINTBEGIN
+    MCAPI void $dtor();
     // NOLINTEND
 
 public:

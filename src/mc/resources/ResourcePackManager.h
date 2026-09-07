@@ -7,6 +7,7 @@
 #include "mc/deps/core/resource/ResourceLoader.h"
 #include "mc/deps/core/resource/ResourcePackStackType.h"
 #include "mc/deps/core/sem_ver/SemVersion.h"
+#include "mc/deps/core/threading/Async.h"
 #include "mc/deps/core/utility/NonOwnerPointer.h"
 #include "mc/platform/brstd/move_only_function.h"
 
@@ -25,10 +26,12 @@ class ResourceLocationPair;
 class ResourcePack;
 class ResourcePackListener;
 class ResourcePackStack;
+class TaskGroup;
 struct PackIdVersion;
 struct StreamableAssetSource;
 namespace Core { class Path; }
 namespace Core { class PathView; }
+namespace mce { class UUID; }
 namespace mce { struct Image; }
 // clang-format on
 
@@ -41,7 +44,7 @@ public:
     ::ll::TypedStorage<8, 8, ::std::unique_ptr<::ResourcePackStack>>                          mGlobalStack;
     ::ll::TypedStorage<8, 8, ::std::unique_ptr<::ResourcePackStack>>                          mTreatmentStack;
     ::ll::TypedStorage<8, 8, ::std::unique_ptr<::ResourcePackStack>>                          mBaseGameStack;
-    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::ResourcePackStack>>                          mFullStack;
+    ::ll::TypedStorage<8, 16, ::std::shared_ptr<::ResourcePackStack>>                         mFullStack;
     ::ll::TypedStorage<8, 8, ::std::unique_ptr<::PackSourceReport>>                           mLoadingReport;
     ::ll::TypedStorage<8, 32, ::std::string>                                                  mLocaleCode;
     ::ll::TypedStorage<1, 1, bool>                                                            mInitializing;
@@ -49,6 +52,7 @@ public:
     ::ll::TypedStorage<1, 1, bool>                                                            mUseGlobalPackStack;
     ::ll::TypedStorage<1, 1, bool>                                                            mGameplayResourcesLoaded;
     ::ll::TypedStorage<8, 8, ::std::shared_mutex>                                             mFullStackAccess;
+    ::ll::TypedStorage<4, 4, uint>                                                            mComposeGeneration;
     ::ll::TypedStorage<8, 24, ::Bedrock::NotNullNonOwnerPtr<::IContentTierManager const>>     mContentTierManager;
     ::ll::TypedStorage<8, 24, ::SemVersion> mFullStackMinEngineVersion_DEPRECATED_DONOTUSE;
     // NOLINTEND
@@ -62,39 +66,56 @@ public:
     // NOLINTBEGIN
     virtual ~ResourcePackManager() /*override*/ = default;
 
-    virtual bool load(::ResourceLocation const&, ::std::string&) const /*override*/;
+    virtual bool load(::ResourceLocation const& resourceLocation, ::std::string& resourceStream) const /*override*/;
 
-    virtual bool load(::ResourceLocation const&, ::std::string&, ::gsl::span<::std::string const>) const /*override*/;
+    virtual bool load(
+        ::ResourceLocation const&        resourceLocation,
+        ::std::string&                   resourceStream,
+        ::gsl::span<::std::string const> extensionList
+    ) const /*override*/;
 
-    virtual bool load(::ResourceLocationPair const&, ::std::string&, ::gsl::span<::std::string const>) const
+    virtual bool load(
+        ::ResourceLocationPair const&    resourceLocationPair,
+        ::std::string&                   resourceStream,
+        ::gsl::span<::std::string const> extensionList
+    ) const /*override*/;
+
+    virtual bool loadText(::ResourceLocation const& resourceLocation, ::std::string& resourceStream) const /*override*/;
+
+    virtual ::std::vector<::LoadedResourceData> loadAllVersionsOf(::ResourceLocation const& resourceLocation) const
         /*override*/;
 
-    virtual bool loadText(::ResourceLocation const&, ::std::string&) const /*override*/;
-
-    virtual ::std::vector<::LoadedResourceData> loadAllVersionsOf(::ResourceLocation const&) const /*override*/;
-
 #ifdef LL_PLAT_C
-    virtual ::mce::Image loadTexture(::ResourceLocation const&) const /*override*/;
+    virtual ::mce::Image loadTexture(::ResourceLocation const& resourceLocation) const /*override*/;
 
 #endif
-    virtual bool isInStreamableLocation(::ResourceLocation const&) const /*override*/;
+    virtual bool isInStreamableLocation(::ResourceLocation const& resourceLocation) const /*override*/;
 
-    virtual bool isInStreamableLocation(::ResourceLocation const&, ::gsl::span<::std::string const>) const /*override*/;
+    virtual bool isInStreamableLocation(
+        ::ResourceLocation const&        resourceLocation,
+        ::gsl::span<::std::string const> extensionList
+    ) const /*override*/;
 
     virtual ::Core::PathBuffer<::std::string> getPath(::ResourceLocation const& resourceLocation) const /*override*/;
 
-    virtual ::Core::PathBuffer<::std::string> getPath(::ResourceLocation const&, ::gsl::span<::std::string const>) const
+    virtual ::Core::PathBuffer<::std::string>
+    getPath(::ResourceLocation const& resourceLocation, ::gsl::span<::std::string const> extensionList) const
         /*override*/;
 
-    virtual ::Core::PathBuffer<::std::string> getPathContainingResource(::ResourceLocation const&) const /*override*/;
-
     virtual ::Core::PathBuffer<::std::string>
-    getPathContainingResource(::ResourceLocation const&, ::gsl::span<::std::string const>) const /*override*/;
+    getPathContainingResource(::ResourceLocation const& resourceLocation) const /*override*/;
 
-    virtual ::std::pair<int, ::std::string_view>
-    getPackStackIndexOfResource(::ResourceLocation const&, ::gsl::span<::std::string const>) const /*override*/;
+    virtual ::Core::PathBuffer<::std::string> getPathContainingResource(
+        ::ResourceLocation const&        resourceLocation,
+        ::gsl::span<::std::string const> extensionList
+    ) const /*override*/;
 
-    virtual bool hasCapability(::std::string_view) const;
+    virtual ::std::pair<int, ::std::string_view> getPackStackIndexOfResource(
+        ::ResourceLocation const&        resourceLocation,
+        ::gsl::span<::std::string const> extensionList
+    ) const /*override*/;
+
+    virtual bool hasCapability(::std::string_view requiredCapability) const;
     // NOLINTEND
 
 public:
@@ -106,7 +127,15 @@ public:
         bool                                                              needsToInitialize
     );
 
+#ifdef LL_PLAT_C
+    MCAPI void _calculateMinEngineVersionFromFullStack();
+#endif
+
     MCAPI void _composeFullStack();
+
+#ifdef LL_PLAT_C
+    MCAPI ::Bedrock::Threading::Async<void> _composeFullStackAsync(::TaskGroup& taskGroup);
+#endif
 
     MCAPI bool _doStackOperation(
         ::ResourcePackStackType                                                          stackType,
@@ -114,6 +143,8 @@ public:
     );
 
 #ifdef LL_PLAT_C
+    MCAPI void _updateLanguageSubpacks();
+
     MCAPI ::ContentTierIncompatibleReason canSupportPacks();
 
     MCAPI void clearPackReports();
@@ -137,7 +168,8 @@ public:
     MCAPI ::std::vector<::PackInstance> getIncompatiblePacks() const;
 #endif
 
-    MCAPI ::PackInstance* getPackForResource(::Core::Path const& resourceName) const;
+    MCAPI ::PackInstance*
+    getPackForResource(::Core::Path const& resourceName, ::std::optional<::mce::UUID> const& packId) const;
 
     MCAPI ::ResourceGroup getResourcesOfGroup(::std::string const& group) const;
 
@@ -150,7 +182,8 @@ public:
         ::std::optional<::Core::PathView> tempDirectory
     ) const;
 
-    MCAPI bool hasResource(::ResourceLocation const& resourceLocation) const;
+    MCAPI bool
+    hasResource(::ResourceLocation const& resourceLocation, ::std::optional<::mce::UUID> const& packIdToMatch) const;
 
     MCAPI bool hasResource(
         ::ResourcePackStack const&       resourcePackStack,
@@ -167,6 +200,12 @@ public:
     MCAPI void iteratePacks(::std::function<void(::PackInstance const&)> const& pred) const;
 
 #ifdef LL_PLAT_C
+    MCAPI bool load(
+        ::ResourceLocation const&    resourceLocation,
+        ::std::string&               resourceStream,
+        ::std::optional<::mce::UUID> packId
+    ) const;
+
     MCAPI void onLanguageChanged();
 #endif
 
@@ -184,6 +223,16 @@ public:
     // NOLINTEND
 
 public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static void _getResourcesOfGroup(
+        ::PackInstance const&        packInstance,
+        ::std::string const&         group,
+        ::std::vector<::Core::Path>& resources
+    );
+    // NOLINTEND
+
+public:
     // constructor thunks
     // NOLINTBEGIN
     MCAPI void* $ctor(
@@ -196,6 +245,55 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI bool $load(::ResourceLocation const& resourceLocation, ::std::string& resourceStream) const;
+
+    MCAPI bool $load(
+        ::ResourceLocation const&        resourceLocation,
+        ::std::string&                   resourceStream,
+        ::gsl::span<::std::string const> extensionList
+    ) const;
+
+    MCAPI bool $load(
+        ::ResourceLocationPair const&    resourceLocationPair,
+        ::std::string&                   resourceStream,
+        ::gsl::span<::std::string const> extensionList
+    ) const;
+
+    MCAPI bool $loadText(::ResourceLocation const& resourceLocation, ::std::string& resourceStream) const;
+
+    MCAPI ::std::vector<::LoadedResourceData> $loadAllVersionsOf(::ResourceLocation const& resourceLocation) const;
+
+    MCAPI bool $isInStreamableLocation(::ResourceLocation const& resourceLocation) const;
+
+    MCAPI bool $isInStreamableLocation(
+        ::ResourceLocation const&        resourceLocation,
+        ::gsl::span<::std::string const> extensionList
+    ) const;
+
+    MCAPI ::Core::PathBuffer<::std::string> $getPath(::ResourceLocation const& resourceLocation) const;
+
+    MCAPI ::Core::PathBuffer<::std::string>
+    $getPath(::ResourceLocation const& resourceLocation, ::gsl::span<::std::string const> extensionList) const;
+
+    MCAPI ::Core::PathBuffer<::std::string>
+    $getPathContainingResource(::ResourceLocation const& resourceLocation) const;
+
+    MCAPI ::Core::PathBuffer<::std::string> $getPathContainingResource(
+        ::ResourceLocation const&        resourceLocation,
+        ::gsl::span<::std::string const> extensionList
+    ) const;
+
+    MCAPI ::std::pair<int, ::std::string_view> $getPackStackIndexOfResource(
+        ::ResourceLocation const&        resourceLocation,
+        ::gsl::span<::std::string const> extensionList
+    ) const;
+
+    MCAPI bool $hasCapability(::std::string_view requiredCapability) const;
+
+#ifdef LL_PLAT_C
+    MCAPI ::mce::Image $loadTexture(::ResourceLocation const& resourceLocation) const;
+#endif
+
 
     // NOLINTEND
 };

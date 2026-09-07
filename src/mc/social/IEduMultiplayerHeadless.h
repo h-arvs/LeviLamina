@@ -11,6 +11,7 @@
 
 // auto generated forward declare list
 // clang-format off
+namespace Social { class GameConnectionInfo; }
 namespace Social { struct EduAddServerResponse; }
 namespace Social { struct EduDedicatedServerDetails; }
 namespace Social { struct EduFetchServersResponse; }
@@ -36,18 +37,10 @@ public:
     // NOLINTBEGIN
     virtual void hostServer();
 
-#ifdef LL_PLAT_S
-    virtual ::Social::EduJoinerResponse tryAcceptJoiner(::std::string const&, ::std::string const&);
-#else // LL_PLAT_C
     virtual ::Social::EduJoinerResponse
     tryAcceptJoiner(::std::string const& sessionToken, ::std::string const& joinerToHostNonce);
-#endif
 
-#ifdef LL_PLAT_S
-    virtual ::std::string getHostToJoinerNonce(::std::string const&) const;
-#else // LL_PLAT_C
     virtual ::std::string getHostToJoinerNonce(::std::string const& sessionToken) const;
-#endif
 
     virtual ::Bedrock::Threading::Async<void> onNextFetchJoiners();
 
@@ -80,6 +73,10 @@ public:
         ::std::vector<::Social::EduDedicatedServerDetails>>
     loadCachedServersFromDisk();
 
+    virtual bool tryJoinWorld(::Social::GameConnectionInfo const& connection);
+
+    virtual void clearConnection();
+
     virtual ::Social::EduHeadlessConnectionHandshake getHandshake() const;
 
     virtual ::std::string getHostIp() const;
@@ -90,7 +87,9 @@ public:
 public:
     // static variables
     // NOLINTBEGIN
+#ifdef LL_PLAT_C
     MCNAPI static ::EducationServicesEnvironment& mCachedEnvironment();
+#endif
     // NOLINTEND
 
 public:

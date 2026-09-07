@@ -23,6 +23,7 @@ class BoundingBox;
 class IRandom;
 class IStructureTemplateManager;
 class JigsawBlockInfo;
+class JigsawStructureBlockInfo;
 class LegacyStructureSettings;
 class LegacyStructureTemplate;
 class Random;
@@ -57,12 +58,6 @@ public:
 
         virtual bool isLegacyStructure() const = 0;
         // NOLINTEND
-
-    public:
-        // virtual function thunks
-        // NOLINTBEGIN
-
-        // NOLINTEND
     };
 
     class LazyTemplate : public ::StructurePoolElement::ITemplate {
@@ -87,6 +82,15 @@ public:
         virtual ::BlockPos getSize(::Rotation rotation) const /*override*/;
 
         virtual bool isLegacyStructure() const /*override*/;
+        // NOLINTEND
+
+    public:
+        // static functions
+        // NOLINTBEGIN
+        MCAPI static ::std::vector<::JigsawBlockInfo> _findJigsawBlocks(
+            ::std::vector<::JigsawStructureBlockInfo>&                           jigsawMarkers,
+            ::std::vector<::std::unique_ptr<::StructurePoolBlockTagRule>> const* blockTagRules
+        );
         // NOLINTEND
 
     public:
@@ -237,6 +241,10 @@ public:
     );
 
     MCAPI ::SharedTypes::v1_21_80::JigsawStructureMetadata const& _getMetadata() const;
+
+    MCAPI uint64 _getMetadataKey() const;
+
+    MCAPI void setId(::JigsawStructureUtils::StructureElementId id);
     // NOLINTEND
 
 public:
@@ -310,7 +318,11 @@ public:
 
     MCAPI void $setProjection(::Projection projection);
 
+#ifdef LL_PLAT_S
     MCAPI ::Projection $getProjection() const;
+#else // LL_PLAT_C
+    MCFOLD ::Projection $getProjection() const;
+#endif
 
     MCAPI ::PostProcessSettings $getPostProcessSettings() const;
 

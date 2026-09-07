@@ -35,9 +35,19 @@ public:
     // NOLINTEND
 
 public:
+    // prevent constructor by default
+    PlatformStoreIconModel();
+
+public:
     // member functions
     // NOLINTBEGIN
+    MCAPI explicit PlatformStoreIconModel(::SubClientId subClientId);
+
     MCAPI void _updatePlatformStoreIcon();
+
+    MCAPI void setIsInGameBrowsing(bool isInGameBrowsing);
+
+    MCAPI ~PlatformStoreIconModel();
     // NOLINTEND
 
 public:
@@ -45,6 +55,22 @@ public:
     // NOLINTBEGIN
     MCAPI static bool& sIsIconVisible();
 
+    MCAPI static ::std::
+        unordered_map<::SubClientId, ::std::vector<::PlatformStoreIconModel::PlatformStoreIconVisibility*>>&
+        sPlatformStoreIconVisibilityStacks();
+
     MCAPI static ::Bedrock::Threading::Mutex& sStacksMutex();
+    // NOLINTEND
+
+public:
+    // constructor thunks
+    // NOLINTBEGIN
+    MCAPI void* $ctor(::SubClientId subClientId);
+    // NOLINTEND
+
+public:
+    // destructor thunk
+    // NOLINTBEGIN
+    MCAPI void $dtor();
     // NOLINTEND
 };

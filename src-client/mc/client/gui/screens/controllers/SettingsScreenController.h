@@ -52,7 +52,7 @@ public:
     ::ll::TypedStorage<8, 32, ::std::string>                                       mInitialPack;
     ::ll::TypedStorage<4, 4, ::SettingsScreenMode>                                 mSettingsMode;
     ::ll::TypedStorage<1, 1, bool>                                                 mShowRealmsSettings;
-    ::ll::TypedStorage<8, 656, ::Realms::World>                                    mWorld;
+    ::ll::TypedStorage<8, 720, ::Realms::World>                                    mWorld;
     ::ll::TypedStorage<1, 1, bool>                                                 mNavigateToMenuOnExit;
     ::ll::TypedStorage<1, 1, bool>                                                 mIsGlobalSettingsScreen;
     ::ll::TypedStorage<1, 1, bool>                                                 mReloadTexturePacksOnExit;
@@ -89,7 +89,8 @@ public:
 
     virtual ::std::string getAdditionalScreenInfo() const /*override*/;
 
-    virtual void addEventProperties(::std::unordered_map<::std::string, ::std::string>&) const /*override*/;
+    virtual void addEventProperties(::std::unordered_map<::std::string, ::std::string>& eventProperties) const
+        /*override*/;
 
     virtual int getScreenVersion() const /*override*/;
 
@@ -142,6 +143,8 @@ public:
         bool                                     fullscreen,
         bool                                     legacySyncOnly
     );
+
+    MCAPI void _init();
     // NOLINTEND
 
 public:
@@ -168,6 +171,12 @@ public:
         ::SettingsScreenCapabilities const& capabilities,
         ::BuildPlatform const&              buildPlatform
     );
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::std::unordered_map<int, ::SettingsScreenController::SettingsScreenTabInfo> const& mScreenInfo();
     // NOLINTEND
 
 public:
@@ -221,6 +230,16 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $onOpen();
 
+    MCAPI void $addStaticScreenVars(::Json::Value& globalVars);
+
+    MCAPI ::std::string $getAdditionalScreenInfo() const;
+
+    MCAPI void $addEventProperties(::std::unordered_map<::std::string, ::std::string>& eventProperties) const;
+
+    MCAPI int $getScreenVersion() const;
+
+    MCFOLD ::ui::SceneType $getSceneType() const;
     // NOLINTEND
 };

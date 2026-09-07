@@ -14,10 +14,12 @@ namespace ParticleSystem { class EmitterRateComponentBase; }
 namespace ParticleSystem { class EmitterShapeComponentBase; }
 namespace ParticleSystem { class ParticleAppearanceComponentBase; }
 namespace ParticleSystem { class ParticleCurveBase; }
+namespace ParticleSystem { class ParticleEffectComponentRegistry; }
 namespace ParticleSystem { class ParticleEventNode; }
 namespace ParticleSystem { class ParticleInitialComponentBase; }
 namespace ParticleSystem { class ParticleLifetimeComponentBase; }
 namespace ParticleSystem { class ParticleMotionComponentBase; }
+namespace SharedTypes::v1_20_80 { struct ParticleEffectComponents; }
 // clang-format on
 
 namespace ParticleSystem {
@@ -57,6 +59,11 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
+    MCAPI void _generateEffectComponents(
+        ::SharedTypes::v1_20_80::ParticleEffectComponents&       componentData,
+        ::ParticleSystem::ParticleEffectComponentRegistry const* particleComponentRegistry
+    );
+
     MCAPI bool isManualEmitter() const;
     // NOLINTEND
 

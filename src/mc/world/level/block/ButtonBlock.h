@@ -82,8 +82,6 @@ public:
 
     virtual bool canSpawnOn(::Actor*) const /*override*/;
 
-    virtual bool isButtonBlock() const /*override*/;
-
     virtual bool checkIsPathable(::Actor& entity, ::BlockPos const& lastPathPos, ::BlockPos const& pathPos) const
         /*override*/;
 
@@ -98,6 +96,11 @@ public:
     // member functions
     // NOLINTBEGIN
     MCAPI ButtonBlock(::std::string const& nameId, int id, ::Material const& material, bool sensitive);
+
+    MCAPI void
+    _buttonUnpressed(::BlockSource& region, ::Block const& buttonBlock, ::Vec3 const& pos, ::Actor* sourceActor) const;
+
+    MCAPI void _checkPressed(::BlockSource& region, ::BlockPos const& pos) const;
 
     MCAPI void
     buttonPressed(::BlockSource& region, ::Block const& buttonBlock, ::Vec3 const& pos, ::Actor* sourceActor) const;
@@ -169,8 +172,6 @@ public:
     MCFOLD int $getVariant(::Block const& block) const;
 
     MCFOLD bool $canSpawnOn(::Actor*) const;
-
-    MCFOLD bool $isButtonBlock() const;
 
     MCFOLD bool $checkIsPathable(::Actor& entity, ::BlockPos const& lastPathPos, ::BlockPos const& pathPos) const;
 

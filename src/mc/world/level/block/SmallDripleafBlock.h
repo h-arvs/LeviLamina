@@ -14,7 +14,6 @@ class Actor;
 class Block;
 class BlockPos;
 class BlockSource;
-class BlockType;
 class Experiments;
 class GetCollisionShapeInterface;
 class IConstBlockSource;
@@ -31,8 +30,6 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual ::BlockType& init() /*override*/;
-
     virtual bool mayPlace(::BlockSource& region, ::BlockPos const& pos) const /*override*/;
 
     virtual bool mayPlaceOn(::BlockSource& region, ::BlockPos const& pos) const /*override*/;
@@ -68,6 +65,8 @@ public:
 
     virtual bool isLavaBlocking() const /*override*/;
 
+    virtual ::Block const& getInitialDefaultState() /*override*/;
+
     virtual void _addHardCodedBlockComponents(::Experiments const&) /*override*/;
     // NOLINTEND
 
@@ -82,6 +81,8 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
+    MCAPI static void placeUpperBlock(::BlockSource& region, ::BlockPos const& pos, int updateFlags);
+
     MCAPI static bool
     tryPlaceSmallDripleaf(::BlockSource& region, ::BlockPos const& pos, int directionState, int updateFlags);
     // NOLINTEND
@@ -95,8 +96,6 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
-    MCAPI ::BlockType& $init();
-
     MCAPI bool $mayPlace(::BlockSource& region, ::BlockPos const& pos) const;
 
     MCAPI bool $mayPlaceOn(::BlockSource& region, ::BlockPos const& pos) const;
@@ -131,6 +130,8 @@ public:
     MCFOLD void $tick(::BlockEvents::BlockQueuedTickEvent& eventData) const;
 
     MCFOLD bool $isLavaBlocking() const;
+
+    MCAPI ::Block const& $getInitialDefaultState();
 
     MCAPI void $_addHardCodedBlockComponents(::Experiments const&);
 

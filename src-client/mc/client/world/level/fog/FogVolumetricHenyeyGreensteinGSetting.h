@@ -13,14 +13,8 @@ public:
     // NOLINTEND
 
 public:
-    // member functions
+    // static variables
     // NOLINTBEGIN
-    MCAPI ~FogVolumetricHenyeyGreensteinGSetting();
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCFOLD void $dtor();
+    MCAPI static ::FogVolumetricHenyeyGreensteinGSetting const& ZERO_SETTING();
     // NOLINTEND
 };

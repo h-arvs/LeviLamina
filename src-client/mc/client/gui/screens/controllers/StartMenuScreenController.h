@@ -19,6 +19,7 @@
 #include "mc/deps/core/utility/NonOwnerPointer.h"
 #include "mc/deps/core/utility/pub_sub/Subscription.h"
 #include "mc/network/ExperiencePromotion.h"
+#include "mc/services/flighting/InboxIconFlightingState.h"
 
 // auto generated forward declare list
 // clang-format off
@@ -50,13 +51,13 @@ public:
     public:
         // virtual functions
         // NOLINTBEGIN
-        virtual void onUserRemoved(::std::shared_ptr<::Social::User> const&) /*override*/;
+        virtual void onUserRemoved(::std::shared_ptr<::Social::User> const& user) /*override*/;
         // NOLINTEND
 
     public:
         // virtual function thunks
         // NOLINTBEGIN
-
+        MCAPI void $onUserRemoved(::std::shared_ptr<::Social::User> const& user);
         // NOLINTEND
     };
 
@@ -93,6 +94,7 @@ public:
     ::ll::TypedStorage<4, 4, int>                                             mUnreadInvites;
     ::ll::TypedStorage<1, 1, bool>                                            mInitialInboxAnimationPlayed;
     ::ll::TypedStorage<1, 1, bool>                                            mShowingNewPlayerFlowButtons;
+    ::ll::TypedStorage<4, 4, ::InboxIconFlightingState>                       mInboxIconState;
     ::ll::TypedStorage<1, 1, bool>                                            mNeedToPlayMainButtonsShowAnimation;
     ::ll::TypedStorage<8, 248, ::std::optional<::ExperiencePromotion>>        mActivePromotion;
     ::ll::TypedStorage<1, 1, bool>                                            mOwnsRealmsSubscription;
@@ -101,6 +103,7 @@ public:
     ::ll::TypedStorage<8, 16, ::Bedrock::PubSub::Subscription>                mPendingInviteCountSubscriber;
     ::ll::TypedStorage<8, 16, ::Bedrock::PubSub::Subscription>                mPrimaryUserSignInSubscription;
     ::ll::TypedStorage<8, 16, ::Bedrock::PubSub::Subscription>                mTrialModeUpdateSubscription;
+    ::ll::TypedStorage<8, 16, ::Bedrock::PubSub::Subscription>                mInboxIconStateSubscription;
     ::ll::TypedStorage<1, 1, bool>                                            mIsTrialModeEnabled;
     // NOLINTEND
 
@@ -153,6 +156,24 @@ public:
         ::std::shared_ptr<::MainMenuScreenModel>             model,
         ::Bedrock::NotNullNonOwnerPtr<::IEntitlementManager> entitlementManager
     );
+
+    MCAPI bool _YHelperVisible() const;
+
+    MCAPI void _fetchUserOrientedContent(bool const signInFailed);
+
+    MCAPI bool _isProfileButtonAEnabled() const;
+
+    MCAPI bool _isProfileButtonBEnabled() const;
+
+    MCAPI bool _isSignInVisible();
+
+    MCAPI bool _realmsPromoEnabled() const;
+
+    MCAPI void _updateProfileImage();
+
+    MCAPI void resetInboxAnimation();
+
+    MCAPI void startInboxAnimation();
     // NOLINTEND
 
 public:
@@ -167,6 +188,33 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $handleLicenseChanged();
 
+    MCAPI ::ui::SceneType $getSceneType() const;
+
+    MCAPI void $onCreation();
+
+    MCAPI void $queueTitleNarration();
+
+    MCAPI void $onOpen();
+
+    MCAPI void $onEntered();
+
+    MCAPI void $onInit();
+
+    MCAPI ::ui::DirtyFlag $tick();
+
+    MCAPI ::ui::DirtyFlag $handleGameEventNotification(::ui::GameEventNotification notification);
+
+    MCAPI void $addStaticScreenVars(::Json::Value& globalVars);
+
+    MCAPI void $onNotify(::edu::auth::GenericCredentialsEvent<::edu::auth::CredsAuthComplete> const& state);
+
+    MCAPI ::std::string $_getButtonYDescription();
+
+    MCAPI ::std::string $_getButtonXDescription();
+
+    MCAPI ::ui::ViewRequest
+    $promptConnect(bool signInOnSuccess, ::std::function<void(::Social::UserPlatformConnectionResult)> signInCallback);
     // NOLINTEND
 };

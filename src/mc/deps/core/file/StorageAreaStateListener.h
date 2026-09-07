@@ -26,14 +26,31 @@ public:
     // NOLINTBEGIN
     virtual ~StorageAreaStateListener();
 
+#ifdef LL_PLAT_S
     virtual void
     onExtendDiskSpace(bool const, ::std::weak_ptr<::Core::FileStorageArea> const&, uint64, ::std::function<void()>);
+#else // LL_PLAT_C
+    virtual void onExtendDiskSpace(
+        bool const                                      bSet,
+        ::std::weak_ptr<::Core::FileStorageArea> const& storageAreaWeakPtr,
+        uint64                                          freeSpace,
+        ::std::function<void()>                         onHandledEventCallback
+    );
+#endif
 
-    virtual void onLowDiskSpace(bool const);
+#ifdef LL_PLAT_S
+    virtual void onLowDiskSpace(bool const, uint64);
+#else // LL_PLAT_C
+    virtual void onLowDiskSpace(bool const bSet, uint64 freeSpace);
+#endif
 
-    virtual void onOutOfDiskSpace(bool const);
+#ifdef LL_PLAT_S
+    virtual void onOutOfDiskSpace(bool const, uint64);
+#else // LL_PLAT_C
+    virtual void onOutOfDiskSpace(bool const bSet, uint64 freeSpace);
+#endif
 
-    virtual void onCriticalDiskError(bool const, ::Core::LevelStorageState const&);
+    virtual void onCriticalDiskError(bool const bSet, ::Core::LevelStorageState const& errorCode);
     // NOLINTEND
 
 public:
@@ -53,14 +70,31 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+#ifdef LL_PLAT_S
     MCAPI void
     $onExtendDiskSpace(bool const, ::std::weak_ptr<::Core::FileStorageArea> const&, uint64, ::std::function<void()>);
+#else // LL_PLAT_C
+    MCFOLD void $onExtendDiskSpace(
+        bool const                                      bSet,
+        ::std::weak_ptr<::Core::FileStorageArea> const& storageAreaWeakPtr,
+        uint64                                          freeSpace,
+        ::std::function<void()>                         onHandledEventCallback
+    );
+#endif
 
-    MCFOLD void $onLowDiskSpace(bool const);
+#ifdef LL_PLAT_S
+    MCFOLD void $onLowDiskSpace(bool const, uint64);
+#else // LL_PLAT_C
+    MCFOLD void $onLowDiskSpace(bool const bSet, uint64 freeSpace);
+#endif
 
-    MCFOLD void $onOutOfDiskSpace(bool const);
+#ifdef LL_PLAT_S
+    MCFOLD void $onOutOfDiskSpace(bool const, uint64);
+#else // LL_PLAT_C
+    MCFOLD void $onOutOfDiskSpace(bool const bSet, uint64 freeSpace);
+#endif
 
-    MCFOLD void $onCriticalDiskError(bool const, ::Core::LevelStorageState const&);
+    MCFOLD void $onCriticalDiskError(bool const bSet, ::Core::LevelStorageState const& errorCode);
 
 
     // NOLINTEND

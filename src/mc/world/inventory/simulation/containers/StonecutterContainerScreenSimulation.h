@@ -27,48 +27,25 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-#ifdef LL_PLAT_S
-    virtual ::ContainerScreenActionResult
-    tryTakeAmount(::ContainerValidationSlotData const&, int, ::ContainerValidationSlotData const&) /*override*/;
-#else // LL_PLAT_C
     virtual ::ContainerScreenActionResult tryTakeAmount(
         ::ContainerValidationSlotData const& dstSlot,
         int                                  amount,
         ::ContainerValidationSlotData const& srcSlot
     ) /*override*/;
-#endif
 
-#ifdef LL_PLAT_S
-    virtual ::ContainerScreenActionResult
-    tryTakeAll(::ContainerValidationSlotData const&, ::ContainerValidationSlotData const&) /*override*/;
-#else // LL_PLAT_C
     virtual ::ContainerScreenActionResult
     tryTakeAll(::ContainerValidationSlotData const& dstSlot, ::ContainerValidationSlotData const& srcSlot) /*override*/;
-#endif
 
-#ifdef LL_PLAT_S
-    virtual ::ContainerScreenActionResult
-    tryTakeHalf(::ContainerValidationSlotData const&, ::ContainerValidationSlotData const&) /*override*/;
-#else // LL_PLAT_C
     virtual ::ContainerScreenActionResult tryTakeHalf(
         ::ContainerValidationSlotData const& dstSlot,
         ::ContainerValidationSlotData const& srcSlot
     ) /*override*/;
-#endif
 
-#ifdef LL_PLAT_S
-    virtual ::ContainerScreenActionResult tryAutoPlace(
-        ::ContainerValidationSlotData const&,
-        ::ItemTransferAmount,
-        ::ContainerScreenAutoplaceBehaviour
-    ) /*override*/;
-#else // LL_PLAT_C
     virtual ::ContainerScreenActionResult tryAutoPlace(
         ::ContainerValidationSlotData const& srcSlot,
         ::ItemTransferAmount                 amount,
         ::ContainerScreenAutoplaceBehaviour  autoplaceBehaviour
     ) /*override*/;
-#endif
 
     virtual ::ContainerValidationCraftResult getCraftPreview() /*override*/;
 
@@ -82,6 +59,9 @@ public:
     // NOLINTBEGIN
 #ifdef LL_PLAT_C
     MCNAPI ::RecipeNetId _getResultRecipeIdForInput(::ItemStack const& inputStack);
+
+    MCNAPI ::ContainerScreenActionResult
+    _tryTransferCraft(::ContainerValidationSlotData const&, ::ContainerValidationSlotData const& dstSlot);
 #endif
     // NOLINTEND
 

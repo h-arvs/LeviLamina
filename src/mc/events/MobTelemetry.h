@@ -106,6 +106,26 @@ public:
         bool                 hadPassenger
     );
     // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCNAPI static void onMobDroppedItem(
+        ::std::string const& mobNamespace,
+        ::std::string const& mobName,
+        ::std::string const& itemNamespace,
+        ::std::string const& itemName,
+        uint                 stackSize
+    );
+
+    MCNAPI static void onMobPickedUpItem(
+        ::std::string const& mobNamespace,
+        ::std::string const& mobName,
+        ::std::string const& itemNamespace,
+        ::std::string const& itemName,
+        uint                 stackSize
+    );
+    // NOLINTEND
 };
 
 } // namespace Social::Events

@@ -16,15 +16,9 @@ public:
     // NOLINTBEGIN
     virtual ~ISynchedActorDataAdapter() = default;
 
-    virtual ::std::unique_ptr<::DataItem> serialize(::EntityContext const&) const = 0;
+    virtual ::std::unique_ptr<::DataItem> serialize(::EntityContext const& from) const = 0;
 
     virtual ::SynchedActorDataSerializer::DeserializeResult
-    deserialize(::DataItem const&, ::SynchedActorDataSerializer::DeserializeArgs&) const = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    deserialize(::DataItem const& from, ::SynchedActorDataSerializer::DeserializeArgs& args) const = 0;
     // NOLINTEND
 };

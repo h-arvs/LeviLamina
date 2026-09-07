@@ -12,6 +12,7 @@ class Actor;
 class Block;
 class BlockPos;
 class BlockSource;
+namespace BlockEvents { class BlockRandomTickEvent; }
 // clang-format on
 
 class SaplingBlock : public ::FoliageBlock {
@@ -33,7 +34,7 @@ public:
     virtual bool mayPlace(::BlockSource& region, ::BlockPos const& pos) const /*override*/;
 
     virtual bool
-    onFertilized(::BlockSource& region, ::BlockPos const& pos, ::Actor* actor, ::FertilizerType fType) const
+    onFertilized(::BlockSource& region, ::BlockPos const& pos, ::Actor* actor, ::FertilizerType fertilizerType) const
         /*override*/;
 
     virtual bool canBeFertilized(::BlockSource& region, ::BlockPos const& pos, ::Block const& aboveBlock) const
@@ -50,6 +51,11 @@ public:
         ::std::optional<::std::string> singleSaplingTreeWithBeehive,
         ::std::optional<::std::string> quadrupleSaplingTree
     );
+
+    MCAPI ::std::optional<::BlockPos>
+    _getQuadrupleSaplingOffset(::BlockSource const& region, ::BlockPos const& pos) const;
+
+    MCAPI void randomTick(::BlockEvents::BlockRandomTickEvent& eventData) const;
     // NOLINTEND
 
 public:
@@ -67,6 +73,13 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCFOLD bool $mayPlace(::BlockSource& region, ::BlockPos const& pos) const;
+
+    MCAPI bool
+    $onFertilized(::BlockSource& region, ::BlockPos const& pos, ::Actor* actor, ::FertilizerType fertilizerType) const;
+
+    MCFOLD bool $canBeFertilized(::BlockSource& region, ::BlockPos const& pos, ::Block const& aboveBlock) const;
+
 
     // NOLINTEND
 };

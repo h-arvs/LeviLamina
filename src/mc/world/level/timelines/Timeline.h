@@ -44,10 +44,4 @@ public:
 
     virtual void _phaseTransitionEnded(::std::string const&, ::std::string const&);
     // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
-    // NOLINTEND
 };

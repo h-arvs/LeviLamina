@@ -324,11 +324,7 @@ public:
 
     virtual void setTarget(::Actor* entity);
 
-#ifdef LL_PLAT_S
-    virtual bool isValidTarget(::Actor*) const;
-#else // LL_PLAT_C
     virtual bool isValidTarget(::Actor* attacker) const;
-#endif
 
     virtual ::ActorHurtResult attack(::Actor& target, ::SharedTypes::Legacy::ActorDamageCause const& cause);
 
@@ -404,7 +400,11 @@ public:
 
     virtual void changeDimension(::DimensionType toId);
 
+#ifdef LL_PLAT_S
     virtual void changeDimension(::ChangeDimensionPacket const&);
+#else // LL_PLAT_C
+    virtual void changeDimension(::ChangeDimensionPacket const& packet);
+#endif
 
     virtual ::ActorUniqueID getControllingPlayer() const;
 
@@ -446,11 +446,7 @@ public:
 
     virtual void openContainerComponent(::Player& player);
 
-#ifdef LL_PLAT_S
-    virtual bool swing(::ActorSwingSource);
-#else // LL_PLAT_C
     virtual bool swing(::ActorSwingSource swingSource);
-#endif
 
     virtual void useItem(::ItemStackBase& item, ::ItemUseMethod itemUseMethod, bool consumeItem);
 
@@ -521,6 +517,10 @@ public:
         ::EntityContext&                   entityContext
     );
 
+    MCAPI ::BuiltInActorComponents _addActorBuiltInComponents();
+
+    MCAPI void _addActorNonBuiltInComponents();
+
     MCAPI bool _applyPendingPropertyChanges();
 
     MCAPI ::ItemActor const* _drop(::ItemStack const& item, bool randomly);
@@ -552,6 +552,8 @@ public:
 
     MCAPI void _setupServerAnimationComponent();
 
+    MCAPI void _updateComposition(bool reload);
+
     MCAPI void addEffect(::MobEffectInstance const& effect);
 
     MCAPI bool addTag(::std::string const& tag);
@@ -575,6 +577,8 @@ public:
     MCAPI bool canSee(::Vec3 const& targetPos, ::ShapeType obstructionType) const;
 
     MCAPI bool canSeeDaylight() const;
+
+    MCAPI void celebrateHunt(int duration, bool special);
 
     MCAPI void checkFallDamage(float ya, bool onGround, bool recheckLiquid);
 
@@ -646,7 +650,9 @@ public:
 
     MCAPI ::Dimension& getDimension() const;
 
-    MCAPI ::BlockSource& getDimensionBlockSource() const;
+    MCFOLD ::BlockSource& getDimensionBlockSource() const;
+
+    MCFOLD ::BlockSource const& getDimensionBlockSourceConst() const;
 
     MCAPI ::DimensionType getDimensionId() const;
 
@@ -684,7 +690,9 @@ public:
 
     MCAPI ::Vec3 getInterpolatedRidingPosition(float a) const;
 
+#ifdef LL_PLAT_S
     MCAPI ::Vec2 getInterpolatedRotation(float a) const;
+#endif
 
     MCAPI int getInventorySize() const;
 
@@ -754,6 +762,8 @@ public:
 
     MCAPI void handleFallDamage(float fallDistance, float multiplier, ::ActorDamageSource source);
 
+    MCAPI void handleLeftoverFallDamage(float damage, ::ActorDamageSource source);
+
     MCAPI bool hasAnyEffects() const;
 
     MCAPI bool hasDimension() const;
@@ -794,8 +804,6 @@ public:
 
     MCAPI bool isAdventure() const;
 
-    MCAPI bool isAngry() const;
-
     MCAPI bool isBaby() const;
 
     MCAPI bool isCreative() const;
@@ -805,8 +813,6 @@ public:
     MCAPI bool isImmersedInWater() const;
 
     MCAPI bool isInClouds() const;
-
-    MCAPI bool isInLove() const;
 
     MCAPI bool isInPrecipitation() const;
 
@@ -826,6 +832,8 @@ public:
 
     MCAPI bool isJumping() const;
 
+    MCAPI bool isLayingDown() const;
+
     MCAPI bool isLeashed() const;
 
     MCAPI bool isLocalPlayer() const;
@@ -838,13 +846,13 @@ public:
 
     MCAPI bool isPlayer() const;
 
-    MCAPI bool isResting() const;
-
     MCAPI bool isRiding(::Actor* targetVehicle) const;
 
     MCAPI bool isSilent() const;
 
     MCAPI bool isSitting() const;
+
+    MCAPI bool isSneaking() const;
 
     MCAPI bool isSpectator() const;
 
@@ -853,6 +861,8 @@ public:
     MCAPI bool isSurvival() const;
 
     MCAPI bool isSwimmer() const;
+
+    MCAPI bool isSwimming() const;
 
     MCAPI bool isTame() const;
 
@@ -863,6 +873,8 @@ public:
     MCAPI bool isUnderLiquid(::SharedTypes::v1_26_20::MaterialType type) const;
 
     MCAPI bool isUseNewTradeScreen() const;
+
+    MCAPI bool isWalker() const;
 
     MCAPI bool isWearingLeatherArmor() const;
 
@@ -909,6 +921,10 @@ public:
         bool                                   isGlobal,
         ::std::optional<::Vec3> const&
     );
+
+#ifdef LL_PLAT_C
+    MCAPI void positionAllPassengers();
+#endif
 
     MCAPI void positionPassenger(::Actor& passenger);
 
@@ -967,6 +983,10 @@ public:
     MCAPI void setPersistent();
 
     MCAPI void setRedactableNameTag(::Bedrock::Safety::RedactableString const& name);
+
+#ifdef LL_PLAT_C
+    MCAPI void setRotationWrapped(::Vec2 const& rot);
+#endif
 
     MCAPI void setRuntimeID(::ActorRuntimeID id);
 
@@ -1179,7 +1199,7 @@ public:
 
     MCAPI void $setTarget(::Actor* entity);
 
-    MCFOLD bool $isValidTarget(::Actor*) const;
+    MCFOLD bool $isValidTarget(::Actor* attacker) const;
 
     MCAPI ::ActorHurtResult $attack(::Actor& target, ::SharedTypes::Legacy::ActorDamageCause const& cause);
 
@@ -1215,7 +1235,11 @@ public:
 
     MCAPI void $handleEntityEvent(::ActorEvent eventId, int data);
 
+#ifdef LL_PLAT_S
     MCFOLD ::HashedString const& $getActorRendererId() const;
+#else // LL_PLAT_C
+    MCAPI ::HashedString const& $getActorRendererId() const;
+#endif
 
     MCAPI void $despawn();
 
@@ -1255,7 +1279,11 @@ public:
 
     MCAPI void $changeDimension(::DimensionType toId);
 
+#ifdef LL_PLAT_S
     MCFOLD void $changeDimension(::ChangeDimensionPacket const&);
+#else // LL_PLAT_C
+    MCFOLD void $changeDimension(::ChangeDimensionPacket const& packet);
+#endif
 
     MCFOLD ::ActorUniqueID $getControllingPlayer() const;
 
@@ -1297,7 +1325,7 @@ public:
 
     MCAPI void $openContainerComponent(::Player& player);
 
-    MCFOLD bool $swing(::ActorSwingSource);
+    MCFOLD bool $swing(::ActorSwingSource swingSource);
 
     MCAPI void $useItem(::ItemStackBase& item, ::ItemUseMethod itemUseMethod, bool consumeItem);
 

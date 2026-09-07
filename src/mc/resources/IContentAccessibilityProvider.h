@@ -16,12 +16,6 @@ public:
     // NOLINTBEGIN
     virtual ~IContentAccessibilityProvider() /*override*/ = default;
 
-    virtual bool canAccess(::ContentIdentity const&) const = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual bool canAccess(::ContentIdentity const& contentIdentity) const = 0;
     // NOLINTEND
 };

@@ -9,16 +9,10 @@ public:
     virtual ~IUIEventTelemetry() = default;
 
     virtual void fireScreenLoadTimeUpdateEvent(
-        uint const&,
-        ::std::string const&,
-        ::std::chrono::nanoseconds,
-        ::std::string const&
+        uint const&                userId,
+        ::std::string const&       screenName,
+        ::std::chrono::nanoseconds duration,
+        ::std::string const&       loadInstanceId
     ) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };

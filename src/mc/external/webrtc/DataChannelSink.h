@@ -32,12 +32,6 @@ public:
 
     virtual void OnBufferedAmountLow(int channel_id) = 0;
     // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
-    // NOLINTEND
 };
 
 } // namespace webrtc

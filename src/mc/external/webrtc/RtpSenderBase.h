@@ -43,12 +43,6 @@ public:
 
         virtual void OnSetStreams() = 0;
         // NOLINTEND
-
-    public:
-        // virtual function thunks
-        // NOLINTBEGIN
-
-        // NOLINTEND
     };
 
 public:
@@ -182,7 +176,7 @@ public:
 
     virtual ::webrtc::RTCError GenerateKeyFrame(::std::vector<::std::string> const& rids) = 0;
 
-    virtual ~RtpSenderBase() /*override*/;
+    virtual ~RtpSenderBase() /*override*/ = default;
     // NOLINTEND
 
 public:

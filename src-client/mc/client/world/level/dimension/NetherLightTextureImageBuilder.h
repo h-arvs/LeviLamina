@@ -22,6 +22,7 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
-
+    MCAPI ::std::unique_ptr<::BaseLightData>
+    $createBaseLightTextureData(::IClientInstance* client, ::BaseLightData const& currentData);
     // NOLINTEND
 };

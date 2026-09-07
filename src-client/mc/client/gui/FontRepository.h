@@ -7,11 +7,14 @@
 #include "mc/deps/application/AppPlatformListener.h"
 #include "mc/deps/core/threading/Async.h"
 #include "mc/deps/core/utility/EnableNonOwnerReferences.h"
+#include "mc/deps/core/utility/NonOwnerPointer.h"
 
 // auto generated forward declare list
 // clang-format off
 class Font;
+class ResourceLoadManager;
 class ResourceLocation;
+namespace Core { class Path; }
 namespace mce { class TextureGroup; }
 // clang-format on
 
@@ -41,7 +44,13 @@ public:
     ::ll::TypedStorage<8, 64, ::std::unordered_map<uint64, ::std::shared_ptr<::Font>>>   mOverriddenFonts;
     ::ll::TypedStorage<8, 24, ::std::vector<::Bedrock::Threading::Async<void>>>          mFontLoadingTaskTrackers;
     ::ll::TypedStorage<8, 32, ::std::string>                                             mLanguageCode;
+    ::ll::TypedStorage<8, 24, ::Bedrock::NotNullNonOwnerPtr<::ResourceLoadManager>>      mResourceLoadManager;
+    ::ll::TypedStorage<1, 1, bool>                                                       mIsOnLowMemoryDevice;
     // NOLINTEND
+
+public:
+    // prevent constructor by default
+    FontRepository();
 
 public:
     // virtual functions
@@ -56,9 +65,32 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCAPI FontRepository();
+    MCAPI FontRepository(::Bedrock::NotNullNonOwnerPtr<::ResourceLoadManager> manager, bool isOnLowMemoryDevice);
+
+    MCAPI void _queueBitmapFont(
+        ::std::string const&                 alias,
+        ::Core::Path const&                  asciiName,
+        ::Core::Path const&                  unicodeName,
+        ::std::weak_ptr<::mce::TextureGroup> textureGroupWeakPtr
+    );
+
+    MCAPI void _queueMsdfFont(
+        ::std::string const&                 alias,
+        ::Core::Path const&                  fontPagePrefix,
+        ::std::weak_ptr<::mce::TextureGroup> textureGroupWeakPtr
+    );
+
+    MCAPI void _setDefaultFont(::std::string const& fontName, uint64 const fontId, ::std::shared_ptr<::Font> font);
+
+    MCAPI void _setFontIfOverride(uint64 const fontId, ::std::shared_ptr<::Font> font);
+
+    MCAPI uint64 addPreloadedFont(::std::string const& fontName, ::gsl::not_null<::std::shared_ptr<::Font>> font);
 
     MCAPI ::FontHandle getFontFromFontType(::std::string const& fontType) const;
+
+    MCAPI ::FontHandle getFontHandle(uint64 const fontId);
+
+    MCAPI uint64 getFontIdentifier(::std::string const& fontName);
 
     MCAPI ::std::vector<::ResourceLocation> getReloadFontTextures() const;
 
@@ -88,12 +120,14 @@ public:
 public:
     // constructor thunks
     // NOLINTBEGIN
-    MCAPI void* $ctor();
+    MCAPI void* $ctor(::Bedrock::NotNullNonOwnerPtr<::ResourceLoadManager> manager, bool isOnLowMemoryDevice);
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $onAppSuspended();
 
+    MCAPI void $onDeviceLost();
     // NOLINTEND
 };

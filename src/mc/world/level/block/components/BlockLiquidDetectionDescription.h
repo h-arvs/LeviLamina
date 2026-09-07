@@ -3,6 +3,9 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
+#include "mc/deps/shared_types/v1_26_0/block/LiquidReaction.h"
+#include "mc/deps/shared_types/v1_26_0/block/LiquidType.h"
+#include "mc/util/BidirectionalUnorderedMap.h"
 #include "mc/world/level/block/components/BlockComponentDescription.h"
 
 // auto generated forward declare list
@@ -34,6 +37,8 @@ public:
     virtual ::std::unique_ptr<::CompoundTag> buildNetworkTag(::cereal::ReflectionCtx const& ctx) const /*override*/;
 
     virtual void initializeFromNetwork(::CompoundTag const& tag, ::cereal::ReflectionCtx const& ctx) /*override*/;
+
+    virtual ~BlockLiquidDetectionDescription() /*override*/;
     // NOLINTEND
 
 public:
@@ -46,6 +51,18 @@ public:
     // static variables
     // NOLINTBEGIN
     MCAPI static ::std::string const& NameID();
+
+    MCAPI static ::BidirectionalUnorderedMap<::std::string, ::SharedTypes::v1_26_0::LiquidReaction> const&
+    liquidReactionNameBiMap();
+
+    MCAPI static ::BidirectionalUnorderedMap<::std::string, ::SharedTypes::v1_26_0::LiquidType> const&
+    liquidTypeNameBiMap();
+    // NOLINTEND
+
+public:
+    // destructor thunk
+    // NOLINTBEGIN
+    MCAPI void $dtor();
     // NOLINTEND
 
 public:

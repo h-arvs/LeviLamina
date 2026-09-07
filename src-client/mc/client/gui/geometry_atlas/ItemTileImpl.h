@@ -18,17 +18,25 @@ class ItemTileImpl : public ::GeometryAtlas::IItemTile, public ::GeometryAtlas::
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual void submitUpdate(::GeometryAtlas::ItemPayload&&) /*override*/;
+    virtual void submitUpdate(::GeometryAtlas::ItemPayload&& payload) /*override*/;
 
     virtual uint getUserID() const /*override*/;
 
     virtual ::dragon::atlas::AtlasTileHandle getBackendID() const /*override*/;
+
+    virtual bool isInitialized() const /*override*/;
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $submitUpdate(::GeometryAtlas::ItemPayload&& payload);
 
+    MCFOLD uint $getUserID() const;
+
+    MCAPI ::dragon::atlas::AtlasTileHandle $getBackendID() const;
+
+    MCAPI bool $isInitialized() const;
     // NOLINTEND
 };
 

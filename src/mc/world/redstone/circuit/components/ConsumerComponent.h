@@ -50,18 +50,30 @@ public:
     virtual bool needsUpdate() /*override*/;
 
     virtual ::CircuitComponentType getCircuitComponentType() const /*override*/;
+
+    virtual ~ConsumerComponent() /*override*/;
     // NOLINTEND
 
 public:
     // member functions
     // NOLINTBEGIN
+#ifdef LL_PLAT_S
     MCAPI ConsumerComponent();
+#endif
     // NOLINTEND
 
 public:
     // constructor thunks
     // NOLINTBEGIN
+#ifdef LL_PLAT_S
     MCAPI void* $ctor();
+#endif
+    // NOLINTEND
+
+public:
+    // destructor thunk
+    // NOLINTBEGIN
+    MCAPI void $dtor();
     // NOLINTEND
 
 public:
@@ -76,7 +88,11 @@ public:
 
     MCFOLD bool $canConsumerPower() const;
 
+#ifdef LL_PLAT_S
     MCAPI bool $isSecondaryPowered() const;
+#else // LL_PLAT_C
+    MCFOLD bool $isSecondaryPowered() const;
+#endif
 
     MCAPI bool $needsUpdate();
 

@@ -15,6 +15,7 @@
 #include "mc/world/item/Item.h"
 #include "mc/world/item/ItemTag.h"
 #include "mc/world/item/registry/ItemRegistrationOrder.h"
+#include "mc/world/item/registry/ItemRegistryRef.h"
 
 // auto generated forward declare list
 // clang-format off
@@ -30,10 +31,12 @@ class LinkedAssetValidator;
 class ResourcePackManager;
 struct ItemData;
 struct ItemIconInfo;
+struct ItemParseContext;
 struct ItemRegistryComplexAlias;
 namespace Bedrock::PubSub::ThreadModel { struct MultiThreaded; }
 namespace Bedrock::Threading { class Mutex; }
 namespace ItemLoaderTraits { struct Loader; }
+namespace Puv { class Input; }
 namespace cereal { struct ReflectionCtx; }
 // clang-format on
 
@@ -158,14 +161,43 @@ public:
     // NOLINTBEGIN
     MCAPI ItemRegistry();
 
+#ifdef LL_PLAT_C
+    MCAPI void _movePreRegistryToMainRegistry();
+
+    MCAPI void _populateVanillaItemVersionMap(
+        ::ItemRegistry::LoadedItemAsset const& loadedItemAsset,
+        ::ItemParseContext&                    parseContext
+    );
+#endif
+
     MCAPI void _preRegisterItem(::HashedString const& itemName, ::SharedPtr<::Item> item);
 
+#ifdef LL_PLAT_C
+    MCAPI ::WeakPtr<::Item>
+    _registerOrPromoteItem(::HashedString const& itemName, bool isComponentBased, ::cereal::ReflectionCtx const& ctx);
+#endif
+
+    MCAPI ::ItemRegistry::ParsedName _tryParseItemName(::Puv::Input const& input);
+
+    MCAPI ::ItemRegistryRef::LoadedItem
+    _tryRegisterAndInitItem(::ItemRegistry::LoadedItemAsset const& loadedItemAsset, ::ItemParseContext& parseContext);
+
     MCAPI void alterAvailableCreativeItems(::ActorInfoRegistry* registry, ::LevelData& levelData);
+
+#ifdef LL_PLAT_C
+    MCAPI void buildClientRegistryFromServer(
+        ::std::vector<::ItemData> const& serverItemData,
+        ::Experiments const&             experiments,
+        ::BaseGameVersion const&         baseGameVersion
+    );
+#endif
 
     MCAPI void clearItemAndCreativeItemRegistry();
 
 #ifdef LL_PLAT_C
     MCAPI void findAllAttachableDefinitions();
+
+    MCAPI void finishedRegistration();
 #endif
 
     MCAPI ::std::vector<::std::reference_wrapper<::HashedString const>> const&
@@ -175,19 +207,7 @@ public:
 
     MCAPI ::WeakPtr<::Item> getItem(short id);
 
-#ifdef LL_PLAT_C
-    MCAPI void initClient(
-        ::std::vector<::ItemData> const& serverItemData,
-        ::Experiments const&             experiments,
-        ::BaseGameVersion const&         baseGameVersion
-    );
-
-    MCAPI void initClientData(
-        ::ResourcePackManager& resourcePackManager,
-        ::Experiments const&   experiments,
-        ::std::optional<::ItemIconInfo> (*iconFactory)(::std::string const&, int)
-    );
-#endif
+    MCAPI ::std::pair<::HashedString, int> getNameFromAlias(::HashedString const& name, int aux) const;
 
     MCAPI bool isComplexAlias(::HashedString const& oldName) const;
 
@@ -200,6 +220,14 @@ public:
     MCAPI ::WeakPtr<::Item> lookupByNameNoParsing(int& inOutItemAux, ::HashedString const& fullName) const;
 
     MCFOLD ::WeakPtr<::Item> lookupByVanillaName(::HashedString const& inString) const;
+
+#ifdef LL_PLAT_C
+    MCAPI void populateClientItemData(
+        ::ResourcePackManager& resourcePackManager,
+        ::Experiments const&   experiments,
+        ::std::optional<::ItemIconInfo> (*iconFactory)(::std::string const&, int)
+    );
+#endif
 
     MCAPI void
     registerAlias(::HashedString const& alias, ::HashedString const& name, ::BaseGameVersion const& fromVersion);
@@ -215,6 +243,8 @@ public:
         ::BaseGameVersion const& fromVersion
     );
 
+    MCAPI void registerValidatorIdentifier(::std::string const& str);
+
     MCAPI uint64 remapToFullLegacyNameByHash(uint64 newHash);
 
     MCAPI uint64 remapToLegacyNameByHash(uint64 newHash);
@@ -226,6 +256,18 @@ public:
     MCAPI ::std::vector<::std::string> validateServerItemComponents(::std::vector<::ItemData> const& items);
 
     MCAPI ~ItemRegistry();
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCAPI static ::std::vector<::ItemRegistry::LoadedItemAsset> _loadAllItemAssets(
+        ::ResourcePackManager const&   resourcePackManager,
+        ::Experiments const&           experiments,
+        ::cereal::ReflectionCtx const& ctx
+    );
+#endif
     // NOLINTEND
 
 public:

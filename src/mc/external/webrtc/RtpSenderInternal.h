@@ -61,19 +61,13 @@ public:
 
     virtual void NotifyFirstPacketSent() = 0;
 
-    virtual ~RtpSenderInternal() /*override*/;
+    virtual ~RtpSenderInternal() /*override*/ = default;
     // NOLINTEND
 
 public:
     // destructor thunk
     // NOLINTBEGIN
     MCNAPI void $dtor();
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };
 

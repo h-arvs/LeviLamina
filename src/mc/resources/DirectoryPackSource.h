@@ -7,10 +7,13 @@
 #include "mc/deps/core/resource/PackOrigin.h"
 #include "mc/deps/core/resource/PackType.h"
 #include "mc/deps/core/utility/NonOwnerPointer.h"
+#include "mc/platform/brstd/function_ref.h"
 #include "mc/resources/PackSource.h"
 
 // auto generated forward declare list
 // clang-format off
+class IPackIOProvider;
+struct DirectoryPackSourceOptions;
 struct PackSourceLoadOptions;
 struct PackSourceLoadResult;
 namespace Core { class Path; }
@@ -31,6 +34,10 @@ public:
     // NOLINTEND
 
 public:
+    // prevent constructor by default
+    DirectoryPackSource();
+
+public:
     // virtual functions
     // NOLINTBEGIN
     virtual ~DirectoryPackSource() /*override*/ = default;
@@ -39,12 +46,14 @@ public:
 
     virtual ::PackType getPackType() const /*override*/;
 
-    virtual ::PackSourceLoadResult _loadImpl(::PackSourceLoadOptions&&) /*override*/;
+    virtual ::PackSourceLoadResult _loadImpl(::PackSourceLoadOptions&& options) /*override*/;
     // NOLINTEND
 
 public:
     // member functions
     // NOLINTBEGIN
+    MCAPI explicit DirectoryPackSource(::DirectoryPackSourceOptions options);
+
     MCAPI void deleteAllPacksAndReset();
     // NOLINTEND
 
@@ -52,11 +61,44 @@ public:
     // static functions
     // NOLINTBEGIN
     MCAPI static void checkAndRemoveIncompletePacks(::Core::Path const& path);
+
+    MCAPI static void checkAndRemoveIncompletePacks(
+        ::Core::Path const&      path,
+        ::IPackIOProvider const& io,
+        bool                     saveEncryptedWorldTemplatePacksAsZips
+    );
+
+    MCAPI static void purgeOptimizedPremiumPacksIfRequested(
+        bool                     purgeRequested,
+        ::Core::Path const&      path,
+        ::IPackIOProvider const* io,
+        ::brstd::function_ref<
+            void(::std::string_view, ::std::string const&, ::PackType, ::PackOrigin, ::std::string const&, int64)>
+            reportPackDeleted
+    );
+    // NOLINTEND
+
+public:
+    // constructor thunks
+    // NOLINTBEGIN
+    MCAPI void* $ctor(::DirectoryPackSourceOptions options);
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCFOLD ::PackOrigin $getPackOrigin() const;
 
+    MCFOLD ::PackType $getPackType() const;
+
+    MCAPI ::PackSourceLoadResult $_loadImpl(::PackSourceLoadOptions&& options);
+
+
+    // NOLINTEND
+
+public:
+    // vftables
+    // NOLINTBEGIN
+    MCNAPI static void** $vftable();
     // NOLINTEND
 };

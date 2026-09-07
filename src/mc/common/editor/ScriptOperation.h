@@ -32,14 +32,22 @@ public:
     // NOLINTBEGIN
     virtual ::std::string_view getName() /*override*/;
 
-    virtual ::Scripting::Result_deprecated<void> _undo(::Editor::ServiceProviderCollection&) /*override*/;
+    virtual ::Scripting::Result_deprecated<void>
+    _processUndo(::Editor::ServiceProviderCollection& services) /*override*/;
 
-    virtual ::Scripting::Result_deprecated<void> _redo(::Editor::ServiceProviderCollection&) /*override*/;
+    virtual ::Scripting::Result_deprecated<void>
+    _processRedo(::Editor::ServiceProviderCollection& services) /*override*/;
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCNAPI ::std::string_view $getName();
+
+    MCNAPI ::Scripting::Result_deprecated<void> $_processUndo(::Editor::ServiceProviderCollection& services);
+
+    MCNAPI ::Scripting::Result_deprecated<void> $_processRedo(::Editor::ServiceProviderCollection& services);
+
 
     // NOLINTEND
 };

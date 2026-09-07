@@ -109,10 +109,4 @@ public:
         ::std::function<void(::Mob&)>&&
     ) /*override*/;
     // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
-    // NOLINTEND
 };

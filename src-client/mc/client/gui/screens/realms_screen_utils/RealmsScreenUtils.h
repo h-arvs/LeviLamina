@@ -44,14 +44,6 @@ MCAPI bool isRealmsPlusSubscriptionActive(
     ::Bedrock::NonOwnerPointer<::DateManager const> const&      dateManager
 );
 
-MCAPI void populateMultipleRealmsWorldLoadingDetailsGroups(
-    ::std::vector<::std::pair<
-        ::std::weak_ptr<::RealmsScreenUtils::RealmsWorldLoadingDetailsGroup>,
-        ::std::function<bool(::RealmsWorldInfo&)>>> groupFilterPairs,
-    ::std::shared_ptr<::MainMenuScreenModel>        mainMenuScreenModel,
-    ::std::function<void(bool)>                     callback
-);
-
 MCAPI void populateRealmsWorldLoadingDetailsGroup(
     ::std::weak_ptr<::RealmsScreenUtils::RealmsWorldLoadingDetailsGroup> weakGroup,
     ::std::shared_ptr<::MainMenuScreenModel>                             mainMenuScreenModel,

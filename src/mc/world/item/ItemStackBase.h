@@ -77,6 +77,10 @@ public:
     // NOLINTEND
 
 public:
+    // prevent constructor by default
+    ItemStackBase();
+
+public:
     // virtual functions
     // NOLINTBEGIN
     virtual ~ItemStackBase();
@@ -97,8 +101,6 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCAPI ItemStackBase();
-
     MCAPI explicit ItemStackBase(::RecipeIngredient const& ingredient);
 
     MCAPI ItemStackBase(::ItemStackBase const& rhs);
@@ -115,6 +117,8 @@ public:
 
     MCAPI void _cloneComponents(::ItemStackBase const& other);
 
+    MCAPI ::std::string _getHoverFormattingPrefix() const;
+
 #ifdef LL_PLAT_C
     MCAPI bool _hasFullOrPartialTag(::HashedString const& string) const;
 #endif
@@ -125,9 +129,7 @@ public:
 
     MCAPI void _setChargedItem(::ItemInstance const& item);
 
-#ifdef LL_PLAT_C
     MCAPI bool _setItem(int id, bool doRemap);
-#endif
 
     MCAPI void _updateCompareHashes();
 
@@ -192,11 +194,7 @@ public:
 
     MCAPI ::std::string getName() const;
 
-#ifdef LL_PLAT_C
-    MCAPI ::std::unique_ptr<::CompoundTag> getNetworkUserData() const;
-
     MCAPI float getPickupPopPercentage() const;
-#endif
 
     MCAPI ::HashedString const& getRawNameHash() const;
 
@@ -209,6 +207,10 @@ public:
     MCAPI ::Bedrock::Safety::RedactableString getRedactedName() const;
 
     MCAPI bool hasChargedItem() const;
+
+#ifdef LL_PLAT_C
+    MCAPI bool hasComponent(::std::string const& name) const;
+#endif
 
     MCAPI bool hasSameAuxValue(::ItemStackBase const& other) const;
 
@@ -309,6 +311,8 @@ public:
 
     MCAPI void setJustBrewed(bool justBrewed);
 
+    MCAPI void setPickupTime();
+
     MCAPI void setRepairCost(int cost);
 
     MCAPI void setUnbreakable(bool isUnbreakable);
@@ -343,6 +347,10 @@ public:
 
     MCAPI static ::ItemStackBase::ComparisonOptions const& COMPARISONOPTIONS_RELEVANTUSERDATA();
 
+    MCAPI static ::std::string const& TAG_CAN_DESTROY();
+
+    MCAPI static ::std::string const& TAG_CAN_PLACE_ON();
+
     MCAPI static ::std::string const& TAG_CHARGED_ITEM();
 
     MCAPI static ::std::string const& TAG_DISPLAY();
@@ -357,14 +365,16 @@ public:
 
     MCAPI static ::std::string const& TAG_REPAIR_COST();
 
+    MCAPI static ::std::string const& TAG_STORE_CAN_DESTROY();
+
+    MCAPI static ::std::string const& TAG_STORE_CAN_PLACE_ON();
+
     MCAPI static ::std::string const& TAG_UNBREAKABLE();
     // NOLINTEND
 
 public:
     // constructor thunks
     // NOLINTBEGIN
-    MCAPI void* $ctor();
-
     MCAPI void* $ctor(::RecipeIngredient const& ingredient);
 
     MCAPI void* $ctor(::ItemStackBase const& rhs);

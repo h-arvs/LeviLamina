@@ -33,7 +33,7 @@ public:
 
     virtual ::EventResult onLevelTick(::Level& level);
 
-    virtual ::EventResult onLevelTickStart(::Level&);
+    virtual ::EventResult onLevelTickStart(::Level& level);
 
     virtual ::EventResult onLevelTickEnd(::Level&);
 
@@ -45,7 +45,7 @@ public:
         bool                 isLightning
     );
 
-    virtual ::EventResult onRealmsStory(::std::string const&);
+    virtual ::EventResult onRealmsStory(::std::string const& storyData);
 
     virtual ::EventResult onEvent(::LevelNotificationEvent const& event);
     // NOLINTEND
@@ -63,7 +63,7 @@ public:
 
     MCFOLD ::EventResult $onLevelTick(::Level& level);
 
-    MCFOLD ::EventResult $onLevelTickStart(::Level&);
+    MCFOLD ::EventResult $onLevelTickStart(::Level& level);
 
     MCFOLD ::EventResult $onLevelTickEnd(::Level&);
 
@@ -75,7 +75,7 @@ public:
         bool                 isLightning
     );
 
-    MCFOLD ::EventResult $onRealmsStory(::std::string const&);
+    MCFOLD ::EventResult $onRealmsStory(::std::string const& storyData);
 
     MCFOLD ::EventResult $onEvent(::LevelNotificationEvent const& event);
 

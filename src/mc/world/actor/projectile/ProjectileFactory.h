@@ -44,6 +44,8 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
+    MCAPI static void _applyEnchantmentsToProjectile(::Mob const& owner, ::Actor& projectile);
+
     MCAPI static ::std::unique_ptr<::OnHitSubcomponent>
     createSubcomponent(::Json::Value& trigger, ::std::string const& name);
 

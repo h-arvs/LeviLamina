@@ -10,13 +10,7 @@ public:
     // NOLINTBEGIN
     virtual ~ILegacyDependencies() = default;
 
-    virtual void hurtAndBreak(int) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual void hurtAndBreak(int damage) = 0;
     // NOLINTEND
 };
 

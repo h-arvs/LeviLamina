@@ -6,11 +6,12 @@
 #include "mc/deps/core/container/MovePriorityQueue.h"
 #include "mc/deps/core/threading/BackgroundTaskBase.h"
 #include "mc/deps/core/utility/EnableNonOwnerReferences.h"
+#include "mc/platform/brstd/flat_set.h"
 
 // auto generated forward declare list
 // clang-format off
 class BackgroundTaskBase;
-class Scheduler;
+namespace Bedrock::Threading { class Mutex; }
 // clang-format on
 
 class WorkerPool : public ::Bedrock::EnableNonOwnerReferences {
@@ -47,22 +48,27 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCNAPI WorkerPool(::std::string_view name, ::Scheduler& owner);
-
-    MCNAPI bool _checkPendingWork();
-
 #ifdef LL_PLAT_C
     MCNAPI ::std::vector<::std::thread::id> getThreadIds() const;
+
+    MCNAPI void kick(uint64 count);
 #endif
 
     MCNAPI void queue(::std::shared_ptr<::BackgroundTaskBase> task, bool queueImmediate);
-
-    MCNAPI ::std::shared_ptr<::BackgroundTaskBase> tryPop(int minPriority);
     // NOLINTEND
 
 public:
-    // constructor thunks
+    // static functions
     // NOLINTBEGIN
-    MCNAPI void* $ctor(::std::string_view name, ::Scheduler& owner);
+    MCNAPI static void _registerPool(::WorkerPool& pool);
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCNAPI static ::brstd::flat_set<::WorkerPool*, ::std::less<::WorkerPool*>, ::std::vector<::WorkerPool*>>&
+    sAllPools();
+
+    MCNAPI static ::Bedrock::Threading::Mutex& sAllPoolsMutex();
     // NOLINTEND
 };

@@ -70,7 +70,11 @@ public:
 
     virtual bool checkSpawnRules(bool fromSpawner) /*override*/;
 
-    virtual bool canStartJumpSquish() const;
+    virtual bool _shouldSquish() const;
+
+    virtual bool _shouldPlayJumpSound() const;
+
+    virtual bool _shouldPlayLandSound() const;
 
     virtual void addAdditionalSaveData(::CompoundTag& tag) const /*override*/;
 
@@ -89,9 +93,13 @@ public:
         ::Slime::Parameters                parameters
     );
 
+    MCAPI void _emitLandParticles();
+
     MCAPI void _justJumped();
 
     MCAPI void _justLanded();
+
+    MCAPI void _setSlimeSize(int size);
 
     MCAPI void postNormalTick(bool wasOnGround);
     // NOLINTEND
@@ -120,7 +128,11 @@ public:
 
     MCAPI bool $checkSpawnRules(bool fromSpawner);
 
-    MCFOLD bool $canStartJumpSquish() const;
+    MCFOLD bool $_shouldSquish() const;
+
+    MCAPI bool $_shouldPlayJumpSound() const;
+
+    MCAPI bool $_shouldPlayLandSound() const;
 
     MCAPI void $addAdditionalSaveData(::CompoundTag& tag) const;
 
@@ -129,11 +141,5 @@ public:
     MCAPI float $_getWalkTargetValue(::BlockPos const& pos);
 
 
-    // NOLINTEND
-
-public:
-    // vftables
-    // NOLINTBEGIN
-    MCAPI static void** $vftable();
     // NOLINTEND
 };

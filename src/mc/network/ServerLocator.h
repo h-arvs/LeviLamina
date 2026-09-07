@@ -14,6 +14,7 @@ class AsynchronousIPResolver;
 struct PingedCompatibleServer;
 struct PortPair;
 struct ServerSupportedAuthenticationTypes;
+namespace Social { struct Nonce; }
 // clang-format on
 
 class ServerLocator : public ::NetworkEnableDisableListener {
@@ -25,13 +26,14 @@ public:
     virtual void startAnnouncingServer(
         ::std::string const&                 playerName,
         ::std::string const&                 worldName,
-        ::GameType                           worldGameType,
+        ::GameType                           gameType,
         int                                  numPlayers,
         int                                  maxNumPlayers,
         bool                                 isJoinableThroughServerScreen,
         bool                                 isEditorWorld,
         bool                                 isHardcore,
-        ::ServerSupportedAuthenticationTypes supportedAuth
+        ::ServerSupportedAuthenticationTypes supportedAuth,
+        ::Social::Nonce const&               nonce
     ) = 0;
 
     virtual void stopAnnouncingServer() = 0;

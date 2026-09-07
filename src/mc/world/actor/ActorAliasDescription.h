@@ -27,9 +27,9 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
+#ifdef LL_PLAT_C
     MCAPI ::AliasInfoDescription const* getAliasInfo(::std::string const& name) const;
 
-#ifdef LL_PLAT_S
     MCAPI void parse(::Json::Value& root, bool isVanilla);
 #endif
     // NOLINTEND

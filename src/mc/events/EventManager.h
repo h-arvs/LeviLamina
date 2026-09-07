@@ -2,9 +2,16 @@
 
 #include "mc/_HeaderOutputPredefine.h"
 
+// auto generated inclusion list
+#include "mc/deps/core/file/PathBuffer.h"
+#include "mc/deps/core/string/BasicStackString.h"
+#include "mc/platform/Result.h"
+
 // auto generated forward declare list
 // clang-format off
+class TaskResult;
 namespace Json { class Value; }
+namespace Social::Events { class Event; }
 namespace Social::Events { class IEventListener; }
 namespace Social::Events { class Property; }
 namespace Social::Events { struct EventManagerArguments; }
@@ -55,13 +62,38 @@ public:
     MCNAPI void SendDelayedEventActions(uint primaryUserId);
 
     MCNAPI void SendDelayedTelemetryEvents(uint primaryUserId);
+#endif
+
+    MCNAPI void UpdateDnAPlatString();
+
+    MCNAPI ::std::string _buildDnAPlatformString();
+
+#ifdef LL_PLAT_C
+    MCNAPI ::Bedrock::Result<::TaskResult> _processDelayedTelemetryEvents(
+        ::Core::PathBuffer<::Core::BasicStackString<char, 1024>>& filePath,
+        uint                                                      primaryUserId
+    ) const;
 
     MCNAPI void addListener(::std::unique_ptr<::Social::Events::IEventListener> listener);
+#endif
+
+    MCNAPI void buildCommonProperties(
+        ::std::unordered_map<::std::string, ::Social::Events::Property>& props,
+        uint                                                             userId,
+        ::std::vector<::std::string> const&                              exclude
+    ) const;
 
     MCNAPI ::std::optional<::Social::Events::Property> getCommonProperty(::std::string const& name) const;
 
+    MCNAPI ::Social::Events::Property getGlobalProperty(::std::string const& name) const;
+
     MCNAPI ::Social::Events::Property getPlayerCommonProperty(uint userId, ::std::string const& name) const;
-#endif
+
+    MCNAPI ::Social::Events::Property getPlayerGlobalProperty(uint userId, ::std::string const& name) const;
+
+    MCNAPI void recordEvent(::Social::Events::Event& event);
+
+    MCNAPI void removePlayerCommonProperty(uint userId, ::std::string const& name);
 
     MCNAPI ~EventManager();
     // NOLINTEND

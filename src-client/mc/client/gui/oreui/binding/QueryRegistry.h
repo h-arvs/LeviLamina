@@ -193,8 +193,6 @@ public:
         int                                        rank
     );
 
-    MCAPI void _destroyQuery(::OreUI::Detail::IdType const& id);
-
     MCAPI void _syncQueries();
     // NOLINTEND
 
@@ -210,6 +208,8 @@ public:
     MCAPI void $onReadyForBindings();
 
     MCAPI void $onSuspend();
+
+    MCFOLD void $onBindingsReleased();
 
     MCAPI void $update(double const time);
     // NOLINTEND

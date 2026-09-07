@@ -17,9 +17,11 @@ class EcsEventDispatcher;
 class EntityContext;
 class EntityRegistry;
 class Experiments;
+class IMinecraftEventing;
 class ResourcePackManager;
 namespace MinecraftCamera { struct RegisteredCamera; }
 namespace SharedTypes::v1_21_100 { struct CameraDefinitions; }
+namespace SharedTypes::v1_21_90 { struct CameraPreset; }
 // clang-format on
 
 class CameraRegistry : public ::Bedrock::EnableNonOwnerReferences {
@@ -61,10 +63,21 @@ public:
 
     MCAPI void createEntities(::EntityRegistry& entityRegistry, ::EcsEventDispatcher& dispatcher);
 
-    MCAPI void loadFrom(::ResourcePackManager const& packManager);
+    MCAPI void loadFrom(::ResourcePackManager const& packManager, ::IMinecraftEventing& eventing);
 
     MCAPI void
     setupPresets(::EntityRegistry& entityRegistry, ::CameraPresets const& presets, ::Experiments const& experiments);
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static void _applyPresetValues(
+        uint64                                       presetIndex,
+        ::OwnerPtr<::EntityId>&                      cameraEntity,
+        ::SharedTypes::v1_21_90::CameraPreset const& preset,
+        ::Experiments const&                         experiments
+    );
     // NOLINTEND
 
 public:

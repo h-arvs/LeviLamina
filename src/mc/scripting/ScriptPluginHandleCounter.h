@@ -7,6 +7,7 @@
 
 // auto generated forward declare list
 // clang-format off
+class ScriptPlugin;
 namespace Scripting { class LifetimeRegistry; }
 namespace Scripting { struct ObjectHandle; }
 // clang-format on
@@ -60,21 +61,45 @@ public:
     virtual void onMakeObject(
         ::Scripting::LifetimeRegistry&,
         ::Scripting::ObjectHandle,
-        ::entt::meta_type const&,
-        uint
+        ::entt::meta_type const& type,
+        uint                     size
     ) /*override*/;
 
     virtual void onDestroyObject(
         ::Scripting::LifetimeRegistry&,
         ::Scripting::ObjectHandle,
-        ::entt::meta_type const&,
-        uint
+        ::entt::meta_type const& type,
+        uint                     size
     ) /*override*/;
+    // NOLINTEND
+
+public:
+    // member functions
+    // NOLINTBEGIN
+    MCNAPI explicit ScriptPluginHandleCounter(::ScriptPlugin& plugin);
+
+    MCNAPI ::ScriptPluginHandleCounter::TypeStats* _getOrMakeStats(::entt::meta_type const& type);
+    // NOLINTEND
+
+public:
+    // constructor thunks
+    // NOLINTBEGIN
+    MCNAPI void* $ctor(::ScriptPlugin& plugin);
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCNAPI void
+    $onMakeObject(::Scripting::LifetimeRegistry&, ::Scripting::ObjectHandle, ::entt::meta_type const& type, uint size);
+
+    MCNAPI void $onDestroyObject(
+        ::Scripting::LifetimeRegistry&,
+        ::Scripting::ObjectHandle,
+        ::entt::meta_type const& type,
+        uint                     size
+    );
+
 
     // NOLINTEND
 };

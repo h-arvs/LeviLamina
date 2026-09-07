@@ -16,12 +16,6 @@ public:
     // NOLINTBEGIN
     virtual void refreshCatalogItems(::IPackManifestFactory&) = 0;
 
-    virtual void setEnabled(bool) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual void setEnabled(bool enabled) = 0;
     // NOLINTEND
 };

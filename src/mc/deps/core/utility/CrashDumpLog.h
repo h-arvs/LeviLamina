@@ -14,6 +14,8 @@ class CrashDumpLog {
 public:
     // static functions
     // NOLINTBEGIN
+    MCNAPI static void crashDumpLogThreadRoutine();
+
     MCNAPI static void logEvent(::CrashDumpEventData const& eventData);
 
     MCNAPI static void logKeyValue(::CrashDumpKeyValueData const& keyValueData);
@@ -49,6 +51,8 @@ public:
     MCNAPI static ::Bedrock::Threading::Mutex& mAssertDataMutex();
 
     MCNAPI static ::std::unique_ptr<::std::thread>& mCrashDumpLog_logThread();
+
+    MCNAPI static ::Bedrock::Threading::Mutex& mCrashDumpThreadMutex();
 
     MCNAPI static ::std::condition_variable& mCrashDumpThreadMutexCV();
 

@@ -8,7 +8,6 @@ class ItemStack;
 class LootItemCondition;
 class LootTableContext;
 class Random;
-namespace Json { class Value; }
 // clang-format on
 
 class LootPoolEntry {
@@ -33,23 +32,11 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual bool _createItem(::std::vector<::ItemStack>&, ::Random&, ::LootTableContext&) const = 0;
+    virtual bool
+    _createItem(::std::vector<::ItemStack>& output, ::Random& random, ::LootTableContext& context) const = 0;
 
     virtual ~LootPoolEntry() = default;
 
     virtual ::LootPoolEntry::EntryType getEntryType() const = 0;
-    // NOLINTEND
-
-public:
-    // static functions
-    // NOLINTBEGIN
-    MCAPI static ::std::unique_ptr<::LootPoolEntry>
-    deserialize(::Json::Value const& entryJson, bool usingUpcomingCreatorFeaturesExperiment);
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };

@@ -32,13 +32,15 @@ public:
 
     virtual bool collectOptionalArguments();
 
-    virtual void execute(::CommandOrigin const&, ::CommandOutput&) const = 0;
+    virtual void execute(::CommandOrigin const& origin, ::CommandOutput& output) const = 0;
     // NOLINTEND
 
 public:
     // member functions
     // NOLINTBEGIN
     MCAPI void run(::CommandOrigin const& origin, ::CommandOutput& output) const;
+
+    MCAPI void sendTelemetry(::CommandOrigin const& origin, ::CommandOutput& output) const;
     // NOLINTEND
 
 public:
@@ -56,7 +58,9 @@ public:
 public:
     // static variables
     // NOLINTBEGIN
+#ifdef LL_PLAT_C
     MCAPI static ::std::string const& WILDCARD_TOKEN();
+#endif
     // NOLINTEND
 
 public:

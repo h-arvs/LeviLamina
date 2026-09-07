@@ -22,13 +22,7 @@ public:
     virtual ~IControl() = default;
 
     virtual ::Scripting::Result<::Json::Value, ::ScriptModuleMinecraft::ScriptRawMessageError>
-    buildJson(::Player&, ::CurrentCmdVersion) const = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    buildJson(::Player& forPlayer, ::CurrentCmdVersion commandVersion) const = 0;
     // NOLINTEND
 };
 

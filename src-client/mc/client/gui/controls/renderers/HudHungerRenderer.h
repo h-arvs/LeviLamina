@@ -40,7 +40,7 @@ public:
     ::ll::TypedStorage<8, 8, uint64>                               mNumFullIcons;
     ::ll::TypedStorage<8, 8, uint64>                               mNumHalfIcons;
     ::ll::TypedStorage<8, 192, ::std::array<::mce::TexturePtr, 6>> mHungerTextures;
-    ::ll::TypedStorage<8, 3552, ::std::array<::mce::Mesh, 6>>      mHungerMeshes;
+    ::ll::TypedStorage<8, 3696, ::std::array<::mce::Mesh, 6>>      mHungerMeshes;
     ::ll::TypedStorage<4, 120, ::std::array<::glm::vec3, 10>>      mIconPosition;
     // NOLINTEND
 
@@ -51,9 +51,10 @@ public:
 
     virtual ::std::shared_ptr<::UICustomRenderer> clone() const /*override*/;
 
-    virtual void render(::MinecraftUIRenderContext&, ::IClientInstance&, ::UIControl&, int) /*override*/;
+    virtual void
+    render(::MinecraftUIRenderContext& renderContext, ::IClientInstance&, ::UIControl& owner, int) /*override*/;
 
-    virtual bool update(::IClientInstance&, ::UIControl&, ::UIScene const&) /*override*/;
+    virtual bool update(::IClientInstance& client, ::UIControl& owner, ::UIScene const& scene) /*override*/;
     // NOLINTEND
 
 public:
@@ -71,6 +72,10 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI ::std::shared_ptr<::UICustomRenderer> $clone() const;
 
+    MCAPI void $render(::MinecraftUIRenderContext& renderContext, ::IClientInstance&, ::UIControl& owner, int);
+
+    MCAPI bool $update(::IClientInstance& client, ::UIControl& owner, ::UIScene const& scene);
     // NOLINTEND
 };

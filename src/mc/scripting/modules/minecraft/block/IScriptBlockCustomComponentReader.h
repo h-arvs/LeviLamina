@@ -22,21 +22,15 @@ public:
     virtual ~IScriptBlockCustomComponentReader() = default;
 
     virtual ::std::vector<::std::string_view> getValidComponentsForBlock(
-        ::Scripting::StrongTypedObjectHandle<::ScriptModuleMinecraft::ScriptBlockPermutation> const&
+        ::Scripting::StrongTypedObjectHandle<::ScriptModuleMinecraft::ScriptBlockPermutation> const& permutation
     ) const = 0;
 
     virtual ::Scripting::StrongTypedObjectHandle<::ScriptModuleMinecraft::ScriptCustomComponentParameters> const&
     tryGetCustomComponentParametersForBlock(
-        ::Block const&,
-        ::std::string_view,
-        ::Scripting::WeakLifetimeScope const&
+        ::Block const&                        block,
+        ::std::string_view                    componentName,
+        ::Scripting::WeakLifetimeScope const& scope
     ) const = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };
 

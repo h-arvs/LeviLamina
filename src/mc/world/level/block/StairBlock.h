@@ -30,9 +30,10 @@ class StairBlock : public ::BlockType {
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::TypedStorage<8, 8, ::BlockType const&>                         mBase;
-    ::ll::TypedStorage<8, 184, ::std::optional<::BlockDescriptor> const> mBlocksToCornerWith;
-    ::ll::TypedStorage<1, 1, bool const>                                 mLeakyCornersFix;
+    ::ll::TypedStorage<8, 8, ::BlockType const&>                   mBase;
+    ::ll::TypedStorage<1, 1, bool const>                           mEnableCornerStairTag;
+    ::ll::TypedStorage<8, 184, ::std::optional<::BlockDescriptor>> mBlocksToCornerWith;
+    ::ll::TypedStorage<1, 1, bool const>                           mLeakyCornersFix;
     // NOLINTEND
 
 public:
@@ -105,8 +106,6 @@ public:
     getPlacementBlock(::Actor const& by, ::BlockPos const& pos, uchar face, ::Vec3 const& clickPos, int itemValue) const
         /*override*/;
 
-    virtual bool isStairBlock() const /*override*/;
-
     virtual int getVariant(::Block const& block) const /*override*/;
 
     virtual bool liquidCanFlowIntoFromDirection(
@@ -131,8 +130,15 @@ public:
         bool                 leakyCornersFix
     );
 
+    MCAPI bool _neighboringBlockCheckForCreatingBarrierInDirection(
+        ::std::function<::Block const&(::BlockPos const&)> const& getBlock,
+        ::BlockPos const&                                         pos,
+        int                                                       directionToCheck
+    ) const;
+
 #ifdef LL_PLAT_C
     MCAPI void setBaseShape(::Block const& block, ::AABB& shape, bool shrink) const;
+#endif
 
     MCAPI bool setInnerPieceShape(
         ::Block const&             block,
@@ -149,7 +155,12 @@ public:
         ::AABB&                    shape,
         bool                       shrink
     ) const;
-#endif
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::std::add_lvalue_reference_t<int const[8][2]> DEAD_SPACES();
     // NOLINTEND
 
 public:
@@ -228,8 +239,6 @@ public:
         ::Vec3 const&     clickPos,
         int               itemValue
     ) const;
-
-    MCFOLD bool $isStairBlock() const;
 
     MCFOLD int $getVariant(::Block const& block) const;
 

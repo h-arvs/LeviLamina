@@ -8,7 +8,6 @@
 
 // auto generated forward declare list
 // clang-format off
-class BlockPos;
 class ChunkPos;
 class LevelChunk;
 // clang-format on
@@ -21,10 +20,6 @@ public:
     // NOLINTEND
 
 public:
-    // prevent constructor by default
-    WorldLimitChunkSource();
-
-public:
     // virtual functions
     // NOLINTBEGIN
     virtual ~WorldLimitChunkSource() /*override*/ = default;
@@ -32,7 +27,7 @@ public:
     virtual ::std::shared_ptr<::LevelChunk>
     createNewChunk(::ChunkPos const& cp, ::ChunkSource::LoadMode lm, bool readOnly) /*override*/;
 
-    virtual ::std::shared_ptr<::LevelChunk> getExistingChunk(::ChunkPos const&) /*override*/;
+    virtual ::std::shared_ptr<::LevelChunk> getExistingChunk(::ChunkPos const& cp) /*override*/;
 
     virtual bool isWithinWorldLimit(::ChunkPos const& cp) const /*override*/;
 
@@ -42,21 +37,19 @@ public:
     // NOLINTEND
 
 public:
-    // member functions
-    // NOLINTBEGIN
-    MCAPI
-    WorldLimitChunkSource(::std::unique_ptr<::ChunkSource> storage, ::BlockPos const& center, int width, int depth);
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCAPI void* $ctor(::std::unique_ptr<::ChunkSource> storage, ::BlockPos const& center, int width, int depth);
-    // NOLINTEND
-
-public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI ::std::shared_ptr<::LevelChunk>
+    $createNewChunk(::ChunkPos const& cp, ::ChunkSource::LoadMode lm, bool readOnly);
+
+    MCAPI ::std::shared_ptr<::LevelChunk> $getExistingChunk(::ChunkPos const& cp);
+
+    MCAPI bool $isWithinWorldLimit(::ChunkPos const& cp) const;
+
+    MCFOLD bool $canCreateViews() const;
+
+    MCAPI ::std::unordered_map<::ChunkPos, ::std::weak_ptr<::LevelChunk>> const* $getChunkMap();
+
 
     // NOLINTEND
 };

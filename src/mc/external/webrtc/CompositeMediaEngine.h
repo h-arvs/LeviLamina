@@ -43,12 +43,6 @@ public:
 
     virtual ::webrtc::VideoEngineInterface& video() /*override*/;
     // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
-    // NOLINTEND
 };
 
 } // namespace webrtc

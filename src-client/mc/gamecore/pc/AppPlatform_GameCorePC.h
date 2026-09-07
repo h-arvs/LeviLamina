@@ -3,12 +3,13 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
+#include "mc/client/gui/oreui/binding/queries/core/PlatformType.h"
 #include "mc/deps/application/ClipboardFeatureFlags.h"
 #include "mc/deps/application/OsVersion.h"
 #include "mc/deps/core/debug/AssertDialogResponse.h"
 #include "mc/deps/core/file/PathBuffer.h"
 #include "mc/deps/core/platform/BuildPlatform.h"
-#include "mc/deps/core/platform/PlatformType.h"
+#include "mc/deps/core/platform/FileStorageDirectory.h"
 #include "mc/deps/core/platform/UIScalingRules.h"
 #include "mc/deps/input/InputMode.h"
 #include "mc/deps/input/PointerType.h"
@@ -18,6 +19,7 @@
 // clang-format off
 class FilePickerSettings;
 class ImagePickingCallback;
+class PropertyBag;
 class RectangleArea;
 namespace Core { class Path; }
 // clang-format on
@@ -32,6 +34,7 @@ public:
     ::ll::UntypedStorage<8, 8>  mUnka8c638;
     ::ll::UntypedStorage<1, 1>  mUnk587e2e;
     ::ll::UntypedStorage<1, 1>  mUnk15dc10;
+    ::ll::UntypedStorage<1, 1>  mUnkdc4ecc;
     // NOLINTEND
 
 public:
@@ -46,15 +49,15 @@ public:
     virtual ~AppPlatform_GameCorePC() /*override*/ = default;
 
     virtual void showKeyboard(
-        ::std::string const&,
-        int,
-        bool,
-        bool,
-        bool,
-        int const,
-        ::glm::vec2 const&,
-        float,
-        ::InputMode
+        ::std::string const& currentText,
+        int                  maxLength,
+        bool                 limitInput,
+        bool                 numbersOnly,
+        bool                 isMultiline,
+        int const            controllerId,
+        ::glm::vec2 const&   position,
+        float                controlHeight,
+        ::InputMode          inputMode
     ) /*override*/;
 
     virtual void hideKeyboard() /*override*/;
@@ -83,7 +86,7 @@ public:
 
     virtual void showMousePointer() /*override*/;
 
-    virtual void setMousePointerType(::Bedrock::Input::PointerType) /*override*/;
+    virtual void setMousePointerType(::Bedrock::Input::PointerType pointerType) /*override*/;
 
     virtual void toggleSimulateTouchWithMouse() /*override*/;
 
@@ -91,19 +94,19 @@ public:
 
     virtual int getDisplayHeight() /*override*/;
 
-    virtual void screenToClient(int&, int&) const /*override*/;
+    virtual void screenToClient(int& x, int& y) const /*override*/;
 
     virtual ::std::string getTextBoxBackend() const /*override*/;
 
-    virtual void setTextBoxBackend(::std::string const&) /*override*/;
+    virtual void setTextBoxBackend(::std::string const& newText) /*override*/;
 
     virtual int getCaretPosition() const /*override*/;
 
-    virtual void setCaretPosition(int) /*override*/;
+    virtual void setCaretPosition(int position) /*override*/;
 
     virtual ::ClipboardFeatureFlags getClipboardFeatures() const /*override*/;
 
-    virtual void setClipboard(::std::string const&) const /*override*/;
+    virtual void setClipboard(::std::string const& value) const /*override*/;
 
     virtual ::std::wstring getClipboardText() const /*override*/;
 
@@ -117,11 +120,11 @@ public:
 
     virtual void share() const /*override*/;
 
-    virtual void shareFile(::Core::Path const&, ::std::function<void(bool)>) /*override*/;
+    virtual void shareFile(::Core::Path const& path, ::std::function<void(bool)>) /*override*/;
 
-    virtual void pickImage(::std::shared_ptr<::ImagePickingCallback>) /*override*/;
+    virtual void pickImage(::std::shared_ptr<::ImagePickingCallback> callback) /*override*/;
 
-    virtual void pickFile(::std::shared_ptr<::FilePickerSettings>) /*override*/;
+    virtual void pickFile(::std::shared_ptr<::FilePickerSettings> settings) /*override*/;
 
     virtual auto getModalErrorMessageProc()
         -> ::AssertDialogResponse (*)(::std::string const&, ::std::string const&) /*override*/;
@@ -166,11 +169,18 @@ public:
 
     virtual float getDefaultScreenPositionY() const /*override*/;
 
+    virtual void setStorageDirectory(
+        ::FileStorageDirectory      dir,
+        bool                        isCallback,
+        ::PropertyBag const&        extraData,
+        ::std::function<void(bool)> onComplete
+    ) /*override*/;
+
     virtual void _initializeFileStorageAreas() /*override*/;
 
-    virtual ::Core::PathBuffer<::std::string> _getUserFolderFromXUID(::std::string_view) /*override*/;
+    virtual ::Core::PathBuffer<::std::string> _getUserFolderFromXUID(::std::string_view xuid) /*override*/;
 
-    virtual void _retrieveSavedWindowSize(::tagRECT&) /*override*/;
+    virtual void _retrieveSavedWindowSize(::tagRECT& size) /*override*/;
 
     virtual void _onInitialize() /*override*/;
 
@@ -182,6 +192,143 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $showKeyboard(
+        ::std::string const& currentText,
+        int                  maxLength,
+        bool                 limitInput,
+        bool                 numbersOnly,
+        bool                 isMultiline,
+        int const            controllerId,
+        ::glm::vec2 const&   position,
+        float                controlHeight,
+        ::InputMode          inputMode
+    );
 
+    MCAPI void $hideKeyboard();
+
+    MCAPI void $updateTextEditBoxPosition(
+        ::RectangleArea const& controlPosition,
+        ::RectangleArea const& selectionPosition,
+        float const            guiScale
+    );
+
+    MCAPI float $getKeyboardHeight() const;
+
+    MCAPI bool $isMouseInsideClient() const;
+
+    MCAPI bool $canScroll() const;
+
+    MCAPI bool $isRemoteSession() const;
+
+    MCAPI bool $isMouseClickLockEnabled() const;
+
+    MCAPI bool $isMouseSonarEnabled() const;
+
+    MCAPI uint $getMouseClickLockTime() const;
+
+    MCAPI void $hideMousePointer();
+
+    MCAPI void $showMousePointer();
+
+    MCAPI void $setMousePointerType(::Bedrock::Input::PointerType pointerType);
+
+    MCAPI void $toggleSimulateTouchWithMouse();
+
+    MCAPI int $getDisplayWidth();
+
+    MCAPI int $getDisplayHeight();
+
+    MCAPI void $screenToClient(int& x, int& y) const;
+
+    MCAPI ::std::string $getTextBoxBackend() const;
+
+    MCAPI void $setTextBoxBackend(::std::string const& newText);
+
+    MCAPI int $getCaretPosition() const;
+
+    MCAPI void $setCaretPosition(int position);
+
+    MCFOLD ::ClipboardFeatureFlags $getClipboardFeatures() const;
+
+    MCAPI void $setClipboard(::std::string const& value) const;
+
+    MCAPI ::std::wstring $getClipboardText() const;
+
+    MCFOLD bool $allowSplitScreen();
+
+    MCFOLD bool $allowsResourcePackDevelopment() const;
+
+    MCFOLD bool $supportsFilePicking() const;
+
+    MCAPI bool $supportsShare() const;
+
+    MCAPI void $share() const;
+
+    MCAPI void $shareFile(::Core::Path const& path, ::std::function<void(bool)>);
+
+    MCAPI void $pickImage(::std::shared_ptr<::ImagePickingCallback> callback);
+
+    MCAPI void $pickFile(::std::shared_ptr<::FilePickerSettings> settings);
+
+    MCFOLD auto $getModalErrorMessageProc() -> ::AssertDialogResponse (*)(::std::string const&, ::std::string const&);
+
+    MCFOLD ::OsVersion $getOSVersion() const;
+
+    MCFOLD ::PlatformType $getPlatformType() const;
+
+    MCFOLD ::BuildPlatform $getBuildPlatform() const;
+
+    MCAPI ::std::string $getPlatformString() const;
+
+    MCAPI ::std::string $getSubPlatformString() const;
+
+    MCAPI ::std::string $getClientUpdateUrl() const;
+
+    MCAPI ::std::string $getEdition() const;
+
+    MCAPI ::std::string $getModelName();
+
+    MCFOLD bool $devHotReloadRenderResources() const;
+
+    MCAPI bool $delayOptionSaveUntilCloudSync() const;
+
+    MCFOLD bool $requiresXboxLiveSigninToPlay() const;
+
+    MCFOLD bool $requiresLiveGoldForMultiplayer() const;
+
+    MCAPI void $onMinecraftGameInitComplete();
+
+    MCAPI bool $isHandheldDevice() const;
+
+    MCAPI bool $getSimulateTouchWithMouse() const;
+
+    MCAPI float $getDefaultSafeZoneScaleX() const;
+
+    MCAPI float $getDefaultSafeZoneScaleY() const;
+
+    MCAPI float $getDefaultSafeZoneScaleAll() const;
+
+    MCFOLD float $getDefaultScreenPositionX() const;
+
+    MCFOLD float $getDefaultScreenPositionY() const;
+
+    MCAPI void $setStorageDirectory(
+        ::FileStorageDirectory      dir,
+        bool                        isCallback,
+        ::PropertyBag const&        extraData,
+        ::std::function<void(bool)> onComplete
+    );
+
+    MCAPI void $_initializeFileStorageAreas();
+
+    MCAPI ::Core::PathBuffer<::std::string> $_getUserFolderFromXUID(::std::string_view xuid);
+
+    MCAPI void $_retrieveSavedWindowSize(::tagRECT& size);
+
+    MCAPI void $_onInitialize();
+
+    MCAPI bool $isInvertScrollEnabled() const;
+
+    MCFOLD ::UIScalingRules $getPlatformUIScalingRules() const;
     // NOLINTEND
 };

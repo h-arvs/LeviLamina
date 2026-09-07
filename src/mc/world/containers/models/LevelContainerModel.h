@@ -59,12 +59,20 @@ public:
     // NOLINTEND
 
 public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI void containerRemoved();
+    // NOLINTEND
+
+public:
     // static functions
     // NOLINTBEGIN
     MCAPI static ::Container* getContainerHelper(::Player& player, ::ActorUniqueID const& actorUniqueId);
 
+#ifdef LL_PLAT_S
     MCAPI static ::Container*
     getContainerHelper(::Player& player, ::BlockActorType blockActorType, ::BlockPos const& blockPos);
+#endif
     // NOLINTEND
 
 public:

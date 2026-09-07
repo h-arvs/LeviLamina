@@ -31,12 +31,6 @@ public:
 
     virtual void OnBlur(::cohtml::IInputProxy*);
     // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
-    // NOLINTEND
 };
 
 } // namespace cohtml

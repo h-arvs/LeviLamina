@@ -4,6 +4,7 @@
 
 // auto generated inclusion list
 #include "mc/world/level/storage/AllExperiments.h"
+#include "mc/world/level/storage/ExperimentCategory.h"
 
 // auto generated forward declare list
 // clang-format off
@@ -39,6 +40,21 @@ public:
 
     MCAPI ExperimentalFeatureToggle(::OreUI::ExperimentalFeatureToggle const&);
 
+    MCAPI ExperimentalFeatureToggle(
+        ::LevelDataWrapper&        levelData,
+        ::std::string const&       fourCc,
+        ::AllExperiments const     experiment,
+        ::std::string const&       title,
+        ::std::string const&       description,
+        ::ExperimentCategory const category
+    );
+
+    MCAPI bool getIsEnabled() const;
+
+    MCAPI bool getIsTogglePermanentlyDisabled();
+
+    MCAPI void setIsEnabled(bool const newValue);
+
     MCAPI ~ExperimentalFeatureToggle();
     // NOLINTEND
 
@@ -48,6 +64,15 @@ public:
     MCFOLD void* $ctor(::OreUI::ExperimentalFeatureToggle&&);
 
     MCFOLD void* $ctor(::OreUI::ExperimentalFeatureToggle const&);
+
+    MCAPI void* $ctor(
+        ::LevelDataWrapper&        levelData,
+        ::std::string const&       fourCc,
+        ::AllExperiments const     experiment,
+        ::std::string const&       title,
+        ::std::string const&       description,
+        ::ExperimentCategory const category
+    );
     // NOLINTEND
 
 public:

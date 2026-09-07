@@ -5,6 +5,11 @@
 // auto generated inclusion list
 #include "mc/world/level/storage/FlushableEnv.h"
 
+// auto generated forward declare list
+// clang-format off
+namespace Core { class Path; }
+// clang-format on
+
 class InMemoryEnv : public ::FlushableEnv {
 public:
     // member variables
@@ -35,7 +40,7 @@ public:
 
     virtual ::leveldb::Status RemoveFile(::std::string const& f) /*override*/;
 
-    virtual ::leveldb::Status RenameFile(::std::string const& s, ::std::string const& t) /*override*/;
+    virtual ::leveldb::Status RenameFile(::std::string const& from, ::std::string const& to) /*override*/;
 
     virtual bool FileExists(::std::string const& f) /*override*/;
 
@@ -45,8 +50,50 @@ public:
     // NOLINTEND
 
 public:
+    // member functions
+    // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCNAPI InMemoryEnv(::leveldb::Env* env, ::Core::Path const& rootDbPath);
+#endif
+
+    MCNAPI void _flushWithTransaction();
+    // NOLINTEND
+
+public:
+    // constructor thunks
+    // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCNAPI void* $ctor(::leveldb::Env* env, ::Core::Path const& rootDbPath);
+#endif
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCNAPI ::leveldb::Status $NewSequentialFile(::std::string const& f, ::leveldb::SequentialFile** r);
 
+    MCNAPI ::leveldb::Status $NewRandomAccessFile(::std::string const& f, ::leveldb::RandomAccessFile** r);
+
+    MCNAPI ::leveldb::Status $NewWritableFile(::std::string const& f, ::leveldb::WritableFile** r);
+
+    MCNAPI ::leveldb::Status $NewAppendableFile(::std::string const& f, ::leveldb::WritableFile** r);
+
+    MCNAPI ::leveldb::Status $RemoveFile(::std::string const& f);
+
+    MCNAPI ::leveldb::Status $RenameFile(::std::string const& from, ::std::string const& to);
+
+    MCNAPI bool $FileExists(::std::string const& f);
+
+    MCNAPI ::leveldb::Status $GetChildren(::std::string const& dir, ::std::vector<::std::string>* r);
+
+    MCNAPI void $flushToPermanentStorage();
+
+
+    // NOLINTEND
+
+public:
+    // vftables
+    // NOLINTBEGIN
+    MCNAPI static void** $vftable();
     // NOLINTEND
 };

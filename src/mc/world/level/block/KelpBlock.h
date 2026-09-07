@@ -69,11 +69,19 @@ public:
     // NOLINTBEGIN
     MCAPI KelpBlock(::std::string const& nameId, int id);
 
+    MCAPI void _tryGrow(::BlockSource& region, ::BlockPos const& pos, int age) const;
+
     MCAPI void onPlace(::BlockEvents::BlockPlaceEvent& eventData) const;
 
     MCAPI void tick(::BlockEvents::BlockQueuedTickEvent& eventData) const;
 
     MCAPI void use(::BlockEvents::BlockPlayerInteractEvent& eventData) const;
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static bool shouldGrow(::BlockSource& region, ::BlockPos const& pos);
     // NOLINTEND
 
 public:

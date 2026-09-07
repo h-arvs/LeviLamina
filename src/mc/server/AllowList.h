@@ -33,12 +33,7 @@ public:
     // NOLINTBEGIN
     virtual ::Json::Value serialize() const /*override*/;
 
-#ifdef LL_PLAT_S
-    virtual void deserialize(::Json::Value const&) /*override*/;
-#else // LL_PLAT_C
     virtual void deserialize(::Json::Value const& root) /*override*/;
-#endif
-
     // NOLINTEND
 
 public:
@@ -47,16 +42,6 @@ public:
 #ifdef LL_PLAT_C
     MCAPI explicit AllowList(::std::function<void()> syncCallback);
 #endif
-
-#ifdef LL_PLAT_S
-    MCAPI bool addByName(::std::string_view name);
-#endif
-
-    MCAPI bool addByNsaId(::std::string_view nsaId);
-
-    MCAPI bool addByPsnId(::std::string_view psnId);
-
-    MCAPI bool addByXuid(::std::string_view xuid);
 
     MCAPI bool isAllowed(
         ::mce::UUID const& uuid,
@@ -67,6 +52,8 @@ public:
 
 #ifdef LL_PLAT_S
     MCAPI bool removeByName(::std::string_view name);
+
+    MCAPI bool removeByXuid(::std::string_view xuid);
 #endif
 
     MCAPI void tryUpdateEntries(
@@ -88,11 +75,9 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
-#ifdef LL_PLAT_C
     MCAPI ::Json::Value $serialize() const;
 
     MCAPI void $deserialize(::Json::Value const& root);
-#endif
 
 
     // NOLINTEND

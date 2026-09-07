@@ -7,9 +7,11 @@
 
 // auto generated forward declare list
 // clang-format off
+class BlockPos;
 class Vec3;
 namespace ScriptModuleMinecraft { struct ScriptInvalidStructureError; }
 namespace Scripting { struct ClassBinding; }
+namespace Scripting { struct InvalidArgumentError; }
 // clang-format on
 
 namespace Editor::ScriptModule {
@@ -32,14 +34,35 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-#ifdef LL_PLAT_C
+    MCNAPI ::Scripting::InvalidArgumentError
+    _createBoundsError(int index, ::BlockPos const& pos, ::BlockPos const& size) const;
+
+    MCNAPI ::Scripting::Result<::std::string, ::ScriptModuleMinecraft::ScriptInvalidStructureError>
+    getDescription() const;
+
+    MCNAPI ::Scripting::Result<::std::string, ::ScriptModuleMinecraft::ScriptInvalidStructureError>
+    getDisplayName() const;
+
     MCNAPI ::Scripting::Result<::Vec3, ::ScriptModuleMinecraft::ScriptInvalidStructureError>
     getNormalizedOrigin() const;
 
+    MCNAPI ::Scripting::Result<::std::string, ::ScriptModuleMinecraft::ScriptInvalidStructureError> getNotes() const;
+
     MCNAPI ::Scripting::Result<::Vec3, ::ScriptModuleMinecraft::ScriptInvalidStructureError> getOffset() const;
-#endif
+
+    MCNAPI ::Scripting::Result<::Vec3, ::ScriptModuleMinecraft::ScriptInvalidStructureError>
+    getOriginalWorldLocation() const;
 
     MCNAPI ::Scripting::Result<::Vec3, ::ScriptModuleMinecraft::ScriptInvalidStructureError> getSize() const;
+
+    MCNAPI ::Scripting::Result<::std::string, ::ScriptModuleMinecraft::ScriptInvalidStructureError>
+    getStructureFullName() const;
+
+    MCNAPI ::Scripting::Result<::std::string, ::ScriptModuleMinecraft::ScriptInvalidStructureError>
+    getStructureName() const;
+
+    MCNAPI ::Scripting::Result<::std::string, ::ScriptModuleMinecraft::ScriptInvalidStructureError>
+    getStructureNamespace() const;
 
     MCNAPI bool isValid() const;
     // NOLINTEND
@@ -47,9 +70,7 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
-#ifdef LL_PLAT_S
     MCNAPI static ::Scripting::ClassBinding bindScript();
-#endif
     // NOLINTEND
 };
 

@@ -30,6 +30,7 @@ public:
         // NOLINTBEGIN
         ::ll::TypedStorage<4, 4, float> mTime;
         ::ll::TypedStorage<4, 4, float> mRotation;
+        ::ll::TypedStorage<4, 4, float> mIntensity;
         // NOLINTEND
     };
 
@@ -97,11 +98,5 @@ public:
     virtual ::SharedTypes::v1_21_100::PlayerViewMode getPlayerViewPerspectiveOption() const = 0;
 
     virtual ::std::optional<bool> isPlayerSleeping() const = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };

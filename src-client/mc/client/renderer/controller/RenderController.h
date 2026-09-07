@@ -2,12 +2,18 @@
 
 #include "mc/_HeaderOutputPredefine.h"
 
+// auto generated inclusion list
+#include "mc/client/renderer/controller/RenderControllerArrayType.h"
+#include "mc/molang/MolangVersion.h"
+
 // auto generated forward declare list
 // clang-format off
 class DataDrivenGeometry;
 class DataDrivenModel;
+class ExpressionNode;
 class RenderParams;
 class Vec4;
+namespace Json { class Value; }
 namespace mce { class Color; }
 // clang-format on
 
@@ -49,6 +55,8 @@ public:
 
     MCNAPI ::std::shared_ptr<::DataDrivenGeometry> getGeometry(::RenderParams& renderParams) const;
 
+    MCNAPI ::mce::Color getOnFireColor(::RenderParams& renderParams) const;
+
     MCNAPI ::mce::Color getOverlayColor(::RenderParams& renderParams) const;
 
     MCNAPI ::mce::Color getTintColor(::RenderParams& renderParams) const;
@@ -56,6 +64,11 @@ public:
     MCNAPI ::Vec4 getUVAnim(::RenderParams& renderParams, ::Vec4 const& defaultUVAnim) const;
 
     MCNAPI bool init(::DataDrivenModel& model);
+
+    MCNAPI bool parse(::Json::Value const& root, ::MolangVersion molangVersion);
+
+    MCNAPI bool
+    parseArray(::Json::Value const& root, ::RenderControllerArrayType arrayType, ::MolangVersion const molangVersion);
 
     MCNAPI void render(::RenderParams& renderParams, ::DataDrivenGeometry& geo);
 
@@ -71,6 +84,13 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
+    MCNAPI static bool _parseColor(
+        ::Json::Value const&  root,
+        ::ExpressionNode*     colorNode,
+        ::MolangVersion const molangVersion,
+        float const           defaultAlpha
+    );
+
     MCNAPI static ::std::string nameToRegExStr(::std::string const& sourceName);
     // NOLINTEND
 

@@ -11,7 +11,6 @@
 
 // auto generated forward declare list
 // clang-format off
-class MainMenuScreenModel;
 class SkinPackCollectionModel;
 class SkinRepository;
 // clang-format on
@@ -66,24 +65,10 @@ public:
     // NOLINTEND
 
 public:
-    // member functions
+    // static variables
     // NOLINTBEGIN
-    MCAPI SkinPickerScreenController(
-        ::std::shared_ptr<::MainMenuScreenModel> model,
-        ::std::shared_ptr<::SkinRepository>      skinRepository
-    );
-    // NOLINTEND
+    MCAPI static ::std::string const& MINECON_2012_CAPE_ID();
 
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCAPI void*
-    $ctor(::std::shared_ptr<::MainMenuScreenModel> model, ::std::shared_ptr<::SkinRepository> skinRepository);
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    MCAPI static ::std::string const& MOJANG_CAPE_ID();
     // NOLINTEND
 };

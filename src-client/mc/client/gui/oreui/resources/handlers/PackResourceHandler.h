@@ -8,11 +8,13 @@
 
 // auto generated forward declare list
 // clang-format off
+class ResourceLocation;
 class ResourcePackManager;
 namespace Gameface { class ResourceResponse; }
 namespace Gameface { class ResourceStreamResponse; }
 namespace Gameface { class TemporaryTextureHolder; }
 namespace Gameface { struct ResourceRequest; }
+namespace mce { class UUID; }
 // clang-format on
 
 namespace OreUI {
@@ -45,6 +47,15 @@ public:
     ) /*override*/;
 
     virtual void update() /*override*/;
+    // NOLINTEND
+
+public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI ::std::optional<::ResourceLocation> _getAssetResourceLocationFromResourcePackManager(
+        ::Gameface::ResourceRequest const&  request,
+        ::std::optional<::mce::UUID> const& packId
+    ) const;
     // NOLINTEND
 
 public:

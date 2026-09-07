@@ -25,6 +25,7 @@ struct ScriptingWorldInitializeEvent;
 namespace Core { class FilePathManager; }
 namespace Editor { class IEditorPlayer; }
 namespace Editor { struct EditorInitParams; }
+namespace Editor::Network { class INetworkPayload; }
 namespace Scripting { class GenericModuleBindingFactory; }
 // clang-format on
 
@@ -41,6 +42,7 @@ public:
     ::ll::UntypedStorage<8, 8>  mUnkf4abda;
     ::ll::UntypedStorage<8, 24> mUnk62d704;
     ::ll::UntypedStorage<8, 8>  mUnke15a95;
+    ::ll::UntypedStorage<8, 24> mUnk3f337b;
     ::ll::UntypedStorage<8, 8>  mUnkdddb22;
     // NOLINTEND
 
@@ -57,7 +59,7 @@ public:
 
     virtual bool isClientSide() const /*override*/;
 
-    virtual ::std::unique_ptr<::Editor::IEditorPlayer> createPlayer(::Player&) /*override*/;
+    virtual ::std::unique_ptr<::Editor::IEditorPlayer> createPlayer(::Player& player) /*override*/;
 
     virtual ::EventResult onServerLevelInitialized(::ServerInstance& instance, ::Level& level) /*override*/;
 
@@ -74,10 +76,10 @@ public:
     virtual bool isEditorModeOrInEditorWorld() const /*override*/;
 
     virtual ::std::unique_ptr<::FileArchiver::IWorldConverter> createWorldConverter(
-        ::ILevelListCache&,
-        ::Scheduler&,
-        ::Bedrock::NotNullNonOwnerPtr<::IResourcePackRepository> const&,
-        ::Bedrock::NotNullNonOwnerPtr<::IContentKeyProvider const>
+        ::ILevelListCache&                                              levelListCache,
+        ::Scheduler&                                                    scheduler,
+        ::Bedrock::NotNullNonOwnerPtr<::IResourcePackRepository> const& resourcePackRepository,
+        ::Bedrock::NotNullNonOwnerPtr<::IContentKeyProvider const>      keyProvider
     ) /*override*/;
     // NOLINTEND
 
@@ -85,11 +87,14 @@ public:
     // member functions
     // NOLINTBEGIN
     MCNAPI EditorManagerServer(
-        ::ServerInstance&                                      server,
-        bool                                                   isEditorModeEnabled,
-        ::Bedrock::NotNullNonOwnerPtr<::Core::FilePathManager> fileManager,
-        ::std::unique_ptr<::Editor::EditorInitParams>          editorInitParams
+        ::ServerInstance&                                        server,
+        bool                                                     isEditorModeEnabled,
+        ::Bedrock::NotNullNonOwnerPtr<::Core::FilePathManager>   fileManager,
+        ::std::unique_ptr<::Editor::EditorInitParams>            editorInitParams,
+        ::Bedrock::NotNullNonOwnerPtr<::IResourcePackRepository> resourcePackRepository
     );
+
+    MCNAPI void _dispatchToServerPlayers(::Editor::Network::INetworkPayload& payload);
 
     MCNAPI ::std::vector<::std::unique_ptr<::Scripting::GenericModuleBindingFactory>> getServerModuleFactories();
     // NOLINTEND
@@ -98,16 +103,42 @@ public:
     // constructor thunks
     // NOLINTBEGIN
     MCNAPI void* $ctor(
-        ::ServerInstance&                                      server,
-        bool                                                   isEditorModeEnabled,
-        ::Bedrock::NotNullNonOwnerPtr<::Core::FilePathManager> fileManager,
-        ::std::unique_ptr<::Editor::EditorInitParams>          editorInitParams
+        ::ServerInstance&                                        server,
+        bool                                                     isEditorModeEnabled,
+        ::Bedrock::NotNullNonOwnerPtr<::Core::FilePathManager>   fileManager,
+        ::std::unique_ptr<::Editor::EditorInitParams>            editorInitParams,
+        ::Bedrock::NotNullNonOwnerPtr<::IResourcePackRepository> resourcePackRepository
     );
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCNAPI bool $isClientSide() const;
+
+    MCNAPI ::std::unique_ptr<::Editor::IEditorPlayer> $createPlayer(::Player& player);
+
+    MCNAPI ::EventResult $onServerLevelInitialized(::ServerInstance& instance, ::Level& level);
+
+    MCNAPI ::EventResult $onStartLeaveGame(::ServerInstance& instance);
+
+    MCNAPI ::EventResult $onEvent(::ScriptingWorldInitializeEvent const&);
+
+    MCNAPI ::EventResult $onLevelTick(::Level&);
+
+    MCNAPI ::Scripting::Result_deprecated<void> $scriptingTeardown();
+
+    MCNAPI ::Scripting::Result_deprecated<void> $scriptingRebuild();
+
+    MCNAPI bool $isEditorModeOrInEditorWorld() const;
+
+    MCNAPI ::std::unique_ptr<::FileArchiver::IWorldConverter> $createWorldConverter(
+        ::ILevelListCache&                                              levelListCache,
+        ::Scheduler&                                                    scheduler,
+        ::Bedrock::NotNullNonOwnerPtr<::IResourcePackRepository> const& resourcePackRepository,
+        ::Bedrock::NotNullNonOwnerPtr<::IContentKeyProvider const>      keyProvider
+    );
+
 
     // NOLINTEND
 };

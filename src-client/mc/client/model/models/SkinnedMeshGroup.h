@@ -7,10 +7,12 @@
 
 // auto generated forward declare list
 // clang-format off
+class BaseActorRenderContext;
 class ClientPBRTextureData;
 class ExpressionNode;
 class MaterialVariants;
 class Matrix;
+class ModelPart;
 class RenderParams;
 class ScreenContext;
 class SkinnedMesh;
@@ -30,8 +32,24 @@ public:
     // NOLINTEND
 
 public:
+    // prevent constructor by default
+    SkinnedMeshGroup();
+
+public:
     // member functions
     // NOLINTBEGIN
+    MCAPI SkinnedMeshGroup(
+        ::ModelPart& modelPart,
+        int          skinnedMeshGroupIdentifier,
+        bool         isUniqueGroup,
+        uint64       skinnedMeshGroupIndex
+    );
+
+    MCAPI bool canRegisterPart(::ModelPart const& modelPart, int skinnedMeshGroupIdentifier) const;
+
+    MCAPI void
+    constructMesh(::BaseActorRenderContext& baseActorRenderContext, ::MaterialVariants const& defaultMaterialVariants);
+
     MCAPI void copyBoneMatrixToSkinnedMesh(
         int                            meshIndex,
         int                            partIndex,
@@ -57,12 +75,16 @@ public:
         ::std::optional<::MERSUniformData> const& mersUniforms
     );
 
-    MCAPI ~SkinnedMeshGroup();
+    MCAPI bool
+    isMaterialExpressionMapEqual(::std::unordered_map<::RenderController const*, ::ExpressionNode> const& rhs) const;
+
+    MCAPI void registerPart(::ModelPart& part, int groupIndex);
     // NOLINTEND
 
 public:
-    // destructor thunk
+    // constructor thunks
     // NOLINTBEGIN
-    MCAPI void $dtor();
+    MCAPI void*
+    $ctor(::ModelPart& modelPart, int skinnedMeshGroupIdentifier, bool isUniqueGroup, uint64 skinnedMeshGroupIndex);
     // NOLINTEND
 };

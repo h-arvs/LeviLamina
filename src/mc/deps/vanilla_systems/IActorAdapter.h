@@ -15,13 +15,7 @@ public:
     // NOLINTBEGIN
     virtual ~IActorAdapter() = default;
 
-    virtual void dropHangingActor(::StrictEntityContext const&) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual void dropHangingActor(::StrictEntityContext const& entity) = 0;
     // NOLINTEND
 };
 

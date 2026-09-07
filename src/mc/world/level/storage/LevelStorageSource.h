@@ -46,7 +46,8 @@ public:
         ::Bedrock::NotNullNonOwnerPtr<::IContentKeyProvider const> const& keyProvider,
         ::std::chrono::nanoseconds const&                                 writeFlushInterval,
         ::Bedrock::NotNullNonOwnerPtr<::LevelDbEnv>                       levelDbEnv,
-        ::std::unique_ptr<::LevelStorageEventing>                         levelStorageEventing
+        ::std::unique_ptr<::LevelStorageEventing>                         levelStorageEventing,
+        bool                                                              jigsawPersistenceToggle
     ) = 0;
 
     virtual ::std::unique_ptr<::LevelLooseFileStorage> createLevelLooseStorage(
@@ -90,6 +91,8 @@ public:
 public:
     // static variables
     // NOLINTBEGIN
+    MCNAPI static ::std::chrono::nanoseconds const& WORLD_SAVE_FLUSH_INTERVAL();
+
     MCNAPI static ::std::chrono::nanoseconds const& WORLD_SAVE_MENU_FLUSH_INTERVAL();
     // NOLINTEND
 

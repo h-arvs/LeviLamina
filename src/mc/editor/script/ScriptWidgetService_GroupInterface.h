@@ -18,16 +18,11 @@ class ScriptWidgetService_GroupInterface {
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual ::Scripting::Result_deprecated<void>
-        _groupDeleteGroup(::Scripting::StrongTypedObjectHandle<::Editor::ScriptModule::ScriptWidgetGroup>) = 0;
+    virtual ::Scripting::Result_deprecated<void> _groupDeleteGroup(
+        ::Scripting::StrongTypedObjectHandle<::Editor::ScriptModule::ScriptWidgetGroup> groupToDelete
+    ) = 0;
 
     virtual ::AABB const& _getDimensionBounds() const = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };
 

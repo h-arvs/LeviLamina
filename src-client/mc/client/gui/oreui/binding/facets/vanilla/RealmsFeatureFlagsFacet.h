@@ -17,6 +17,7 @@ public:
     // member variables
     // NOLINTBEGIN
     ::ll::TypedStorage<8, 24, ::std::vector<::std::string>> mRealmsFeatureFlags;
+    ::ll::TypedStorage<8, 32, ::std::string>                mCommerceV2PlatformFeatureName;
     // NOLINTEND
 
 public:
@@ -33,6 +34,10 @@ public:
     // member functions
     // NOLINTBEGIN
     MCAPI explicit RealmsFeatureFlagsFacet(::std::weak_ptr<::RealmsAPI> realmsApi);
+
+    MCFOLD ::std::vector<::std::string> const& getAllFeatureFlags() const;
+
+    MCFOLD ::std::string const& getCommerceV2PlatformFeatureName() const;
     // NOLINTEND
 
 public:
@@ -50,7 +55,7 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
-
+    MCFOLD bool $update();
     // NOLINTEND
 };
 

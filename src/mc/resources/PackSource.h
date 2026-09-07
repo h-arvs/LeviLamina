@@ -22,6 +22,7 @@ class TaskGroup;
 struct PackSourceLoadOptions;
 struct PackSourceLoadResult;
 struct PackSourceOptions;
+struct PackStorage;
 // clang-format on
 
 class PackSource : public ::Bedrock::EnableNonOwnerReferences {
@@ -78,6 +79,12 @@ public:
         RequiredPackType& operator=(RequiredPackType const&);
         RequiredPackType(RequiredPackType const&);
         RequiredPackType();
+
+    public:
+        // static functions
+        // NOLINTBEGIN
+        MCNAPI static ::PackType assertValidPackType(::PackType type);
+        // NOLINTEND
     };
 
     class RequiredResourceOrBehaviorPackType {
@@ -127,9 +134,9 @@ public:
     // NOLINTBEGIN
     MCAPI explicit PackSource(::PackSourceOptions options);
 
-#ifdef LL_PLAT_C
     MCAPI void _addPack(::std::shared_ptr<::Pack> pack);
 
+#ifdef LL_PLAT_C
     MCAPI ::Bedrock::Threading::Async<void>
     _addPacks(::std::vector<::gsl::not_null<::std::shared_ptr<::Pack>>>&& packs);
 #endif
@@ -137,6 +144,8 @@ public:
     MCAPI ::PackSourceLoadResult _applyAndFinishLoadTask(::std::shared_ptr<::PackSource::PackTaskData> task);
 
     MCAPI ::PackSourceLoadResult _createImmediateLoadResult();
+
+    MCAPI ::PackStorage _getStorage() const;
 
     MCAPI ::PackSourceLoadResult
     _getTaskData(::brstd::function_ref<::PackSourceLoadResult(::std::shared_ptr<::PackSource::PackTaskData>)> task);
@@ -156,6 +165,8 @@ public:
         ::IPackManifestFactory&                                           manifestFactory,
         ::Bedrock::NotNullNonOwnerPtr<::IContentKeyProvider const> const& keyProvider
     );
+
+    MCAPI ::PackSourceLoadResult requestLoad(::PackSourceLoadOptions&& options);
     // NOLINTEND
 
 public:

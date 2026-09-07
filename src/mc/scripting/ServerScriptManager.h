@@ -5,6 +5,7 @@
 // auto generated inclusion list
 #include "mc/deps/core/utility/NonOwnerPointer.h"
 #include "mc/deps/game_refs/OwnerPtr.h"
+#include "mc/scripting/PluginExecutionGroup.h"
 #include "mc/scripting/RegisterDiagnosticsStatsTypes.h"
 #include "mc/scripting/ScriptSettings.h"
 #include "mc/scripting/ServerScriptManagerEvents.h"
@@ -32,6 +33,7 @@ class ScriptContentLogEndPoint;
 class ScriptDebugger;
 class ScriptDebuggerWatchdog;
 class ScriptDiagnostics;
+class ScriptDiagnosticsCollectors;
 class ScriptDiagnosticsPublishToFile;
 class ScriptFormPromiseTracker;
 class ScriptPackSettingsCache;
@@ -102,8 +104,9 @@ public:
     ::ll::TypedStorage<8, 8, ::std::unique_ptr<::ScriptFormPromiseTracker>>            mFormPromiseTracker;
     ::ll::TypedStorage<8, 8, ::std::unique_ptr<::ScriptDebuggerWatchdog>>              mScriptDebuggerWatchdog;
     ::ll::TypedStorage<8, 8, ::std::unique_ptr<::ScriptDebugger>>                      mScriptDebugger;
+    ::ll::TypedStorage<8, 24, ::Bedrock::NonOwnerPointer<::ScriptDiagnostics>>         mDiagnostics;
     ::ll::TypedStorage<8, 8, ::std::unique_ptr<::ScriptDiagnosticsPublishToFile>>      mDiagnosticsPublishToFile;
-    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::ScriptDiagnostics>>                   mScriptDiagnostics;
+    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::ScriptDiagnosticsCollectors>>         mScriptDiagnosticsCollectors;
     ::ll::TypedStorage<8, 8, ::std::unique_ptr<::ScriptTickListener>>                  mScriptTickListener;
     ::ll::TypedStorage<8, 8, ::std::unique_ptr<::ScriptTaskGroup>>                     mScriptTaskGroup;
     ::ll::TypedStorage<8, 8, ::std::unique_ptr<::ScriptContentLogEndPoint>>            mScriptContentLogEndPoint;
@@ -139,9 +142,9 @@ public:
 
     virtual ::EventResult onServerThreadStarted(::ServerInstance& instance) /*override*/;
 
-    virtual ::EventResult onEvent(::ServerInstanceRequestResourceReload const&) /*override*/;
+    virtual ::EventResult onEvent(::ServerInstanceRequestResourceReload const& reloadEvent) /*override*/;
 
-    virtual ::EventResult onEvent(::LevelStartLeaveGameEvent const&) /*override*/;
+    virtual ::EventResult onEvent(::LevelStartLeaveGameEvent const& levelStartLeaveGameEvent) /*override*/;
     // NOLINTEND
 
 public:
@@ -158,7 +161,21 @@ public:
         ::ServerInstance&                                        server,
         ::Scripting::RegistryManager&                            registry,
         ::Bedrock::NonOwnerPointer<::LocalProfilerControlBroker> localProfilerControlBroker,
-        ::std::unique_ptr<::AsyncJoinRegistrar>&&                asyncJoinRegistrar
+        ::std::unique_ptr<::AsyncJoinRegistrar>&&                asyncJoinRegistrar,
+        ::Bedrock::NonOwnerPointer<::ScriptDiagnostics>          diagnostics
+    );
+
+    MCAPI void _loadPlugins(::ServerLevel& serverLevel, bool fromReload);
+
+    MCAPI void _runPlugins(::PluginExecutionGroup exeGroup, ::ServerInstance& serverInstance);
+
+    MCAPI void addModuleFilter(
+        ::std::function<::ScriptModuleFilters::FilterResult(
+            ::PackManifest const&,
+            ::Scripting::ModuleDescriptor const&,
+            ::Scripting::ModuleDescriptor const&,
+            ::ScriptPluginResult&
+        )> moduleFilter
     );
 
     MCAPI void setBlockCustomComponentCerealContext(::cereal::ReflectionCtx& ctx);
@@ -180,13 +197,22 @@ public:
         ::ServerInstance&                                        server,
         ::Scripting::RegistryManager&                            registry,
         ::Bedrock::NonOwnerPointer<::LocalProfilerControlBroker> localProfilerControlBroker,
-        ::std::unique_ptr<::AsyncJoinRegistrar>&&                asyncJoinRegistrar
+        ::std::unique_ptr<::AsyncJoinRegistrar>&&                asyncJoinRegistrar,
+        ::Bedrock::NonOwnerPointer<::ScriptDiagnostics>          diagnostics
     );
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI ::EventResult $onServerUpdateEnd(::ServerInstance& instance);
+
+    MCAPI ::EventResult $onServerThreadStarted(::ServerInstance& instance);
+
+    MCAPI ::EventResult $onEvent(::ServerInstanceRequestResourceReload const& reloadEvent);
+
+    MCAPI ::EventResult $onEvent(::LevelStartLeaveGameEvent const& levelStartLeaveGameEvent);
+
 
     // NOLINTEND
 };

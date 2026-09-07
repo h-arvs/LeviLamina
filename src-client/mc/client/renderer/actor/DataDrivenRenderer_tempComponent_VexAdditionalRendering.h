@@ -5,11 +5,18 @@
 // auto generated inclusion list
 #include "mc/client/renderer/actor/DataDrivenRenderer_tempComponent.h"
 #include "mc/client/renderer/actor/V2TempComponentRequirements.h"
+#include "mc/deps/renderer/MatrixStack.h"
 
 // auto generated forward declare list
 // clang-format off
 class ActorRenderData;
 class BaseActorRenderContext;
+class BoneOrientation;
+class DataDrivenRenderer;
+class HashedString;
+class ItemStack;
+class Mob;
+class ModelPart;
 class RenderParams;
 // clang-format on
 
@@ -17,34 +24,45 @@ class DataDrivenRenderer_tempComponent_VexAdditionalRendering : public ::DataDri
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 16> mUnk670796;
-    ::ll::UntypedStorage<8, 8>  mUnka1eb46;
-    ::ll::UntypedStorage<8, 8>  mUnkdf6bee;
-    ::ll::UntypedStorage<8, 8>  mUnka253f2;
-    ::ll::UntypedStorage<1, 2>  mUnka0782d;
-    ::ll::UntypedStorage<1, 2>  mUnk4bb823;
+    ::ll::TypedStorage<8, 16, ::std::weak_ptr<::DataDrivenRenderer>> mRenderer;
+    ::ll::TypedStorage<8, 8, ::ModelPart*>                           mRightArm;
+    ::ll::TypedStorage<8, 8, ::ModelPart*>                           mRightItem;
+    ::ll::TypedStorage<8, 8, ::ModelPart*>                           mLeftArm;
+    ::ll::TypedStorage<1, 2, ::std::optional<bool>>                  mHeldItemIgnoresLighting;
+    ::ll::TypedStorage<1, 2, ::std::optional<bool>>                  mRenderLeftHandItem;
     // NOLINTEND
-
-public:
-    // prevent constructor by default
-    DataDrivenRenderer_tempComponent_VexAdditionalRendering&
-    operator=(DataDrivenRenderer_tempComponent_VexAdditionalRendering const&);
-    DataDrivenRenderer_tempComponent_VexAdditionalRendering(
-        DataDrivenRenderer_tempComponent_VexAdditionalRendering const&
-    );
-    DataDrivenRenderer_tempComponent_VexAdditionalRendering();
 
 public:
     // virtual functions
     // NOLINTBEGIN
     virtual ::V2TempComponentRequirements getV2Requirements() const /*override*/;
 
-    virtual void render(::BaseActorRenderContext&, ::ActorRenderData&, ::RenderParams&) /*override*/;
+    virtual void render(
+        ::BaseActorRenderContext& renderContext,
+        ::ActorRenderData&        actorRenderData,
+        ::RenderParams&           renderParams
+    ) /*override*/;
+    // NOLINTEND
+
+public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI void _renderParentedItemInHand(
+        ::Mob&                                  mob,
+        ::HashedString const&                   boneName,
+        ::ItemStack const&                      item,
+        ::BaseActorRenderContext&               renderContext,
+        ::std::vector<::BoneOrientation> const& boneOrientations,
+        ::MatrixStack::MatrixStackRef&          worldMatrix
+    ) const;
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCFOLD ::V2TempComponentRequirements $getV2Requirements() const;
 
+    MCAPI void
+    $render(::BaseActorRenderContext& renderContext, ::ActorRenderData& actorRenderData, ::RenderParams& renderParams);
     // NOLINTEND
 };

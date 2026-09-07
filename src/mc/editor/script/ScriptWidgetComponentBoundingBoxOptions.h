@@ -10,6 +10,7 @@
 // clang-format off
 class AABB;
 class Vec3;
+namespace ScriptModuleMinecraft { class ScriptRGBA; }
 namespace Scripting { struct InterfaceBinding; }
 // clang-format on
 
@@ -28,6 +29,7 @@ public:
     ::ll::UntypedStorage<1, 2>   mUnk204909;
     ::ll::UntypedStorage<1, 2>   mUnk47735e;
     ::ll::UntypedStorage<4, 8>   mUnk772774;
+    ::ll::UntypedStorage<4, 8>   mUnk2253d6;
     ::ll::UntypedStorage<4, 36>  mUnk2a63b0;
     ::ll::UntypedStorage<8, 120> mUnk75e5be;
     // NOLINTEND
@@ -41,19 +43,41 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual ::Scripting::Result_deprecated<void> validate(::AABB const&, ::Vec3 const&, ::Vec3 const&) const
-        /*override*/;
+    virtual ::Scripting::Result_deprecated<void>
+    validate(::AABB const& absoluteWorldBounds, ::Vec3 const& rootPosition, ::Vec3 const& size) const /*override*/;
     // NOLINTEND
 
 public:
     // static functions
     // NOLINTBEGIN
     MCNAPI static ::Scripting::InterfaceBinding bindScript();
+
+    MCNAPI static ::Scripting::Result_deprecated<void> validateOffsetValues(::Vec3 const& offset);
+
+    MCNAPI static ::Scripting::Result_deprecated<void> validateOriginValues(::Vec3 const& origin);
+
+    MCNAPI static ::Scripting::Result_deprecated<void>
+    validateSizeValues(::Vec3 const& size, ::Vec3 const& minSize, ::Vec3 const& maxSize);
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCNAPI static ::ScriptModuleMinecraft::ScriptRGBA const& DEFAULT_HULL_COLOR();
+
+    MCNAPI static ::Vec3 const& DEFAULT_NORMALIZED_ORIGIN();
+
+    MCNAPI static ::Vec3 const& DEFAULT_OFFSET();
+
+    MCNAPI static ::ScriptModuleMinecraft::ScriptRGBA const& DEFAULT_OUTLINE_COLOR();
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCNAPI ::Scripting::Result_deprecated<void>
+    $validate(::AABB const& absoluteWorldBounds, ::Vec3 const& rootPosition, ::Vec3 const& size) const;
+
 
     // NOLINTEND
 };

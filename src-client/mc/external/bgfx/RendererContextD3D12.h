@@ -8,7 +8,6 @@
 #include "mc/external/bgfx/BufferD3D12.h"
 #include "mc/external/bgfx/CommandQueueD3D12.h"
 #include "mc/external/bgfx/Dxgi.h"
-#include "mc/external/bgfx/Enum.h"
 #include "mc/external/bgfx/FatalError.h"
 #include "mc/external/bgfx/FenceSyncContext.h"
 #include "mc/external/bgfx/FrameBufferD3D12.h"
@@ -34,6 +33,7 @@
 #include "mc/external/bgfx/VertexDeclHandle.h"
 #include "mc/external/bgfx/ViewProfilerManager.h"
 #include "mc/external/bgfx/acceleration_structure_build_flags/Enum.h"
+#include "mc/external/bgfx/d3d12/heap_property/Enum.h"
 #include "mc/external/bgfx/renderer_type/Enum.h"
 #include "mc/external/bgfx/texture_format/Enum.h"
 #include "mc/external/bgfx/uniform_type/Enum.h"
@@ -324,11 +324,11 @@ public:
     virtual void destroyProgram(::bgfx::ProgramHandle _handle) /*override*/;
 
     virtual void* createTexture(
-        ::bgfx::TextureHandle _handle,
-        ::bgfx::Memory const* _mem,
-        uint                  _flags,
-        uchar                 _skip,
-        ::bgfx::Memory const**
+        ::bgfx::TextureHandle  _handle,
+        ::bgfx::Memory const*  _mem,
+        uint                   _flags,
+        uchar                  _skip,
+        ::bgfx::Memory const** _imageContainerData
     ) /*override*/;
 
     virtual void updateTextureBegin(::bgfx::TextureHandle, uchar, uchar) /*override*/;
@@ -435,8 +435,11 @@ public:
 
     virtual void setName(::bgfx::Handle _handle, char const* _name) /*override*/;
 
-    virtual void
-    submit(::bgfx::Frame* _render, ::bgfx::ClearQuad&, ::bgfx::TextVideoMemBlitter& _textVideoMemBlitter) /*override*/;
+    virtual void submit(
+        ::bgfx::Frame*               _render,
+        ::bgfx::ClearQuad&           _clearQuad,
+        ::bgfx::TextVideoMemBlitter& _textVideoMemBlitter
+    ) /*override*/;
 
     virtual void blitSetup(::bgfx::TextVideoMemBlitter& _blitter) /*override*/;
 
@@ -444,21 +447,19 @@ public:
 
     virtual bool updateResolution(::bgfx::Resolution const& _resolution);
 
-    virtual void updateFlipRate(::bgfx::Resolution const& _resolution);
-
     virtual void kick(bool _alloc);
 
     virtual void finish();
 
-    virtual void doPreBlasSkinning(::bgfx::d3d12::CommandListD3D12&);
+    virtual void doPreBlasSkinning(::bgfx::d3d12::CommandListD3D12& bgfxCommandList);
 
     virtual void rayTrace(
-        ::bgfx::d3d12::CommandListD3D12&,
-        ::bgfx::RayTracingConfiguration const&,
-        ::bgfx::RayTracingResources const&,
-        ::bgfx::RenderBind const&,
-        ::bgfx::Matrix4 const&,
-        ::bgfx::Matrix4 const&
+        ::bgfx::d3d12::CommandListD3D12&       bgfxCommandList,
+        ::bgfx::RayTracingConfiguration const& rtConfig,
+        ::bgfx::RayTracingResources const&     rtResources,
+        ::bgfx::RenderBind const&              renderBind,
+        ::bgfx::Matrix4 const&                 viewMat,
+        ::bgfx::Matrix4 const&                 projMat
     );
     // NOLINTEND
 
@@ -474,6 +475,14 @@ public:
         ::D3D12_RESOURCE_STATES           _initialState,
         ::D3D12_RESOURCE_FLAGS            _flags
     );
+
+    MCAPI ::D3D12_CPU_DESCRIPTOR_HANDLE getRtv(::bgfx::FrameBufferHandle _fbh);
+
+    MCAPI void postReset(bool _swapChainReset);
+
+    MCAPI void preReset(bool _swapChainReset);
+
+    MCAPI void updateMsaa(::DXGI_FORMAT _format);
     // NOLINTEND
 
 public:
@@ -495,9 +504,13 @@ public:
 
     MCAPI void $shutdown();
 
+    MCFOLD ::bgfx::RendererType::Enum $getRendererType() const;
+
     MCAPI uint64 $getRendererVersion() const;
 
     MCAPI uint64 $getShaderVersion() const;
+
+    MCAPI char const* $getRendererName() const;
 
     MCAPI bool $isDeviceRemoved();
 
@@ -555,11 +568,11 @@ public:
     MCAPI void $destroyProgram(::bgfx::ProgramHandle _handle);
 
     MCAPI void* $createTexture(
-        ::bgfx::TextureHandle _handle,
-        ::bgfx::Memory const* _mem,
-        uint                  _flags,
-        uchar                 _skip,
-        ::bgfx::Memory const**
+        ::bgfx::TextureHandle  _handle,
+        ::bgfx::Memory const*  _mem,
+        uint                   _flags,
+        uchar                  _skip,
+        ::bgfx::Memory const** _imageContainerData
     );
 
     MCFOLD void $updateTextureBegin(::bgfx::TextureHandle, uchar, uchar);
@@ -651,7 +664,8 @@ public:
 
     MCAPI void $setName(::bgfx::Handle _handle, char const* _name);
 
-    MCAPI void $submit(::bgfx::Frame* _render, ::bgfx::ClearQuad&, ::bgfx::TextVideoMemBlitter& _textVideoMemBlitter);
+    MCAPI void
+    $submit(::bgfx::Frame* _render, ::bgfx::ClearQuad& _clearQuad, ::bgfx::TextVideoMemBlitter& _textVideoMemBlitter);
 
     MCAPI void $blitSetup(::bgfx::TextVideoMemBlitter& _blitter);
 
@@ -659,11 +673,20 @@ public:
 
     MCAPI bool $updateResolution(::bgfx::Resolution const& _resolution);
 
-    MCFOLD void $updateFlipRate(::bgfx::Resolution const& _resolution);
-
     MCAPI void $kick(bool _alloc);
 
     MCAPI void $finish();
+
+    MCFOLD void $doPreBlasSkinning(::bgfx::d3d12::CommandListD3D12& bgfxCommandList);
+
+    MCFOLD void $rayTrace(
+        ::bgfx::d3d12::CommandListD3D12&       bgfxCommandList,
+        ::bgfx::RayTracingConfiguration const& rtConfig,
+        ::bgfx::RayTracingResources const&     rtResources,
+        ::bgfx::RenderBind const&              renderBind,
+        ::bgfx::Matrix4 const&                 viewMat,
+        ::bgfx::Matrix4 const&                 projMat
+    );
     // NOLINTEND
 };
 

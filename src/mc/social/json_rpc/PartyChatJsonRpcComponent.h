@@ -43,12 +43,7 @@ public:
     // NOLINTBEGIN
     virtual ~PartyChatJsonRpcComponent() /*override*/ = default;
 
-#ifdef LL_PLAT_S
-    virtual void initialize(::std::shared_ptr<::JsonRpc::JsonRpcProvider>) /*override*/;
-#else // LL_PLAT_C
     virtual void initialize(::std::shared_ptr<::JsonRpc::JsonRpcProvider> provider) /*override*/;
-#endif
-
     // NOLINTEND
 
 public:

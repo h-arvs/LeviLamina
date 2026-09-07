@@ -23,6 +23,7 @@
 
 // auto generated forward declare list
 // clang-format off
+class LevelData;
 namespace Core { class Path; }
 // clang-format on
 
@@ -70,14 +71,29 @@ public:
     ::ll::TypedStorage<8, 32, ::std::string>                          mEducationCreatorWorldId;
     // NOLINTEND
 
+#ifdef LL_PLAT_S
+public:
+    // prevent constructor by default
+    LevelSummary& operator=(LevelSummary const&);
+
+#else // LL_PLAT_C
+#endif
 public:
     // member functions
     // NOLINTBEGIN
-#ifdef LL_PLAT_C
     MCAPI LevelSummary();
 
     MCAPI LevelSummary(::LevelSummary const&);
 
+    MCAPI LevelSummary(
+        ::std::string const& levelId,
+        ::LevelData const&   levelData,
+        ::Core::Path const&  levelDirectory,
+        ::Core::Path const&  levelInfoDirectory,
+        bool                 isBetaRetailLevel
+    );
+
+#ifdef LL_PLAT_C
     MCAPI LevelSummary(
         ::std::string const&                  id,
         ::std::string const&                  name,
@@ -111,7 +127,11 @@ public:
         bool                                  uncompleteWorldFileOnDisk,
         ::std::optional<::CloudSaveLevelInfo> cloudSaveInfo
     );
+#endif
 
+    MCAPI void _initializeWorldIconPath(::Core::Path const& directory);
+
+#ifdef LL_PLAT_C
     MCAPI ::std::string getEducationCreatorId() const;
 
     MCAPI ::std::string getEducationCreatorWorldId() const;
@@ -129,9 +149,9 @@ public:
     MCAPI void setCloudSave(::CloudSaveLevelInfo const& value);
 
     MCAPI ::LevelSummary& setId(::std::string Id);
+#endif
 
     MCAPI ::LevelSummary& setName(::std::string Name);
-#endif
 
     MCAPI ~LevelSummary();
     // NOLINTEND
@@ -156,17 +176,29 @@ public:
 
     MCAPI static ::std::string const& INVALID_LEVEL_ID();
 
+    MCAPI static ::std::string const& SCREENSHOT_WORLD_ICON_FILENAME_EXTENSION();
+
+    MCAPI static ::std::string const& SCREENSHOT_WORLD_ICON_FILENAME_PREFIX();
+
     MCAPI static ::Core::PathBuffer<::std::string> const& WORLD_ICON_FILENAME();
     // NOLINTEND
 
 public:
     // constructor thunks
     // NOLINTBEGIN
-#ifdef LL_PLAT_C
     MCAPI void* $ctor();
 
     MCAPI void* $ctor(::LevelSummary const&);
 
+    MCAPI void* $ctor(
+        ::std::string const& levelId,
+        ::LevelData const&   levelData,
+        ::Core::Path const&  levelDirectory,
+        ::Core::Path const&  levelInfoDirectory,
+        bool                 isBetaRetailLevel
+    );
+
+#ifdef LL_PLAT_C
     MCAPI void* $ctor(
         ::std::string const&                  id,
         ::std::string const&                  name,

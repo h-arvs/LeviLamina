@@ -28,12 +28,7 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-#ifdef LL_PLAT_S
-    virtual ~CreativeItemGroupCategory() /*override*/ = default;
-#else // LL_PLAT_C
     virtual ~CreativeItemGroupCategory() /*override*/;
-#endif
-
     // NOLINTEND
 
 public:
@@ -50,5 +45,11 @@ public:
     // destructor thunk
     // NOLINTBEGIN
     MCAPI void $dtor();
+    // NOLINTEND
+
+public:
+    // vftables
+    // NOLINTBEGIN
+    MCNAPI static void** $vftable();
     // NOLINTEND
 };

@@ -21,6 +21,7 @@ class IUnknownBlockTypeRegistry;
 class LegacyStructureTemplate;
 class Level;
 class LevelStorage;
+class PackInstance;
 class ResourcePackManager;
 class ServerLevel;
 class StructureAnimationData;
@@ -64,16 +65,16 @@ public:
     // NOLINTBEGIN
     virtual ~StructureManager() /*override*/ = default;
 
-    virtual ::LegacyStructureTemplate& getOrCreateLegacy(::std::string const&) /*override*/;
+    virtual ::LegacyStructureTemplate& getOrCreateLegacy(::std::string const& structureName) /*override*/;
 
-    virtual ::StructureTemplate& getOrCreate(::std::string const&) /*override*/;
+    virtual ::StructureTemplate& getOrCreate(::std::string const& structureName) /*override*/;
 
-    virtual ::StructureTemplate* getStructure(::std::string const&) const /*override*/;
+    virtual ::StructureTemplate* getStructure(::std::string const& structureName) const /*override*/;
 
-    virtual bool readStructure(::StructureTemplate&) /*override*/;
+    virtual bool readStructure(::StructureTemplate& structureTemplate) /*override*/;
 
     virtual ::std::shared_ptr<::SharedTypes::v1_21_80::JigsawStructureMetadata>
-    getOrCreateJigsawStructureMetadata(::StructurePoolElement const&) /*override*/;
+    getOrCreateJigsawStructureMetadata(::StructurePoolElement const& structurePoolElement) /*override*/;
     // NOLINTEND
 
 public:
@@ -86,6 +87,8 @@ public:
         ::ResourcePackManager const* packManager,
         ::LevelStorage*              levelStorage
     );
+
+    MCAPI ::std::string _createLevelStorageId(::std::string const& dimensionPrefix, ::std::string const& saveId);
 
     MCAPI ::StructureTemplate&
     cloneStructure(::StructureTemplate const& structureTemplate, ::std::string const& structureName);
@@ -135,6 +138,15 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
+    MCAPI static bool _findResource(
+        ::Core::PathBuffer<::Core::BasicStackString<char, 1024>> const& structurePath,
+        ::PackInstance const&                                           pack,
+        ::std::string&                                                  resourceStream
+    );
+
+    MCAPI static void
+    _removePlacementQueueItem(::std::string const& dimensionPrefix, ::StructureAnimationData& structureAnimationData);
+
 #ifdef LL_PLAT_C
     MCAPI static bool exportStructure(::StructureTemplate const& structureTemplate, ::Core::Path const& filePath);
 #endif
@@ -144,6 +156,10 @@ public:
 
     MCAPI static ::Core::PathBuffer<::Core::BasicStackString<char, 1024>>
     getStructurePath(::std::string_view structureNamespace, ::std::string_view structureName);
+
+#ifdef LL_PLAT_S
+    MCAPI static bool loadLegacy(::LegacyStructureTemplate& structure, ::std::string& data);
+#endif
     // NOLINTEND
 
 public:
@@ -155,6 +171,17 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI ::LegacyStructureTemplate& $getOrCreateLegacy(::std::string const& structureName);
+
+    MCAPI ::StructureTemplate& $getOrCreate(::std::string const& structureName);
+
+    MCAPI ::StructureTemplate* $getStructure(::std::string const& structureName) const;
+
+    MCAPI bool $readStructure(::StructureTemplate& structureTemplate);
+
+    MCAPI ::std::shared_ptr<::SharedTypes::v1_21_80::JigsawStructureMetadata>
+    $getOrCreateJigsawStructureMetadata(::StructurePoolElement const& structurePoolElement);
+
 
     // NOLINTEND
 };

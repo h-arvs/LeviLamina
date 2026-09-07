@@ -38,6 +38,17 @@ public:
 
     MCAPI int _removeCursorItem();
 
+    MCAPI int _removeCursorItem(::ItemStack const& item, bool requireExactAux, int maxCount);
+
+    MCAPI int _removeSimpleContainerItem(
+        ::SimpleContainer& container,
+        ::ContainerID      containerId,
+        int                slot,
+        ::ItemStack const& sourceItem,
+        bool               requireExactAux,
+        int                maxCount
+    );
+
     MCAPI int clearAllItems();
 
     MCAPI int getItemCount(::std::function<bool(::ItemStack const&)> comparator);

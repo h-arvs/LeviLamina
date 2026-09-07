@@ -20,4 +20,10 @@ public:
     ::ll::TypedStorage<4, 12, ::Vec3>                                                                   mPosition;
     ::ll::TypedStorage<4, 4, float>                                                                     mRadiusSqr;
     // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static float const& SQRT_FLT_MAX();
+    // NOLINTEND
 };

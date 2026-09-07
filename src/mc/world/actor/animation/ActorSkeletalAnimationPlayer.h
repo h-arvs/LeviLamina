@@ -34,10 +34,13 @@ public:
     ::ll::TypedStorage<4, 4, float>                                                       mStartDelay;
     // NOLINTEND
 
+#ifdef LL_PLAT_S
+#else // LL_PLAT_C
 public:
     // prevent constructor by default
     ActorSkeletalAnimationPlayer();
 
+#endif
 public:
     // virtual functions
     // NOLINTBEGIN
@@ -73,23 +76,32 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
+#ifdef LL_PLAT_C
     MCAPI ActorSkeletalAnimationPlayer(
         ::HashedString const&       friendlyName,
         ::ActorSkeletalAnimationPtr animationData,
         ::AnimationComponent&       animationComponent,
         ::ExpressionNode const&     blendExpression
     );
+#endif
+
+    MCAPI void _setDefaultPose(
+        ::RenderParams&                                                                   renderParams,
+        ::std::unordered_map<::SkeletalHierarchyIndex, ::std::vector<::BoneOrientation>>& destBoneOrientationMap
+    ) const;
     // NOLINTEND
 
 public:
     // constructor thunks
     // NOLINTBEGIN
+#ifdef LL_PLAT_C
     MCAPI void* $ctor(
         ::HashedString const&       friendlyName,
         ::ActorSkeletalAnimationPtr animationData,
         ::AnimationComponent&       animationComponent,
         ::ExpressionNode const&     blendExpression
     );
+#endif
     // NOLINTEND
 
 public:
@@ -104,7 +116,11 @@ public:
 
     MCAPI void $resetAnimation();
 
+#ifdef LL_PLAT_S
     MCFOLD void $buildBoneToPartMapping(::AnimationComponent& animationComponent);
+#else // LL_PLAT_C
+    MCAPI void $buildBoneToPartMapping(::AnimationComponent& animationComponent);
+#endif
 
     MCAPI void $bindParticleEffects(::std::unordered_map<::HashedString, ::HashedString> const& actorParticleEffectMap);
 
@@ -121,11 +137,5 @@ public:
     MCAPI void $visit(::AnimationVisitor&& dispatcher);
 
 
-    // NOLINTEND
-
-public:
-    // vftables
-    // NOLINTBEGIN
-    MCNAPI static void** $vftable();
     // NOLINTEND
 };

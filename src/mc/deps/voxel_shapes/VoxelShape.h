@@ -3,12 +3,14 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
+#include "mc/deps/core/container/small_vector.h"
 #include "mc/deps/voxel_shapes/JoinOperation.h"
 
 // auto generated forward declare list
 // clang-format off
 class AABB;
 class Vec3;
+namespace VoxelShapes { class Cells; }
 namespace VoxelShapes { struct SerializableVoxelShape; }
 // clang-format on
 
@@ -36,13 +38,18 @@ public:
 
     MCNAPI VoxelShape(::VoxelShapes::VoxelShape const&);
 
+    MCNAPI VoxelShape(
+        ::VoxelShapes::Cells               cells,
+        ::Bedrock::small_vector<float, 12> xCoords,
+        ::Bedrock::small_vector<float, 12> yCoords,
+        ::Bedrock::small_vector<float, 12> zCoords
+    );
+
     MCNAPI ::VoxelShapes::VoxelShape computeFaceShape(uchar face) const;
 
     MCNAPI ::VoxelShapes::VoxelShape& operator=(::VoxelShapes::VoxelShape&&);
 
-#ifdef LL_PLAT_C
     MCNAPI bool operator==(::VoxelShapes::VoxelShape const& rhs) const;
-#endif
 
     MCNAPI ::VoxelShapes::SerializableVoxelShape toSerializable() const;
 
@@ -54,6 +61,8 @@ public:
     // NOLINTBEGIN
     MCNAPI static ::VoxelShapes::VoxelShape
     createCuboidShape(float xMin, float yMin, float zMin, float xMax, float yMax, float zMax);
+
+    MCNAPI static ::VoxelShapes::VoxelShape createEmptyShape();
 
     MCNAPI static ::VoxelShapes::VoxelShape createShapeFromAabbs(::gsl::span<::AABB const> boxes);
 
@@ -97,6 +106,13 @@ public:
     MCNAPI void* $ctor(::VoxelShapes::VoxelShape&&);
 
     MCNAPI void* $ctor(::VoxelShapes::VoxelShape const&);
+
+    MCNAPI void* $ctor(
+        ::VoxelShapes::Cells               cells,
+        ::Bedrock::small_vector<float, 12> xCoords,
+        ::Bedrock::small_vector<float, 12> yCoords,
+        ::Bedrock::small_vector<float, 12> zCoords
+    );
     // NOLINTEND
 
 public:

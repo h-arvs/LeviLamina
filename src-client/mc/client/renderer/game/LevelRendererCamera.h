@@ -8,21 +8,24 @@
 #include "mc/client/renderer/HistoricalFrameTimes.h"
 #include "mc/client/renderer/culling/FrustumCuller.h"
 #include "mc/client/renderer/game/ActorRenderCandidates.h"
+#include "mc/client/renderer/game/LevelRendererCameraType.h"
 #include "mc/client/renderer/game/TerrainMaterialVariationManager.h"
 #include "mc/client/world/level/fog/FogDistanceSetting.h"
+#include "mc/client/world/level/fog/ResolvedFogVolumetricCoefficientSetting.h"
+#include "mc/client/world/level/fog/ResolvedFogVolumetricDensitySetting.h"
+#include "mc/client/world/level/fog/ResolvedFogVolumetricHenyeyGreensteinGSetting.h"
 #include "mc/deps/core/math/FrustumEdges.h"
 #include "mc/deps/core/math/Vec3.h"
 #include "mc/deps/core/threading/Async.h"
-#include "mc/deps/core/utility/optional_ref.h"
 #include "mc/deps/core_graphics/ImageBuffer.h"
 #include "mc/deps/game_refs/OwnerPtr.h"
 #include "mc/deps/minecraft_renderer/game/FrustumCullerType.h"
 #include "mc/deps/minecraft_renderer/game/LevelCullerType.h"
 #include "mc/deps/minecraft_renderer/game/ShadowContext.h"
+#include "mc/deps/minecraft_renderer/game/TerrainLayerLOD.h"
 #include "mc/deps/minecraft_renderer/renderer/MaterialPtr.h"
 #include "mc/deps/minecraft_renderer/resources/ClientTexture.h"
 #include "mc/deps/renderer/Camera.h"
-#include "mc/deps/shared_types/shared_types/ColorNormRGB.h"
 #include "mc/platform/brstd/flat_map.h"
 #include "mc/util/GridArea.h"
 #include "mc/world/actor/ActorType.h"
@@ -33,6 +36,7 @@
 
 // auto generated forward declare list
 // clang-format off
+class AABB;
 class Actor;
 class BaseActorRenderContext;
 class BiomeBlendingMapRenderer;
@@ -46,20 +50,24 @@ class IClientInstance;
 class IConstBlockSource;
 class IVanillaRenderBlockActorComponent;
 class Level;
+class LevelBuilder;
 class LevelCullerBase;
 class LevelRenderer;
 class LevelRendererCameraProxy;
 class LocalPlayer;
+class Player;
 class RenderChunkInstanced;
 class RenderChunkShared;
 class ResourcePackManager;
 class ScreenContext;
 class WeatherRenderer;
+struct BaseSceneDirectionalLightRenderData;
 struct ChunkRenderObjectCollection;
 struct CrackRenderObjectCollection;
 struct LevelRenderPreRenderUpdateParameters;
 struct NameTagRenderObjectCollection;
 struct OccluderFace;
+struct TerrainLayer;
 struct ViewRenderObject;
 namespace mce { class TextureGroup; }
 namespace mce { class TexturePtr; }
@@ -76,9 +84,6 @@ public:
     struct PlayerStateParams;
     struct LimitedActorRenderParams;
     struct RenderChunkPosBounds;
-    struct ResolvedFogVolumetricDensitySetting;
-    struct ResolvedFogVolumetricCoefficientSetting;
-    struct ResolvedFogVolumetricHenyeyGreensteinGSetting;
     // clang-format on
 
     // LevelRendererCamera inner types define
@@ -162,33 +167,6 @@ public:
         // NOLINTEND
     };
 
-    struct ResolvedFogVolumetricDensitySetting {
-    public:
-        // member variables
-        // NOLINTBEGIN
-        ::ll::TypedStorage<4, 4, float> mMaxDensity;
-        ::ll::TypedStorage<4, 4, float> mMaxDensityHeight;
-        ::ll::TypedStorage<4, 4, float> mZeroDensityHeight;
-        // NOLINTEND
-    };
-
-    struct ResolvedFogVolumetricCoefficientSetting {
-    public:
-        // member variables
-        // NOLINTBEGIN
-        ::ll::TypedStorage<4, 16, ::SharedTypes::ColorNormRGB> mScattering;
-        ::ll::TypedStorage<4, 16, ::SharedTypes::ColorNormRGB> mAbsorption;
-        // NOLINTEND
-    };
-
-    struct ResolvedFogVolumetricHenyeyGreensteinGSetting {
-    public:
-        // member variables
-        // NOLINTBEGIN
-        ::ll::TypedStorage<4, 4, float> mHenyeyGreensteinG;
-        // NOLINTEND
-    };
-
     using BlockActorList = ::std::vector<::gsl::not_null<::BlockActor*>>;
 
     using ActorList = ::std::vector<::Actor*>;
@@ -225,57 +203,55 @@ public:
     ::ll::TypedStorage<8, 24, ::std::vector<::gsl::not_null<::IVanillaRenderBlockActorComponent*>>>
         mRenderComponentRenderAlphaQueue;
     ::ll::TypedStorage<8, 24, ::std::vector<::gsl::not_null<::IVanillaRenderBlockActorComponent*>>>
-                                                                       mRenderComponentShadowQueue;
-    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                      shadowVolumeBack;
-    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                      shadowVolumeFront;
-    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                      shadowOverlayMat;
-    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                      starsMaterial;
-    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                      skyPlaneMaterial;
-    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                      sunMoonMaterial;
-    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                      endSkyMaterial;
-    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                      cloudMaterial;
-    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                      wireframeMaterial;
-    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                      mCubemapMaterial;
-    ::ll::TypedStorage<8, 24, ::std::vector<::mce::TexturePtr>>        mCubemapTextures;
-    ::ll::TypedStorage<8, 24, ::mce::ClientTexture>                    mCubemapTexture;
-    ::ll::TypedStorage<8, 8, uint64 const>                             mAmbientSamplesDefaultSize;
-    ::ll::TypedStorage<8, 56, ::std::optional<::cg::ImageBuffer>>      mSkyAmbientSamplesBuffer;
-    ::ll::TypedStorage<8, 136, ::TerrainMaterialVariationManager>      mTerrainMaterialVariationManager;
-    ::ll::TypedStorage<4, 4, float>                                    mDeltaTime;
-    ::ll::TypedStorage<4, 4, float>                                    mLastTime;
-    ::ll::TypedStorage<4, 4, float>                                    mWaterLevel;
-    ::ll::TypedStorage<4, 8, ::glm::vec2>                              mFogControl;
-    ::ll::TypedStorage<4, 4, float>                                    mBaseFogEnd;
-    ::ll::TypedStorage<4, 4, float>                                    mBaseFogStart;
-    ::ll::TypedStorage<4, 8, ::glm::vec2>                              mCameraLightIntensity;
-    ::ll::TypedStorage<4, 8, ::LevelRendererCamera::FogBrightnessPair> mFogBrightnessPair;
-    ::ll::TypedStorage<4, 28, ::FogDistanceSetting>                    mCurrentDistanceFog;
-    ::ll::TypedStorage<4, 28, ::FogDistanceSetting>                    mLastTargetDistanceFog;
-    ::ll::TypedStorage<4, 12, ::LevelRendererCamera::ResolvedFogVolumetricDensitySetting>     mCurrentFogDensity;
-    ::ll::TypedStorage<4, 32, ::LevelRendererCamera::ResolvedFogVolumetricCoefficientSetting> mAirFogCoefficient;
-    ::ll::TypedStorage<4, 32, ::LevelRendererCamera::ResolvedFogVolumetricCoefficientSetting> mWaterFogCoefficient;
-    ::ll::TypedStorage<4, 32, ::LevelRendererCamera::ResolvedFogVolumetricCoefficientSetting> mCloudFogCoefficient;
-    ::ll::TypedStorage<4, 4, ::LevelRendererCamera::ResolvedFogVolumetricHenyeyGreensteinGSetting>
-        mAirHenyeyGreensteinG;
-    ::ll::TypedStorage<4, 4, ::LevelRendererCamera::ResolvedFogVolumetricHenyeyGreensteinGSetting>
-                                                     mWaterHenyeyGreensteinG;
-    ::ll::TypedStorage<1, 1, bool>                   mFogWasUnderwaterLastCheck;
-    ::ll::TypedStorage<1, 1, bool>                   mFogWasUnderLavaLastCheck;
-    ::ll::TypedStorage<1, 1, bool>                   mFogWasUnderPowderSnowLastCheck;
-    ::ll::TypedStorage<1, 1, bool>                   mBlendFogThisFrame;
-    ::ll::TypedStorage<4, 4, float>                  mMobEffectFogLevel;
-    ::ll::TypedStorage<8, 224, ::ParticleRenderData> mParticleRenderData;
-    ::ll::TypedStorage<4, 4, float>                  mTransitionFogTime;
-    ::ll::TypedStorage<1, 1, bool>                   mInTransitionFog;
-    ::ll::TypedStorage<4, 4, float const>            mRenderDistanceCloudFadeOutMultiplier;
-    ::ll::TypedStorage<4, 4, float>                  mFakeHDR;
-    ::ll::TypedStorage<4, 4, float>                  mAverageBrightness;
-    ::ll::TypedStorage<4, 4, uint>                   mFrameID;
-    ::ll::TypedStorage<4, 4, int>                    mViewAreaDistance;
-    ::ll::TypedStorage<4, 4, float>                  mFarChunksDistance;
-    ::ll::TypedStorage<4, 4, float>                  mRenderDistance;
-    ::ll::TypedStorage<4, 4, float>                  mCullEndDistance;
-    ::ll::TypedStorage<4, 4, int const>              mMaxInflightChunks;
+                                                                              mRenderComponentShadowQueue;
+    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                             shadowVolumeBack;
+    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                             shadowVolumeFront;
+    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                             shadowOverlayMat;
+    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                             starsMaterial;
+    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                             skyPlaneMaterial;
+    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                             sunMoonMaterial;
+    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                             endSkyMaterial;
+    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                             cloudMaterial;
+    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                             wireframeMaterial;
+    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                             mCubemapMaterial;
+    ::ll::TypedStorage<8, 24, ::std::vector<::mce::TexturePtr>>               mCubemapTextures;
+    ::ll::TypedStorage<8, 24, ::mce::ClientTexture>                           mCubemapTexture;
+    ::ll::TypedStorage<8, 8, uint64 const>                                    mAmbientSamplesDefaultSize;
+    ::ll::TypedStorage<8, 56, ::std::optional<::cg::ImageBuffer>>             mSkyAmbientSamplesBuffer;
+    ::ll::TypedStorage<8, 136, ::TerrainMaterialVariationManager>             mTerrainMaterialVariationManager;
+    ::ll::TypedStorage<4, 4, float>                                           mDeltaTime;
+    ::ll::TypedStorage<4, 4, float>                                           mLastTime;
+    ::ll::TypedStorage<4, 4, float>                                           mWaterLevel;
+    ::ll::TypedStorage<4, 8, ::glm::vec2>                                     mFogControl;
+    ::ll::TypedStorage<4, 4, float>                                           mBaseFogEnd;
+    ::ll::TypedStorage<4, 4, float>                                           mBaseFogStart;
+    ::ll::TypedStorage<4, 8, ::glm::vec2>                                     mCameraLightIntensity;
+    ::ll::TypedStorage<4, 8, ::LevelRendererCamera::FogBrightnessPair>        mFogBrightnessPair;
+    ::ll::TypedStorage<4, 28, ::FogDistanceSetting>                           mCurrentDistanceFog;
+    ::ll::TypedStorage<4, 28, ::FogDistanceSetting>                           mLastTargetDistanceFog;
+    ::ll::TypedStorage<4, 12, ::ResolvedFogVolumetricDensitySetting>          mCurrentFogDensity;
+    ::ll::TypedStorage<4, 32, ::ResolvedFogVolumetricCoefficientSetting>      mAirFogCoefficient;
+    ::ll::TypedStorage<4, 32, ::ResolvedFogVolumetricCoefficientSetting>      mWaterFogCoefficient;
+    ::ll::TypedStorage<4, 32, ::ResolvedFogVolumetricCoefficientSetting>      mCloudFogCoefficient;
+    ::ll::TypedStorage<4, 4, ::ResolvedFogVolumetricHenyeyGreensteinGSetting> mAirHenyeyGreensteinG;
+    ::ll::TypedStorage<4, 4, ::ResolvedFogVolumetricHenyeyGreensteinGSetting> mWaterHenyeyGreensteinG;
+    ::ll::TypedStorage<1, 1, bool>                                            mFogWasUnderwaterLastCheck;
+    ::ll::TypedStorage<1, 1, bool>                                            mFogWasUnderLavaLastCheck;
+    ::ll::TypedStorage<1, 1, bool>                                            mFogWasUnderPowderSnowLastCheck;
+    ::ll::TypedStorage<1, 1, bool>                                            mBlendFogThisFrame;
+    ::ll::TypedStorage<4, 4, float>                                           mMobEffectFogLevel;
+    ::ll::TypedStorage<8, 224, ::ParticleRenderData>                          mParticleRenderData;
+    ::ll::TypedStorage<4, 4, float>                                           mTransitionFogTime;
+    ::ll::TypedStorage<1, 1, bool>                                            mInTransitionFog;
+    ::ll::TypedStorage<4, 4, float const>                                     mRenderDistanceCloudFadeOutMultiplier;
+    ::ll::TypedStorage<4, 4, float>                                           mFakeHDR;
+    ::ll::TypedStorage<4, 4, float>                                           mAverageBrightness;
+    ::ll::TypedStorage<4, 4, uint>                                            mFrameID;
+    ::ll::TypedStorage<4, 4, int>                                             mViewAreaDistance;
+    ::ll::TypedStorage<4, 4, float>                                           mFarChunksDistance;
+    ::ll::TypedStorage<4, 4, float>                                           mRenderDistance;
+    ::ll::TypedStorage<4, 4, float>                                           mCullEndDistance;
+    ::ll::TypedStorage<4, 4, int const>                                       mMaxInflightChunks;
     ::ll::TypedStorage<8, 16, ::std::shared_ptr<::GridArea<::std::shared_ptr<::RenderChunkInstanced>>>> mViewArea;
     ::ll::TypedStorage<4, 12, ::BlockPos>                                      mLastFaceSortPos;
     ::ll::TypedStorage<4, 12, ::Vec3>                                          mLastFaceSortDir;
@@ -339,6 +315,8 @@ public:
     // NOLINTBEGIN
     virtual ~LevelRendererCamera() = default;
 
+    virtual ::LevelRendererCameraType getCameraType() const;
+
     virtual void addCameraListenerToRenderChunkCoordinator();
 
     virtual void onAppSuspended();
@@ -351,47 +329,54 @@ public:
 
     virtual void initResources();
 
-    virtual void frameUpdate(::ClientFrameUpdateContext&);
+    virtual void frameUpdate(::ClientFrameUpdateContext& clientFrameUpdateContext);
 
     virtual void tickLevelRendererCamera();
 
     virtual void tickRain();
 
-    virtual void updateViewArea(::LevelRenderPreRenderUpdateParameters const&);
+    virtual void updateViewArea(::LevelRenderPreRenderUpdateParameters const& levelRenderPreRenderUpdateParameters);
 
-    virtual void callRenderNameTags(::ScreenContext&, ::ViewRenderObject const&, ::Font&);
+    virtual void callRenderNameTags(::ScreenContext& screenContext, ::ViewRenderObject const& renderObj, ::Font& font);
 
-    virtual ::NameTagRenderObjectCollection extractNameTags(::ScreenContext&) const;
+    virtual ::NameTagRenderObjectCollection extractNameTags(::ScreenContext& screenContext) const;
 
-    virtual void callRenderCracks(::BaseActorRenderContext&, ::ViewRenderObject const&);
+    virtual void callRenderCracks(::BaseActorRenderContext& renderContext, ::ViewRenderObject const& renderObj);
 
-    virtual ::CrackRenderObjectCollection extractCracks(::ScreenContext&) const;
+    virtual ::CrackRenderObjectCollection extractCracks(::ScreenContext& screenContext) const;
 
-    virtual void renderEntityEffects(::BaseActorRenderContext&);
+    virtual void renderEntityEffects(::BaseActorRenderContext& renderContext);
 
-    virtual void renderBlockEntities(::BaseActorRenderContext&, bool);
+    virtual void renderBlockEntities(::BaseActorRenderContext& renderContext, bool renderAlphaLayer);
 
-    virtual void setViewArea(::LevelRenderPreRenderUpdateParameters const&);
+    virtual void setViewArea(::LevelRenderPreRenderUpdateParameters const& levelRenderPreRenderUpdateParameters);
 
-    virtual bool getForceFog(::Actor const&) const;
+    virtual bool getForceFog(::Actor const& cameraActor) const;
 
-    virtual void setupFog(::ScreenContext&, float const);
+    virtual void setupFog(::ScreenContext& screenContext, float const skyIntensityOverride);
 
     virtual float getAmbientBrightness() const;
 
-    virtual void recalculateRenderDistance(float const);
+    virtual void recalculateRenderDistance(float const renderDistanceScalar);
 
-    virtual void preRenderUpdate(::ScreenContext&, ::LevelRenderPreRenderUpdateParameters&);
+    virtual void preRenderUpdate(
+        ::ScreenContext&                        screenContext,
+        ::LevelRenderPreRenderUpdateParameters& levelRenderPreRenderUpdateParameters
+    );
 
-    virtual void render(::BaseActorRenderContext&, ::ViewRenderObject const&, ::IClientInstance&);
+    virtual void render(
+        ::BaseActorRenderContext& baseEntityRenderContext,
+        ::ViewRenderObject const& renderObj,
+        ::IClientInstance&        ci
+    );
 
     virtual void postRenderUpdate();
 
-    virtual void notifyGeoChangedForAffectedEntities(::RenderChunkShared&, uchar);
+    virtual void notifyGeoChangedForAffectedEntities(::RenderChunkShared& renderChunkShared, uchar version);
 
     virtual void updateLevelCullerType(::LevelCullerType const newLevelCullerType) = 0;
 
-    virtual void queueRenderEntities(::LevelRenderPreRenderUpdateParameters const&);
+    virtual void queueRenderEntities(::LevelRenderPreRenderUpdateParameters const& preRenderUpdateParameters);
 
     virtual void _releaseRespectiveResources();
 
@@ -405,11 +390,47 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
+    MCAPI void _addToRenderChunkQueue(
+        ::ChunkRenderObjectCollection&           collection,
+        ::TerrainMaterialVariationManager const& terrainVariationMgr,
+        ::TerrainLayer const&                    layer,
+        ::TerrainLayerLOD const                  layerLOD,
+        ::RenderChunkInstanced const&            renderChunkInstanced,
+        uint64                                   chunkIdx,
+        ::BlockPos const&                        chunkPos
+    );
+
+    MCAPI ::std::shared_ptr<::LevelCullerBase> _createCuller(
+        ::LevelCullerType                      type,
+        ::std::weak_ptr<::LevelRendererCamera> levelRendererCamera,
+        ::LevelBuilder&                        levelBuilder
+    );
+
+    MCAPI ::ResolvedFogVolumetricCoefficientSetting
+    _getCurrentCoefficientFogSetting(::FogDefinition::CoefficientSettingType settingType) const;
+
+    MCAPI ::ResolvedFogVolumetricHenyeyGreensteinGSetting
+    _getCurrentHenyeyGreensteinGFogSetting(::FogDefinition::HenyeyGreensteinGSettingType settingType) const;
+
+    MCAPI void _initCubemapTextures(::Dimension const& dimension);
+
+    MCAPI void _releaseResources();
+
+    MCAPI void
+    _resortNearbyChunks(::Vec3 const& viewPos, ::GridArea<::std::shared_ptr<::RenderChunkInstanced>> const& viewArea);
+
+    MCAPI bool _shouldRenderLeashedEntity(::Actor* actor, ::Vec3 cameraPos);
+
+    MCAPI void _tryInsertBlockEntityIntoRenderQueues(
+        ::IVanillaRenderBlockActorComponent*                            renderComponent,
+        ::std::map<::ChunkPos, ::std::unordered_set<::BlockPos>> const& skipList
+    );
+
+    MCAPI ::GridArea<::std::shared_ptr<::RenderChunkInstanced>>& _viewAreaMutable();
+
     MCAPI bool cullerIsVisible(::Vec3 const& point, float radius) const;
 
-    MCAPI void doneQueuingChunks();
-
-    MCAPI ::optional_ref<::TerrainMaterialVariationManager const> getCurrentVariationManager() const;
+    MCAPI ::LevelRendererCamera::RainState doRainUpdate();
 
     MCAPI ::RenderChunkInstanced* getOrCreateRenderChunkInstancedAt(::SubChunkPos const& rcp);
 
@@ -421,27 +442,99 @@ public:
 
     MCAPI uint64 getRenderChunkInstancedEstimatedIndexMemoryUsed();
 
-    MCAPI void queueChunk(
-        ::ChunkRenderObjectCollection&                          collection,
-        ::RenderChunkInstanced const&                           renderChunkInstanced,
-        float                                                   farDistance2,
-        float                                                   currentTime,
-        ::TerrainMaterialVariationManager const&                terrainVariationMgr,
-        ::optional_ref<::TerrainMaterialVariationManager const> fadeVariationMgr
-    );
+    MCAPI bool isAABBVisible(::AABB const& bb, bool useFastCulling) const;
+
+    MCAPI void onViewRadiusChanged(bool resetAll);
+
+    MCAPI void preDimensionChanged(::Player& player);
 
     MCAPI void recaptureViewAreaDimensions();
 
     MCAPI void renderChunkVisibilityChanged(::RenderChunkShared& renderChunkShared, bool visibilityMatrixChanged);
 
-    MCAPI void setDirLightShadowRenderChunksPerfCounter(int chunkCount);
+    MCAPI void renderSky(
+        ::ScreenContext&                             screenContext,
+        ::ViewRenderObject const&                    renderObj,
+        ::BaseSceneDirectionalLightRenderData const& sceneDirectionalLightRenderData
+    ) const;
 
-    MCAPI bool shouldCullThisFrame(uint64 lastNumRenderChunksVisibleFromCullingPoint);
+    MCAPI void resetChunkCullingData(::ChunkPos const& cp);
+
+    MCAPI void updateFarChunksDistance();
+
+    MCAPI void updatePerChunkFaceSortState(::Vec3 const& viewPos, ::Vec3 const& viewDir, bool isOrthoCamera);
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCFOLD ::LevelRendererCameraType $getCameraType() const;
 
+    MCAPI void $addCameraListenerToRenderChunkCoordinator();
+
+    MCAPI void $onAppSuspended();
+
+    MCAPI void $onAppResumed();
+
+    MCAPI void $onDeviceLost();
+
+    MCFOLD void $onLowMemory();
+
+    MCFOLD void $initResources();
+
+    MCFOLD void $frameUpdate(::ClientFrameUpdateContext& clientFrameUpdateContext);
+
+    MCAPI void $tickLevelRendererCamera();
+
+    MCAPI void $tickRain();
+
+    MCAPI void $updateViewArea(::LevelRenderPreRenderUpdateParameters const& levelRenderPreRenderUpdateParameters);
+
+    MCFOLD void $callRenderNameTags(::ScreenContext& screenContext, ::ViewRenderObject const& renderObj, ::Font& font);
+
+    MCAPI ::NameTagRenderObjectCollection $extractNameTags(::ScreenContext& screenContext) const;
+
+    MCFOLD void $callRenderCracks(::BaseActorRenderContext& renderContext, ::ViewRenderObject const& renderObj);
+
+    MCAPI ::CrackRenderObjectCollection $extractCracks(::ScreenContext& screenContext) const;
+
+    MCFOLD void $renderEntityEffects(::BaseActorRenderContext& renderContext);
+
+    MCAPI void $renderBlockEntities(::BaseActorRenderContext& renderContext, bool renderAlphaLayer);
+
+    MCAPI void $setViewArea(::LevelRenderPreRenderUpdateParameters const& levelRenderPreRenderUpdateParameters);
+
+    MCFOLD bool $getForceFog(::Actor const& cameraActor) const;
+
+    MCAPI void $setupFog(::ScreenContext& screenContext, float const skyIntensityOverride);
+
+    MCAPI float $getAmbientBrightness() const;
+
+    MCAPI void $recalculateRenderDistance(float const renderDistanceScalar);
+
+    MCAPI void $preRenderUpdate(
+        ::ScreenContext&                        screenContext,
+        ::LevelRenderPreRenderUpdateParameters& levelRenderPreRenderUpdateParameters
+    );
+
+    MCAPI void $render(
+        ::BaseActorRenderContext& baseEntityRenderContext,
+        ::ViewRenderObject const& renderObj,
+        ::IClientInstance&        ci
+    );
+
+    MCFOLD void $postRenderUpdate();
+
+    MCFOLD void $notifyGeoChangedForAffectedEntities(::RenderChunkShared& renderChunkShared, uchar version);
+
+    MCAPI void $queueRenderEntities(::LevelRenderPreRenderUpdateParameters const& preRenderUpdateParameters);
+
+    MCFOLD void $_releaseRespectiveResources();
+
+    MCAPI void $setupViewArea();
+
+    MCAPI ::FogDefinition::DistanceSettingType $_getFogDistanceSettingType() const;
+
+    MCAPI ::FogDefinition::DensitySettingType $_getFogDensitySettingType() const;
     // NOLINTEND
 };

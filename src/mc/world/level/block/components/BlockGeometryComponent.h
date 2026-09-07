@@ -10,6 +10,8 @@
 // auto generated forward declare list
 // clang-format off
 class BlockState;
+class BlockType;
+struct BlockGeometryDescription;
 namespace ClientBlockPipeline { struct BlockSchematic; }
 // clang-format on
 
@@ -74,23 +76,41 @@ public:
     // NOLINTEND
 
 #ifdef LL_PLAT_S
+public:
+    // prevent constructor by default
+    BlockGeometryComponent();
+
 #else // LL_PLAT_C
 public:
     // prevent constructor by default
     BlockGeometryComponent(BlockGeometryComponent const&);
-    BlockGeometryComponent();
 
 #endif
 public:
     // member functions
     // NOLINTBEGIN
 #ifdef LL_PLAT_C
-    MCAPI ::BlockGeometryComponent& operator=(::BlockGeometryComponent&&);
+    MCAPI BlockGeometryComponent();
+#endif
 
+    MCAPI
+    BlockGeometryComponent(::BlockGeometryDescription const& blockGeometryDescription, ::BlockType const* blockType);
+
+#ifdef LL_PLAT_C
     MCAPI ::BlockGeometryComponent& operator=(::BlockGeometryComponent const&);
 #endif
 
     MCAPI ~BlockGeometryComponent();
+    // NOLINTEND
+
+public:
+    // constructor thunks
+    // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCAPI void* $ctor();
+#endif
+
+    MCAPI void* $ctor(::BlockGeometryDescription const& blockGeometryDescription, ::BlockType const* blockType);
     // NOLINTEND
 
 public:

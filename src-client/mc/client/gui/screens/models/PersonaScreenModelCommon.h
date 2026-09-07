@@ -6,11 +6,11 @@
 #include "mc/client/gui/DirtyFlag.h"
 #include "mc/client/gui/screens/models/PreviewedItemEventInformation.h"
 #include "mc/deps/core/utility/NonOwnerPointer.h"
-#include "mc/world/actor/player/persona/ArmSize.h"
-#include "mc/world/actor/player/persona/BodySize.h"
+#include "mc/deps/shared_types/persona/ArmSizeType.h"
+#include "mc/deps/shared_types/persona/BodySizeType.h"
+#include "mc/deps/shared_types/persona/PieceSide.h"
+#include "mc/deps/shared_types/persona/PieceType.h"
 #include "mc/world/actor/player/persona/PersonaCharacterHandle.h"
-#include "mc/world/actor/player/persona/PieceSide.h"
-#include "mc/world/actor/player/persona/PieceType.h"
 
 // auto generated forward declare list
 // clang-format off
@@ -22,6 +22,7 @@ class PersonaClient;
 class SkinHandle;
 namespace mce { class Color; }
 namespace mce { class UUID; }
+namespace persona { class PieceOfferWrapper; }
 namespace persona { struct FreeItemState; }
 namespace persona::color { class ColorInfo; }
 // clang-format on
@@ -58,9 +59,9 @@ public:
     // NOLINTBEGIN
     virtual ~PersonaScreenModelCommon() = default;
 
-    virtual void update(::ui::DirtyFlag&);
+    virtual void update(::ui::DirtyFlag& dirtyFlags);
 
-    virtual void updateSkin(::persona::PersonaCharacterHandle const&, ::SkinHandle);
+    virtual void updateSkin(::persona::PersonaCharacterHandle const& characterHandle, ::SkinHandle handle);
     // NOLINTEND
 
 public:
@@ -79,9 +80,9 @@ public:
     MCAPI void attemptCopyValidActiveAppearanceToCurrentCharacter(::std::function<void(bool)> callback);
 
     MCAPI void changePersonaArmSize(
-        ::persona::PersonaCharacterHandle const& handle,
-        ::persona::ArmSize::Type const&          armSize,
-        ::std::function<void(bool)>              callback
+        ::persona::PersonaCharacterHandle const&   handle,
+        ::SharedTypes::persona::ArmSizeType const& armSize,
+        ::std::function<void(bool)>                callback
     );
 
     MCAPI void changePersonaEmote(
@@ -93,24 +94,24 @@ public:
     );
 
     MCAPI void changePersonaHeight(
-        ::persona::PersonaCharacterHandle const& handle,
-        ::persona::BodySize::Type const&         bodyType,
-        ::std::function<void(bool)>              callback
+        ::persona::PersonaCharacterHandle const&    handle,
+        ::SharedTypes::persona::BodySizeType const& bodyType,
+        ::std::function<void(bool)>                 callback
     );
 
     MCAPI void changePersonaPiece(
         ::persona::PersonaCharacterHandle const& handle,
-        ::persona::PieceType                     pieceType,
+        ::SharedTypes::persona::PieceType        pieceType,
         ::mce::UUID const&                       pieceId,
         ::std::string const&                     productId,
         ::persona::FreeItemState const&          freeItemState,
         ::std::function<void(bool)>              callback,
-        ::persona::PieceSide                     side
+        ::SharedTypes::persona::PieceSide        side
     );
 
     MCAPI void changePersonaTintColor(
         ::persona::PersonaCharacterHandle const& handle,
-        ::persona::PieceType                     pieceType,
+        ::SharedTypes::persona::PieceType        pieceType,
         ::mce::Color const&                      color,
         ushort                                   channel,
         ::std::function<void(bool)>              callback
@@ -118,7 +119,7 @@ public:
 
     MCAPI void changePersonaTintColors(
         ::persona::PersonaCharacterHandle const&          handle,
-        ::persona::PieceType                              pieceType,
+        ::SharedTypes::persona::PieceType                 pieceType,
         ::std::vector<::persona::color::ColorInfo> const& tintColors,
         ::std::function<void(bool)>                       callback
     );
@@ -127,18 +128,26 @@ public:
 
     MCAPI void fireEventPersonaAvatarUpdated(::PersonaAppearance const& oldAppearance, bool isBeingDeleted);
 
+    MCAPI ::std::string
+    getEmoteFileSystemFromAppearance(::persona::PersonaCharacterHandle const& handle, int emoteIndex);
+
+    MCAPI ::persona::PieceOfferWrapper
+    getEmotePieceOfferFromAppearance(::persona::PersonaCharacterHandle const& handle, int emoteIndex);
+
     MCAPI ::SkinHandle getPersonaClassicSkinHandle(::persona::PersonaCharacterHandle const& handle);
 
     MCAPI ::SkinHandle getPersonaSkinHandle(::persona::PersonaCharacterHandle const& handle);
 
     MCAPI ::mce::Color
-    getTintColor(::persona::PersonaCharacterHandle const& handle, ::persona::PieceType type, int channel);
+    getTintColor(::persona::PersonaCharacterHandle const& handle, ::SharedTypes::persona::PieceType type, int channel);
+
+    MCAPI bool isEmoteSlotSetOnCurrentAppearance(int emoteWheelSlot);
 
     MCAPI void removePieceByType(
         ::persona::PersonaCharacterHandle const& handle,
-        ::persona::PieceType const&              pieceTypeToRemove,
+        ::SharedTypes::persona::PieceType const& pieceTypeToRemove,
         ::std::function<void(bool)>              callback,
-        ::persona::PieceSide                     side
+        ::SharedTypes::persona::PieceSide        side
     );
 
     MCAPI void
@@ -166,6 +175,8 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $update(::ui::DirtyFlag& dirtyFlags);
 
+    MCAPI void $updateSkin(::persona::PersonaCharacterHandle const& characterHandle, ::SkinHandle handle);
     // NOLINTEND
 };

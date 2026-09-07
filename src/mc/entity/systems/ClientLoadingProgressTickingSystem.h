@@ -9,26 +9,36 @@
 
 // auto generated forward declare list
 // clang-format off
+class ActorOwnerComponent;
+class BlockSourceComponent;
+class ChunkPos;
+class DimensionStateComponent;
 class EntityContext;
 class EntityRegistry;
+class LoadedChunksComponent;
+class LoadingStateComponent;
 // clang-format on
 
 class ClientLoadingProgressTickingSystem : public ::ITickingSystem {
 public:
     // virtual functions
     // NOLINTBEGIN
-#ifdef LL_PLAT_S
-    virtual void tick(::EntityRegistry&) /*override*/;
-#else // LL_PLAT_C
     virtual void tick(::EntityRegistry& registry) /*override*/;
-#endif
-
     // NOLINTEND
 
 public:
     // static functions
     // NOLINTBEGIN
 #ifdef LL_PLAT_C
+    MCAPI static void _calculateLoadingProgressView(
+        ::ActorOwnerComponent&     actorOwnerComponent,
+        ::BlockSourceComponent&    blockSourceComponent,
+        ::DimensionStateComponent& dimensionStateComponent,
+        ::LoadedChunksComponent&   loadedChunksComponent,
+        ::LoadingStateComponent&   loadingStateComponent,
+        bool                       isTextureGroupReloading
+    );
+
     MCAPI static float getLoadingProgress(::WeakRef<::EntityContext> entityRef);
 
     MCAPI static ::LoadingState getLoadingState(::WeakRef<::EntityContext> entityRef);
@@ -37,6 +47,12 @@ public:
 
     MCAPI static bool hasFinishedLoading(::WeakRef<::EntityContext> entityRef);
 #endif
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::std::vector<::ChunkPos> const& mChunksNeededForLoadOffsets();
     // NOLINTEND
 
 public:

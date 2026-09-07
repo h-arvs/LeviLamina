@@ -8,18 +8,12 @@ public:
     // NOLINTBEGIN
     virtual ~PrintStream() = default;
 
-    virtual void print(::std::string const&);
+    virtual void print(::std::string const& s);
     // NOLINTEND
 
 public:
     // member functions
     // NOLINTBEGIN
     MCNAPI void println(::std::string const& s);
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };

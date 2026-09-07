@@ -35,24 +35,18 @@ public:
     // NOLINTBEGIN
     MCNAPI BackgroundTaskQueue();
 
+    MCNAPI bool _fetchAllAvailableTasks();
+
     MCNAPI void flush();
 
     MCNAPI void queue(::std::shared_ptr<::BackgroundTaskBase> task, bool queueImmediate);
 
     MCNAPI ::std::shared_ptr<::BackgroundTaskBase> tryPop(int minPriority);
-
-    MCNAPI ~BackgroundTaskQueue();
     // NOLINTEND
 
 public:
     // constructor thunks
     // NOLINTBEGIN
     MCNAPI void* $ctor();
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCNAPI void $dtor();
     // NOLINTEND
 };

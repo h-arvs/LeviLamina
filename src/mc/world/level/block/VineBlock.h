@@ -76,6 +76,8 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
+    MCAPI static int _nextVineDirections(::BlockSource& region, ::BlockPos const& pos);
+
     MCAPI static ::Block const& getBlockForFace(uchar face);
     // NOLINTEND
 

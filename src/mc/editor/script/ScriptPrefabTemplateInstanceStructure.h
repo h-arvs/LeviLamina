@@ -4,10 +4,13 @@
 
 // auto generated inclusion list
 #include "mc/deps/script_core/lifetime_registry/scripting/WeakHandleFromThis.h"
+#include "mc/deps/script_core/runtime/scripting/Result.h"
+#include "mc/util/Mirror.h"
+#include "mc/util/Rotation.h"
 
 // auto generated forward declare list
 // clang-format off
-namespace Scripting { struct ClassBinding; }
+namespace Editor::ScriptModule { struct ScriptPrefabErrorInvalidInstance; }
 // clang-format on
 
 namespace Editor::ScriptModule {
@@ -38,9 +41,13 @@ public:
     // NOLINTEND
 
 public:
-    // static functions
+    // member functions
     // NOLINTBEGIN
-    MCNAPI static ::Scripting::ClassBinding bindScript();
+    MCNAPI ::Scripting::Result<::Mirror, ::Editor::ScriptModule::ScriptPrefabErrorInvalidInstance>
+    _getInstanceMirror() const;
+
+    MCNAPI ::Scripting::Result<::Rotation, ::Editor::ScriptModule::ScriptPrefabErrorInvalidInstance>
+    _getInstanceRotation() const;
     // NOLINTEND
 };
 

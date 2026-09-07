@@ -116,6 +116,8 @@ public:
     // NOLINTBEGIN
     MCAPI static int _getNumSides(::Block const& block);
 
+    MCAPI static bool _hasAnyFace(::Block const& block);
+
     MCAPI static ::Block const& getBlockForPlacementWorldGen(
         ::Block const&       oldBlock,
         ::Block const&       placementBlock,
@@ -134,11 +136,15 @@ public:
 public:
     // static variables
     // NOLINTBEGIN
+    MCAPI static int const& MULTIFACE_ALL();
+
     MCAPI static int const& MULTIFACE_DOWN();
 
     MCAPI static int const& MULTIFACE_EAST();
 
     MCAPI static int const& MULTIFACE_NORTH();
+
+    MCAPI static int const& MULTIFACE_SIDES();
 
     MCAPI static int const& MULTIFACE_SOUTH();
 

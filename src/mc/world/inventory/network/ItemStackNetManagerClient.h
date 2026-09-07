@@ -10,15 +10,16 @@
 #include "mc/world/inventory/network/ItemStackNetManagerBase.h"
 #include "mc/world/inventory/network/ItemStackRequestScreen.h"
 #include "mc/world/inventory/network/TypedClientNetId.h"
+#include "mc/world/inventory/simulation/SparseContainerBackingSetType.h"
 
 // auto generated forward declare list
 // clang-format off
 class BlockSource;
-class ClientScratchContainer;
 class Container;
 class ContainerModel;
 class EntityContext;
-class ItemStack;
+class IPlayerContainerSetter;
+class ISparseContainerSetListener;
 class ItemStackNetManagerScreen;
 class ItemStackRequestAction;
 class ItemStackRequestBatch;
@@ -29,6 +30,8 @@ struct FullContainerName;
 struct HistoricPredictionData;
 struct ItemStackRequestIdTag;
 struct ItemStackResponseInfo;
+struct OwnedItemStackRequestScope;
+class ClientScratchContainer;
 // clang-format on
 
 class ItemStackNetManagerClient : public ::ItemStackNetManagerBase {
@@ -53,10 +56,45 @@ public:
             mZeroedOutItems;
         // NOLINTEND
 
+#ifdef LL_PLAT_S
+#else // LL_PLAT_C
+    public:
+        // prevent constructor by default
+        PredictiveContainer();
+
+#endif
     public:
         // virtual functions
         // NOLINTBEGIN
         virtual ~PredictiveContainer() = default;
+        // NOLINTEND
+
+    public:
+        // member functions
+        // NOLINTBEGIN
+#ifdef LL_PLAT_C
+        MCNAPI PredictiveContainer(
+            ::Container&                                     backingContainer,
+            ::SparseContainerBackingSetType                  backingSetType,
+            bool                                             isItemStackNetManagerEnabled,
+            ::std::unique_ptr<::ISparseContainerSetListener> netManagerSetter,
+            ::std::unique_ptr<::IPlayerContainerSetter>      playerContainerSetter
+        );
+#endif
+        // NOLINTEND
+
+    public:
+        // constructor thunks
+        // NOLINTBEGIN
+#ifdef LL_PLAT_C
+        MCNAPI void* $ctor(
+            ::Container&                                     backingContainer,
+            ::SparseContainerBackingSetType                  backingSetType,
+            bool                                             isItemStackNetManagerEnabled,
+            ::std::unique_ptr<::ISparseContainerSetListener> netManagerSetter,
+            ::std::unique_ptr<::IPlayerContainerSetter>      playerContainerSetter
+        );
+#endif
         // NOLINTEND
     };
 
@@ -97,6 +135,34 @@ public:
             ::std::unordered_map<::FullContainerName, ::ItemStackNetManagerClient::OpenSessionContainerData>>
             mHudContainerMap;
         // NOLINTEND
+
+#ifdef LL_PLAT_S
+#else // LL_PLAT_C
+    public:
+        // prevent constructor by default
+        ClientScreenData& operator=(ClientScreenData const&);
+        ClientScreenData(ClientScreenData const&);
+        ClientScreenData();
+
+#endif
+    public:
+        // member functions
+        // NOLINTBEGIN
+#ifdef LL_PLAT_C
+        MCNAPI ClientScreenData(::ItemStackNetManagerClient::ClientScreenData&&);
+
+        MCNAPI ::ItemStackNetManagerClient::ClientScreenData&
+        operator=(::ItemStackNetManagerClient::ClientScreenData&&);
+#endif
+        // NOLINTEND
+
+    public:
+        // constructor thunks
+        // NOLINTBEGIN
+#ifdef LL_PLAT_C
+        MCNAPI void* $ctor(::ItemStackNetManagerClient::ClientScreenData&&);
+#endif
+        // NOLINTEND
     };
 
     struct OwningPredictiveContainer : public ::ItemStackNetManagerClient::PredictiveContainer {
@@ -121,16 +187,11 @@ public:
     // NOLINTBEGIN
     virtual ~ItemStackNetManagerClient() /*override*/ = default;
 
-#ifdef LL_PLAT_S
-    virtual ::SparseContainer*
-    initOpenContainer(::BlockSource&, ::FullContainerName const&, ::ContainerWeakRef const&) /*override*/;
-#else // LL_PLAT_C
     virtual ::SparseContainer* initOpenContainer(
         ::BlockSource&             region,
         ::FullContainerName const& openContainerId,
         ::ContainerWeakRef const&  containerWeakRef
     ) /*override*/;
-#endif
 
     virtual ::ItemStackRequestId getRequestId() const /*override*/;
 
@@ -166,31 +227,26 @@ public:
 #ifdef LL_PLAT_C
     MCNAPI void _beginRequest(::ItemStackRequestScreen screen);
 
-    MCNAPI void _endRequest();
+    MCNAPI void _clearPredictiveContainerRequest(
+        ::ItemStackRequestId const&                       requestId,
+        ::ItemStackNetManagerClient::PredictiveContainer& predictiveContainer,
+        bool                                              shouldBeEmpty
+    );
 
     MCNAPI ::std::unique_ptr<::ItemStackRequestData> _endTakeRequest();
 
     MCNAPI ::ItemStackNetManagerClient::ClientScreenData const* _tryGetCurrentClientScreen() const;
 
-    MCNAPI void addContainerToRequest(::ItemStackRequestId requestId, ::Container* container);
+    MCNAPI ::ItemStackNetManagerClient::ClientScreenData* _tryGetCurrentClientScreen();
 
     MCNAPI void addRequestAction(::std::unique_ptr<::ItemStackRequestAction> requestAction);
-
-    MCNAPI void cacheHistoricPrediction(
-        ::Container*                container,
-        ::ItemStackRequestId const& requestId,
-        int                         slot,
-        ::ItemStack&&               item
-    );
-
-    MCNAPI void
-    cacheZeroedOutItem(::Container* container, ::ItemStackRequestId const& requestId, int slot, ::ItemStack&& item);
-
-    MCNAPI void clearZeroedOutItem(::Container* container, ::ItemStackRequestId const& requestId, int slot);
 
     MCNAPI ::std::unordered_map<::FullContainerName, ::std::shared_ptr<::Container>> getPredictiveContainers();
 
     MCNAPI void handleItemStackResponse(::std::vector<::ItemStackResponseInfo> const& responses);
+
+    MCNAPI ::OwnedItemStackRequestScope
+    tryBeginOwnedRequest(::std::shared_ptr<::ItemStackRequestData> result, ::ItemStackRequestScreen screen);
 
     MCNAPI void trySendBatch();
 #endif

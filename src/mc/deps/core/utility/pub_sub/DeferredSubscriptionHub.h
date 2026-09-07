@@ -23,6 +23,8 @@ public:
         RecursiveFIFO = 2,
     };
 
+    using FunctionType = ::brstd::move_only_function<void()>;
+
 public:
     // virtual functions
     // NOLINTBEGIN
@@ -56,13 +58,7 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
-    MCNAPI static ::std::unique_ptr<::Bedrock::PubSub::DeferredSubscriptionHub> makePriorityHub();
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    MCAPI static ::std::unique_ptr<::Bedrock::PubSub::DeferredSubscriptionHub> makePriorityHub();
     // NOLINTEND
 };
 

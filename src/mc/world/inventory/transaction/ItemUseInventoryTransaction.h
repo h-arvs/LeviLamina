@@ -5,6 +5,7 @@
 // auto generated inclusion list
 #include "mc/deps/core/math/Vec3.h"
 #include "mc/platform/Result.h"
+#include "mc/util/BidirectionalUnorderedMap.h"
 #include "mc/world/inventory/transaction/ComplexInventoryTransaction.h"
 #include "mc/world/inventory/transaction/InventoryTransactionError.h"
 #include "mc/world/item/NetworkItemStackDescriptor.h"
@@ -14,6 +15,7 @@
 // clang-format off
 class BinaryStream;
 class BlockPalette;
+class ItemStack;
 class Player;
 class ReadOnlyBinaryStream;
 // clang-format on
@@ -86,6 +88,23 @@ public:
     MCAPI ItemUseInventoryTransaction(::ItemUseInventoryTransaction const& transaction);
 
     MCAPI ::ItemUseInventoryTransaction& operator=(::ItemUseInventoryTransaction const&);
+
+    MCAPI ::ItemUseInventoryTransaction& setSelectedItem(::ItemStack const& item);
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static void resendBlocksAroundArea(::Player& player, ::BlockPos const& pos, uchar facing);
+
+    MCAPI static void resendPlayerState(::Player& player);
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::BidirectionalUnorderedMap<::ItemUseInventoryTransaction::ActionType, ::std::string> const&
+    actionTypeMap();
     // NOLINTEND
 
 public:

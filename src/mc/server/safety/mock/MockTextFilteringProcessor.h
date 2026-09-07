@@ -116,12 +116,6 @@ public:
 
     virtual void onStartShutdown() /*override*/;
     // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
-    // NOLINTEND
 };
 
 } // namespace Bedrock::Safety

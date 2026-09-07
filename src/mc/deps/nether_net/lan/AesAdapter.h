@@ -14,13 +14,7 @@ public:
     // NOLINTBEGIN
     virtual ~AesAdapter() /*override*/ = default;
 
-    virtual ::NetherNet::ErrorOr<void, ::std::error_code> SetKey(uint64) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual ::NetherNet::ErrorOr<void, ::std::error_code> SetKey(uint64 id) = 0;
     // NOLINTEND
 };
 

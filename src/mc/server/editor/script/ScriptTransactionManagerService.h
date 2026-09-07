@@ -4,10 +4,15 @@
 
 // auto generated inclusion list
 #include "mc/deps/script_core/lifetime_registry/scripting/WeakHandleFromThis.h"
+#include "mc/deps/script_core/runtime/scripting/Result_deprecated.h"
 
 // auto generated forward declare list
 // clang-format off
+namespace Editor::ScriptModule { class ScriptUserDefinedTransactionHandlerId; }
+namespace Editor::Services { class TransactionManagerServiceProvider; }
+namespace Scripting { class WeakLifetimeScope; }
 namespace Scripting { struct ClassBinding; }
+namespace Scripting { struct Error; }
 namespace mce { class UUID; }
 // clang-format on
 
@@ -18,32 +23,32 @@ class ScriptTransactionManagerService
 public:
     // ScriptTransactionManagerService inner types declare
     // clang-format off
-    struct ModuleHandlerItem;
+    struct UserDefinedOperationHandler;
     // clang-format on
 
     // ScriptTransactionManagerService inner types define
-    struct ModuleHandlerItem {
+    struct UserDefinedOperationHandler {
     public:
         // member variables
         // NOLINTBEGIN
-        ::ll::UntypedStorage<8, 16>  mUnk7c7f27;
-        ::ll::UntypedStorage<8, 112> mUnked2ff5;
-        ::ll::UntypedStorage<8, 112> mUnk9288b9;
+        ::ll::UntypedStorage<8, 112> mUnk11bc13;
+        ::ll::UntypedStorage<8, 112> mUnkee9e54;
         // NOLINTEND
 
     public:
         // prevent constructor by default
-        ModuleHandlerItem& operator=(ModuleHandlerItem const&);
-        ModuleHandlerItem(ModuleHandlerItem const&);
-        ModuleHandlerItem();
+        UserDefinedOperationHandler& operator=(UserDefinedOperationHandler const&);
+        UserDefinedOperationHandler(UserDefinedOperationHandler const&);
+        UserDefinedOperationHandler();
     };
 
 public:
     // member variables
     // NOLINTBEGIN
     ::ll::UntypedStorage<8, 16> mUnk5f49c3;
-    ::ll::UntypedStorage<8, 8>  mUnk11835f;
-    ::ll::UntypedStorage<8, 64> mUnk25521c;
+    ::ll::UntypedStorage<8, 16> mUnkd366ce;
+    ::ll::UntypedStorage<8, 64> mUnk21ded5;
+    ::ll::UntypedStorage<8, 64> mUnk25294e;
     // NOLINTEND
 
 public:
@@ -53,9 +58,62 @@ public:
     ScriptTransactionManagerService();
 
 public:
+    // member functions
+    // NOLINTBEGIN
+    MCNAPI ScriptTransactionManagerService(::Editor::ScriptModule::ScriptTransactionManagerService&& other);
+
+    MCNAPI ScriptTransactionManagerService(
+        ::std::weak_ptr<::Editor::Services::TransactionManagerServiceProvider> transactionManager,
+        ::Scripting::WeakLifetimeScope const&                                  scope
+    );
+
+    MCNAPI ::Scripting::Error _getInvalidTransactionServiceError() const;
+
+    MCNAPI ::Scripting::Result_deprecated<void> discardPendingTransaction(::mce::UUID const& uuid);
+
+    MCNAPI ::Scripting::Result_deprecated<void> finalizePendingTransaction(::mce::UUID const& uuid);
+
+    MCNAPI ::Scripting::Result_deprecated<
+        ::Editor::ScriptModule::ScriptTransactionManagerService::UserDefinedOperationHandler>
+    getUserDefinedOperationHandler(
+        ::Editor::ScriptModule::ScriptUserDefinedTransactionHandlerId const& transactionHandler
+    );
+
+    MCNAPI ::Editor::ScriptModule::ScriptTransactionManagerService&
+    operator=(::Editor::ScriptModule::ScriptTransactionManagerService&& other);
+
+    MCNAPI ::Scripting::Result_deprecated<void> redo();
+
+    MCNAPI ::Scripting::Result_deprecated<int> redoSize() const;
+
+    MCNAPI ::Scripting::Result_deprecated<void> undo();
+
+    MCNAPI ::Scripting::Result_deprecated<int> undoSize() const;
+
+    MCNAPI ~ScriptTransactionManagerService();
+    // NOLINTEND
+
+public:
     // static functions
     // NOLINTBEGIN
     MCNAPI static ::Scripting::ClassBinding bindScript();
+    // NOLINTEND
+
+public:
+    // constructor thunks
+    // NOLINTBEGIN
+    MCNAPI void* $ctor(::Editor::ScriptModule::ScriptTransactionManagerService&& other);
+
+    MCNAPI void* $ctor(
+        ::std::weak_ptr<::Editor::Services::TransactionManagerServiceProvider> transactionManager,
+        ::Scripting::WeakLifetimeScope const&                                  scope
+    );
+    // NOLINTEND
+
+public:
+    // destructor thunk
+    // NOLINTBEGIN
+    MCNAPI void $dtor();
     // NOLINTEND
 };
 

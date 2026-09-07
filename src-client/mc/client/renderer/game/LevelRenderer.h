@@ -32,28 +32,32 @@ class BlockSource;
 class BlockTessellator;
 class ClientFrameUpdateContext;
 class ClientLevel;
+class DataDrivenRenderer;
 class DataDrivenRendererV2RequiredData;
 class GameRenderer;
 class GeometryEditorGui;
 class GeometryGroup;
+class HashedString;
 class IClientInstance;
 class LevelChunk;
 class LevelRendererPlayer;
 class LevelRendererProxy;
 class LevelRendererShadowCamera;
+class MinecraftGameplayGraphicsResources;
 class OptionRegistry;
 class ParticleEngine;
 class ParticleSystemEngine;
 class PlayerRenderView;
 class RenderChunkCoordinator;
-class RenderChunkShared;
 class RuntimeLocalLightingConfig;
 class ScreenContext;
 class SoundMapping;
 class SoundPlayerInterface;
 class TaskGroup;
+class Tessellator;
 class TextureAtlas;
 class TextureShiftManager;
+class UniversalEntityRenderer;
 struct ActorBlockSyncMessage;
 struct FrameRenderObject;
 struct LevelRenderPreRenderUpdateParameters;
@@ -76,9 +80,8 @@ public:
                                                                                         mRenderChunkCoordinators;
     ::ll::TypedStorage<8, 8, ::std::unique_ptr<::PointLighting::PointLightCoordinator>> mPointLightCoordinator;
     ::ll::TypedStorage<8, 16, ::std::shared_ptr<::PointLighting::PointLightShadowProbeManager>>
-                                                               mPointLightShadowProbeManager;
-    ::ll::TypedStorage<8, 16, ::Bedrock::PubSub::Subscription> mPointLightLODOptionSubscription;
-    ::ll::TypedStorage<8, 16, ::Bedrock::PubSub::Subscription> mPointLightShadowOptionSubscription;
+                                                                                         mPointLightShadowProbeManager;
+    ::ll::TypedStorage<8, 16, ::Bedrock::PubSub::Subscription>                           mPointLightOptionSubscription;
     ::ll::TypedStorage<8, 16, ::std::shared_ptr<::LightPropagation::LightVolumeManager>> mLightVolumeManager;
     ::ll::TypedStorage<8, 16, ::std::shared_ptr<::LightPropagation::LightPropagationCoordinator>>
                                                                                   mLightPropagationCoordinator;
@@ -126,6 +129,7 @@ public:
     ::ll::TypedStorage<4, 16, ::mce::Color>                                         mClearBufferColor;
     ::ll::TypedStorage<8, 16, ::std::weak_ptr<::PlayerRenderView>>                  mPlayerView;
     ::ll::TypedStorage<8, 8, ::std::unique_ptr<::DataDrivenRendererV2RequiredData>> mDataDrivenRendererV2RequiredData;
+    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::UniversalEntityRenderer>>          mUniversalEntityRenderer;
     // NOLINTEND
 
 public:
@@ -149,7 +153,7 @@ public:
 
     virtual void onBlockChanged(
         ::BlockSource&                 source,
-        ::BlockPos const&              pos,
+        ::BlockPos const&              blockPosition,
         uint                           layer,
         ::Block const&                 block,
         ::Block const&                 oldBlock,
@@ -159,14 +163,14 @@ public:
         ::Actor*                       blockChangeSource
     ) /*override*/;
 
-    virtual void onChunkUnloaded(::LevelChunk&) /*override*/;
+    virtual void onChunkUnloaded(::LevelChunk& levelChunk) /*override*/;
 
     virtual void takePicture(
-        ::cg::ImageBuffer&,
-        ::Actor*,
-        ::Actor*,
-        ::ScreenshotOptions&,
-        ::std::function<void(::cg::ImageBuffer&, ::ScreenshotOptions&)>
+        ::cg::ImageBuffer&                                              outImage,
+        ::Actor*                                                        camera,
+        ::Actor*                                                        target,
+        ::ScreenshotOptions&                                            screenshotOptions,
+        ::std::function<void(::cg::ImageBuffer&, ::ScreenshotOptions&)> completedScreenshotCallback
     ) /*override*/;
     // NOLINTEND
 
@@ -189,13 +193,24 @@ public:
         ::std::weak_ptr<::dragon::atlas::IAtlasUserOperations>                     atlasOps
     );
 
-    MCAPI void _setLevelRendererCameras();
+    MCAPI void _createMeshes(::Tessellator& tessellator);
 
-    MCAPI void extractPointLightCandidates(::RenderChunkShared const& renderChunkShared);
+    MCAPI void _initDataDrivenRendererResources(
+        ::std::unordered_map<::HashedString, ::std::shared_ptr<::DataDrivenRenderer>> const& renderers,
+        ::MinecraftGameplayGraphicsResources&                                                graphicsResources
+    );
+
+    MCAPI void _setLevelRendererCameras();
 
     MCAPI void frameUpdate(::ClientFrameUpdateContext& clientFrameUpdateContext);
 
+    MCAPI ::BlockTessellator& getBlockRenderer();
+
+    MCAPI ::ParticleEngine& getParticleEngine() const;
+
     MCAPI ::StackRefResult<::RenderChunkCoordinator> getRenderChunkCoordinator(::DimensionType dimID);
+
+    MCAPI void onDimensionChanged();
 
     MCAPI void onOptionsChanged();
 
@@ -246,6 +261,34 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $onAppSuspended();
 
+    MCAPI void $onAppResumed();
+
+    MCAPI void $onDeviceLost();
+
+    MCAPI void $onLowMemory(::LowMemorySeverity);
+
+    MCAPI void $onBlockChanged(
+        ::BlockSource&                 source,
+        ::BlockPos const&              blockPosition,
+        uint                           layer,
+        ::Block const&                 block,
+        ::Block const&                 oldBlock,
+        int                            updateFlags,
+        ::ActorBlockSyncMessage const* syncMsg,
+        ::BlockChangedEventTarget      eventTarget,
+        ::Actor*                       blockChangeSource
+    );
+
+    MCAPI void $onChunkUnloaded(::LevelChunk& levelChunk);
+
+    MCAPI void $takePicture(
+        ::cg::ImageBuffer&                                              outImage,
+        ::Actor*                                                        camera,
+        ::Actor*                                                        target,
+        ::ScreenshotOptions&                                            screenshotOptions,
+        ::std::function<void(::cg::ImageBuffer&, ::ScreenshotOptions&)> completedScreenshotCallback
+    );
     // NOLINTEND
 };

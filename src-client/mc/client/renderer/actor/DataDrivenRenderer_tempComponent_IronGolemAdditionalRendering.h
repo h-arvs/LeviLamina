@@ -10,6 +10,8 @@
 // clang-format off
 class ActorRenderData;
 class BaseActorRenderContext;
+class BlockTessellator;
+class DataDrivenRenderer;
 class RenderParams;
 // clang-format on
 
@@ -17,30 +19,24 @@ class DataDrivenRenderer_tempComponent_IronGolemAdditionalRendering : public ::D
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 8>  mUnk5635c4;
-    ::ll::UntypedStorage<8, 16> mUnka04321;
+    ::ll::TypedStorage<8, 8, ::BlockTessellator*>                    mBlockTessellator;
+    ::ll::TypedStorage<8, 16, ::std::weak_ptr<::DataDrivenRenderer>> mRenderer;
     // NOLINTEND
-
-public:
-    // prevent constructor by default
-    DataDrivenRenderer_tempComponent_IronGolemAdditionalRendering&
-    operator=(DataDrivenRenderer_tempComponent_IronGolemAdditionalRendering const&);
-    DataDrivenRenderer_tempComponent_IronGolemAdditionalRendering(
-        DataDrivenRenderer_tempComponent_IronGolemAdditionalRendering const&
-    );
-    DataDrivenRenderer_tempComponent_IronGolemAdditionalRendering();
 
 public:
     // virtual functions
     // NOLINTBEGIN
     virtual ::V2TempComponentRequirements getV2Requirements() const /*override*/;
 
-    virtual void render(::BaseActorRenderContext&, ::ActorRenderData&, ::RenderParams&) /*override*/;
+    virtual void
+    render(::BaseActorRenderContext& renderContext, ::ActorRenderData& actorRenderData, ::RenderParams&) /*override*/;
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCFOLD ::V2TempComponentRequirements $getV2Requirements() const;
 
+    MCAPI void $render(::BaseActorRenderContext& renderContext, ::ActorRenderData& actorRenderData, ::RenderParams&);
     // NOLINTEND
 };

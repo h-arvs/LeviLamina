@@ -17,13 +17,7 @@ public:
     // NOLINTBEGIN
     virtual ~MapPolicy() = default;
 
-    virtual ::mce::Color get(::BlockSource&, ::BlockPos const&) const = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual ::mce::Color get(::BlockSource& region, ::BlockPos const& pos) const = 0;
     // NOLINTEND
 };
 

@@ -5,7 +5,6 @@
 // auto generated inclusion list
 #include "mc/deps/core/math/Vec3.h"
 #include "mc/deps/core/string/HashedString.h"
-#include "mc/molang/MolangVersion.h"
 #include "mc/world/effect/EffectDuration.h"
 #include "mc/world/item/ItemUseMethod.h"
 #include "mc/world/item/components/IFoodItemComponent.h"
@@ -13,13 +12,11 @@
 // auto generated forward declare list
 // clang-format off
 class Actor;
-class CompoundTag;
 class Item;
 class ItemStack;
 class Level;
 class Player;
 struct ItemOnUseResult;
-namespace Json { class Value; }
 // clang-format on
 
 class FoodItemComponentLegacy : public ::IFoodItemComponent {
@@ -80,22 +77,10 @@ public:
 
     virtual bool canAlwaysEat() const /*override*/;
 
-#ifdef LL_PLAT_S
-    virtual ::Item const* eatItem(::ItemStack&, ::Actor&, ::Level&) /*override*/;
-#else // LL_PLAT_C
     virtual ::Item const* eatItem(::ItemStack& instance, ::Actor& actor, ::Level& level) /*override*/;
-#endif
 
-#ifdef LL_PLAT_S
-    virtual void use(::ItemOnUseResult&, ::ItemStack&, ::Player&) /*override*/;
-#else // LL_PLAT_C
     virtual void use(::ItemOnUseResult& result, ::ItemStack& instance, ::Player& player) /*override*/;
-#endif
 
-#ifdef LL_PLAT_S
-    virtual ::Item const*
-    useTimeDepleted(::ItemUseMethod&, ::ItemStack const&, ::ItemStack&, ::Player&, ::Level&) /*override*/;
-#else // LL_PLAT_C
     virtual ::Item const* useTimeDepleted(
         ::ItemUseMethod& itemUseMethod,
         ::ItemStack const&,
@@ -103,33 +88,22 @@ public:
         ::Player&    player,
         ::Level&     level
     ) /*override*/;
-#endif
-
     // NOLINTEND
 
 public:
     // member functions
     // NOLINTBEGIN
-#ifdef LL_PLAT_C
-    MCAPI ::std::unique_ptr<::CompoundTag> buildNetworkTag() const;
-
-    MCAPI bool init(::Json::Value const& data, ::MolangVersion);
-#endif
-    // NOLINTEND
-
-public:
-    // static functions
-    // NOLINTBEGIN
-#ifdef LL_PLAT_C
-    MCAPI static ::Json::Value initializeFromNetwork(::CompoundTag const& tag);
-#endif
+    MCAPI void _applyEatEffects(::ItemStack const&, ::Actor& actor, ::Level& level);
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
-#ifdef LL_PLAT_C
+#ifdef LL_PLAT_S
+    MCAPI int $getNutrition() const;
+#else // LL_PLAT_C
     MCFOLD int $getNutrition() const;
+#endif
 
     MCFOLD float $getSaturationModifier() const;
 
@@ -146,14 +120,7 @@ public:
         ::Player&    player,
         ::Level&     level
     );
-#endif
 
 
-    // NOLINTEND
-
-public:
-    // vftables
-    // NOLINTBEGIN
-    MCAPI static void** $vftable();
     // NOLINTEND
 };

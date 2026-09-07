@@ -4,6 +4,8 @@
 
 // auto generated forward declare list
 // clang-format off
+class LevelData;
+namespace Editor::ScriptModule { class ScriptGameOptions; }
 namespace Scripting { struct ClassBinding; }
 namespace Scripting { struct EnumBinding; }
 // clang-format on
@@ -33,6 +35,9 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
+    MCNAPI static void
+    _setGameOptions(::LevelData const& levelData, ::Editor::ScriptModule::ScriptGameOptions& gameOptions);
+
     MCNAPI static ::Scripting::ClassBinding bindClass();
 
     MCNAPI static ::Scripting::EnumBinding bindExportResultEnums();

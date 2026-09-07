@@ -39,7 +39,7 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual ~PackManagerContentSourceImpl() /*override*/ = default;
+    virtual ~PackManagerContentSourceImpl() /*override*/;
 
     virtual void save() /*override*/;
 
@@ -58,6 +58,10 @@ public:
         ::PackManagerContentSourceArgs&&                          args,
         ::Bedrock::NotNullNonOwnerPtr<::IContentSourceRepository> contentSourceRepository
     );
+
+    MCAPI ::std::vector<::std::shared_ptr<::PackContentItem>> _getAllSelectedItems() const;
+
+    MCAPI void _save(bool const shouldSaveAll);
 
     MCAPI void getSortedSelectedContent(
         ::std::vector<::PackInstanceId>&                     modelManagerIdentities,
@@ -81,6 +85,12 @@ public:
     // NOLINTEND
 
 public:
+    // destructor thunk
+    // NOLINTBEGIN
+    MCAPI void $dtor();
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
     MCAPI void $save();
@@ -90,5 +100,11 @@ public:
     MCAPI void $deleteContentFiles(::std::vector<::std::shared_ptr<::ContentItem const>> const& items);
 
     MCAPI void $postDeleteContent(::std::vector<::std::shared_ptr<::ContentItem const>> const& items);
+    // NOLINTEND
+
+public:
+    // vftables
+    // NOLINTBEGIN
+    MCNAPI static void** $vftable();
     // NOLINTEND
 };

@@ -17,6 +17,7 @@ class CommandOutput;
 class CommandRegistry;
 class ItemRegistryRef;
 class Player;
+namespace Util { struct ReplacementResults; }
 // clang-format on
 
 class LootCommand : public ::Command {
@@ -66,18 +67,29 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual void execute(::CommandOrigin const&, ::CommandOutput&) const /*override*/;
+    virtual void execute(::CommandOrigin const& origin, ::CommandOutput& output) const /*override*/;
+    // NOLINTEND
+
+public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI void
+    _outputError(::CommandOutput& output, ::Util::ReplacementResults const errorDetails, ::Actor const* entity) const;
     // NOLINTEND
 
 public:
     // static functions
     // NOLINTBEGIN
+    MCAPI static void _outputSuccess(::CommandOutput& output, int numItemsDropped);
+
     MCAPI static void setup(::CommandRegistry& registry, ::ItemRegistryRef itemRegistry);
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $execute(::CommandOrigin const& origin, ::CommandOutput& output) const;
+
 
     // NOLINTEND
 };

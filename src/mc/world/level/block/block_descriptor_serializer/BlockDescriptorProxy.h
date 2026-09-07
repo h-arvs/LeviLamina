@@ -3,6 +3,7 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
+#include "mc/world/level/block/BlockDescriptor.h"
 #include "mc/world/level/block/block_descriptor_serializer/StatesProxy.h"
 #include "mc/world/level/block/block_descriptor_serializer/TagsProxy.h"
 
@@ -32,6 +33,8 @@ public:
     // NOLINTBEGIN
     MCAPI explicit BlockDescriptorProxy(::SharedTypes::Legacy::BlockDescriptor desc);
 
+    MCAPI BlockDescriptorProxy(::std::string name, ::std::vector<::BlockDescriptor::State> states, ::std::string tags);
+
     MCAPI ~BlockDescriptorProxy();
     // NOLINTEND
 
@@ -45,6 +48,8 @@ public:
     // constructor thunks
     // NOLINTBEGIN
     MCAPI void* $ctor(::SharedTypes::Legacy::BlockDescriptor desc);
+
+    MCAPI void* $ctor(::std::string name, ::std::vector<::BlockDescriptor::State> states, ::std::string tags);
     // NOLINTEND
 
 public:

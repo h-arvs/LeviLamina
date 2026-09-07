@@ -58,6 +58,10 @@ public:
     // NOLINTBEGIN
     MCAPI static ::std::array<::Ability const, 20> _initDefaultAbilities();
 
+#ifdef LL_PLAT_C
+    MCAPI static ::std::optional<::std::string> getDiff(::Abilities const& lhs, ::Abilities const& rhs);
+#endif
+
     MCAPI static ::AbilitiesIndex nameToAbilityIndex(::std::string const& name);
     // NOLINTEND
 
@@ -65,6 +69,10 @@ public:
     // static variables
     // NOLINTBEGIN
     MCAPI static ::std::array<char const*, 20>& ABILITY_NAMES();
+
+#ifdef LL_PLAT_C
+    MCAPI static ::std::string const& DIFF_ABILITIY_AT();
+#endif
 
     MCAPI static ::Ability& INVALID_ABILITY();
 

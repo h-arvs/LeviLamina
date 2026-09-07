@@ -27,6 +27,7 @@
 #include "mc/external/bgfx/View.h"
 #include "mc/external/bgfx/ViewStats.h"
 #include "mc/external/bgfx/acceleration_structure_build_flags/Enum.h"
+#include "mc/external/bgfx/backbuffer_ratio/Enum.h"
 #include "mc/external/bgfx/render_frame/Enum.h"
 #include "mc/external/bgfx/renderer_type/Enum.h"
 #include "mc/external/bgfx/texture_format/Enum.h"
@@ -39,6 +40,7 @@
 
 // auto generated forward declare list
 // clang-format off
+namespace bgfx { class CommandBuffer; }
 namespace bgfx { struct AccelerationStructureHandle; }
 namespace bgfx { struct AllocationContext; }
 namespace bgfx { struct Attachment; }
@@ -51,7 +53,10 @@ namespace bgfx { struct Memory; }
 namespace bgfx { struct ProgramHandle; }
 namespace bgfx { struct RendererContextI; }
 namespace bgfx { struct ShaderBufferHandle; }
+namespace bgfx { struct TextureInfo; }
 namespace bgfx { struct TopLevelInstanceDesc; }
+namespace bgfx { struct TransientIndexBuffer; }
+namespace bgfx { struct TransientVertexBuffer; }
 namespace bgfx { struct UniformHandle; }
 namespace bgfx { struct UniformInfo; }
 namespace bgfx { struct VertexBufferHandle; }
@@ -199,7 +204,7 @@ public:
     ::ll::TypedStorage<8, 8, ::bgfx::Encoder*>                           m_encoder0;
     ::ll::TypedStorage<8, 8, ::bgfx::EncoderImpl*>                       m_encoder;
     ::ll::TypedStorage<8, 40, ::bx::HandleAlloc*>                        m_encoderHandle;
-    ::ll::TypedStorage<8, 206541568, ::bgfx::Frame[2]>                   m_frame;
+    ::ll::TypedStorage<8, 206574336, ::bgfx::Frame[2]>                   m_frame;
     ::ll::TypedStorage<8, 8, ::bgfx::Frame*>                             m_render;
     ::ll::TypedStorage<8, 8, ::bgfx::Frame*>                             m_submit;
     ::ll::TypedStorage<8, 524280, uint64[65535]>                         m_tempKeys;
@@ -242,7 +247,7 @@ public:
     ::ll::TypedStorage<4, 17288, ::bgfx::VertexDeclRef>                   m_declRef;
     ::ll::TypedStorage<2, 512, ushort[256]>                               m_viewRemap;
     ::ll::TypedStorage<4, 1056, uint[256]>                                m_seq;
-    ::ll::TypedStorage<4, 114688, ::bgfx::View[256]>                      m_view;
+    ::ll::TypedStorage<8, 131072, ::bgfx::View[256]>                      m_view;
     ::ll::TypedStorage<4, 256, float[16][4]>                              m_clearColor;
     ::ll::TypedStorage<1, 1, uchar>                                       m_colorPaletteDirty;
     ::ll::TypedStorage<8, 64, ::bgfx::Init>                               m_init;
@@ -273,9 +278,20 @@ public:
     // NOLINTBEGIN
     MCAPI Context();
 
+    MCAPI void _initBegin();
+
+    MCAPI bool _initFinalize();
+
+    MCAPI void _initPending(bool async);
+
     MCAPI void _shutdownBegin();
 
     MCAPI void _shutdownFinalize();
+
+    MCAPI uint64 allocDynamicIndexBuffer(uint _size, ushort _flags);
+
+    MCAPI ::bgfx::Context::DynamicVertexAllocation
+    allocDynamicVertexBuffer(uint _size, ushort _flags, ushort _aligment);
 
     MCAPI ::bgfx::Encoder* begin();
 
@@ -334,11 +350,24 @@ public:
 
     MCAPI ::bgfx::ShaderBufferHandle createShaderBuffer(uint _num, uint _stride, ushort _flags);
 
+    MCAPI ::bgfx::TextureHandle createTexture(
+        ::bgfx::Memory const*         _mem,
+        uint                          _flags,
+        uchar                         _skip,
+        ::bgfx::TextureInfo*          _info,
+        ::bgfx::BackbufferRatio::Enum _ratio,
+        bool                          _immutable
+    );
+
     MCAPI ::bgfx::AccelerationStructureHandle createTopLevelAccelerationStructure(
         ::bgfx::AccelerationStructureHandle _handle,
         uint                                numInstances,
         ::bgfx::TopLevelInstanceDesc*       instanceDescs
     );
+
+    MCAPI ::bgfx::TransientIndexBuffer* createTransientIndexBuffer(uint _size);
+
+    MCAPI ::bgfx::TransientVertexBuffer* createTransientVertexBuffer(uint _size, ::bgfx::VertexDecl const* _decl);
 
     MCAPI ::bgfx::UniformHandle createUniform(char const* _name, ::bgfx::UniformType::Enum _type, ushort _num);
 
@@ -361,6 +390,8 @@ public:
 
     MCAPI ::bgfx::VertexDeclHandle findVertexDecl(::bgfx::VertexDecl const& _decl);
 
+    MCAPI void flushTextureUpdateBatch(::bgfx::CommandBuffer& _cmdbuf);
+
     MCAPI uint frame(uint _flags);
 
     MCAPI ::bgfx::Stats const getPerfStats();
@@ -373,6 +404,8 @@ public:
 
     MCAPI ::bgfx::RenderFrame::Enum renderFrame(int _msecs);
 
+    MCAPI void rendererExecCommands(::bgfx::CommandBuffer& _cmdbuf);
+
     MCAPI void reset(uint _width, uint _height, uint _flags);
 
     MCAPI void setName(::bgfx::ShaderHandle _handle, ::bx::StringView const& _name);
@@ -382,6 +415,10 @@ public:
     MCAPI void setViewName(ushort _id, char const* _name);
 
     MCAPI void shaderBufferDecRef(::bgfx::ShaderBufferHandle _handle);
+
+    MCAPI void shaderDecRef(::bgfx::ShaderHandle _handle);
+
+    MCAPI void swap();
 
     MCAPI void textureDecRef(::bgfx::TextureHandle _handle);
 
@@ -414,6 +451,12 @@ public:
     MCAPI ::bgfx::TextureHandle wrapExternalTexture(::bgfx::RendererType::Enum _type, void* _texturePtr);
 
     MCAPI ~Context();
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static int renderThread(::bx::Thread*, void*);
     // NOLINTEND
 
 public:

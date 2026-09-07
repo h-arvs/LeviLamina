@@ -4,6 +4,7 @@
 
 // auto generated inclusion list
 #include "mc/client/renderer/game/LevelRendererCameraListeners.h"
+#include "mc/client/renderer/game/LevelRendererCameraType.h"
 #include "mc/deps/minecraft_renderer/game/LevelCullerType.h"
 
 // auto generated forward declare list
@@ -11,6 +12,7 @@
 class BaseActorRenderContext;
 class Player;
 class ScreenContext;
+class Vec3;
 struct LevelRenderPreRenderUpdateParameters;
 struct ShadowCascadeState;
 namespace mce::framebuilder { struct ShadowParameters; }
@@ -46,21 +48,30 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual void recalculateRenderDistance(float const) /*override*/;
+    virtual ::LevelRendererCameraType getCameraType() const /*override*/;
 
-    virtual void preRenderUpdate(::ScreenContext&, ::LevelRenderPreRenderUpdateParameters&) /*override*/;
+    virtual void recalculateRenderDistance(float const renderDistanceScalar) /*override*/;
 
-    virtual void renderBlockEntities(::BaseActorRenderContext&, bool) /*override*/;
+    virtual void preRenderUpdate(
+        ::ScreenContext&                        screenContext,
+        ::LevelRenderPreRenderUpdateParameters& levelRenderPreRenderUpdateParameters
+    ) /*override*/;
 
-    virtual void queueRenderEntities(::LevelRenderPreRenderUpdateParameters const&) /*override*/;
+    virtual void renderBlockEntities(::BaseActorRenderContext& renderContext, bool renderAlphaLayer) /*override*/;
+
+    virtual void queueRenderEntities(
+        ::LevelRenderPreRenderUpdateParameters const& levelRenderPreRenderUpdateParameters
+    ) /*override*/;
 
     virtual void setupViewArea() /*override*/;
 
-    virtual void setViewArea(::LevelRenderPreRenderUpdateParameters const&) /*override*/;
+    virtual void
+    setViewArea(::LevelRenderPreRenderUpdateParameters const& levelRenderPreRenderUpdateParameters) /*override*/;
 
-    virtual void updateViewArea(::LevelRenderPreRenderUpdateParameters const&) /*override*/;
+    virtual void
+    updateViewArea(::LevelRenderPreRenderUpdateParameters const& levelRenderPreRenderUpdateParameters) /*override*/;
 
-    virtual void onDimensionChanged(::Player&) /*override*/;
+    virtual void onDimensionChanged(::Player& player) /*override*/;
 
     virtual void addCameraListenerToRenderChunkCoordinator() /*override*/;
 
@@ -70,6 +81,11 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
+    MCNAPI void _calculatePlayerShadowMap(
+        ::mce::framebuilder::ShadowParameters const& shadowParameters,
+        ::Vec3 const&                                lightSourceDir
+    );
+
     MCNAPI void setupCamera(
         ::glm::vec3 const&                              direction,
         float                                           angle,
@@ -98,6 +114,30 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCNAPI ::LevelRendererCameraType $getCameraType() const;
+
+    MCNAPI void $recalculateRenderDistance(float const renderDistanceScalar);
+
+    MCNAPI void $preRenderUpdate(
+        ::ScreenContext&                        screenContext,
+        ::LevelRenderPreRenderUpdateParameters& levelRenderPreRenderUpdateParameters
+    );
+
+    MCNAPI void $renderBlockEntities(::BaseActorRenderContext& renderContext, bool renderAlphaLayer);
+
+    MCNAPI void
+    $queueRenderEntities(::LevelRenderPreRenderUpdateParameters const& levelRenderPreRenderUpdateParameters);
+
+    MCNAPI void $setupViewArea();
+
+    MCNAPI void $setViewArea(::LevelRenderPreRenderUpdateParameters const& levelRenderPreRenderUpdateParameters);
+
+    MCNAPI void $updateViewArea(::LevelRenderPreRenderUpdateParameters const& levelRenderPreRenderUpdateParameters);
+
+    MCNAPI void $onDimensionChanged(::Player& player);
+
+    MCNAPI void $addCameraListenerToRenderChunkCoordinator();
+
     MCNAPI void $updateLevelCullerType(::LevelCullerType const newLevelCullerType);
     // NOLINTEND
 };

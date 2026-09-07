@@ -6,6 +6,7 @@
 #include "mc/client/gui/controls/renderers/MinecraftUICustomRenderer.h"
 #include "mc/deps/application/AppPlatformListener.h"
 #include "mc/deps/core/math/Vec3.h"
+#include "mc/deps/game_refs/WeakRef.h"
 #include "mc/deps/minecraft_renderer/renderer/TexturePtr.h"
 #include "mc/world/level/BlockChangedEventTarget.h"
 #include "mc/world/level/BlockSourceListener.h"
@@ -13,16 +14,21 @@
 
 // auto generated forward declare list
 // clang-format off
+class AABB;
 class Actor;
+class BaseActorRenderContext;
 class Block;
 class BlockPos;
 class BlockSource;
 class EditorVolumeHighlightRendererInstanceData;
 class IClientInstance;
 class MinecraftUIRenderContext;
+class RenderChunkCoordinator;
+class Tessellator;
 class UIControl;
 class UICustomRenderer;
 struct ActorBlockSyncMessage;
+namespace ClientBlockPipeline { class TessellatorContext; }
 // clang-format on
 
 class EditorVolumeHighlightRenderer : public ::MinecraftUICustomRenderer,
@@ -65,6 +71,39 @@ public:
     // NOLINTEND
 
 public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI ::std::vector<::BlockPos> _generateChunkStartPositions(::AABB const& area) const;
+
+    MCAPI void _initializeChunkBuilder(
+        ::ClientBlockPipeline::TessellatorContext& pipelineContext,
+        ::BlockSource&                             region,
+        ::Tessellator&                             tessellator,
+        ::WeakRef<::RenderChunkCoordinator>        coordinator,
+        ::AABB const&                              area
+    );
+
+    MCAPI bool _renderBlocks(
+        ::BaseActorRenderContext& renderContext,
+        ::BlockSource&            region,
+        ::AABB const&             area,
+        ::Vec3 const&             offset
+    );
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static bool _renderBlockEntities(
+        ::BaseActorRenderContext& renderContext,
+        ::BlockSource&            region,
+        ::AABB const&             area,
+        ::Vec3 const&             offset,
+        bool                      renderAlphaLayer
+    );
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
     MCAPI ::std::shared_ptr<::UICustomRenderer> $clone() const;
@@ -84,15 +123,5 @@ public:
         ::BlockChangedEventTarget      eventTarget,
         ::Actor*                       blockChangeSource
     );
-    // NOLINTEND
-
-public:
-    // vftables
-    // NOLINTBEGIN
-    MCNAPI static void** $vftableForAppPlatformListener();
-
-    MCNAPI static void** $vftableForBlockSourceListener();
-
-    MCNAPI static void** $vftableForMinecraftUICustomRenderer();
     // NOLINTEND
 };

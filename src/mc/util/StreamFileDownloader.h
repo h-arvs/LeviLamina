@@ -55,17 +55,6 @@ public:
 
     virtual void update() /*override*/;
 
-#ifdef LL_PLAT_S
-    virtual void initRealmsFileDownloader(
-        ::std::string const&,
-        int const,
-        ::std::string const&,
-        ::FileInfo const&,
-        uint64,
-        ::std::string const&,
-        ::std::function<void(::DownloaderResult)>
-    ) /*override*/;
-#else // LL_PLAT_C
     virtual void initRealmsFileDownloader(
         ::std::string const&                      downloadId,
         int const                                 slotIndex,
@@ -75,19 +64,7 @@ public:
         ::std::string const&                      downloadVersion,
         ::std::function<void(::DownloaderResult)> callback
     ) /*override*/;
-#endif
 
-#ifdef LL_PLAT_S
-    virtual void initFileDownloader(
-        ::std::string const&,
-        ::std::string const&,
-        ::FileInfo const&,
-        uint64,
-        uint64,
-        ::std::string const&,
-        ::std::function<void(::DownloaderResult)>
-    ) /*override*/;
-#else // LL_PLAT_C
     virtual void initFileDownloader(
         ::std::string const&,
         ::std::string const& downloadUrl,
@@ -97,19 +74,11 @@ public:
         ::std::string const&,
         ::std::function<void(::DownloaderResult)> callback
     ) /*override*/;
-#endif
 
-#ifdef LL_PLAT_S
-    virtual void downloadFile(
-        ::std::function<void(::std::vector<uchar>, uint64, uint64, ::std::function<void(uint64, bool)>)>,
-        ::std::function<void(::DownloaderState)>
-    ) /*override*/;
-#else // LL_PLAT_C
     virtual void downloadFile(
         ::std::function<void(::std::vector<uchar>, uint64, uint64, ::std::function<void(uint64, bool)>)> dataCallback,
         ::std::function<void(::DownloaderState)>                                                         endCallback
     ) /*override*/;
-#endif
 
     virtual bool canCancelDownload() const /*override*/;
 
@@ -143,7 +112,9 @@ public:
 public:
     // destructor thunk
     // NOLINTBEGIN
+#ifdef LL_PLAT_C
     MCNAPI void $dtor();
+#endif
     // NOLINTEND
 
 public:

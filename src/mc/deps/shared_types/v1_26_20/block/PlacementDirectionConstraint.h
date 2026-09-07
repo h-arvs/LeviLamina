@@ -22,8 +22,16 @@ public:
     // NOLINTEND
 
 public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::std::string_view const& ROTATION_ERROR_DESCRIPTION();
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI ::cereal::internal::ConstraintDescription $doDescription(::cereal::ContextArea) const;
+
 
     // NOLINTEND
 };

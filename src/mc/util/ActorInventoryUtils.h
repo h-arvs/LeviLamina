@@ -10,6 +10,7 @@
 class Actor;
 class CommandIntegerRange;
 class ItemStack;
+class SimpleContainer;
 // clang-format on
 
 namespace ActorInventoryUtils {
@@ -23,6 +24,20 @@ MCAPI void forEachItemOnActor(
     ::CommandIntegerRange const&              slot,
     ::std::function<void(::ItemStack const&)> callback
 );
+
+MCAPI void forEachItemOnActorHotbar(
+    ::Actor const&                            actor,
+    ::CommandIntegerRange const&              slot,
+    ::std::function<void(::ItemStack const&)> callback
+);
+
+MCAPI void forEachItemOnActorInventory(
+    ::Actor const&                            actor,
+    ::CommandIntegerRange const&              slot,
+    ::std::function<void(::ItemStack const&)> callback
+);
+
+MCAPI float getArmorCoverPercentage(::SimpleContainer const& armorContainer);
 
 MCAPI ::ItemStack const* getItem(::Actor const& actor, ::SharedTypes::Legacy::EquipmentSlot equipmentSlot, int slotId);
 // NOLINTEND

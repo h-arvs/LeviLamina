@@ -27,9 +27,9 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual void save(::std::vector<::std::pair<::std::string, ::std::string>>&) /*override*/;
+    virtual void save(::std::vector<::std::pair<::std::string, ::std::string>>& propertyVector) /*override*/;
 
-    virtual void load(::std::string const&) /*override*/;
+    virtual void load(::std::string const& valueString) /*override*/;
     // NOLINTEND
 
 public:
@@ -46,8 +46,6 @@ public:
     );
 
     MCAPI void set(::std::string const& value, bool saveOptionChange);
-
-    MCFOLD void setCoerceValueCallback(::std::function<::std::string(::std::string const&)> f);
 #endif
     // NOLINTEND
 
@@ -69,6 +67,12 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCAPI void $save(::std::vector<::std::pair<::std::string, ::std::string>>& propertyVector);
+
+    MCAPI void $load(::std::string const& valueString);
+#endif
+
 
     // NOLINTEND
 };

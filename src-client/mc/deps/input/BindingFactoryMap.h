@@ -13,12 +13,6 @@ public:
     // NOLINTBEGIN
     virtual ~BindingFactoryMap() = default;
 
-    virtual ::BindingFactory const& getBindingFactory(int) const = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual ::BindingFactory const& getBindingFactory(int controllerId) const = 0;
     // NOLINTEND
 };

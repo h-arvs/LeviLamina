@@ -67,16 +67,9 @@ public:
 
         virtual void OnBatchComplete();
 
-        virtual void
-        OnAbortedRetransmissions(uint ssrc, ::webrtc::ArrayView<ushort const, 18446744073709546905> sequence_numbers);
+        virtual void OnAbortedRetransmissions(uint ssrc, ::webrtc::ArrayView<ushort const> sequence_numbers);
 
         virtual ::std::optional<uint> GetRtxSsrcForMedia(uint ssrc) const;
-        // NOLINTEND
-
-    public:
-        // virtual function thunks
-        // NOLINTBEGIN
-
         // NOLINTEND
     };
 
@@ -124,9 +117,7 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCNAPI void CreateProbeClusters(
-        ::webrtc::ArrayView<::webrtc::ProbeClusterConfig const, 18446744073709546905> probe_cluster_configs
-    );
+    MCNAPI void CreateProbeClusters(::webrtc::ArrayView<::webrtc::ProbeClusterConfig const> probe_cluster_configs);
 
     MCNAPI ::webrtc::Timestamp CurrentTime() const;
 

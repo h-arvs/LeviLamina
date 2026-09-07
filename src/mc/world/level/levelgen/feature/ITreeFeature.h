@@ -29,18 +29,12 @@ public:
     // NOLINTBEGIN
     virtual ~ITreeFeature() /*override*/ = default;
 
-    virtual ::std::optional<::BlockPos> place(::IFeature::PlacementContext const&) const = 0;
+    virtual ::std::optional<::BlockPos> place(::IFeature::PlacementContext const& context) const = 0;
     // NOLINTEND
 
 public:
     // member functions
     // NOLINTBEGIN
     MCAPI ::std::optional<::BlockPos> _place(::IFeature::PlacementContext const& context) const;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };

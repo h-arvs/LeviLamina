@@ -8,6 +8,8 @@
 // auto generated forward declare list
 // clang-format off
 class Actor;
+class BlockPos;
+class BlockSource;
 class ProjectileComponent;
 namespace Json { class Value; }
 // clang-format on
@@ -16,8 +18,6 @@ class DouseFireSubcomponent : public ::OnHitSubcomponent {
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual ~DouseFireSubcomponent() /*override*/ = default;
-
     virtual void readfromJSON(::Json::Value&) /*override*/;
 
     virtual void writetoJSON(::Json::Value&) const /*override*/;
@@ -25,6 +25,12 @@ public:
     virtual void doOnHitEffect(::Actor& owner, ::ProjectileComponent& component) /*override*/;
 
     virtual char const* getName() const /*override*/;
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static void douseFire(::Actor& owner, ::BlockSource& region, ::BlockPos const& pos);
     // NOLINTEND
 
 public:
@@ -39,11 +45,5 @@ public:
     MCAPI char const* $getName() const;
 
 
-    // NOLINTEND
-
-public:
-    // vftables
-    // NOLINTBEGIN
-    MCNAPI static void** $vftable();
     // NOLINTEND
 };

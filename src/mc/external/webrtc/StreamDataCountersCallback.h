@@ -19,12 +19,6 @@ public:
 
     virtual void DataCountersUpdated(::webrtc::StreamDataCounters const&, uint) = 0;
     // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
-    // NOLINTEND
 };
 
 } // namespace webrtc

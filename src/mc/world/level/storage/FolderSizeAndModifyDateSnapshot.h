@@ -2,6 +2,14 @@
 
 #include "mc/_HeaderOutputPredefine.h"
 
+// auto generated inclusion list
+#include "mc/platform/Result.h"
+
+// auto generated forward declare list
+// clang-format off
+namespace Core { class Path; }
+// clang-format on
+
 class FolderSizeAndModifyDateSnapshot {
 public:
     // FolderSizeAndModifyDateSnapshot inner types declare
@@ -37,4 +45,10 @@ public:
     FolderSizeAndModifyDateSnapshot& operator=(FolderSizeAndModifyDateSnapshot const&);
     FolderSizeAndModifyDateSnapshot(FolderSizeAndModifyDateSnapshot const&);
     FolderSizeAndModifyDateSnapshot();
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCNAPI static ::Bedrock::Result<::FolderSizeAndModifyDateSnapshot> CaptureSnapshot(::Core::Path const& path);
+    // NOLINTEND
 };

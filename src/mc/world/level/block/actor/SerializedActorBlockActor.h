@@ -102,7 +102,13 @@ public:
 public:
     // static variables
     // NOLINTBEGIN
+    MCAPI static ::std::string_view const& ACTOR_IDENTIFIER_TAG_NAME();
+
+    MCAPI static ::std::string_view const& ACTOR_TAG_NAME();
+
     MCAPI static ::std::string_view const& POSE_TAG_NAME();
+
+    MCAPI static ::std::string_view const& SAVE_DATA_TAG_NAME();
     // NOLINTEND
 
 public:
@@ -131,9 +137,9 @@ public:
         ::BlockSource const*          region
     ) const;
 
-    MCAPI ::std::unique_ptr<::BlockActorDataPacket> $_getUpdatePacket(::BlockSource&);
+    MCFOLD ::std::unique_ptr<::BlockActorDataPacket> $_getUpdatePacket(::BlockSource&);
 
-    MCAPI void $_onUpdatePacket(::CompoundTag const& data, ::BlockSource& region);
+    MCFOLD void $_onUpdatePacket(::CompoundTag const& data, ::BlockSource& region);
 
 
     // NOLINTEND

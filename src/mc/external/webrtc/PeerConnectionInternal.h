@@ -66,19 +66,13 @@ public:
 
     virtual void OnSctpDataChannelStateChanged(int channel_id, ::webrtc::DataChannelInterface::DataState state);
 
-    virtual ~PeerConnectionInternal() /*override*/;
+    virtual ~PeerConnectionInternal() /*override*/ = default;
     // NOLINTEND
 
 public:
     // destructor thunk
     // NOLINTBEGIN
     MCNAPI void $dtor();
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };
 

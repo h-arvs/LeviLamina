@@ -68,6 +68,14 @@ public:
     // NOLINTEND
 
 public:
+    // destructor thunk
+    // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCNAPI void $dtor();
+#endif
+    // NOLINTEND
+
+public:
     // vftables
     // NOLINTBEGIN
     MCNAPI static void** $vftable();

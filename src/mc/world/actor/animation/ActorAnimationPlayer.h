@@ -30,12 +30,12 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual ~ActorAnimationPlayer();
+    virtual ~ActorAnimationPlayer() = default;
 
     virtual void applyToPose(
         ::ApplyAnimationContext const&                                                    applyContext,
         ::RenderParams&                                                                   renderParams,
-        ::std::unordered_map<::SkeletalHierarchyIndex, ::std::vector<::BoneOrientation>>& destBoneOrientationMap,
+        ::std::unordered_map<::SkeletalHierarchyIndex, ::std::vector<::BoneOrientation>>& destBoneOrientationsMap,
         float                                                                             blendWeight
     ) = 0;
 
@@ -50,19 +50,13 @@ public:
 
     virtual bool hasAnimationFinished() const = 0;
 
-    virtual ::std::shared_ptr<::ActorAnimationPlayer> findAnimation(::HashedString const&) = 0;
+    virtual ::std::shared_ptr<::ActorAnimationPlayer> findAnimation(::HashedString const& friendlyName) = 0;
 
     virtual ::ActorAnimationType getAnimationType() const = 0;
 
     virtual ::HashedString const& getRawName() const = 0;
 
     virtual void visit(::AnimationVisitor&& dispatcher);
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCAPI void $dtor();
     // NOLINTEND
 
 public:
@@ -75,14 +69,12 @@ public:
 
     MCFOLD void $bindSoundEffects(::std::unordered_map<::HashedString, ::std::string> const& actorSoundEffectMap);
 
+#ifdef LL_PLAT_S
     MCAPI void $visit(::AnimationVisitor&& dispatcher);
+#else // LL_PLAT_C
+    MCFOLD void $visit(::AnimationVisitor&& dispatcher);
+#endif
 
 
-    // NOLINTEND
-
-public:
-    // vftables
-    // NOLINTBEGIN
-    MCNAPI static void** $vftable();
     // NOLINTEND
 };

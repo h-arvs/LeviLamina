@@ -27,10 +27,4 @@ public:
 
     virtual void load(::Json::Value const& valueJson) /*override*/;
     // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
-    // NOLINTEND
 };

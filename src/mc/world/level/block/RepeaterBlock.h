@@ -74,13 +74,23 @@ public:
 
     MCAPI void tick(::BlockEvents::BlockQueuedTickEvent& eventData) const;
 
+    MCAPI void updateDelay(::BlockSource& region, ::BlockPos const& pos, bool doIncrement) const;
+
     MCAPI void use(::BlockEvents::BlockPlayerInteractEvent& eventData) const;
     // NOLINTEND
 
 public:
     // static variables
     // NOLINTBEGIN
+    MCAPI static ::std::add_lvalue_reference_t<int const[4]> DELAYS();
+
+#ifdef LL_PLAT_S
+    MCAPI static ::std::add_lvalue_reference_t<float const[4]> DELAY_RENDER_OFFSETS();
+#endif
+
+#ifdef LL_PLAT_C
     MCAPI static ::std::add_lvalue_reference_t<float const[]> DELAY_RENDER_OFFSETS();
+#endif
     // NOLINTEND
 
 public:

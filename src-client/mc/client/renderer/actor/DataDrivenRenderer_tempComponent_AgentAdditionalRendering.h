@@ -10,6 +10,7 @@
 // clang-format off
 class ActorRenderData;
 class BaseActorRenderContext;
+class ModelPart;
 class RenderParams;
 // clang-format on
 
@@ -17,29 +18,23 @@ class DataDrivenRenderer_tempComponent_AgentAdditionalRendering : public ::DataD
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 8> mUnkc45f52;
+    ::ll::TypedStorage<8, 8, ::ModelPart*> mRightArm;
     // NOLINTEND
-
-public:
-    // prevent constructor by default
-    DataDrivenRenderer_tempComponent_AgentAdditionalRendering&
-    operator=(DataDrivenRenderer_tempComponent_AgentAdditionalRendering const&);
-    DataDrivenRenderer_tempComponent_AgentAdditionalRendering(
-        DataDrivenRenderer_tempComponent_AgentAdditionalRendering const&
-    );
-    DataDrivenRenderer_tempComponent_AgentAdditionalRendering();
 
 public:
     // virtual functions
     // NOLINTBEGIN
     virtual ::V2TempComponentRequirements getV2Requirements() const /*override*/;
 
-    virtual void render(::BaseActorRenderContext&, ::ActorRenderData&, ::RenderParams&) /*override*/;
+    virtual void
+    render(::BaseActorRenderContext& renderContext, ::ActorRenderData& actorRenderData, ::RenderParams&) /*override*/;
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCFOLD ::V2TempComponentRequirements $getV2Requirements() const;
 
+    MCAPI void $render(::BaseActorRenderContext& renderContext, ::ActorRenderData& actorRenderData, ::RenderParams&);
     // NOLINTEND
 };

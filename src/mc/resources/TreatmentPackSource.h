@@ -37,12 +37,20 @@ public:
 
     virtual ::PackType getPackType() const /*override*/;
 
-    virtual ::PackSourceLoadResult _loadImpl(::PackSourceLoadOptions&&) /*override*/;
+    virtual ::PackSourceLoadResult _loadImpl(::PackSourceLoadOptions&& options) /*override*/;
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCNAPI ::PackOrigin $getPackOrigin() const;
+
+    MCNAPI ::PackType $getPackType() const;
+
+    MCNAPI ::PackSourceLoadResult $_loadImpl(::PackSourceLoadOptions&& options);
+#endif
+
 
     // NOLINTEND
 };

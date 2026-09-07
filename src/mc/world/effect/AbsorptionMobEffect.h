@@ -16,7 +16,7 @@ class AbsorptionMobEffect : public ::MobEffect {
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual void removeEffects(::BaseAttributeMap&) /*override*/;
+    virtual void removeEffects(::BaseAttributeMap& attributeMapToRemoveFrom) const /*override*/;
 
     virtual void applyEffects(::Actor& target, ::EffectDuration durationTicks, int amplification) const /*override*/;
     // NOLINTEND
@@ -24,6 +24,10 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $removeEffects(::BaseAttributeMap& attributeMapToRemoveFrom) const;
+
+    MCAPI void $applyEffects(::Actor& target, ::EffectDuration durationTicks, int amplification) const;
+
 
     // NOLINTEND
 };

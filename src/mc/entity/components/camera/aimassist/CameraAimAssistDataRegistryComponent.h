@@ -91,6 +91,12 @@ public:
     // NOLINTEND
 
 public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static bool _validatePresetCategorySetting(::std::string const& categoryId);
+    // NOLINTEND
+
+public:
     // constructor thunks
     // NOLINTBEGIN
     MCAPI void* $ctor(::IMinecraftEventing& eventing);

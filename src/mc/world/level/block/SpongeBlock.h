@@ -33,6 +33,18 @@ public:
     // NOLINTEND
 
 public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static void _attemptAbsorbWater(::BlockSource& region, ::BlockPos const& pos);
+
+    MCAPI static bool _performAbsorbWater(::BlockSource& region, ::BlockPos const& startPos);
+
+    MCAPI static void _setShouldDry(::BlockSource& region, ::BlockPos const& pos);
+
+    MCAPI static void _spawnAbsorbParticles(::BlockSource& region, ::BlockPos const& pos);
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
     MCAPI void $animateTickBedrockLegacy(::BlockAnimateTickData const& tickData) const;

@@ -5,9 +5,11 @@
 // auto generated forward declare list
 // clang-format off
 class Actor;
+class BlockSource;
 class Mob;
 class NavigationComponent;
 class Path;
+class Vec2;
 class Vec3;
 struct NavigationDescription;
 // clang-format on
@@ -41,6 +43,26 @@ public:
     virtual bool canUpdatePath(::Mob const& mob) const;
 
     virtual void updatePath(::NavigationComponent& parent, ::Mob& mob);
+    // NOLINTEND
+
+public:
+    // member functions
+    // NOLINTBEGIN
+#ifdef LL_PLAT_S
+    MCAPI float _getHighestBlockHeight(::BlockSource& region, ::Mob& mob, ::Vec3 const& pos, ::Vec2 const& aabb) const;
+
+    MCAPI bool _isPositionOnlyInAir(::BlockSource const& region, ::Vec3 const& pos, ::Vec2 const& aabb) const;
+#endif
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCAPI static float _getHighestBlockHeight(::BlockSource& region, ::Mob& mob, ::Vec3 const& pos, ::Vec2 const& aabb);
+
+    MCAPI static bool _isPositionOnlyInAir(::BlockSource const& region, ::Vec3 const& pos, ::Vec2 const& aabb);
+#endif
     // NOLINTEND
 
 public:

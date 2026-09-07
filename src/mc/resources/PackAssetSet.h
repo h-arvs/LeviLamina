@@ -7,6 +7,7 @@
 
 // auto generated forward declare list
 // clang-format off
+struct EncryptedAssetInfo;
 namespace Core { class Path; }
 // clang-format on
 
@@ -14,7 +15,7 @@ class PackAssetSet {
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<1, 1> mUnk547e14;
+    ::ll::UntypedStorage<1, 1> mUnk737292;
     // NOLINTEND
 
 public:
@@ -28,22 +29,16 @@ public:
     // NOLINTBEGIN
     virtual ~PackAssetSet() = default;
 
-    virtual void addAsset(::Core::Path, ::std::string) = 0;
+    virtual void addAsset(::Core::Path path, ::EncryptedAssetInfo info) = 0;
 
     virtual void clear() = 0;
 
     virtual bool hasAsset(::Core::Path const& path, bool caseSensitive) const = 0;
 
-    virtual ::std::string const* const getDecryptionKey(::Core::Path const&, bool) const = 0;
+    virtual ::EncryptedAssetInfo const* getEncryptedAssetInfo(::Core::Path const& path, bool caseSensitive) const = 0;
 
     virtual void forEachAsset(::brstd::function_ref<void(::Core::Path const&)> callback) const = 0;
 
     virtual bool isEmpty() const = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };

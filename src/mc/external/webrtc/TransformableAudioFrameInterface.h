@@ -22,7 +22,7 @@ public:
     // NOLINTBEGIN
     virtual ~TransformableAudioFrameInterface() /*override*/ = default;
 
-    virtual ::webrtc::ArrayView<uint const, 18446744073709546905> GetContributingSources() const = 0;
+    virtual ::webrtc::ArrayView<uint const> GetContributingSources() const = 0;
 
     virtual ::std::optional<ushort> const SequenceNumber() const = 0;
 
@@ -35,12 +35,6 @@ public:
     virtual bool CanSetAudioLevel() const;
 
     virtual void SetAudioLevel(::std::optional<uchar>);
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };
 

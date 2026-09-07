@@ -5,6 +5,7 @@
 // auto generated inclusion list
 #include "mc/client/gui/screens/controllers/MinecraftScreenController.h"
 #include "mc/client/social/IToastEventListener.h"
+#include "mc/client/social/ToastMessageType.h"
 #include "mc/deps/core/threading/TaskGroup.h"
 #include "mc/deps/core/utility/NonOwnerPointer.h"
 #include "mc/deps/core/utility/pub_sub/Subscription.h"
@@ -41,6 +42,7 @@ public:
     ::ll::TypedStorage<8, 16, ::Bedrock::PubSub::Subscription> mPartyInviteUpdateSubscription;
     ::ll::TypedStorage<8, 16, ::Bedrock::PubSub::Subscription> mPartyEventSubscription;
     ::ll::TypedStorage<8, 16, ::Bedrock::PubSub::Subscription> mPartyTravelSubscription;
+    ::ll::TypedStorage<8, 16, ::Bedrock::PubSub::Subscription> mPartyInvalidDestinationSubscription;
     ::ll::TypedStorage<8, 16, ::Bedrock::PubSub::Subscription> mPartyDestinationCookieUpdatedSubscription;
     ::ll::TypedStorage<8, 336, ::TaskGroup>                    mTaskGroup;
     ::ll::TypedStorage<8, 24, ::Bedrock::NotNullNonOwnerPtr<::Parties::PartySystem>> mPartySystem;
@@ -62,7 +64,8 @@ public:
     // NOLINTBEGIN
     virtual ~PartySystemSubController() /*override*/ = default;
 
-    virtual void handleToastEvent(::IToastEventListener::ToastEventType const, ::ToastMessage const) /*override*/;
+    virtual void
+    handleToastEvent(::IToastEventListener::ToastEventType const eventType, ::ToastMessage const msg) /*override*/;
     // NOLINTEND
 
 public:
@@ -72,6 +75,19 @@ public:
         ::std::shared_ptr<::MinecraftScreenModel>             minecraftScreenModel,
         ::Bedrock::NotNullNonOwnerPtr<::Parties::PartySystem> partySystem,
         ::ToastManager&                                       toastManager
+    );
+
+    MCAPI void _handleTravelToastDeclined();
+
+    MCAPI void _showDestinationCookieToast(::PartySystemSubController::DestinationCookieToastRequest const& request);
+
+    MCAPI void _showSnackbar(::std::string const locStringKey, ::std::string const localizationString);
+
+    MCAPI void _showTravelToast(
+        ::ToastMessageType   toastType,
+        ::std::string const& toastTitle,
+        ::std::string const& toastSubtitle,
+        bool                 showWorldIcon
     );
     // NOLINTEND
 
@@ -88,6 +104,6 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
-
+    MCAPI void $handleToastEvent(::IToastEventListener::ToastEventType const eventType, ::ToastMessage const msg);
     // NOLINTEND
 };

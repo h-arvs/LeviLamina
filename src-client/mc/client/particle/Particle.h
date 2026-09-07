@@ -28,7 +28,7 @@ public:
     // NOLINTBEGIN
     ::ll::TypedStorage<4, 4, float>                     mCameraOffset;
     ::ll::TypedStorage<4, 4, int>                       mLifetime;
-    ::ll::TypedStorage<8, 88, ::TextureUVCoordinateSet> mTex;
+    ::ll::TypedStorage<8, 96, ::TextureUVCoordinateSet> mTex;
     ::ll::TypedStorage<4, 4, float>                     mU0;
     ::ll::TypedStorage<4, 4, float>                     mV0;
     ::ll::TypedStorage<4, 4, int>                       mAge;
@@ -63,21 +63,27 @@ public:
     // NOLINTBEGIN
     virtual ~Particle() = default;
 
-    virtual void init(::Vec3 const&, ::Vec3 const&, int, ::ParticleEngine&) = 0;
+    virtual void init(::Vec3 const& pos, ::Vec3 const& dir, int scale, ::ParticleEngine& engine) = 0;
 
-    virtual void addTagData(::CompoundTag const&);
+    virtual void addTagData(::CompoundTag const& tag);
 
     virtual void normalTick();
 
-    virtual void tessellate(::ParticleRenderContext const&);
+    virtual void tessellate(::ParticleRenderContext const& renderContext);
 
     virtual ::mce::TexturePtr const& getParticleTexture() const;
 
-    virtual void setEmittingEntity(::Actor&);
+    virtual void setEmittingEntity(::Actor& entity);
 
-    virtual bool _shouldUpdateVertexData(float);
+    virtual bool _shouldUpdateVertexData(float sqDist);
 
-    virtual void _calculateAmbientLight(float);
+    virtual void _calculateAmbientLight(float a);
+    // NOLINTEND
+
+public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI void move(::Vec3 const& delta);
     // NOLINTEND
 
 public:
@@ -87,8 +93,34 @@ public:
     // NOLINTEND
 
 public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::mce::TexturePtr& FLAME_ATLAS();
+
+    MCAPI static ::mce::TexturePtr& FORCEFIELD_ATLAS();
+
+    MCAPI static ::mce::TexturePtr& ITEMS_ATLAS();
+
+    MCAPI static ::mce::TexturePtr& PARTICLE_ATLAS();
+
+    MCAPI static ::mce::TexturePtr& TERRAIN_ATLAS();
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCFOLD void $addTagData(::CompoundTag const& tag);
 
+    MCAPI void $normalTick();
+
+    MCAPI void $tessellate(::ParticleRenderContext const& renderContext);
+
+    MCAPI ::mce::TexturePtr const& $getParticleTexture() const;
+
+    MCFOLD void $setEmittingEntity(::Actor& entity);
+
+    MCAPI bool $_shouldUpdateVertexData(float sqDist);
+
+    MCAPI void $_calculateAmbientLight(float a);
     // NOLINTEND
 };

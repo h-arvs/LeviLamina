@@ -186,7 +186,6 @@ class ServerNetworkEventCoordinator;
 class ServerParticleManager;
 class ServerPlayerEventCoordinator;
 class ServerPlayerSleepManager;
-class ServerSoundHandle;
 class SoundPlayerInterface;
 class Spawner;
 class StartGamePacket;
@@ -224,6 +223,7 @@ struct DimensionType;
 struct LevelArguments;
 struct LevelTagIDType;
 struct LevelTagSetIDType;
+struct PlaySoundOptions;
 struct PlayerMovementSettings;
 struct PlayerSleepStatus;
 struct PlayerSpawnDimensionResolution;
@@ -534,9 +534,17 @@ public:
 
     virtual void addUser(::OwnerPtr<::EntityContext> userEntity) /*override*/;
 
+#ifdef LL_PLAT_S
     virtual ::Actor* addDisplayEntity(::BlockSource&, ::OwnerPtr<::EntityContext>) /*override*/;
+#else // LL_PLAT_C
+    virtual ::Actor* addDisplayEntity(::BlockSource& region, ::OwnerPtr<::EntityContext> entity) /*override*/;
+#endif
 
+#ifdef LL_PLAT_S
     virtual void removeDisplayEntity(::WeakEntityRef) /*override*/;
+#else // LL_PLAT_C
+    virtual void removeDisplayEntity(::WeakEntityRef entity) /*override*/;
+#endif
 
     virtual ::Bedrock::NonOwnerPointer<::DisplayActorManager> getDisplayActorManager() /*override*/;
 
@@ -849,13 +857,7 @@ public:
         float const                            pitch
     ) /*override*/;
 
-    virtual void playSound(
-        ::std::string const&                 name,
-        ::Vec3 const&                        pos,
-        float                                volume,
-        float                                pitch,
-        ::std::optional<::ServerSoundHandle> serverSoundHandle
-    ) /*override*/;
+    virtual void playSound(::PlaySoundOptions const& options) /*override*/;
 
     virtual void playSound(
         ::IConstBlockSource const&             region,
@@ -1178,29 +1180,15 @@ public:
 
     virtual ::TradeTables* getTradeTables() /*override*/;
 
-#ifdef LL_PLAT_S
-    virtual void decrementTagCache(
-        ::std::string const&,
-        ::TagRegistry<::IDType<::LevelTagIDType>, ::IDType<::LevelTagSetIDType>>&
-    ) /*override*/;
-#else // LL_PLAT_C
     virtual void decrementTagCache(
         ::std::string const&                                                      tag,
         ::TagRegistry<::IDType<::LevelTagIDType>, ::IDType<::LevelTagSetIDType>>& tagRegistry
     ) /*override*/;
-#endif
 
-#ifdef LL_PLAT_S
-    virtual void incrementTagCache(
-        ::std::string const&,
-        ::TagRegistry<::IDType<::LevelTagIDType>, ::IDType<::LevelTagSetIDType>>&
-    ) /*override*/;
-#else // LL_PLAT_C
     virtual void incrementTagCache(
         ::std::string const&                                                      tag,
         ::TagRegistry<::IDType<::LevelTagIDType>, ::IDType<::LevelTagSetIDType>>& tagRegistry
     ) /*override*/;
-#endif
 
     virtual ::Bedrock::NonOwnerPointer<::TagCacheManager> getTagCacheManager() /*override*/;
 
@@ -1225,24 +1213,15 @@ public:
     virtual ::Bedrock::NonOwnerPointer<::VolumeEntityManagerServer> tryGetVolumeEntityManagerServer() const
         /*override*/;
 
-#ifdef LL_PLAT_S
-    virtual void
-    runCommand(::HashedString const&, ::CommandOrigin&, ::CommandOriginSystem, ::CurrentCmdVersion const) /*override*/;
-#else // LL_PLAT_C
     virtual void runCommand(
         ::HashedString const&     commandStr,
         ::CommandOrigin&          origin,
         ::CommandOriginSystem     originSystem,
         ::CurrentCmdVersion const commandVersion
     ) /*override*/;
-#endif
 
-#ifdef LL_PLAT_S
-    virtual void runCommand(::Command&, ::CommandOrigin&, ::CommandOriginSystem) /*override*/;
-#else // LL_PLAT_C
     virtual void
     runCommand(::Command& command, ::CommandOrigin& origin, ::CommandOriginSystem originSystem) /*override*/;
-#endif
 
     virtual ::PlayerCapabilities::ISharedController const& getCapabilities() const /*override*/;
 
@@ -1303,6 +1282,10 @@ public:
     virtual ::DimensionManager& getDimensionManager() /*override*/;
 
     virtual ::DimensionManager const& getDimensionManager() const /*override*/;
+
+    virtual ::Bedrock::NotNullNonOwnerPtr<::DimensionManager> getDimensionManagerNonOwner() /*override*/;
+
+    virtual ::Bedrock::NotNullNonOwnerPtr<::DimensionManager const> getDimensionManagerNonOwner() const /*override*/;
 
     virtual void subChunkTickAndSendRequests() /*override*/;
 
@@ -1450,7 +1433,7 @@ public:
 
     virtual ::Bedrock::NonOwnerPointer<::ChunkGenerationManager const> getChunkGenerationManager() const /*override*/;
 
-    virtual void clearAllGenerationRequests(::NetworkIdentifier const&, ::SubClientId) /*override*/;
+    virtual void clearAllGenerationRequests(::NetworkIdentifier const& player, ::SubClientId clientId) /*override*/;
 
     virtual void digestServerBlockProperties(::StartGamePacket const& packet) /*override*/;
 
@@ -1469,6 +1452,58 @@ public:
     // member functions
     // NOLINTBEGIN
     MCAPI explicit Level(::LevelArguments&& args);
+
+    MCAPI void _onAddBreakingItemParticleEffect(
+        ::Vec3 const&                     pos,
+        ::BreakingItemParticleData const& data,
+        ::ResolvedItemIconInfo const&     textureInfo
+    );
+
+    MCAPI void _onAddTerrainParticleEffect(
+        ::BlockPos const& pos,
+        ::Block const&    block,
+        ::Vec3 const&     emitterPosition,
+        float             particleCount,
+        float             velocityScalar,
+        float             emitterRadius
+    );
+
+    MCAPI void _onAddTerrainSlideEffect(
+        ::BlockPos const& pos,
+        ::Block const&    block,
+        ::Vec3 const&     emitterPosition,
+        float             particleCount,
+        float             velocityScalar,
+        float             emitterRadius
+    );
+
+    MCAPI void _onAnyGameplayUsersRemoved();
+
+    MCAPI void _onChunkDiscarded(::LevelChunk& levelChunk);
+
+    MCAPI void _onChunkLoaded(::ChunkSource& chunkSource, ::LevelChunk& levelChunk, int);
+
+    MCAPI void _onChunkReloaded(::ChunkSource& chunkSource, ::LevelChunk& levelChunk);
+
+    MCAPI void _onGameplayUserAdded(::EntityContext& entity);
+
+    MCAPI void _onGameplayUserRemoved(::EntityContext& entity);
+
+    MCAPI void _onLevelEventCompoundTag(::SharedTypes::Legacy::LevelEvent type, ::CompoundTag const& data);
+
+    MCAPI void _onLevelEventData(::SharedTypes::Legacy::LevelEvent type, ::Vec3 const& pos, int data);
+
+    MCAPI void _onPictureTaken(
+        ::cg::ImageBuffer&                                              outImage,
+        ::Actor*                                                        camera,
+        ::Actor*                                                        target,
+        ::ScreenshotOptions&                                            screenshotOptions,
+        ::std::function<void(::cg::ImageBuffer&, ::ScreenshotOptions&)> completedScreenshotCallback
+    );
+
+    MCAPI void _onRemoveActorEntityReferences(::Actor& actor);
+
+    MCAPI void _onSendServerLegacyParticle(::ParticleType id, ::Vec3 const& pos, ::Vec3 const& dir, int data);
 
     MCAPI ::Bedrock::Result<::Actor*, ::ActorValidationError>
     addEntityWithError(::BlockSource& region, ::OwnerPtr<::EntityContext> entity);
@@ -1562,7 +1597,11 @@ public:
 
     MCAPI ::Bedrock::NotNullNonOwnerPtr<::ActorDimensionTransferManager> $getActorDimensionTransferManager();
 
+#ifdef LL_PLAT_S
     MCFOLD ::Spawner& $getSpawner() const;
+#else // LL_PLAT_C
+    MCAPI ::Spawner& $getSpawner() const;
+#endif
 
     MCAPI ::Bedrock::NotNullNonOwnerPtr<::BossEventSubscriptionManager> $getBossEventSubscriptionManager();
 
@@ -1574,7 +1613,11 @@ public:
 
     MCAPI ::Bedrock::NonOwnerPointer<::ActorAnimationControllerGroup> $getActorAnimationControllerGroup() const;
 
+#ifdef LL_PLAT_S
     MCAPI ::BlockDefinitionGroup* $getBlockDefinitions() const;
+#else // LL_PLAT_C
+    MCFOLD ::BlockDefinitionGroup* $getBlockDefinitions() const;
+#endif
 
     MCFOLD ::PropertyGroupManager& $getActorPropertyGroup() const;
 
@@ -1621,9 +1664,17 @@ public:
 
     MCAPI void $addUser(::OwnerPtr<::EntityContext> userEntity);
 
+#ifdef LL_PLAT_S
     MCAPI ::Actor* $addDisplayEntity(::BlockSource&, ::OwnerPtr<::EntityContext>);
+#else // LL_PLAT_C
+    MCAPI ::Actor* $addDisplayEntity(::BlockSource& region, ::OwnerPtr<::EntityContext> entity);
+#endif
 
+#ifdef LL_PLAT_S
     MCFOLD void $removeDisplayEntity(::WeakEntityRef);
+#else // LL_PLAT_C
+    MCFOLD void $removeDisplayEntity(::WeakEntityRef entity);
+#endif
 
     MCFOLD ::Bedrock::NonOwnerPointer<::DisplayActorManager> $getDisplayActorManager();
 
@@ -1800,6 +1851,10 @@ public:
 
     MCAPI void $updateSleepingPlayerList();
 
+    MCFOLD ::Bedrock::NonOwnerPointer<::ServerPlayerSleepManager> $getServerPlayerSleepManager();
+
+    MCFOLD ::Bedrock::NonOwnerPointer<::ServerPlayerSleepManager const> $getServerPlayerSleepManager() const;
+
     MCAPI int $getTime() const;
 
     MCAPI void $setTime(int time);
@@ -1914,13 +1969,7 @@ public:
     MCAPI void
     $playSound(::SharedTypes::Legacy::LevelSoundEvent type, ::Vec3 const& pos, float const volume, float const pitch);
 
-    MCAPI void $playSound(
-        ::std::string const&                 name,
-        ::Vec3 const&                        pos,
-        float                                volume,
-        float                                pitch,
-        ::std::optional<::ServerSoundHandle> serverSoundHandle
-    );
+    MCAPI void $playSound(::PlaySoundOptions const& options);
 
     MCAPI void $playSound(
         ::IConstBlockSource const&             region,
@@ -2079,6 +2128,8 @@ public:
 
     MCAPI void $onChunkReloaded(::ChunkSource& source, ::LevelChunk& lc);
 
+    MCFOLD ::LevelChunkMetaDataManager* $getLevelChunkMetaDataManager();
+
     MCAPI void $onChunkDiscarded(::LevelChunk& lc);
 
     MCAPI ::Bedrock::NotNullNonOwnerPtr<::LevelChunkEventManager> $getLevelChunkEventManager();
@@ -2094,6 +2145,8 @@ public:
     MCAPI void $forceRemoveEntityfromWorld(::Actor& actor);
 
     MCAPI void $forceFlushRemovedPlayers();
+
+    MCFOLD void $loadFunctionManager();
 
     MCAPI void $levelCleanupQueueEntityRemoval(::OwnerPtr<::EntityContext> entity);
 
@@ -2224,6 +2277,24 @@ public:
 
     MCAPI ::TaskGroup& $getIOTasksGroup();
 
+    MCFOLD ::ResourcePackManager* $getClientResourcePackManager() const;
+
+    MCFOLD ::ResourcePackManager* $getServerResourcePackManager() const;
+
+    MCFOLD ::TradeTables* $getTradeTables();
+
+    MCFOLD void $decrementTagCache(
+        ::std::string const&                                                      tag,
+        ::TagRegistry<::IDType<::LevelTagIDType>, ::IDType<::LevelTagSetIDType>>& tagRegistry
+    );
+
+    MCFOLD void $incrementTagCache(
+        ::std::string const&                                                      tag,
+        ::TagRegistry<::IDType<::LevelTagIDType>, ::IDType<::LevelTagSetIDType>>& tagRegistry
+    );
+
+    MCFOLD ::Bedrock::NonOwnerPointer<::TagCacheManager> $getTagCacheManager();
+
     MCAPI bool $isEdu() const;
 
     MCFOLD ::ActorFactory& $getActorFactory();
@@ -2241,6 +2312,17 @@ public:
     MCFOLD ::WeakRef<::EntityContext> $getLevelEntity();
 
     MCFOLD ::WeakRef<::EntityContext const> $getLevelEntity() const;
+
+    MCFOLD ::Bedrock::NonOwnerPointer<::VolumeEntityManagerServer> $tryGetVolumeEntityManagerServer() const;
+
+    MCFOLD void $runCommand(
+        ::HashedString const&     commandStr,
+        ::CommandOrigin&          origin,
+        ::CommandOriginSystem     originSystem,
+        ::CurrentCmdVersion const commandVersion
+    );
+
+    MCFOLD void $runCommand(::Command& command, ::CommandOrigin& origin, ::CommandOriginSystem originSystem);
 
     MCAPI ::PlayerCapabilities::ISharedController const& $getCapabilities() const;
 
@@ -2271,7 +2353,11 @@ public:
 
     MCAPI ::PositionTrackingDB::PositionTrackingDBClient* $getPositionTrackerDBClient() const;
 
+    MCFOLD ::PositionTrackingDB::PositionTrackingDBServer* $getPositionTrackerDBServer() const;
+
     MCAPI void $flushRunTimeLighting();
+
+    MCFOLD ::std::weak_ptr<::ISubChunkLighter> $getSubChunkLighter() const;
 
     MCAPI void $loadBlockDefinitionGroup(::Experiments const& experiments);
 
@@ -2297,6 +2383,10 @@ public:
 
     MCFOLD ::DimensionManager const& $getDimensionManager() const;
 
+    MCFOLD ::Bedrock::NotNullNonOwnerPtr<::DimensionManager> $getDimensionManagerNonOwner();
+
+    MCFOLD ::Bedrock::NotNullNonOwnerPtr<::DimensionManager const> $getDimensionManagerNonOwner() const;
+
     MCFOLD void $subChunkTickAndSendRequests();
 
     MCAPI void $_subTick();
@@ -2305,9 +2395,17 @@ public:
 
     MCFOLD ::StackRefResult<::PauseManager const> $getPauseManager() const;
 
+#ifdef LL_PLAT_S
     MCFOLD bool $isClientSide() const;
+#else // LL_PLAT_C
+    MCAPI bool $isClientSide() const;
+#endif
 
+#ifdef LL_PLAT_S
     MCFOLD ::SubClientId $getSubClientId() const;
+#else // LL_PLAT_C
+    MCAPI ::SubClientId $getSubClientId() const;
+#endif
 
     MCAPI ::std::unordered_map<::mce::UUID, ::PlayerListEntry> const& $getPlayerList() const;
 
@@ -2338,6 +2436,8 @@ public:
     MCAPI ::IRandom& $getIRandom() const;
 
     MCAPI ::Random& $getRandom() const;
+
+    MCAPI ::Random& $getThreadRandom() const;
 
     MCAPI ::HitResult& $getHitResult();
 
@@ -2435,66 +2535,23 @@ public:
 
     MCFOLD ::cereal::ReflectionCtx const& $cerealContext() const;
 
+    MCFOLD ::Bedrock::NonOwnerPointer<::ChunkGenerationManager> $getChunkGenerationManager();
+
+    MCFOLD ::Bedrock::NonOwnerPointer<::ChunkGenerationManager const> $getChunkGenerationManager() const;
+
+    MCFOLD void $clearAllGenerationRequests(::NetworkIdentifier const& player, ::SubClientId clientId);
+
     MCAPI void $digestServerBlockProperties(::StartGamePacket const& packet);
 
     MCAPI ::MolangPackSettingsCache const* $getMolangPackSettingsCache() const;
+
+    MCFOLD ::PlayerDeathManager* $_getPlayerDeathManager();
 
     MCAPI void $_initializeMapDataManager();
 
     MCFOLD ::cereal::ReflectionCtx& $_cerealContext();
 
     MCAPI void $_onLowMemory();
-
-#ifdef LL_PLAT_C
-    MCFOLD ::Bedrock::NonOwnerPointer<::ServerPlayerSleepManager> $getServerPlayerSleepManager();
-
-    MCFOLD ::Bedrock::NonOwnerPointer<::ServerPlayerSleepManager const> $getServerPlayerSleepManager() const;
-
-    MCFOLD ::LevelChunkMetaDataManager* $getLevelChunkMetaDataManager();
-
-    MCFOLD void $loadFunctionManager();
-
-    MCFOLD ::ResourcePackManager* $getClientResourcePackManager() const;
-
-    MCFOLD ::ResourcePackManager* $getServerResourcePackManager() const;
-
-    MCFOLD ::TradeTables* $getTradeTables();
-
-    MCFOLD void $decrementTagCache(
-        ::std::string const&                                                      tag,
-        ::TagRegistry<::IDType<::LevelTagIDType>, ::IDType<::LevelTagSetIDType>>& tagRegistry
-    );
-
-    MCFOLD void $incrementTagCache(
-        ::std::string const&                                                      tag,
-        ::TagRegistry<::IDType<::LevelTagIDType>, ::IDType<::LevelTagSetIDType>>& tagRegistry
-    );
-
-    MCFOLD ::Bedrock::NonOwnerPointer<::TagCacheManager> $getTagCacheManager();
-
-    MCFOLD ::Bedrock::NonOwnerPointer<::VolumeEntityManagerServer> $tryGetVolumeEntityManagerServer() const;
-
-    MCFOLD void $runCommand(
-        ::HashedString const&     commandStr,
-        ::CommandOrigin&          origin,
-        ::CommandOriginSystem     originSystem,
-        ::CurrentCmdVersion const commandVersion
-    );
-
-    MCFOLD void $runCommand(::Command& command, ::CommandOrigin& origin, ::CommandOriginSystem originSystem);
-
-    MCFOLD ::PositionTrackingDB::PositionTrackingDBServer* $getPositionTrackerDBServer() const;
-
-    MCAPI ::Random& $getThreadRandom() const;
-
-    MCFOLD ::Bedrock::NonOwnerPointer<::ChunkGenerationManager> $getChunkGenerationManager();
-
-    MCFOLD ::Bedrock::NonOwnerPointer<::ChunkGenerationManager const> $getChunkGenerationManager() const;
-
-    MCFOLD void $clearAllGenerationRequests(::NetworkIdentifier const&, ::SubClientId);
-
-    MCFOLD ::PlayerDeathManager* $_getPlayerDeathManager();
-#endif
 
 
     // NOLINTEND

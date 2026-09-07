@@ -12,10 +12,13 @@
 // auto generated forward declare list
 // clang-format off
 class Actor;
+class BaseGameVersion;
 class CommandOrigin;
 class CommandOutput;
 class CommandRegistry;
 class Player;
+struct ServerCameraStatesComponent;
+namespace SharedTypes::v1_21_90 { struct CameraPreset; }
 // clang-format on
 
 class CameraCommand : public ::Command {
@@ -98,18 +101,41 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual void execute(::CommandOrigin const&, ::CommandOutput&) const /*override*/;
+    virtual void execute(::CommandOrigin const& origin, ::CommandOutput& output) const /*override*/;
+    // NOLINTEND
+
+public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI void forEachSelectedPlayersCameraStates(
+        ::CommandOrigin const&                                origin,
+        ::std::function<void(::ServerCameraStatesComponent&)> callback
+    ) const;
     // NOLINTEND
 
 public:
     // static functions
     // NOLINTBEGIN
+    MCAPI static bool resolveInheritance(
+        ::std::string&                                              currentPresetName,
+        ::std::string const&                                        parentToStopAt,
+        ::std::vector<::SharedTypes::v1_21_90::CameraPreset> const& presetList
+    );
+
     MCAPI static void setup(::CommandRegistry& registry);
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::BaseGameVersion const& REMOVE_IGNORE_STARTING_VALUE_COMPONENT_VERSION();
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $execute(::CommandOrigin const& origin, ::CommandOutput& output) const;
+
 
     // NOLINTEND
 };

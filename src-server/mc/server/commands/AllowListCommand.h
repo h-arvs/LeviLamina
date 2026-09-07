@@ -7,6 +7,7 @@
 
 // auto generated forward declare list
 // clang-format off
+class AllowListFile;
 class CommandOrigin;
 class CommandOutput;
 // clang-format on
@@ -33,12 +34,18 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual void execute(::CommandOrigin const&, ::CommandOutput&) const /*override*/;
+    virtual void execute(::CommandOrigin const& origin, ::CommandOutput& output) const /*override*/;
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::AllowListFile*& mAllowListFile();
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
-
+    MCAPI void $execute(::CommandOrigin const& origin, ::CommandOutput& output) const;
     // NOLINTEND
 };

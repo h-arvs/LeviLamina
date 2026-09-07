@@ -10,8 +10,8 @@
 // auto generated forward declare list
 // clang-format off
 class ActorSoundIdentifier;
-class ServerSoundHandle;
 class Vec3;
+struct PlaySoundOptions;
 struct SoundEventIdentifier;
 namespace Bedrock::PubSub::ThreadModel { struct MultiThreaded; }
 // clang-format on
@@ -26,8 +26,7 @@ public:
         void(::SoundEventIdentifier const&, ::Vec3 const&, int, ::ActorSoundIdentifier const&, bool)>&
     getOnLevelSoundEventConnector() = 0;
 
-    virtual ::Bedrock::PubSub::Connector<
-        void(::std::string const&, ::Vec3 const&, float, float, ::std::optional<::ServerSoundHandle>)>&
+    virtual ::Bedrock::PubSub::Connector<void(::PlaySoundOptions const&)>&
     getOnLevelSoundEventWithVolumeAndPitchConnector() = 0;
 
     virtual ::Bedrock::PubSub::Connector<void(::std::string const&)>& getOnStopLevelSoundEventConnector() = 0;
@@ -35,11 +34,5 @@ public:
     virtual ::Bedrock::PubSub::Connector<void()>& getOnStopAllLevelSoundsEventConnector() = 0;
 
     virtual ::Bedrock::PubSub::Connector<void()>& getOnStopMusicEventConnector() = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };

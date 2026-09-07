@@ -19,10 +19,4 @@ public:
 
     virtual void onDisconnect(::ScriptDebugger& debugger);
     // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
-    // NOLINTEND
 };

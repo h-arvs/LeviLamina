@@ -14,6 +14,7 @@ class HashedString;
 class LinkedAssetValidator;
 class LocalPlayer;
 class ResourcePackManager;
+class SemVersionConstant;
 namespace Editor::Services { class ClientDataTransferServiceProvider; }
 namespace Puv { class LoadResultAny; }
 namespace cereal { struct ReflectionCtx; }
@@ -150,6 +151,12 @@ public:
                 ToneMapping& operator=(ToneMapping const&);
                 ToneMapping(ToneMapping const&);
                 ToneMapping();
+
+            public:
+                // static functions
+                // NOLINTBEGIN
+                MCNAPI static void bindType(::cereal::ReflectionCtx& ctx);
+                // NOLINTEND
             };
 
         public:
@@ -179,6 +186,12 @@ public:
         ColorGradingParametersSrcV0& operator=(ColorGradingParametersSrcV0 const&);
         ColorGradingParametersSrcV0(ColorGradingParametersSrcV0 const&);
         ColorGradingParametersSrcV0();
+
+    public:
+        // static variables
+        // NOLINTBEGIN
+        MCNAPI static ::SemVersionConstant const& VERSION();
+        // NOLINTEND
     };
 
     struct ColorGradingParametersSrcV1 {
@@ -265,6 +278,12 @@ public:
         // NOLINTEND
 
     public:
+        // static variables
+        // NOLINTBEGIN
+        MCNAPI static ::SemVersionConstant const& VERSION();
+        // NOLINTEND
+
+    public:
         // constructor thunks
         // NOLINTBEGIN
         MCNAPI void* $ctor(::ColorGraderConfig::ColorGradingParametersSrcV1 const&);
@@ -290,30 +309,46 @@ public:
     virtual ~ColorGraderConfig() /*override*/ = default;
 
     virtual void loadDataSync(
-        ::cereal::ReflectionCtx const&,
-        ::ResourcePackManager&,
-        ::Bedrock::NonOwnerPointer<::LinkedAssetValidator>
+        ::cereal::ReflectionCtx const&                     ctx,
+        ::ResourcePackManager&                             resourcePackManager,
+        ::Bedrock::NonOwnerPointer<::LinkedAssetValidator> validator
     ) /*override*/;
 
     virtual ::Puv::LoadResultAny loadFromString(
-        ::cereal::ReflectionCtx const&,
-        ::std::string const&,
-        ::Bedrock::NonOwnerPointer<::LinkedAssetValidator>
+        ::cereal::ReflectionCtx const&                     ctx,
+        ::std::string const&                               dataJson,
+        ::Bedrock::NonOwnerPointer<::LinkedAssetValidator> validator
     ) /*override*/;
 
-    virtual void _setDefaultIdentifierImpl(::HashedString const&) /*override*/;
+    virtual void _setDefaultIdentifierImpl(::HashedString const& defaultIdentifier) /*override*/;
     // NOLINTEND
 
 public:
     // member functions
     // NOLINTBEGIN
+    MCNAPI ::ColorGraderConfig::ColorGradingParametersSrcV1 const&
+    findColorGradingSettings(::HashedString const& identifier) const;
+
     MCNAPI ::dragon::framerenderer::modules::ColorGradingParameters
     getColorGradingParameters(::ColorGraderConfig::ColorGradingParametersSrcV1 const& settings) const;
+
+    MCNAPI bool setColorGradingConfigSettings(
+        ::HashedString const&                                   identifier,
+        ::ColorGraderConfig::ColorGradingParametersSrcV1 const& inColorGradingSettings
+    );
+
+    MCNAPI void
+    setDefaultColorGradingSettings(::ColorGraderConfig::ColorGradingParametersSrcV1 const& inColorGradingSettings);
     // NOLINTEND
 
 public:
     // static functions
     // NOLINTBEGIN
+    MCNAPI static void _fillDefaultTemperatureParameters(
+        ::ColorGraderConfig::ColorGradingParametersSrcV0 const&,
+        ::ColorGraderConfig::ColorGradingParametersSrcV1& dst
+    );
+
     MCNAPI static void bindColorGradingParameters(::cereal::ReflectionCtx& ctx);
 
     MCNAPI static ::Scripting::Result_deprecated<void> registerConfigMappingChangeHandler(
@@ -329,8 +364,26 @@ public:
     // NOLINTEND
 
 public:
+    // static variables
+    // NOLINTBEGIN
+    MCNAPI static ::std::string_view const& PAYLOAD_KEY();
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCNAPI void $loadDataSync(
+        ::cereal::ReflectionCtx const&                     ctx,
+        ::ResourcePackManager&                             resourcePackManager,
+        ::Bedrock::NonOwnerPointer<::LinkedAssetValidator> validator
+    );
 
+    MCNAPI ::Puv::LoadResultAny $loadFromString(
+        ::cereal::ReflectionCtx const&                     ctx,
+        ::std::string const&                               dataJson,
+        ::Bedrock::NonOwnerPointer<::LinkedAssetValidator> validator
+    );
+
+    MCNAPI void $_setDefaultIdentifierImpl(::HashedString const& defaultIdentifier);
     // NOLINTEND
 };

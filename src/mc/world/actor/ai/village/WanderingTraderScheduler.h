@@ -7,6 +7,8 @@
 
 // auto generated forward declare list
 // clang-format off
+class BlockPos;
+class BlockSource;
 class Level;
 // clang-format on
 
@@ -30,6 +32,16 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
+    MCAPI ::std::optional<::BlockPos> _findValidSpawnPosUnder(::BlockPos const& pos, ::BlockSource& region) const;
+
     MCAPI void tick();
+
+    MCAPI void writeSaveData() const;
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::std::vector<float> const& CHANCE_TO_SPAWN_PER_DAY();
     // NOLINTEND
 };

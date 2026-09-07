@@ -4,9 +4,11 @@
 
 // auto generated inclusion list
 #include "mc/client/input/KeyboardManager.h"
+#include "mc/deps/core/utility/NonOwnerPointer.h"
 
 // auto generated forward declare list
 // clang-format off
+class GuiData;
 class IClientInstance;
 class RectangleArea;
 class Vec2;
@@ -90,6 +92,16 @@ public:
     // NOLINTEND
 
 public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI ::Bedrock::NotNullNonOwnerPtr<::GuiData const> _getGuiData() const;
+
+    MCAPI float _getGuiScale() const;
+
+    MCAPI float _getInvGuiScale() const;
+    // NOLINTEND
+
+public:
     // static variables
     // NOLINTBEGIN
     MCAPI static int& mGlobalKeyboardOwnerId();
@@ -126,7 +138,7 @@ public:
 
     MCAPI void $setResumeInputCallback(::std::function<void()> callback);
 
-    MCFOLD void $setDisableInputToOtherClientsCallback(::std::function<void(int)> callback);
+    MCAPI void $setDisableInputToOtherClientsCallback(::std::function<void(int)> callback);
 
     MCAPI bool $tryClaimKeyboardOwnership();
 

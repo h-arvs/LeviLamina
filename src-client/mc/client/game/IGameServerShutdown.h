@@ -8,14 +8,12 @@ public:
     // NOLINTBEGIN
     virtual ~IGameServerShutdown() = default;
 
-    virtual void requestLeaveGame(bool, bool) = 0;
+    virtual void requestLeaveGame(bool switchScreen, bool sync) = 0;
 
-    virtual void requestLeaveThenJoinFriendsWorld(::std::string_view) = 0;
-    // NOLINTEND
+    virtual void requestLeaveThenJoinFriendsWorld(::std::string_view serverId) = 0;
 
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
+    virtual void requestLeaveGameWithWorldThumbnail() = 0;
 
+    virtual void requestLeaveGameWithWorldThumbnailThenJoinFriendsWorld(::std::string_view serverId) = 0;
     // NOLINTEND
 };

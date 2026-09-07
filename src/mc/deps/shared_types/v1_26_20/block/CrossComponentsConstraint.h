@@ -8,6 +8,8 @@
 
 // auto generated forward declare list
 // clang-format off
+namespace cereal { class ComponentStorage; }
+namespace cereal { class SerializerContext; }
 namespace cereal::internal { struct ConstraintDescription; }
 // clang-format on
 
@@ -22,8 +24,22 @@ public:
     // NOLINTEND
 
 public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static void validateValue(::cereal::ComponentStorage const& components, ::cereal::SerializerContext& context);
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::std::string_view const& CONSTRAINT_DESCRIPTION();
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI ::cereal::internal::ConstraintDescription $doDescription(::cereal::ContextArea) const;
+
 
     // NOLINTEND
 };

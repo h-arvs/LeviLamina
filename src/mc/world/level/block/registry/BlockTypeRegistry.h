@@ -91,6 +91,26 @@ public:
         ::ll::TypedStorage<8, 8, ::WeakPtr<::BlockType const>> mBlockType;
         ::ll::TypedStorage<8, 8, ::Block const*>               mBlock;
         // NOLINTEND
+
+    public:
+        // prevent constructor by default
+        LookupByNameImplReturnType();
+
+    public:
+        // member functions
+        // NOLINTBEGIN
+        MCAPI LookupByNameImplReturnType(::Block const* block, bool resolveBlockType);
+
+        MCAPI LookupByNameImplReturnType(::WeakPtr<::BlockType const> blockType, int data, bool resolveBlock);
+        // NOLINTEND
+
+    public:
+        // constructor thunks
+        // NOLINTBEGIN
+        MCAPI void* $ctor(::Block const* block, bool resolveBlockType);
+
+        MCAPI void* $ctor(::WeakPtr<::BlockType const> blockType, int data, bool resolveBlock);
+        // NOLINTEND
     };
 
     using BlockAliasLookupMap = ::std::unordered_map<::HashedString, ::HashedString>;
@@ -139,11 +159,6 @@ public:
         bool                                         logNotFound
     ) const;
 
-    MCAPI ::Block const* _lookupByNameImplSetNewBlockStates(
-        ::Block const&                                                         block,
-        ::std::vector<::BlockTypeRegistry::BlockComplexAliasBlockState> const& states
-    ) const;
-
 #ifdef LL_PLAT_C
     MCAPI void addBlocksToValidator(::LinkedAssetValidator& validator, ::BaseGameVersion const& baseGameVersion) const;
 #endif
@@ -163,8 +178,6 @@ public:
 #ifdef LL_PLAT_C
     MCFOLD void forEachBlockDEPRECATED(::brstd::function_ref<bool(::BlockType&)> callback);
 #endif
-
-    MCAPI void forEachBlockMutable(::brstd::function_ref<bool(::Block&)> callback);
 
     MCFOLD void forEachBlockType(::brstd::function_ref<bool(::BlockType const&)> callback) const;
 
@@ -195,6 +208,12 @@ public:
     MCAPI bool isExpectFlattenedInBlocksJson(::HashedString const& blockName, ::SemVersion const& currentVersion) const;
 #endif
 
+    MCAPI ::Block const* lookupByName(
+        ::HashedString const&                                                  name,
+        ::std::vector<::BlockTypeRegistry::BlockComplexAliasBlockState> const& states,
+        bool                                                                   logNotFound
+    ) const;
+
     MCAPI ::WeakPtr<::BlockType> lookupByName(::HashedString const& name, bool logNotFound) const;
 
     MCAPI void prepareBlocks(uint latestUpdaterVersion);
@@ -215,7 +234,7 @@ public:
 
     MCAPI void setupVoxelShapeRegistryAccessOnAllBlocks(
         ::std::shared_ptr<::VoxelShapes::VoxelShapeRegistry> const& voxelShapeRegistry
-    ) const;
+    );
 
     MCAPI void unregisterBlock(::HashedString const& name);
 

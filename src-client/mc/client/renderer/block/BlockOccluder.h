@@ -4,6 +4,9 @@
 
 // auto generated forward declare list
 // clang-format off
+class AABB;
+class Block;
+class BlockPos;
 class BlockTessellatorCache;
 // clang-format on
 
@@ -20,4 +23,13 @@ public:
     BlockOccluder& operator=(BlockOccluder const&);
     BlockOccluder(BlockOccluder const&);
     BlockOccluder();
+
+public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI bool
+    _shouldRenderFace(::BlockPos const& neighborPos, uchar face, ::AABB const& shape, ::BlockPos const& pos) const;
+
+    MCAPI void _updateRenderFace(::Block const& block, ::BlockPos const& p, ::AABB const& shape, uchar face);
+    // NOLINTEND
 };

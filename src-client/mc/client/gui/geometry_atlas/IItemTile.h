@@ -18,13 +18,7 @@ public:
     // NOLINTBEGIN
     virtual ~IItemTile() /*override*/ = default;
 
-    virtual void submitUpdate(::GeometryAtlas::ItemPayload&&) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual void submitUpdate(::GeometryAtlas::ItemPayload&& payload) = 0;
     // NOLINTEND
 };
 

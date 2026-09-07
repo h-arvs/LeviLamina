@@ -45,6 +45,19 @@ public:
     // NOLINTEND
 
 public:
+    // static functions
+    // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCNAPI static void _getDirectoryContents(
+        ::std::vector<::Bedrock::DirectoryEntry>& folders,
+        ::Core::PathBuffer<::std::string> const&  filePath
+    );
+
+    MCNAPI static void _getDirectorySizeAndDeleteDirectoryContents(::Core::PathBuffer<::std::string> const& path);
+#endif
+    // NOLINTEND
+
+public:
     // constructor thunks
     // NOLINTBEGIN
 #ifdef LL_PLAT_C

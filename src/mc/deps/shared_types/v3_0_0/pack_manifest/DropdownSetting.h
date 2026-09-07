@@ -35,7 +35,15 @@ public:
     MCAPI ::SharedTypes::v3_0_0::PackManifestDefinition::DropdownSetting&
     operator=(::SharedTypes::v3_0_0::PackManifestDefinition::DropdownSetting const&);
 
+    MCAPI bool operator==(::SharedTypes::v3_0_0::PackManifestDefinition::DropdownSetting const& other) const;
+
     MCAPI ~DropdownSetting();
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::std::string_view const& TYPE_NAME();
     // NOLINTEND
 
 public:

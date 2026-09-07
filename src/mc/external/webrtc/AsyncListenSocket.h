@@ -40,19 +40,13 @@ public:
 
     virtual ::webrtc::SocketAddress GetLocalAddress() const = 0;
 
-    virtual ~AsyncListenSocket() /*override*/;
+    virtual ~AsyncListenSocket() /*override*/ = default;
     // NOLINTEND
 
 public:
     // destructor thunk
     // NOLINTBEGIN
     MCNAPI void $dtor();
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 
 public:

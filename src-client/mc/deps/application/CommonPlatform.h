@@ -5,7 +5,6 @@
 // auto generated inclusion list
 #include "mc/deps/core/platform/DisplayOrientation.h"
 #include "mc/deps/core/platform/FileStorageDirectory.h"
-#include "mc/deps/core/utility/NonOwnerPointer.h"
 #include "mc/platform/brstd/move_only_function.h"
 
 // auto generated forward declare list
@@ -15,8 +14,6 @@ class IMinecraftGame;
 class PropertyBag;
 class PushNotificationMessage;
 namespace Bedrock { class ActivationArguments; }
-namespace Bedrock { class IIslandCore; }
-namespace Bedrock { class IIslandManager; }
 namespace Bedrock { struct PlatformBuildInfo; }
 namespace Bedrock { struct PlatformRuntimeInfo; }
 // clang-format on
@@ -33,9 +30,7 @@ public:
     // NOLINTBEGIN
     ::ll::TypedStorage<8, 8, ::std::unique_ptr<::Bedrock::PlatformRuntimeInfo>>                   mPlatformRuntimeInfo;
     ::ll::TypedStorage<8, 8, ::std::unique_ptr<::Bedrock::PlatformBuildInfo>>                     mPlatformBuildInfo;
-    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::Bedrock::IIslandManager>>                        mIslandMgr;
-    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::Bedrock::IIslandCore>>                           mApp;
-    ::ll::TypedStorage<8, 24, ::Bedrock::NonOwnerPointer<::IMinecraftGame>>                       mMinecraftGame_Shim;
+    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::IMinecraftGame>>                                 mApp;
     ::ll::TypedStorage<8, 64, ::brstd::move_only_function<::std::unique_ptr<::IMinecraftGame>()>> mCreateGame;
     ::ll::TypedStorage<1, 1, ::std::atomic<bool>> mbQueueRenderParameterSignal;
     ::ll::TypedStorage<1, 1, ::std::atomic<bool>> mHasInitialized;
@@ -76,7 +71,7 @@ public:
 
     virtual void issueDPIChange(float dpi);
 
-    virtual void issueOrientationChange(::DisplayOrientation const&);
+    virtual void issueOrientationChange(::DisplayOrientation const& orientation);
 
     virtual void feedButtonPress(int const& button);
 
@@ -97,19 +92,19 @@ public:
 
     virtual bool _preAppCreation(::Bedrock::ActivationArguments const&) = 0;
 
-    virtual bool _postAppCreation(::Bedrock::ActivationArguments const&) = 0;
+    virtual bool _postAppCreation(::Bedrock::ActivationArguments const& actArgs) = 0;
 
-    virtual void _processActivationArguments(::Bedrock::ActivationArguments const&) = 0;
+    virtual void _processActivationArguments(::Bedrock::ActivationArguments const& args) = 0;
 
-    virtual bool _update(bool) = 0;
+    virtual bool _update(bool canRender) = 0;
 
     virtual bool _isShuttingDown() = 0;
 
     virtual bool _isShutdown() = 0;
 
-    virtual void pushNotificationReceived_Shim(::PushNotificationMessage const&) = 0;
+    virtual void pushNotificationReceived_Shim(::PushNotificationMessage const& msg) = 0;
 
-    virtual void notifyUriListeners_Shim(::ActivationUri const&) = 0;
+    virtual void notifyUriListeners_Shim(::ActivationUri const& uri) = 0;
 
     virtual ::std::string getDeviceId_Shim() const = 0;
     // NOLINTEND
@@ -117,7 +112,7 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCAPI bool _createApp();
+    MCAPI bool startApp(::Bedrock::ActivationArguments const& actArgs);
     // NOLINTEND
 
 public:
@@ -155,7 +150,7 @@ public:
 
     MCFOLD void $issueDPIChange(float dpi);
 
-    MCFOLD void $issueOrientationChange(::DisplayOrientation const&);
+    MCFOLD void $issueOrientationChange(::DisplayOrientation const& orientation);
 
     MCAPI void $feedButtonPress(int const& button);
 

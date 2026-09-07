@@ -24,21 +24,12 @@ public:
     // NOLINTBEGIN
     virtual ~LoggingServiceProvider() = default;
 
-#ifdef LL_PLAT_S
     virtual void
     log(::Editor::LogContent            content,
         ::Player*                       player,
         ::Editor::LogLevel              level,
         ::std::vector<::HashedString>&& areaTags,
         ::Editor::LogChannel            logChannelMask) = 0;
-#else // LL_PLAT_C
-    virtual void
-    log(::Editor::LogContent            content,
-        ::Player*                       player,
-        ::Editor::LogLevel              level,
-        ::std::vector<::HashedString>&& areaTags,
-        ::Editor::LogChannel            logChannel) = 0;
-#endif
 
     virtual void flush() = 0;
 
@@ -46,12 +37,6 @@ public:
 
     virtual ::Scripting::Result_deprecated<::Bedrock::PubSub::Subscription>
     listenForLogMessage(::std::function<void(::Editor::LogMessage const&)> func) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };
 

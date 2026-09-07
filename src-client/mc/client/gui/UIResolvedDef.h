@@ -64,6 +64,8 @@ public:
 
     MCAPI void _validateProperty(::std::string_view name) const;
 
+    MCAPI void foreachMemberNames(::std::function<void(::std::string_view)> predicate) const;
+
     MCAPI ::ui::AnchorPoint getAsAnchorPoint(::std::string_view key, ::ui::AnchorPoint defaultValue) const;
 
     MCAPI ::ui::AnimationType getAsAnimationType(::std::string_view key, ::ui::AnimationType defaultValue) const;
@@ -147,6 +149,20 @@ public:
         ::std::vector<::Json::Value*> const& variablesStack,
         ::Json::Value const*                 optionalLocalStack
     );
+
+    MCAPI static void parseName(
+        ::std::string_view             input,
+        ::std::string&                 outName,
+        ::std::string&                 outNamespace,
+        ::std::string&                 outRef,
+        ::std::vector<::Json::Value*>* variablesStack
+    );
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::UIResolvedDef& mNull();
     // NOLINTEND
 
 public:

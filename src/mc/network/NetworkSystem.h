@@ -19,6 +19,7 @@
 // clang-format off
 class AppPlatform;
 class IPacketObserver;
+class IPacketSecurityController;
 class IPacketSerializationController;
 class LocalConnector;
 class NetEventCallback;
@@ -98,7 +99,7 @@ public:
     ::ll::TypedStorage<8, 24, ::Bedrock::NotNullNonOwnerPtr<::NetworkSessionOwner>>           mNetworkSessionOwner;
     ::ll::TypedStorage<8, 80, ::std::recursive_mutex>                                         mConnectionsMutex;
     ::ll::TypedStorage<8, 24, ::std::vector<::std::unique_ptr<::NetworkConnection>>>          mConnections;
-    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::LocalConnector>>                             mLocalConnector;
+    ::ll::TypedStorage<8, 16, ::std::shared_ptr<::LocalConnector>>                            mLocalConnector;
     ::ll::TypedStorage<8, 16, ::std::shared_ptr<::PacketGroupDefinition::PacketGroupBuilder>> mPacketGroupBuilder;
     ::ll::TypedStorage<8, 8, ::std::unique_ptr<::RemoteConnector>>                            mRemoteConnector;
     ::ll::TypedStorage<8, 8, ::std::unique_ptr<::ServerLocator>>                              mServerLocator;
@@ -190,7 +191,11 @@ public:
     // NOLINTBEGIN
     MCAPI explicit NetworkSystem(::NetworkSystem::Dependencies&& deps);
 
+    MCAPI ::std::shared_ptr<::IPacketSecurityController> _createPacketSecurityController(::NetworkIdentifier const& id);
+
     MCAPI bool _isUsingNetherNetTransportLayer() const;
+
+    MCAPI void _sendInternal(::NetworkIdentifier const& id, ::Packet const& packet, ::std::string const& data);
 
 #ifdef LL_PLAT_C
     MCAPI void closeConnection(
@@ -214,7 +219,8 @@ public:
 
     MCAPI void sendToMultiple(::std::vector<::NetworkIdentifierWithSubId> const& ids, ::Packet const& packet);
 
-    MCAPI void setCloseConnection(::NetworkIdentifier const& id);
+    MCAPI void
+    setCloseConnection(::NetworkIdentifier const& id, ::Connection::DisconnectFailReason closeConnectionReason);
 
     MCAPI void update(::std::vector<::WeakEntityRef> const* userList);
     // NOLINTEND

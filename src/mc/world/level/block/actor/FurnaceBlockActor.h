@@ -26,6 +26,7 @@ class ILevel;
 class Item;
 class ItemStackBase;
 class LevelChunk;
+class Recipes;
 class SaveContext;
 // clang-format on
 
@@ -71,6 +72,8 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
+    virtual bool isTypeOrDerived(::BlockActorType type) const /*override*/;
+
     virtual ::ItemStack const& getItem(int slot) const /*override*/;
 
     virtual void setItem(int slot, ::ItemStack const& item) /*override*/;
@@ -118,6 +121,8 @@ public:
     virtual ::std::unique_ptr<::BlockActorDataPacket> _getUpdatePacket(::BlockSource& region) /*override*/;
 
     virtual void _onUpdatePacket(::CompoundTag const& data, ::BlockSource& region) /*override*/;
+
+    virtual ~FurnaceBlockActor() /*override*/;
     // NOLINTEND
 
 public:
@@ -133,6 +138,10 @@ public:
         ::Block const&                         unlitFurnace,
         ::Block const&                         litFurnace
     );
+
+    MCAPI bool canBurn(::Recipes const& recipes);
+
+    MCAPI void checkForAlternativeFuelAchievement(::BlockSource& region, ::ItemStack const& item);
 
     MCAPI void checkForSmeltEverythingAchievement(::BlockSource& region);
 
@@ -158,6 +167,28 @@ public:
     // NOLINTEND
 
 public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::std::string const& BURN_DURATION_KEY();
+
+    MCAPI static ::std::string const& BURN_TIME_KEY();
+
+    MCAPI static ::std::string const& COOK_TIME_KEY();
+
+    MCAPI static ::std::string const& FILTERED_CUSTOM_NAME_KEY();
+
+    MCAPI static ::std::string const& ITEMS_LIST_KEY();
+
+    MCAPI static ::std::string const& LAST_FUEL_KEY();
+
+    MCAPI static ::std::string const& SLOT_KEY();
+
+    MCAPI static ::std::string const& STORED_XP_DEPRECATED_KEY();
+
+    MCAPI static ::std::string const& STORED_XP_KEY();
+    // NOLINTEND
+
+public:
     // constructor thunks
     // NOLINTBEGIN
     MCAPI void* $ctor(
@@ -173,8 +204,16 @@ public:
     // NOLINTEND
 
 public:
+    // destructor thunk
+    // NOLINTBEGIN
+    MCAPI void $dtor();
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI bool $isTypeOrDerived(::BlockActorType type) const;
+
     MCFOLD ::ItemStack const& $getItem(int slot) const;
 
     MCAPI void $setItem(int slot, ::ItemStack const& item);

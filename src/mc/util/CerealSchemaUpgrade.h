@@ -29,8 +29,9 @@ public:
     virtual ~CerealSchemaUpgrade();
 
     virtual bool previousSchema(
-        ::rapidjson::
-            GenericValue<::rapidjson::UTF8<char>, ::rapidjson::MemoryPoolAllocator<::rapidjson::CrtAllocator>> const&
+        ::rapidjson::GenericValue<
+            ::rapidjson::UTF8<char>,
+            ::rapidjson::MemoryPoolAllocator<::rapidjson::CrtAllocator>> const& component
     ) const = 0;
 
     virtual void upgradeToNext(
@@ -51,14 +52,6 @@ public:
         ::std::string const& schemaKey,
         ::std::string const& jsonMemberName
     );
-
-    MCNAPI bool checkAndUpgradeToNext(
-        ::rapidjson::GenericDocument<
-            ::rapidjson::UTF8<char>,
-            ::rapidjson::MemoryPoolAllocator<::rapidjson::CrtAllocator>,
-            ::rapidjson::CrtAllocator>& document,
-        ::SemVersion const&             documentOriginalVersion
-    ) const;
     // NOLINTEND
 
 public:

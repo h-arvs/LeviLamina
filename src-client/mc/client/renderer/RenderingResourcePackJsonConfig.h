@@ -45,12 +45,14 @@ public:
     ) = 0;
 
     virtual void _setDefaultIdentifierImpl(::HashedString const& defaultIdentifier) = 0;
+
+    virtual ~RenderingResourcePackJsonConfig() /*override*/;
     // NOLINTEND
 
 public:
-    // virtual function thunks
+    // destructor thunk
     // NOLINTBEGIN
-
+    MCNAPI void $dtor();
     // NOLINTEND
 
 public:

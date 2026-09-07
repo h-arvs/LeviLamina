@@ -49,6 +49,7 @@ public:
     ::ll::TypedStorage<1, 1, bool>               mExcludeAgents;
     ::ll::TypedStorage<1, 1, bool>               mIsExplicitIdSelector;
     ::ll::TypedStorage<1, 1, bool>               mForceDimensionFiltering;
+    ::ll::TypedStorage<1, 1, bool>               mIsNameFiltersOnlyInChain;
     // NOLINTEND
 
 public:
@@ -58,11 +59,29 @@ public:
 
     MCAPI bool compile(::CommandOrigin const& origin, ::std::string& error);
 
+    MCAPI bool filter(::CommandOrigin const& origin, ::Actor& actor) const;
+
     MCAPI ::std::string getName() const;
+
+    MCAPI bool isExpansionAllowed(::CommandOrigin const& origin) const;
+
+    MCAPI bool matchFamily(::Actor const& entity) const;
+
+    MCAPI bool matchName(::Actor const& entity) const;
+
+    MCAPI bool matchTag(::Actor const& entity) const;
+
+    MCAPI bool matchType(::Actor const& entity) const;
 
     MCAPI ::std::shared_ptr<::std::vector<::Actor*>> newResults(::CommandOrigin const& origin) const;
 
     MCAPI ~CommandSelectorBase();
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static ::Vec3 const getFeetPos(int const version, ::Actor const& entity);
     // NOLINTEND
 
 public:

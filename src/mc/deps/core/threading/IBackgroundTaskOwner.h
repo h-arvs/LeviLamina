@@ -4,8 +4,8 @@
 
 // auto generated inclusion list
 #include "mc/deps/core/threading/Async.h"
+#include "mc/deps/core/threading/TaskGroupState.h"
 #include "mc/platform/brstd/move_only_function.h"
-#include "mc/resources/TaskGroupState.h"
 
 // auto generated forward declare list
 // clang-format off
@@ -21,28 +21,22 @@ public:
     virtual ~IBackgroundTaskOwner() = default;
 
     virtual ::Bedrock::Threading::Async<void> queue_DEPRECATED(
-        ::TaskStartInfo const&,
-        ::brstd::move_only_function<::TaskResult()>&&,
-        ::std::function<void()>&&
+        ::TaskStartInfo const&                        startInfo,
+        ::brstd::move_only_function<::TaskResult()>&& task,
+        ::std::function<void()>&&                     callback
     ) = 0;
 
     virtual ::Bedrock::Threading::Async<void>
-    queueSync_DEPRECATED(::TaskStartInfo const&, ::brstd::move_only_function<::TaskResult()>&&) = 0;
+    queueSync_DEPRECATED(::TaskStartInfo const& startInfo, ::brstd::move_only_function<::TaskResult()>&& task) = 0;
 
-    virtual void taskRegister(::std::shared_ptr<::BackgroundTaskBase>) = 0;
+    virtual void taskRegister(::std::shared_ptr<::BackgroundTaskBase> task) = 0;
 
-    virtual void requeueTask(::std::shared_ptr<::BackgroundTaskBase>, bool) = 0;
+    virtual void requeueTask(::std::shared_ptr<::BackgroundTaskBase> task, bool queueImmediate) = 0;
 
     virtual ::TaskGroupState getState() const = 0;
 
     virtual void processCoroutines() = 0;
 
-    virtual void taskComplete(::gsl::not_null<::BackgroundTaskBase*>) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual void taskComplete(::gsl::not_null<::BackgroundTaskBase*> task) = 0;
     // NOLINTEND
 };

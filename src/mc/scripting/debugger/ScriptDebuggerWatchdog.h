@@ -26,11 +26,7 @@ public:
 
     virtual bool requireClose() const /*override*/;
 
-#ifdef LL_PLAT_S
     virtual void startListenTimeout(::std::chrono::seconds duration) /*override*/;
-#else // LL_PLAT_C
-    virtual void startListenTimeout(::std::chrono::seconds) /*override*/;
-#endif
 
     virtual bool listenTimeoutExpired() const /*override*/;
     // NOLINTEND
@@ -38,14 +34,18 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
-#ifdef LL_PLAT_S
     MCNAPI bool $requireClose() const;
 
     MCNAPI void $startListenTimeout(::std::chrono::seconds duration);
 
     MCNAPI bool $listenTimeoutExpired() const;
-#endif
 
 
+    // NOLINTEND
+
+public:
+    // vftables
+    // NOLINTBEGIN
+    MCNAPI static void** $vftable();
     // NOLINTEND
 };

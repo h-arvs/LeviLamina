@@ -16,6 +16,7 @@ class LinkedAssetValidator;
 class LocalPlayer;
 class ResourcePackManager;
 class SemVersion;
+class SemVersionConstant;
 namespace Editor::Services { class ClientDataTransferServiceProvider; }
 namespace Puv { class LoadResultAny; }
 namespace cereal { struct ReflectionCtx; }
@@ -149,6 +150,12 @@ public:
         WaterConfigSettingsV0& operator=(WaterConfigSettingsV0 const&);
         WaterConfigSettingsV0(WaterConfigSettingsV0 const&);
         WaterConfigSettingsV0();
+
+    public:
+        // static variables
+        // NOLINTBEGIN
+        MCNAPI static ::SemVersionConstant const& VERSION();
+        // NOLINTEND
     };
 
     struct WaterConfigSettingsV1 {
@@ -485,6 +492,8 @@ public:
 
     MCNAPI bool containsWaterSettings(::HashedString const& biomeID) const;
 
+    MCNAPI ::WaterConfig::WaterConfigSettingsV4 const& findWaterConfigSettings(::HashedString const& biomeID) const;
+
     MCNAPI ::mce::framebuilder::CausticsParameters getCausticsParameters() const;
 
     MCNAPI ::dragon::framerenderer::modules::water::WaterParameters getWaterParameters() const;
@@ -497,6 +506,13 @@ public:
     MCNAPI ::mce::framebuilder::WaterSurfaceParameters getWaterSurfaceParameters(::HashedString const& biomeID) const;
 
     MCNAPI void loadTextures(::std::shared_ptr<::mce::TextureGroup> textureGroup);
+
+    MCNAPI void setDefaultWaterSettings(::WaterConfig::WaterConfigSettingsV4 const& inWaterSettings);
+
+    MCNAPI bool setWaterConfigSettings(
+        ::HashedString const&                       identifier,
+        ::WaterConfig::WaterConfigSettingsV4 const& inWaterConfigSettings
+    );
 
     MCNAPI void unloadTextures(::std::shared_ptr<::mce::TextureGroup> textureGroup);
 
@@ -518,6 +534,12 @@ public:
         ::LocalPlayer&                                         localPlayer,
         ::cereal::ReflectionCtx const&                         ctx
     );
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCNAPI static ::std::string_view const& PAYLOAD_KEY();
     // NOLINTEND
 
 public:

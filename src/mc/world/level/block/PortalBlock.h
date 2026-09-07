@@ -17,6 +17,7 @@ class BlockSource;
 class GetCollisionShapeInterface;
 class IConstBlockSource;
 class ItemInstance;
+class Random;
 struct BlockAnimateTickData;
 namespace BlockEvents { class BlockPlaceEvent; }
 namespace BlockEvents { class BlockQueuedTickEvent; }
@@ -82,6 +83,8 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
+    MCAPI static void _tick(::BlockSource& region, ::BlockPos const& pos, ::Random& random);
+
     MCAPI static bool trySpawnPortal(::BlockSource& region, ::BlockPos const& pos);
     // NOLINTEND
 

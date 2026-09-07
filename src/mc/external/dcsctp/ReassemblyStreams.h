@@ -31,24 +31,17 @@ public:
 
     virtual uint64 HandleForwardTsn(
         ::dcsctp::UnwrappedSequenceNumber<::webrtc::StrongAlias<::dcsctp::TSNTag, uint>> new_cumulative_ack_tsn,
-        ::webrtc::ArrayView<::dcsctp::AnyForwardTsnChunk::SkippedStream const, 18446744073709546905> skipped_streams
+        ::webrtc::ArrayView<::dcsctp::AnyForwardTsnChunk::SkippedStream const>           skipped_streams
     ) = 0;
 
-    virtual void ResetStreams(
-        ::webrtc::ArrayView<::webrtc::StrongAlias<::dcsctp::StreamIDTag, ushort> const, 18446744073709546905> stream_ids
-    ) = 0;
+    virtual void
+    ResetStreams(::webrtc::ArrayView<::webrtc::StrongAlias<::dcsctp::StreamIDTag, ushort> const> stream_ids) = 0;
 
     virtual ::dcsctp::HandoverReadinessStatus GetHandoverReadiness() const = 0;
 
     virtual void AddHandoverState(::dcsctp::DcSctpSocketHandoverState& state) = 0;
 
     virtual void RestoreFromState(::dcsctp::DcSctpSocketHandoverState const& state) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };
 

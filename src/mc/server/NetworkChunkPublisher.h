@@ -16,11 +16,14 @@ class ChunkSource;
 class ChunkViewSource;
 class ILevel;
 class LevelChunk;
+class LevelChunkPacket;
 class ServerNetworkSystem;
+class VarIntDataOutput;
 class Vec3;
 struct ChunkPositionAndDimension;
 
 namespace ClientBlobCache::Server { class ActiveTransfersManager; }
+namespace ClientBlobCache::Server { class TransferBuilder; }
 // clang-format on
 
 class NetworkChunkPublisher {
@@ -69,32 +72,35 @@ public:
     // NOLINTBEGIN
     MCAPI NetworkChunkPublisher(::ILevel& level, ::NetworkIdentifier const& owner, ::SubClientId subClientId);
 
+    MCAPI bool _sendQueuedChunk(
+        ::ChunkPositionAndDimension const&          queuedChunk,
+        ::ClientBlobCache::Server::TransferBuilder* cachedTransfer
+    );
+
+    MCAPI void _serializeAndCache(
+        ::LevelChunkPacket&                          packet,
+        ::ClientBlobCache::Server::TransferBuilder&  transfer,
+        ::std::function<void(::VarIntDataOutput&)>&& serialize
+    );
+
     MCAPI void clearRegion();
 
     MCAPI void destroyRegion();
 
 #ifdef LL_PLAT_C
     MCAPI void handleGenerationRequests();
-#endif
-
-#ifdef LL_PLAT_S
-    MCAPI void moveRegion(::BlockPos const& position, uint blockRadius, ::Vec3 const& direction, float minDistance);
-#endif
 
     MCAPI void prepareRegion(::ChunkSource& mainChunkSource, ::ChunkPos const& center);
 
-#ifdef LL_PLAT_C
     MCAPI void queueChunkGenerationRequests(
         ::ChunkPos                       moveCenter,
         int                              chunkRadius,
         ::Vec3 const&                    direction,
         ::std::vector<::ChunkPos> const& serverChunks
     );
-#endif
 
     MCAPI void sendQueuedChunks();
 
-#ifdef LL_PLAT_C
     MCAPI void setClientsNetworkChunkSource(::std::shared_ptr<::ChunkSource> networkChunkSource);
 #endif
     // NOLINTEND

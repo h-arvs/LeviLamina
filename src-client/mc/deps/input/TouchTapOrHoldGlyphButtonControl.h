@@ -11,9 +11,7 @@
 // clang-format off
 class InputEventQueue;
 class InputRenderContext;
-class RectangleArea;
 class TouchPointResults;
-struct ButtonColors;
 // clang-format on
 
 class TouchTapOrHoldGlyphButtonControl : public ::TouchControl {
@@ -39,10 +37,6 @@ public:
     // NOLINTEND
 
 public:
-    // prevent constructor by default
-    TouchTapOrHoldGlyphButtonControl();
-
-public:
     // virtual functions
     // NOLINTBEGIN
     virtual ~TouchTapOrHoldGlyphButtonControl() /*override*/ = default;
@@ -56,42 +50,12 @@ public:
     // NOLINTEND
 
 public:
-    // member functions
-    // NOLINTBEGIN
-    MCAPI TouchTapOrHoldGlyphButtonControl(
-        ::std::function<::RectangleArea()> area,
-        ::std::function<bool()>            condition,
-        uint                               tapButtonId,
-        uint                               holdButtonId,
-        ::std::string const&               iconPath,
-        ::std::string const&               pressedIconPath,
-        ::ButtonColors const&              buttonColors,
-        int                                uvWidth,
-        int                                uvHeight,
-        float                              glyphScale
-    );
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCAPI void* $ctor(
-        ::std::function<::RectangleArea()> area,
-        ::std::function<bool()>            condition,
-        uint                               tapButtonId,
-        uint                               holdButtonId,
-        ::std::string const&               iconPath,
-        ::std::string const&               pressedIconPath,
-        ::ButtonColors const&              buttonColors,
-        int                                uvWidth,
-        int                                uvHeight,
-        float                              glyphScale
-    );
-    // NOLINTEND
-
-public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $render(::InputRenderContext& context) const;
 
+    MCAPI void $tick(::InputEventQueue& eventQueue, ::TouchPointResults& touchPointResults, int yAxisInversionFactor);
+
+    MCAPI void $release(::InputEventQueue& eventQueue);
     // NOLINTEND
 };

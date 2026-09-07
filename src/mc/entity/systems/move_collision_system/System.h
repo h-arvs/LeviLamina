@@ -37,6 +37,7 @@ struct HorseFlagComponent;
 struct LocalConstBlockSourceFactoryComponent;
 struct LocalSpatialEntityFetcherFactoryComponent;
 struct MaxAutoStepComponent;
+struct MinecartFlagComponent;
 struct MobBodyRotationComponent;
 struct MobFlagComponent;
 struct MoveRequestComponent;
@@ -85,7 +86,8 @@ struct System : public ::IStrictTickingSystem<::StrictExecutionContext<
                         ::PassengerRenderingRidingOffsetComponent,
                         ::DimensionTypeComponent,
                         ::MaxAutoStepComponent,
-                        ::CollidableMobNearFlagComponent>,
+                        ::CollidableMobNearFlagComponent,
+                        ::MinecartFlagComponent>,
                     ::Write<::MoveRequestComponent>,
                     ::AddRemove<>,
                     ::GlobalRead<
@@ -164,7 +166,8 @@ public:
                 ::PassengerRenderingRidingOffsetComponent,
                 ::DimensionTypeComponent,
                 ::MaxAutoStepComponent,
-                ::CollidableMobNearFlagComponent>,
+                ::CollidableMobNearFlagComponent,
+                ::MinecartFlagComponent>,
             ::Write<::MoveRequestComponent>,
             ::AddRemove<>,
             ::GlobalRead<
@@ -206,7 +209,8 @@ public:
                 ::PassengerRenderingRidingOffsetComponent,
                 ::DimensionTypeComponent,
                 ::MaxAutoStepComponent,
-                ::CollidableMobNearFlagComponent>,
+                ::CollidableMobNearFlagComponent,
+                ::MinecartFlagComponent>,
             ::Write<::MoveRequestComponent>,
             ::AddRemove<>,
             ::GlobalRead<
@@ -217,6 +221,53 @@ public:
             ::EntityFactoryT<>>& executionContext,
         ::StrictEntityContext&   entityContext
     ) /*override*/;
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static ::std::optional<::MoveCollisionSystem::System::SpatialQueryFactories> createSpatialQueryFactories(
+        ::StrictExecutionContext<
+            ::Filter<
+                ::CanStandOnSnowFlagComponent,
+                ::HasLightweightFamilyFlagComponent,
+                ::HorseFlagComponent,
+                ::MobFlagComponent,
+                ::ParrotFlagComponent,
+                ::VehicleComponent,
+                ::CamelFlagComponent,
+                ::PlayerComponent,
+                ::CollidableMobFlagComponent,
+                ::FallingBlockFlagComponent>,
+            ::Read<
+                ::AABBShapeComponent,
+                ::MovementAbilitiesComponent,
+                ::ActorTypeComponent,
+                ::FallDistanceComponent,
+                ::PassengerComponent,
+                ::ActorGameTypeComponent,
+                ::ActorDataFlagComponent,
+                ::VehicleComponent,
+                ::ActorRotationComponent,
+                ::MobBodyRotationComponent,
+                ::RenderRotationComponent,
+                ::StandAnimationComponent,
+                ::OffsetsComponent,
+                ::VanillaOffsetComponent,
+                ::PassengerRenderingRidingOffsetComponent,
+                ::DimensionTypeComponent,
+                ::MaxAutoStepComponent,
+                ::CollidableMobNearFlagComponent,
+                ::MinecartFlagComponent>,
+            ::Write<::MoveRequestComponent>,
+            ::AddRemove<>,
+            ::GlobalRead<
+                ::ExternalDataComponent,
+                ::LocalConstBlockSourceFactoryComponent,
+                ::LocalSpatialEntityFetcherFactoryComponent>,
+            ::GlobalWrite<>,
+            ::EntityFactoryT<>>& context
+    );
     // NOLINTEND
 
 public:
@@ -253,7 +304,8 @@ public:
                 ::PassengerRenderingRidingOffsetComponent,
                 ::DimensionTypeComponent,
                 ::MaxAutoStepComponent,
-                ::CollidableMobNearFlagComponent>,
+                ::CollidableMobNearFlagComponent,
+                ::MinecartFlagComponent>,
             ::Write<::MoveRequestComponent>,
             ::AddRemove<>,
             ::GlobalRead<
@@ -295,7 +347,8 @@ public:
                 ::PassengerRenderingRidingOffsetComponent,
                 ::DimensionTypeComponent,
                 ::MaxAutoStepComponent,
-                ::CollidableMobNearFlagComponent>,
+                ::CollidableMobNearFlagComponent,
+                ::MinecartFlagComponent>,
             ::Write<::MoveRequestComponent>,
             ::AddRemove<>,
             ::GlobalRead<

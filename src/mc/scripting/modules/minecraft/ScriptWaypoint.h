@@ -70,15 +70,31 @@ public:
     // NOLINTEND
 
 public:
-    // static functions
+    // member functions
     // NOLINTBEGIN
-    MCAPI static ::Scripting::ClassBinding bind();
+    MCAPI ::Scripting::Result<
+        ::std::optional<::ScriptModuleMinecraft::ScriptRGB>,
+        ::ScriptModuleMinecraft::ScriptInvalidWaypointError,
+        ::ScriptModuleMinecraft::ScriptInvalidWaypointTextureSelectorError>
+    getColor() const;
+
+    MCAPI ::Scripting::Result<
+        bool,
+        ::ScriptModuleMinecraft::ScriptInvalidWaypointError,
+        ::ScriptModuleMinecraft::ScriptInvalidWaypointTextureSelectorError>
+    getIsEnabled() const;
+
+    MCAPI ::Scripting::Result<
+        ::ScriptModuleMinecraft::ScriptWaypointTextureSelector,
+        ::ScriptModuleMinecraft::ScriptInvalidWaypointError,
+        ::ScriptModuleMinecraft::ScriptInvalidWaypointTextureSelectorError>
+    getTextureSelector() const;
     // NOLINTEND
 
 public:
-    // virtual function thunks
+    // static functions
     // NOLINTBEGIN
-
+    MCAPI static ::Scripting::ClassBinding bind();
     // NOLINTEND
 };
 

@@ -50,7 +50,8 @@ public:
         public:
             // member variables
             // NOLINTBEGIN
-            ::ll::TypedStorage<8, 8, ::Bedrock::StaticOptimizedString>                      mMessage;
+            ::ll::TypedStorage<8, 24, ::std::optional<::std::string_view>>                  mMessageRef;
+            ::ll::TypedStorage<8, 8, ::Bedrock::StaticOptimizedString>                      mMessageStr;
             ::ll::TypedStorage<8, 8, ::gsl::not_null<::ContentLog::ContentLogScope const*>> mContentLogScope;
             // NOLINTEND
         };
@@ -98,7 +99,9 @@ public:
     public:
         // member functions
         // NOLINTBEGIN
-        MCNAPI explicit ContentLogScope(::Bedrock::StaticOptimizedString scope);
+        MCNAPI explicit ContentLogScope(::std::string_view scope);
+
+        MCNAPI ContentLogScope(::std::optional<::std::string_view> ref, ::Bedrock::StaticOptimizedString const& str);
 
         MCNAPI ~ContentLogScope();
         // NOLINTEND
@@ -106,7 +109,9 @@ public:
     public:
         // constructor thunks
         // NOLINTBEGIN
-        MCNAPI void* $ctor(::Bedrock::StaticOptimizedString scope);
+        MCNAPI void* $ctor(::std::string_view scope);
+
+        MCNAPI void* $ctor(::std::optional<::std::string_view> ref, ::Bedrock::StaticOptimizedString const& str);
         // NOLINTEND
 
     public:
@@ -150,7 +155,7 @@ public:
     MCAPI void flush();
 #endif
 
-    MCAPI void log(bool, ::LogLevel, ::LogArea, ...);
+    MCAPI void log(bool logOnlyOnce, ::LogLevel level, ::LogArea area, ...);
 
     MCAPI void registerEndPoint(::Bedrock::typeid_t<::ContentLog> id, ::gsl::not_null<::ContentLogEndPoint*> endPoint);
 

@@ -10,19 +10,17 @@ public:
     // NOLINTBEGIN
     virtual ~IDebuggerController() = default;
 
-    virtual bool attach(bool, ::std::optional<::std::string>, ::std::function<void(::std::string_view)>) = 0;
+    virtual bool attach(
+        bool                                      performHandshake,
+        ::std::optional<::std::string>            targetModuleUuid,
+        ::std::function<void(::std::string_view)> handler
+    ) = 0;
 
     virtual void detach() = 0;
 
     virtual bool closed() const = 0;
 
     virtual void pumpMessages() = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };
 

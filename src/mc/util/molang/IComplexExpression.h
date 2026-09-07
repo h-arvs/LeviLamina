@@ -26,7 +26,7 @@ public:
 
     virtual ::std::unique_ptr<::Molang::details::IComplexExpression> clone() const = 0;
 
-    virtual ::MolangScriptArg const& evalGeneric(::RenderParams&) const = 0;
+    virtual ::MolangScriptArg const& evalGeneric(::RenderParams& params) const = 0;
 
     virtual bool isInitialized() const = 0;
 
@@ -54,12 +54,6 @@ public:
     virtual ::std::optional<::MolangScriptArg> getValueIfConstant() const = 0;
 
     virtual ::Molang::details::SourceTree* getSource() = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };
 

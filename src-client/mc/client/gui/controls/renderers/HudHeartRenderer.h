@@ -14,6 +14,7 @@ class MinecraftUIRenderContext;
 class UIControl;
 class UICustomRenderer;
 class UIScene;
+namespace mce { class TextureGroup; }
 // clang-format on
 
 class HudHeartRenderer : public ::MinecraftUICustomRenderer {
@@ -83,7 +84,7 @@ public:
     ::ll::TypedStorage<8, 24, ::HudHeartRenderer::HeartIconData>    mFullIcon;
     ::ll::TypedStorage<8, 24, ::HudHeartRenderer::HeartIconData>    mHalfIcon;
     ::ll::TypedStorage<8, 640, ::std::array<::mce::TexturePtr, 20>> mHeartTextures;
-    ::ll::TypedStorage<8, 11840, ::std::array<::mce::Mesh, 20>>     mHeartMeshes;
+    ::ll::TypedStorage<8, 12320, ::std::array<::mce::Mesh, 20>>     mHeartMeshes;
     ::ll::TypedStorage<8, 24, ::std::vector<::glm::vec3>>           mIconPosition;
     // NOLINTEND
 
@@ -98,6 +99,12 @@ public:
     render(::MinecraftUIRenderContext& renderContext, ::IClientInstance&, ::UIControl& owner, int) /*override*/;
 
     virtual bool update(::IClientInstance& client, ::UIControl& owner, ::UIScene const& scene) /*override*/;
+    // NOLINTEND
+
+public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI void _loadHeartTextures(::mce::TextureGroup& textureGroup, bool isHardcore);
     // NOLINTEND
 
 public:

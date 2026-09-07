@@ -19,14 +19,30 @@ public:
     // NOLINTEND
 
 public:
+    // prevent constructor by default
+    FogVolumetricCoefficientSetting();
+
+public:
     // member functions
     // NOLINTBEGIN
-    MCAPI ~FogVolumetricCoefficientSetting();
+    MCAPI FogVolumetricCoefficientSetting(
+        ::Core::Keyframes<float, ::SharedTypes::ColorNormRGB> const& scattering,
+        ::Core::Keyframes<float, ::SharedTypes::ColorNormRGB> const& absorption
+    );
     // NOLINTEND
 
 public:
-    // destructor thunk
+    // static variables
     // NOLINTBEGIN
-    MCFOLD void $dtor();
+    MCAPI static ::FogVolumetricCoefficientSetting const& ZERO_SETTING();
+    // NOLINTEND
+
+public:
+    // constructor thunks
+    // NOLINTBEGIN
+    MCAPI void* $ctor(
+        ::Core::Keyframes<float, ::SharedTypes::ColorNormRGB> const& scattering,
+        ::Core::Keyframes<float, ::SharedTypes::ColorNormRGB> const& absorption
+    );
     // NOLINTEND
 };

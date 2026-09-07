@@ -15,6 +15,7 @@
 // clang-format off
 class AABB;
 class Actor;
+class BlockActor;
 class BlockActorDataPacket;
 class BlockSource;
 class CompoundTag;
@@ -94,6 +95,8 @@ public:
     // NOLINTBEGIN
     virtual ~ChestBlockActor() /*override*/;
 
+    virtual bool isTypeOrDerived(::BlockActorType type) const /*override*/;
+
     virtual int getContainerSize() const /*override*/;
 
     virtual int getMaxStackSize() const /*override*/;
@@ -120,7 +123,7 @@ public:
 
     virtual bool save(::CompoundTag& tag, ::SaveContext const& saveContext) const /*override*/;
 
-    virtual bool saveItemInstanceData(::CompoundTag& base, ::SaveContext const& saveContext) const /*override*/;
+    virtual bool saveItemInstanceData(::CompoundTag& base) const /*override*/;
 
     virtual void tick(::BlockSource& region) /*override*/;
 
@@ -196,7 +199,13 @@ public:
 
     MCAPI void _closeChest(::BlockSource& region, ::Actor* actor);
 
+    MCAPI void _pairWith(::ChestBlockActor* chest, ::BlockSource& region, bool isLead);
+
     MCAPI bool _saveClientSideState(::CompoundTag& tag, ::SaveContext const& saveContext) const;
+
+    MCAPI void _tryToPairWith(::BlockSource& region, ::BlockPos const& position);
+
+    MCAPI bool canPairWith(::BlockActor* entity, ::BlockSource& region);
 
     MCAPI ::std::weak_ptr<::ChestBlockActor::ChestCloser> getChestCloser(::Actor& closingActor);
 
@@ -230,6 +239,8 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI bool $isTypeOrDerived(::BlockActorType type) const;
+
     MCAPI int $getContainerSize() const;
 
     MCFOLD int $getMaxStackSize() const;
@@ -256,7 +267,7 @@ public:
 
     MCAPI bool $save(::CompoundTag& tag, ::SaveContext const& saveContext) const;
 
-    MCAPI bool $saveItemInstanceData(::CompoundTag& base, ::SaveContext const& saveContext) const;
+    MCAPI bool $saveItemInstanceData(::CompoundTag& base) const;
 
     MCAPI void $tick(::BlockSource& region);
 

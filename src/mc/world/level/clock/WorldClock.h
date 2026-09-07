@@ -90,20 +90,16 @@ public:
     ::ll::TypedStorage<1, 1, bool> mTimeMarkerEventsRanThisTick;
     // NOLINTEND
 
-#ifdef LL_PLAT_S
-#else // LL_PLAT_C
-public:
-    // prevent constructor by default
-    WorldClock(WorldClock const&);
-    WorldClock();
-
-#endif
 public:
     // member functions
     // NOLINTBEGIN
+    MCAPI WorldClock();
+
 #ifdef LL_PLAT_C
     MCAPI explicit WorldClock(::WorldClockData const& data);
 #endif
+
+    MCAPI WorldClock(::WorldClock const& rhs);
 
     MCAPI void _sendAddTimeMarker(::PacketSender& packetSender) const;
 
@@ -111,8 +107,10 @@ public:
 
     MCAPI void _sendSyncWorldClockState(::PacketSender& packetSender) const;
 
-#ifdef LL_PLAT_C
     MCAPI ::WorldClock& operator=(::WorldClock const& rhs);
+
+#ifdef LL_PLAT_C
+    MCAPI void tick();
 #endif
 
     MCAPI ~WorldClock();
@@ -127,9 +125,13 @@ public:
 public:
     // constructor thunks
     // NOLINTBEGIN
+    MCAPI void* $ctor();
+
 #ifdef LL_PLAT_C
     MCAPI void* $ctor(::WorldClockData const& data);
 #endif
+
+    MCAPI void* $ctor(::WorldClock const& rhs);
     // NOLINTEND
 
 public:

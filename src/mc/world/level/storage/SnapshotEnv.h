@@ -2,6 +2,9 @@
 
 #include "mc/_HeaderOutputPredefine.h"
 
+// auto generated inclusion list
+#include "mc/deps/core/file/PathBuffer.h"
+
 // auto generated forward declare list
 // clang-format off
 struct SnapshotFilenameAndLength;
@@ -69,6 +72,8 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
+    MCNAPI bool _isQueuedForRemoval(::Core::PathBuffer<::std::string> const& file);
+
     MCNAPI ::std::vector<::SnapshotFilenameAndLength> createSnapshot(::Core::Path const& dir);
 
     MCNAPI void releaseSnapshot();

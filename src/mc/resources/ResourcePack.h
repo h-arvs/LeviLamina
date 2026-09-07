@@ -12,9 +12,13 @@
 // clang-format off
 class Pack;
 class PackAccessStrategy;
-struct SubpackInfo;
+struct BehaviorPackContents;
+struct ResourcePackContents;
+struct StreamableAssetSource;
 namespace Bedrock::Resources { class PreloadedPathHandle; }
 namespace Core { class Path; }
+namespace Core { class PathView; }
+namespace Json { class Value; }
 // clang-format on
 
 class ResourcePack {
@@ -38,6 +42,8 @@ public:
     ::ll::TypedStorage<1, 1, bool>                                              mIsSlicePack;
     ::ll::TypedStorage<8, 64, ::ResourceSignature>                              mResourceSignature;
     ::ll::TypedStorage<1, 1, bool>                                              mIsMarkedForRemoval;
+    ::ll::TypedStorage<8, 8, ::std::atomic<double>>                             mAssetReadMs;
+    ::ll::TypedStorage<8, 8, ::std::atomic<uint64>>                             mAssetReadBytes;
     // NOLINTEND
 
 public:
@@ -49,9 +55,15 @@ public:
     // NOLINTBEGIN
     MCAPI explicit ResourcePack(::gsl::not_null<::std::shared_ptr<::Pack>> pack);
 
-    MCAPI void _createSubpack(::SubpackInfo const& subpackInfo);
-
     MCAPI void _createSubpacks();
+
+#ifdef LL_PLAT_C
+    MCAPI void _gatherBehaviorPackTelemetry(::BehaviorPackContents& counts) const;
+
+    MCAPI void _gatherResourcePackTelemetry(::ResourcePackContents& counts) const;
+#endif
+
+    MCAPI bool areKnownFilesValid();
 
     MCAPI void forEachIn(
         ::Core::Path const&                        filePath,
@@ -60,17 +72,35 @@ public:
         bool                                       recurseAnyways
     ) const;
 
-#ifdef LL_PLAT_C
+    MCAPI void forEachInAssetSet(
+        ::Core::Path const&                        filePath,
+        ::std::function<void(::Core::Path const&)> callback,
+        int                                        subpackIndex
+    ) const;
+
     MCAPI void generateAssetSet();
 
+#ifdef LL_PLAT_C
     MCAPI ::Core::PathBuffer<::std::string> getIconPath(::PackIconType iconType) const;
 #endif
 
     MCAPI bool getResource(::Core::Path const& resourceName, ::std::string& resourceStream, int subpackIndex) const;
 
 #ifdef LL_PLAT_C
+    MCAPI ::std::optional<::StreamableAssetSource> getStreamableSource(
+        ::Core::Path const&               resourceName,
+        int                               subpackIndex,
+        ::std::optional<::Core::PathView> tempDirectory
+    ) const;
+
+    MCAPI ::Json::Value getTexturesList(int subpackIndex) const;
+
+    MCAPI bool hasExtraResourcesForLocale(::std::string const& code, int subpackIndex) const;
+
     MCAPI bool hasIcon(::PackIconType iconType) const;
 #endif
+
+    MCAPI bool isAssetExtractionViable() const;
 
     MCAPI ::Bedrock::Resources::PreloadedPathHandle
     preloadArchive(::Core::Path const& packRelativePath, int subpackIndex) const;
@@ -82,7 +112,7 @@ public:
     MCAPI void regenerateAssetSet();
 #endif
 
-    MCAPI ~ResourcePack();
+    MCAPI void setLocale(::std::string const& code);
     // NOLINTEND
 
 public:
@@ -91,19 +121,11 @@ public:
     MCAPI static ::Core::PathBuffer<::std::string> const& RESOURCE_PACK_BUG_ICON_PATH();
 
     MCAPI static ::Core::PathBuffer<::std::string> const& RESOURCE_PACK_ICON_PATH();
-
-    MCAPI static ::Core::PathBuffer<::std::string> const& TEXTURES_LIST_PATH();
     // NOLINTEND
 
 public:
     // constructor thunks
     // NOLINTBEGIN
     MCAPI void* $ctor(::gsl::not_null<::std::shared_ptr<::Pack>> pack);
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCAPI void $dtor();
     // NOLINTEND
 };

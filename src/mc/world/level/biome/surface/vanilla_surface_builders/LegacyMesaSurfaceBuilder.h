@@ -34,7 +34,19 @@ public:
 
     virtual bool isBestBuilder(::SurfaceBuilderData const& surfaceBuilderData) const /*override*/;
 
-    virtual void buildSurfaceAt(::ISurfaceBuilder::BuildParameters const& parameters) const /*override*/;
+    virtual void buildSurfaceAt(
+        ::ISurfaceBuilder::GlobalParameters const&         globalParams,
+        ::ISurfaceBuilder::SurfaceBuilderParameters const& surfaceBuilderParams,
+        ::ISurfaceBuilder::PerColumnParameters const&      columnParams
+    ) const /*override*/;
+
+    virtual bool getUsesDepthValue() const /*override*/;
+    // NOLINTEND
+
+public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI ::BlockColor getBand(int worldX, int y, int worldZ, ::PerlinSimplexNoise const& noiseBuf) const;
     // NOLINTEND
 
 public:
@@ -46,7 +58,13 @@ public:
 
     MCFOLD bool $isBestBuilder(::SurfaceBuilderData const& surfaceBuilderData) const;
 
-    MCAPI void $buildSurfaceAt(::ISurfaceBuilder::BuildParameters const& parameters) const;
+    MCAPI void $buildSurfaceAt(
+        ::ISurfaceBuilder::GlobalParameters const&         globalParams,
+        ::ISurfaceBuilder::SurfaceBuilderParameters const& surfaceBuilderParams,
+        ::ISurfaceBuilder::PerColumnParameters const&      columnParams
+    ) const;
+
+    MCFOLD bool $getUsesDepthValue() const;
 
 
     // NOLINTEND

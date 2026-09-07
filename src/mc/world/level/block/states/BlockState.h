@@ -49,9 +49,9 @@ public:
     // NOLINTBEGIN
     virtual ~BlockState() = default;
 
-    virtual ::std::unique_ptr<::Tag> _toNBT(int) const = 0;
+    virtual ::std::unique_ptr<::Tag> _toNBT(int val) const = 0;
 
-    virtual ::std::optional<int> _fromNBT(::Tag const&) const = 0;
+    virtual ::std::optional<int> _fromNBT(::Tag const& tag) const = 0;
     // NOLINTEND
 
 public:
@@ -61,8 +61,8 @@ public:
     // NOLINTEND
 
 public:
-    // virtual function thunks
+    // vftables
     // NOLINTBEGIN
-
+    MCNAPI static void** $vftable();
     // NOLINTEND
 };

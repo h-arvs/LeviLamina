@@ -21,6 +21,7 @@ public:
     ::ll::UntypedStorage<8, 8> mUnk4217a0;
     ::ll::UntypedStorage<8, 8> mUnk9e3b85;
     ::ll::UntypedStorage<8, 8> mUnkd75f95;
+    ::ll::UntypedStorage<8, 8> mUnkc73a76;
     // NOLINTEND
 
 public:
@@ -42,28 +43,68 @@ public:
 
     virtual ::std::optional<::std::vector<::SnapshotFilenameAndLength>> saveQuery() /*override*/;
 
-    virtual bool addNameToAllowList(::std::string const&) /*override*/;
+    virtual bool addToAllowList(::IScriptDedicatedServerUtils::AllowListEntryInfo const& identity) /*override*/;
 
-    virtual bool removeNameFromAllowList(::std::string const&) /*override*/;
+    virtual bool removeFromAllowList(::IScriptDedicatedServerUtils::AllowListEntryInfo const& identity) /*override*/;
 
-    virtual bool allowListContains(::std::string const&) /*override*/;
+    virtual bool allowListContains(::IScriptDedicatedServerUtils::AllowListEntryInfo const& identity) /*override*/;
+
+    virtual ::std::vector<::IScriptDedicatedServerUtils::AllowListEntryInfo> getAllowListEntries() const /*override*/;
+
+    virtual void clearAllowList() /*override*/;
 
     virtual bool reloadAllowListFile() /*override*/;
 
-    virtual void setAllowListEnabled(bool) /*override*/;
+    virtual void setAllowListEnabled(bool enabled) /*override*/;
 
     virtual bool getAllowListEnabled() const /*override*/;
+
+    virtual ::std::vector<::std::string> getOperatorXuids() const /*override*/;
 
     virtual bool reloadPermissionsFile() /*override*/;
 
     virtual bool reloadScriptConfig() /*override*/;
 
     virtual bool reloadCDNConfig() /*override*/;
+
+    virtual ::std::string const& getSessionID() const /*override*/;
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCNAPI void $stopServer();
 
+    MCNAPI bool $saveHold();
+
+    MCNAPI bool $saveResume();
+
+    MCNAPI ::std::optional<::std::vector<::SnapshotFilenameAndLength>> $saveQuery();
+
+    MCNAPI bool $addToAllowList(::IScriptDedicatedServerUtils::AllowListEntryInfo const& identity);
+
+    MCNAPI bool $removeFromAllowList(::IScriptDedicatedServerUtils::AllowListEntryInfo const& identity);
+
+    MCNAPI bool $allowListContains(::IScriptDedicatedServerUtils::AllowListEntryInfo const& identity);
+
+    MCNAPI ::std::vector<::IScriptDedicatedServerUtils::AllowListEntryInfo> $getAllowListEntries() const;
+
+    MCNAPI void $clearAllowList();
+
+    MCNAPI bool $reloadAllowListFile();
+
+    MCNAPI void $setAllowListEnabled(bool enabled);
+
+    MCNAPI bool $getAllowListEnabled() const;
+
+    MCNAPI ::std::vector<::std::string> $getOperatorXuids() const;
+
+    MCNAPI bool $reloadPermissionsFile();
+
+    MCNAPI bool $reloadScriptConfig();
+
+    MCNAPI bool $reloadCDNConfig();
+
+    MCNAPI ::std::string const& $getSessionID() const;
     // NOLINTEND
 };

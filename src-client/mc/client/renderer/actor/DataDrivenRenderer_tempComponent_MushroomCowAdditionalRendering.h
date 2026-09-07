@@ -5,11 +5,15 @@
 // auto generated inclusion list
 #include "mc/client/renderer/actor/DataDrivenRenderer_tempComponent.h"
 #include "mc/client/renderer/actor/V2TempComponentRequirements.h"
+#include "mc/deps/minecraft_renderer/renderer/MaterialPtr.h"
+#include "mc/deps/minecraft_renderer/renderer/TexturePtr.h"
 
 // auto generated forward declare list
 // clang-format off
 class ActorRenderData;
 class BaseActorRenderContext;
+class BlockTessellator;
+class ModelPart;
 class RenderParams;
 // clang-format on
 
@@ -17,11 +21,11 @@ class DataDrivenRenderer_tempComponent_MushroomCowAdditionalRendering : public :
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 16> mUnk86e940;
-    ::ll::UntypedStorage<8, 8>  mUnk8933fb;
-    ::ll::UntypedStorage<8, 32> mUnka24f36;
-    ::ll::UntypedStorage<8, 8>  mUnkcb7b8f;
-    ::ll::UntypedStorage<8, 8>  mUnkc73a5d;
+    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr> mMushroomMaterial;
+    ::ll::TypedStorage<8, 8, ::BlockTessellator&> mBlockTessellator;
+    ::ll::TypedStorage<8, 32, ::mce::TexturePtr>  mAtlasTexture;
+    ::ll::TypedStorage<8, 8, ::ModelPart*>        mHead;
+    ::ll::TypedStorage<8, 8, ::ModelPart*>        mBody;
     // NOLINTEND
 
 public:
@@ -38,12 +42,19 @@ public:
     // NOLINTBEGIN
     virtual ::V2TempComponentRequirements getV2Requirements() const /*override*/;
 
-    virtual void render(::BaseActorRenderContext&, ::ActorRenderData&, ::RenderParams&) /*override*/;
+    virtual void render(
+        ::BaseActorRenderContext& renderContext,
+        ::ActorRenderData&        actorRenderData,
+        ::RenderParams&           renderParams
+    ) /*override*/;
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCFOLD ::V2TempComponentRequirements $getV2Requirements() const;
 
+    MCAPI void
+    $render(::BaseActorRenderContext& renderContext, ::ActorRenderData& actorRenderData, ::RenderParams& renderParams);
     // NOLINTEND
 };

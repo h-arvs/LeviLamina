@@ -3,10 +3,12 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
+#include "mc/deps/core/utility/NonOwnerPointer.h"
 #include "mc/util/DownloaderResult.h"
 
 // auto generated forward declare list
 // clang-format off
+class AppPlatform;
 class IFileChunkDownloader;
 class IFilePicker;
 namespace Core { class Path; }
@@ -27,6 +29,7 @@ public:
     ::ll::UntypedStorage<8, 24>  mUnkf288de;
     ::ll::UntypedStorage<8, 8>   mUnk646146;
     ::ll::UntypedStorage<8, 8>   mUnk1fa5e5;
+    ::ll::UntypedStorage<8, 24>  mUnk996181;
     ::ll::UntypedStorage<1, 1>   mUnkd59752;
     // NOLINTEND
 
@@ -57,8 +60,17 @@ public:
     // NOLINTBEGIN
 #ifdef LL_PLAT_C
     MCNAPI FileDownloadManager(
-        ::std::shared_ptr<::IFilePicker>          filePicker,
-        ::std::shared_ptr<::IFileChunkDownloader> fileDownloader
+        ::std::shared_ptr<::IFilePicker>             filePicker,
+        ::std::shared_ptr<::IFileChunkDownloader>    fileDownloader,
+        ::Bedrock::NotNullNonOwnerPtr<::AppPlatform> appPlatform
+    );
+
+    MCNAPI void _writeData(
+        ::std::vector<uchar>                data,
+        uint64                              writeBytes,
+        uint64                              offset,
+        uint64                              progress,
+        ::std::function<void(uint64, bool)> writeComplete
     );
 
     MCNAPI void downloadFile(
@@ -80,15 +92,20 @@ public:
     // constructor thunks
     // NOLINTBEGIN
 #ifdef LL_PLAT_C
-    MCNAPI void*
-    $ctor(::std::shared_ptr<::IFilePicker> filePicker, ::std::shared_ptr<::IFileChunkDownloader> fileDownloader);
+    MCNAPI void* $ctor(
+        ::std::shared_ptr<::IFilePicker>             filePicker,
+        ::std::shared_ptr<::IFileChunkDownloader>    fileDownloader,
+        ::Bedrock::NotNullNonOwnerPtr<::AppPlatform> appPlatform
+    );
 #endif
     // NOLINTEND
 
 public:
     // destructor thunk
     // NOLINTBEGIN
+#ifdef LL_PLAT_C
     MCNAPI void $dtor();
+#endif
     // NOLINTEND
 
 public:

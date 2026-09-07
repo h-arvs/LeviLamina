@@ -6,6 +6,7 @@
 #include "mc/comprehensive/ParticleType.h"
 #include "mc/deps/core/utility/optional_ref.h"
 #include "mc/world/level/block/BlockType.h"
+#include "mc/world/level/block/TorchFacing.h"
 
 // auto generated forward declare list
 // clang-format off
@@ -67,13 +68,19 @@ public:
     // NOLINTBEGIN
     MCAPI TorchBlock(::std::string const& nameId, int id, ::ParticleType flameParticle);
 
-#ifdef LL_PLAT_S
     MCAPI bool canBePlacedOn(::BlockSource& region, ::BlockPos const& pos, uchar facing) const;
-#endif
 
     MCAPI void onPlaceTorchBlock(::BlockEvents::BlockPlaceEvent& eventData) const;
 
     MCAPI void tick(::BlockEvents::BlockQueuedTickEvent& eventData) const;
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::std::add_lvalue_reference_t<::TorchFacing const[6]> DATA_FROM_FACING();
+
+    MCAPI static ::std::add_lvalue_reference_t<ushort const[6]> FACING_FROM_DATA();
     // NOLINTEND
 
 public:

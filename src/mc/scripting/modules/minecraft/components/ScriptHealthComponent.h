@@ -11,7 +11,6 @@
 // clang-format off
 namespace ScriptModuleMinecraft { struct ScriptInvalidActorError; }
 namespace Scripting { struct ArgumentOutOfBoundsError; }
-namespace Scripting { struct ClassBinding; }
 // clang-format on
 
 namespace ScriptModuleMinecraft {
@@ -34,20 +33,26 @@ public:
     // NOLINTEND
 
 public:
-    // static functions
+    // member functions
     // NOLINTBEGIN
-    MCAPI static ::Scripting::ClassBinding bind();
-    // NOLINTEND
-
-public:
-    // static variables
-    // NOLINTBEGIN
-    MCAPI static char const*& ComponentId();
+    MCAPI void notifyHealthChange(float const oldValue, float const newValue) const;
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI ::Scripting::Result_deprecated<bool> $setCurrent(float const& value) const;
+
+    MCAPI ::Scripting::
+        Result<bool, ::ScriptModuleMinecraft::ScriptInvalidActorError, ::Scripting::ArgumentOutOfBoundsError>
+        $setCurrentV2(float const& value) const;
+
+    MCAPI ::Scripting::Result_deprecated<void> $resetToMinValue() const;
+
+    MCAPI ::Scripting::Result_deprecated<void> $resetToMaxValue() const;
+
+    MCAPI ::Scripting::Result_deprecated<void> $resetToDefaultValue() const;
+
 
     // NOLINTEND
 };

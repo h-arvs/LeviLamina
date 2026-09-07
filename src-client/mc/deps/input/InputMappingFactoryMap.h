@@ -13,12 +13,6 @@ public:
     // NOLINTBEGIN
     virtual ~InputMappingFactoryMap() = default;
 
-    virtual ::InputMappingFactory& getInputMappingFactory(int) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual ::InputMappingFactory& getInputMappingFactory(int controllerId) = 0;
     // NOLINTEND
 };

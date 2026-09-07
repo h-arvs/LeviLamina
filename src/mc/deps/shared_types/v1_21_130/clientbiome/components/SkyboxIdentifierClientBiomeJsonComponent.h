@@ -25,13 +25,27 @@ public:
 public:
     // static variables
     // NOLINTBEGIN
+#ifdef LL_PLAT_S
+    MCAPI static ::std::add_lvalue_reference_t<char const[29]> SCHEMA_NAME();
+#endif
+
+#ifdef LL_PLAT_C
     MCAPI static ::std::add_lvalue_reference_t<char const[]> SCHEMA_NAME();
+#endif
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCFOLD ::ClientBiomeComponentVersion $getType() const;
 
+
+    // NOLINTEND
+
+public:
+    // vftables
+    // NOLINTBEGIN
+    MCNAPI static void** $vftable();
     // NOLINTEND
 };
 

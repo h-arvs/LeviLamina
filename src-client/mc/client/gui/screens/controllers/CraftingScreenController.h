@@ -13,6 +13,8 @@
 #include "mc/deps/shared_types/item/CreativeItemCategory.h"
 #include "mc/world/containers/ContainerEnumName.h"
 #include "mc/world/containers/SlotData.h"
+#include "mc/world/containers/controllers/ItemCraftType.h"
+#include "mc/world/containers/controllers/ItemTakeType.h"
 #include "mc/world/inventory/InventoryLeftTabIndex.h"
 #include "mc/world/item/ItemInstance.h"
 
@@ -26,6 +28,7 @@ class Player;
 class ToastMessage;
 class UIPropertyBag;
 struct ActorUniqueID;
+struct AutoPlaceResult;
 namespace Json { class Value; }
 // clang-format on
 
@@ -94,6 +97,8 @@ public:
     ::ll::TypedStorage<4, 4, int>                                         mTabFiltersDirty;
     ::ll::TypedStorage<4, 4, int>                                         mSelectedLeftTab;
     ::ll::TypedStorage<4, 4, int>                                         mSelectedRightTab;
+    ::ll::TypedStorage<8, 64, ::std::unordered_map<int, ::std::string>>   mRecipeHoverTextCache;
+    ::ll::TypedStorage<1, 1, bool>                                        mRecipeHoverTextCacheShowCategory;
     // NOLINTEND
 
 public:
@@ -115,7 +120,7 @@ public:
 
     virtual void addStaticScreenVars(::Json::Value& globalVars) /*override*/;
 
-    virtual void showToast(::ToastMessage, bool) /*override*/;
+    virtual void showToast(::ToastMessage message, bool animateIn) /*override*/;
 
     virtual void removeToast() /*override*/;
 
@@ -144,6 +149,8 @@ public:
 
     virtual ::ui::ViewRequest _onContainerSlotPressed(::std::string const& collectionName, int index) /*override*/;
 
+    virtual bool _onTouchScrollStartedWithSelectedSlot() /*override*/;
+
     virtual ::std::string _getCollectionName(::UIPropertyBag* bag) const /*override*/;
 
     virtual ::SlotData _reevaluateSlotData(::SlotData&& slotData) const /*override*/;
@@ -171,7 +178,7 @@ public:
 
     virtual void _registerAutoPlaceOrder() /*override*/;
 
-    virtual bool _isInCreativeContainer(::std::string const&) const /*override*/;
+    virtual bool _isInCreativeContainer(::std::string const& containerName) const /*override*/;
     // NOLINTEND
 
 public:
@@ -184,12 +191,62 @@ public:
         ::ActorUniqueID                                uniqueId,
         ::CraftingType                                 craftingType
     );
+
+    MCAPI bool _currentItemIsSelected(::std::string const& collectionName, int collectionIndex) const;
+
+    MCAPI void _cycleLayout(int dir);
+
+    MCAPI void _evacuateCraftingGrid();
+
+    MCAPI int _findNextLeftSideInventoryTab(int dir) const;
+
+    MCAPI void _focusCollectionItem(::std::string const& collectionName, int collectionIndex, bool forceFocus);
+
+    MCAPI void _handleCraftItem(::ItemCraftType);
+
+    MCAPI void _handleRecipeSelect(::std::string const& collectionName, int collectionIndex, bool displayOnly);
+
+    MCAPI bool _isConstructionTabVisible() const;
+
+    MCAPI bool _isEquipmentTabVisible() const;
+
+    MCAPI bool _isItemsTabVisible() const;
+
+    MCAPI bool _isNatureTabVisible() const;
+
+    MCAPI bool _isRecipeSlotCraftable(::SlotData const& slotData);
+
+    MCAPI ::ui::ViewRequest
+    _recipeAutoCraft(::std::string const& collectionName, int collectionIndex, ::ItemCraftType craftType);
+
+    MCAPI void _refreshFilters(::InventoryLeftTabIndex tab, bool forceRefresh);
+
+    MCAPI void _savePlayerInventoryOptions();
+
+    MCAPI void _sendActiveLayoutInfo();
+
+    MCAPI void _setLeftSideInventoryTab(int tabIndex, bool saveOptions);
+
+    MCAPI ::std::string _tabIndexToCollectionName(::InventoryLeftTabIndex index) const;
+
+    MCAPI int _tryAutoPlaceItemIntoContainer(
+        ::SlotData const&                 srcSlot,
+        ::ItemTakeType                    type,
+        ::ContainerEnumName               containerName,
+        ::std::vector<::AutoPlaceResult>& autoPlaceResults
+    );
     // NOLINTEND
 
 public:
     // static functions
     // NOLINTBEGIN
     MCAPI static void addStaticScreenVars(::Json::Value& globalVars, bool pocket);
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::std::vector<::CraftingScreenController::CategoryTabInfo> const& mCategoryTabs();
     // NOLINTEND
 
 public:
@@ -207,6 +264,73 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $onOpen();
 
+    MCAPI void $onEntered();
+
+    MCAPI void $onTerminate();
+
+    MCAPI ::ui::DirtyFlag $tick();
+
+    MCAPI void $addStaticScreenVars(::Json::Value& globalVars);
+
+    MCAPI void $showToast(::ToastMessage message, bool animateIn);
+
+    MCAPI void $removeToast();
+
+    MCAPI void $refreshToast();
+
+    MCAPI bool $_isStillValid() const;
+
+    MCAPI void $_handlePlaceAll(::std::string const& collectionName, int index);
+
+    MCAPI void $_handlePlaceOne(::std::string const& collectionName, int index);
+
+    MCAPI void $_handleSelectSlot(::std::string const& collectionName, int collectionIndex);
+
+    MCAPI ::ItemStackBase const&
+    $_getVisualItemStackImpl(::std::string const& collectionName, int collectionIndex) const;
+
+    MCAPI ::std::string $_getButtonADescription();
+
+    MCAPI ::std::string $_getButtonBDescription();
+
+    MCAPI ::std::string $_getButtonXDescription();
+
+    MCAPI ::std::string $_getButtonYDescription();
+
+    MCAPI ::ui::ViewRequest $_onContainerSlotHovered(::std::string const& collectionName, int index);
+
+    MCAPI ::ui::ViewRequest $_onContainerSlotPressed(::std::string const& collectionName, int index);
+
+    MCAPI bool $_onTouchScrollStartedWithSelectedSlot();
+
+    MCAPI ::std::string $_getCollectionName(::UIPropertyBag* bag) const;
+
+    MCAPI ::SlotData $_reevaluateSlotData(::SlotData&& slotData) const;
+
+    MCAPI bool $_shouldSwap(
+        ::std::string const& collectionName,
+        int                  collectionIndex,
+        ::std::string const& otherCollectionName,
+        int                  otherCollectionIndex
+    ) const;
+
+    MCAPI bool $_isTargetSwappable(::std::string const& otherCollectionName, int otherCollectionIndex) const;
+
+    MCAPI void $_sendFlyingItem(
+        ::ItemStackBase const& item,
+        ::std::string const&   fromName,
+        int                    fromIndex,
+        ::std::string const&   toName,
+        int                    toIndex,
+        ::FadeInIconBehavior   fadeInIconBehavior
+    );
+
+    MCAPI void $_registerCoalesceOrder();
+
+    MCAPI void $_registerAutoPlaceOrder();
+
+    MCAPI bool $_isInCreativeContainer(::std::string const& containerName) const;
     // NOLINTEND
 };

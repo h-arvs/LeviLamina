@@ -3,6 +3,7 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
+#include "mc/world/containers/controllers/ItemAddType.h"
 #include "mc/world/containers/controllers/ItemPlaceType.h"
 #include "mc/world/containers/controllers/ItemSetType.h"
 
@@ -30,35 +31,15 @@ public:
     // NOLINTBEGIN
     virtual ~ContainerController() = default;
 
-#ifdef LL_PLAT_S
-    virtual ::ItemInstance const& getRecipeItem(int) const;
-#else // LL_PLAT_C
-    virtual ::ItemInstance const& getRecipeItem(int index) const;
-#endif
+    virtual ::ItemInstance const& getRecipeItem(int slot) const;
 
-#ifdef LL_PLAT_S
-    virtual bool canRemove(int, int) const;
-#else // LL_PLAT_C
     virtual bool canRemove(int slot, int removeCount) const;
-#endif
 
-#ifdef LL_PLAT_S
-    virtual bool isItemAllowed(::ItemStackBase const&) const;
-#else // LL_PLAT_C
     virtual bool isItemAllowed(::ItemStackBase const& item) const;
-#endif
 
-#ifdef LL_PLAT_S
-    virtual bool isItemFiltered(::Recipes const&, ::ItemStackBase const&) const;
-#else // LL_PLAT_C
     virtual bool isItemFiltered(::Recipes const& recipes, ::ItemStackBase const& item) const;
-#endif
 
-#ifdef LL_PLAT_S
-    virtual int getBackgroundStyle(int, bool) const;
-#else // LL_PLAT_C
     virtual int getBackgroundStyle(int slot, bool inventoryContainsItem) const;
-#endif
 
 #ifdef LL_PLAT_S
     virtual ::ItemSetType
@@ -97,11 +78,20 @@ public:
     // member functions
     // NOLINTBEGIN
 #ifdef LL_PLAT_C
-    MCFOLD bool canConsume(int modelSlot, int removeCount) const;
+    MCAPI int _addItem(::ContainerScreenContext const& context, int modelSlot, int addCount);
 
-    MCFOLD bool canDestroy(int modelSlot, int removeCount) const;
+    MCAPI ::ItemAddType _canAdd(
+        ::ContainerScreenContext const& context,
+        int                             slot,
+        ::ItemStackBase const&          item,
+        ::ItemTransferAmount            transferAmount
+    ) const;
 
-    MCFOLD bool canDrop(int modelSlot, int removeCount) const;
+    MCAPI bool canConsume(int modelSlot, int removeCount) const;
+
+    MCAPI bool canDestroy(int modelSlot, int removeCount) const;
+
+    MCAPI bool canDrop(int modelSlot, int removeCount) const;
 
     MCAPI ::ItemSetType canSet(
         ::ContainerScreenContext const& context,
@@ -109,16 +99,6 @@ public:
         ::ItemStackBase const&          item,
         ::ItemTransferAmount            transferAmount,
         bool                            allowSwap
-    ) const;
-
-    MCAPI int
-    getAvailableAddCount(::ContainerScreenContext const& context, int modelSlot, ::ItemStackBase const& fillItem) const;
-
-    MCAPI int getAvailableAutoPlaceCount(
-        ::ContainerScreenContext const& context,
-        int                             slot,
-        ::ItemStackBase const&          fillItem,
-        bool                            allowClobber
     ) const;
 
     MCAPI ::ItemStack const& getItemStack(int slot) const;
@@ -139,7 +119,7 @@ public:
     // virtual function thunks
     // NOLINTBEGIN
 #ifdef LL_PLAT_C
-    MCFOLD ::ItemInstance const& $getRecipeItem(int index) const;
+    MCFOLD ::ItemInstance const& $getRecipeItem(int slot) const;
 
     MCAPI bool $canRemove(int slot, int removeCount) const;
 

@@ -9,6 +9,7 @@
 // clang-format off
 class BaseActorRenderContext;
 class BlockActor;
+class ClientPBRTextureData;
 class Model;
 class ScreenContext;
 class Tessellator;
@@ -16,6 +17,7 @@ class Vec3;
 struct ActorTextureInfo;
 struct BlockActorRenderData;
 struct NameTagRenderObject;
+struct PBRTexturePtrs;
 namespace dragon { struct RenderMetadata; }
 namespace mce { class MaterialPtr; }
 namespace mce { struct ClientTexture; }
@@ -27,7 +29,7 @@ public:
     // NOLINTBEGIN
     virtual ~BlockActorRenderer() /*override*/ = default;
 
-    virtual void render(::BaseActorRenderContext&, ::BlockActorRenderData&) = 0;
+    virtual void render(::BaseActorRenderContext& renderContext, ::BlockActorRenderData& blockEntityRenderData) = 0;
 
     virtual void renderAlpha(::BaseActorRenderContext& renderContext, ::BlockActorRenderData& blockEntityRenderData);
 
@@ -47,7 +49,47 @@ public:
         ::ScreenContext&                screenContext,
         ::dragon::RenderMetadata const& renderMetadata,
         ::Model&                        model,
+        ::ClientPBRTextureData const&   actorTextureData
+    ) const;
+
+    MCAPI void _renderModel(
+        ::ScreenContext&                screenContext,
+        ::dragon::RenderMetadata const& renderMetadata,
+        ::Model&                        model,
+        ::ActorTextureInfo const&       actorTextureInfo
+    ) const;
+
+    MCAPI void _renderModel(
+        ::ScreenContext&                screenContext,
+        ::dragon::RenderMetadata const& renderMetadata,
+        ::Model&                        model,
+        ::ClientPBRTextureData const&   actorTextureData,
+        ::mce::MaterialPtr const&       forcedMaterial
+    ) const;
+
+    MCAPI void _renderModel(
+        ::ScreenContext&                screenContext,
+        ::dragon::RenderMetadata const& renderMetadata,
+        ::Model&                        model,
         ::ActorTextureInfo const&       actorTextureInfo,
+        ::mce::MaterialPtr const&       forcedMaterial,
+        ::mce::ClientTexture const&     forcedTexture
+    ) const;
+
+    MCAPI void _renderModel(
+        ::ScreenContext&                screenContext,
+        ::dragon::RenderMetadata const& renderMetadata,
+        ::Model&                        model,
+        ::PBRTexturePtrs const&         actorTexturePtrs,
+        ::mce::MaterialPtr const&       forcedMaterial,
+        ::mce::ClientTexture const&     forcedTexture
+    ) const;
+
+    MCAPI void _renderModel(
+        ::ScreenContext&                screenContext,
+        ::dragon::RenderMetadata const& renderMetadata,
+        ::Model&                        model,
+        ::mce::ClientTexture const&     texture,
         ::mce::MaterialPtr const&       forcedMaterial,
         ::mce::ClientTexture const&     forcedTexture
     ) const;

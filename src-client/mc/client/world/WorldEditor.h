@@ -81,7 +81,20 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
+    MCAPI WorldEditor(
+        ::ILevelListCache&                                levelListCache,
+        bool                                              isEduMode,
+        ::World::IWorldResourcePackHandler&               worldResourcePackHandler,
+        ::World::IWorldStorageHandler&                    worldStorageHandler,
+        ::std::unique_ptr<::World::IWorldTemplateHandler> worldTemplateHandler
+    );
+
     MCAPI ::LevelSummary& _addLevelSummary(::World::WorldID const& worldID);
+
+    MCAPI void _addWorldEditorEntry(
+        ::World::WorldID const&                               worldID,
+        ::World::IWorldStorageHandler::CachedWorldData const& cachedWorldData
+    );
 
     MCAPI bool _closeWorld(::World::WorldID const& worldID);
 
@@ -174,9 +187,23 @@ public:
     // NOLINTEND
 
 public:
+    // constructor thunks
+    // NOLINTBEGIN
+    MCAPI void* $ctor(
+        ::ILevelListCache&                                levelListCache,
+        bool                                              isEduMode,
+        ::World::IWorldResourcePackHandler&               worldResourcePackHandler,
+        ::World::IWorldStorageHandler&                    worldStorageHandler,
+        ::std::unique_ptr<::World::IWorldTemplateHandler> worldTemplateHandler
+    );
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $onLevelDeleted(::std::string const& levelId);
 
+    MCAPI void $onLevelUpdated(::std::string const& levelId);
     // NOLINTEND
 };
 

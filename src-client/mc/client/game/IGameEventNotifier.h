@@ -11,12 +11,6 @@ public:
     // NOLINTBEGIN
     virtual ~IGameEventNotifier() = default;
 
-    virtual void onGameEventNotification(::ui::GameEventNotification) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual void onGameEventNotification(::ui::GameEventNotification notification) = 0;
     // NOLINTEND
 };

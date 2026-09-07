@@ -72,35 +72,19 @@ public:
     // NOLINTBEGIN
     virtual ~SparseContainer() /*override*/ = default;
 
-#ifdef LL_PLAT_S
-    virtual ::ItemStack const& getItem(int) const /*override*/;
-#else // LL_PLAT_C
     virtual ::ItemStack const& getItem(int slot) const /*override*/;
-#endif
 
     virtual int getContainerSize() const /*override*/;
 
     virtual int getMaxStackSize() const /*override*/;
 
-#ifdef LL_PLAT_S
-    virtual void containerContentChanged(int) /*override*/;
-#else // LL_PLAT_C
     virtual void containerContentChanged(int slot) /*override*/;
-#endif
 
-#ifdef LL_PLAT_S
-    virtual void setItem(int, ::ItemStack const&) /*override*/;
-#else // LL_PLAT_C
     virtual void setItem(int slot, ::ItemStack const& item) /*override*/;
-#endif
 
     virtual void serverInitItemStackIds(int, int, ::std::function<void(int, ::ItemStack const&)>) /*override*/;
 
-#ifdef LL_PLAT_S
-    virtual void startOpen(::Actor&) /*override*/;
-#else // LL_PLAT_C
     virtual void startOpen(::Actor& actor) /*override*/;
-#endif
 
     virtual void stopOpen(::Actor& actor) /*override*/;
 
@@ -111,15 +95,6 @@ public:
     // member functions
     // NOLINTBEGIN
 #ifdef LL_PLAT_C
-    MCAPI SparseContainer(
-        ::Container&                                     backingContainer,
-        ::SparseContainerBackingSetType                  backingSetType,
-        bool                                             isClientSide,
-        bool                                             isItemStackNetManagerEnabled,
-        ::std::unique_ptr<::ISparseContainerSetListener> netManagerSetter,
-        ::std::unique_ptr<::IPlayerContainerSetter>      playerSetter
-    );
-
     MCAPI int _getAvailableAddCount(
         ::ContainerScreenContext const& context,
         ::ContainerEnumName             name,
@@ -199,21 +174,6 @@ public:
 #endif
 
     MCAPI void removeItemNetworkChangedCallback(::ContainerEnumName name);
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-#ifdef LL_PLAT_C
-    MCAPI void* $ctor(
-        ::Container&                                     backingContainer,
-        ::SparseContainerBackingSetType                  backingSetType,
-        bool                                             isClientSide,
-        bool                                             isItemStackNetManagerEnabled,
-        ::std::unique_ptr<::ISparseContainerSetListener> netManagerSetter,
-        ::std::unique_ptr<::IPlayerContainerSetter>      playerSetter
-    );
-#endif
     // NOLINTEND
 
 public:

@@ -39,8 +39,15 @@ public:
     MCNAPI explicit StorageAreaState(::Core::PathView storageAreaRootPath);
 
 #ifdef LL_PLAT_C
-    MCNAPI void addListener(::Core::StorageAreaStateListener* l);
+    MCNAPI void _fireExtendDiskSpaceEvent(
+        bool const                                      bSet,
+        ::std::weak_ptr<::Core::FileStorageArea> const& fileStorageAreaWeakPtr,
+        uint64                                          freeSpace,
+        ::std::function<void()>                         onHandledEventCallback
+    );
 #endif
+
+    MCNAPI void addListener(::Core::StorageAreaStateListener* l);
 
     MCNAPI void checkUserStorage(
         ::std::shared_ptr<::Core::FileStorageArea> const& fileStorageArea,

@@ -39,4 +39,11 @@ public:
 
     MCAPI void updateNeighboringBlocks(::BlockSource& source, ::Vec3 const& perpendicularAxis) const;
     // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static int
+    _getDistanceUntilEdge(::BlockPos const& pos, ::Facing::Name direction, ::BlockSource const& source);
+    // NOLINTEND
 };

@@ -110,7 +110,7 @@ public:
 
     virtual bool hasCustomGroup(::mce::UUID const& minimapId, ::std::string const& iconIdentifier) const = 0;
 
-    virtual ::std::string generateMinimapImage(::mce::UUID const& minimapId, ::Vec3 const& playerPosition) = 0;
+    virtual uint updateMinimapImage(::mce::UUID const& minimapId, ::Vec3 const& playerPosition) = 0;
 
     virtual ::std::vector<::Editor::Services::MinimapMarkerData>
     getAllMarkers(::mce::UUID const& minimapId, ::DimensionType currentDimension) const = 0;
@@ -133,12 +133,6 @@ public:
     listenForMarkersChanged(::std::function<void(::mce::UUID const&)> callback) = 0;
 
     virtual ::Bedrock::PubSub::Subscription listenForMeMarkerChanged(::std::function<void()> callback) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };
 

@@ -5,6 +5,7 @@
 // auto generated inclusion list
 #include "mc/client/gui/SettingsModalType.h"
 #include "mc/client/gui/SettingsTabIndex.h"
+#include "mc/client/gui/oreui/interface/RouteType.h"
 #include "mc/client/gui/oreui/routing/IEntryPoint.h"
 #include "mc/deps/core/utility/NonOwnerPointer.h"
 
@@ -17,6 +18,7 @@ class SceneFactory;
 class ServerInstance;
 class TaskGroup;
 namespace OreUI { class RouteMatcher; }
+namespace OreUI { struct RouteAction; }
 namespace ui { class ScreenTechStackSelector; }
 // clang-format on
 
@@ -47,9 +49,11 @@ public:
     // NOLINTBEGIN
     virtual bool shouldAddToConfiguration() const /*override*/;
 
-    virtual void
-    addToMatcher(::OreUI::RouteMatcher&, ::SceneFactory&, ::Bedrock::NotNullNonOwnerPtr<::ISceneStack> const&) const
-        /*override*/;
+    virtual void addToMatcher(
+        ::OreUI::RouteMatcher&                              routeMatcher,
+        ::SceneFactory&                                     sceneFactory,
+        ::Bedrock::NotNullNonOwnerPtr<::ISceneStack> const& sceneStack
+    ) const /*override*/;
     // NOLINTEND
 
 public:
@@ -64,12 +68,23 @@ public:
         ::std::weak_ptr<::RealmsAPI>          realms,
         ::ui::ScreenTechStackSelector&        screenTechStackSelector
     );
+
+    MCAPI void _navigateToScreen(
+        ::SettingsTabIndex                                  tabIndex,
+        ::std::string const&                                path,
+        ::SceneFactory&                                     sceneFactory,
+        ::Bedrock::NotNullNonOwnerPtr<::ISceneStack> const& sceneStack,
+        ::OreUI::RouteAction const&                         routeAction,
+        bool                                                fullscreen,
+        bool                                                skipLegacyProgress,
+        bool                                                legacySyncOnly
+    ) const;
     // NOLINTEND
 
 public:
     // static functions
     // NOLINTBEGIN
-    MCAPI static ::std::optional<::std::string> composeRoute(::SettingsTabIndex tabIndex);
+    MCAPI static ::std::optional<::std::string> composeRoute(::SettingsTabIndex tabIndex, ::OreUI::RouteType routeType);
 
     MCAPI static ::std::string defaultRoute();
 
@@ -106,7 +121,13 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCFOLD bool $shouldAddToConfiguration() const;
 
+    MCAPI void $addToMatcher(
+        ::OreUI::RouteMatcher&                              routeMatcher,
+        ::SceneFactory&                                     sceneFactory,
+        ::Bedrock::NotNullNonOwnerPtr<::ISceneStack> const& sceneStack
+    ) const;
     // NOLINTEND
 };
 

@@ -20,6 +20,7 @@ class ILevelStorageManagerConnector;
 class Level;
 class LevelStorage;
 class TickingAreaList;
+struct ActorUniqueID;
 struct PendingArea;
 struct TickingAreaDescription;
 // clang-format on
@@ -106,6 +107,15 @@ public:
 
     MCAPI void addEntityArea(::DimensionType dimensionId, ::Actor const& actor, ::LevelStorage& levelStorage);
 
+    MCAPI void addEntityArea(
+        ::DimensionType        dimensionId,
+        ::ActorUniqueID const& entityId,
+        ::Bounds               bounds,
+        bool                   alwaysActive,
+        float                  maxDistToPlayers,
+        ::LevelStorage&        levelStorage
+    );
+
     MCAPI void addTickingAreaListForDimension(
         ::DimensionType                             dimensionId,
         ::std::shared_ptr<::TickingAreaList> const& tickingAreaList
@@ -153,6 +163,11 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
+    MCAPI static void _deletePendingArea(::LevelStorage& levelStorage, ::PendingArea const& pendingArea);
+
+    MCAPI static void
+    _savePendingArea(::LevelStorage& levelStorage, ::DimensionType dimensionId, ::PendingArea const& pendingArea);
+
     MCAPI static ::TickingAreasManager::AreaLimitCheck getLimitCheck(::Level const& level, bool enforce);
     // NOLINTEND
 

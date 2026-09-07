@@ -15,13 +15,7 @@ public:
     // NOLINTBEGIN
     virtual ~StaticStunServer() = default;
 
-    virtual ::std::optional<::webrtc::SocketAddress> Reflect(::webrtc::SocketAddress const&) const = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual ::std::optional<::webrtc::SocketAddress> Reflect(::webrtc::SocketAddress const& local) const = 0;
     // NOLINTEND
 };
 

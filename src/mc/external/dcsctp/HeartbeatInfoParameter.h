@@ -35,14 +35,13 @@ public:
 
     virtual ::std::string ToString() const /*override*/;
 
-    virtual ~HeartbeatInfoParameter() /*override*/;
+    virtual ~HeartbeatInfoParameter() /*override*/ = default;
     // NOLINTEND
 
 public:
     // static functions
     // NOLINTBEGIN
-    MCNAPI static ::std::optional<::dcsctp::HeartbeatInfoParameter>
-    Parse(::webrtc::ArrayView<uchar const, 18446744073709546905> data);
+    MCNAPI static ::std::optional<::dcsctp::HeartbeatInfoParameter> Parse(::webrtc::ArrayView<uchar const> data);
     // NOLINTEND
 
 public:

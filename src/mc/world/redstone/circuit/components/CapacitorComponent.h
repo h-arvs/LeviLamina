@@ -24,6 +24,8 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI ::CircuitComponentType $getCircuitComponentType() const;
+
 
     // NOLINTEND
 };

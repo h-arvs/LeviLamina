@@ -17,18 +17,15 @@ public:
     // NOLINTBEGIN
     virtual ~IAsyncResourceHandler() = default;
 
-    virtual void OnResourceRequest(::cohtml::IAsyncResourceRequest const*, ::cohtml::IAsyncResourceResponse*) = 0;
-
     virtual void
-    OnResourceStreamRequest(::cohtml::IAsyncResourceRequest const*, ::cohtml::IAsyncResourceStreamResponse*) = 0;
+    OnResourceRequest(::cohtml::IAsyncResourceRequest const* request, ::cohtml::IAsyncResourceResponse* response) = 0;
+
+    virtual void OnResourceStreamRequest(
+        ::cohtml::IAsyncResourceRequest const*  request,
+        ::cohtml::IAsyncResourceStreamResponse* response
+    ) = 0;
 
     virtual void OnAbortResourceRequest(uint) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };
 

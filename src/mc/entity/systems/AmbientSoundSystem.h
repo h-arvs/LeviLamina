@@ -7,6 +7,8 @@
 
 // auto generated forward declare list
 // clang-format off
+class ActorOwnerComponent;
+class AmbientSoundComponent;
 class EntityRegistry;
 // clang-format on
 
@@ -14,12 +16,18 @@ class AmbientSoundSystem : public ::ITickingSystem {
 public:
     // virtual functions
     // NOLINTBEGIN
-#ifdef LL_PLAT_S
-    virtual void tick(::EntityRegistry&) /*override*/;
-#else // LL_PLAT_C
     virtual void tick(::EntityRegistry& registry) /*override*/;
-#endif
+    // NOLINTEND
 
+public:
+    // static functions
+    // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCAPI static void _tickAmbientSoundComponent(
+        ::ActorOwnerComponent&   actorOwnerComponent,
+        ::AmbientSoundComponent& ambientSoundComponent
+    );
+#endif
     // NOLINTEND
 
 public:

@@ -33,10 +33,4 @@ public:
         ::std::unordered_set<::mce::UUID>&
     ) /*override*/;
     // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
-    // NOLINTEND
 };

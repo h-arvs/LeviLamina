@@ -9,7 +9,6 @@
 
 // auto generated forward declare list
 // clang-format off
-class BlockPalette;
 class ItemStack;
 class ReadOnlyBinaryStream;
 // clang-format on
@@ -30,15 +29,17 @@ public:
     NetworkItemStackDescriptor();
 
 public:
+    // virtual functions
+    // NOLINTBEGIN
+    virtual ~NetworkItemStackDescriptor() /*override*/;
+    // NOLINTEND
+
+public:
     // member functions
     // NOLINTBEGIN
     MCAPI NetworkItemStackDescriptor(::NetworkItemStackDescriptor const&);
 
     MCAPI explicit NetworkItemStackDescriptor(::ItemStack const& item);
-
-#ifdef LL_PLAT_C
-    MCAPI ::ItemStack getItemStack(::BlockPalette const& blockPalette) const;
-#endif
 
     MCAPI bool operator==(::NetworkItemStackDescriptor const& rhs) const;
 
@@ -51,6 +52,12 @@ public:
     MCAPI void* $ctor(::NetworkItemStackDescriptor const&);
 
     MCAPI void* $ctor(::ItemStack const& item);
+    // NOLINTEND
+
+public:
+    // destructor thunk
+    // NOLINTBEGIN
+    MCFOLD void $dtor();
     // NOLINTEND
 
 public:

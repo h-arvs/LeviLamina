@@ -4,6 +4,7 @@
 
 // auto generated inclusion list
 #include "mc/client/gui/oreui/binding/FacetBase_DEPRECATED.h"
+#include "mc/client/gui/oreui/binding/FacetTaskState.h"
 #include "mc/client/gui/oreui/binding/FacetTaskTracker.h"
 #include "mc/client/network/realms/World.h"
 #include "mc/client/realms/RealmsMembership.h"
@@ -23,7 +24,7 @@ public:
     ::ll::TypedStorage<8, 16, ::std::shared_ptr<bool>>                                     mLifeTimeTracker;
     ::ll::TypedStorage<1, 2, ::std::optional<::Realms::RealmsMembership::FetchRealmError>> mFetchRealmError;
     ::ll::TypedStorage<1, 2, ::std::optional<::Realms::RealmsMembership::JoinRealmError>>  mJoinRealmError;
-    ::ll::TypedStorage<8, 672, ::OreUI::FacetTaskTracker<::Realms::World>>                 mFetchRealmTaskTracker;
+    ::ll::TypedStorage<8, 736, ::OreUI::FacetTaskTracker<::Realms::World>>                 mFetchRealmTaskTracker;
     ::ll::TypedStorage<8, 80, ::OreUI::FacetTaskTracker<::Realms::RealmsMembership::JoinRealmResult>>
                                                                            mJoinRealmTaskTracker;
     ::ll::TypedStorage<1, 1, ::Realms::RealmsMembership::LeaveRealmResult> mLeaveRealmResult;
@@ -44,6 +45,36 @@ public:
     // member functions
     // NOLINTBEGIN
     MCAPI explicit RealmsMembershipFacet(::std::shared_ptr<::Realms::RealmsMembership> realmsJoinRealm);
+
+    MCAPI void clearFetchRealm();
+
+    MCAPI void clearJoinRealm();
+
+    MCAPI void clearLeaveRealm();
+
+    MCAPI void fetchRealm(::std::string const& inviteCode);
+
+    MCFOLD ::std::optional<::Realms::RealmsMembership::FetchRealmError> const& getFetchRealmError() const;
+
+    MCFOLD ::std::optional<::Realms::World> const& getFetchRealmResult() const;
+
+    MCFOLD ::OreUI::FacetTaskState const getFetchRealmTaskProgress() const;
+
+    MCAPI ::std::optional<::Realms::RealmsMembership::JoinRealmError> const& getJoinRealmError() const;
+
+    MCAPI ::OreUI::FacetTaskState getJoinRealmTaskProgress() const;
+
+    MCAPI ::std::string const& getJoinedRealmId() const;
+
+    MCAPI ::std::string const& getJoinedRealmName() const;
+
+    MCAPI ::Realms::RealmsMembership::LeaveRealmResult const& getLeaveRealmResult() const;
+
+    MCFOLD ::OreUI::FacetTaskState getLeaveRealmTaskProgress() const;
+
+    MCAPI void joinRealm(::std::string const& inviteCode);
+
+    MCAPI void leaveRealm(int64 worldId);
     // NOLINTEND
 
 public:

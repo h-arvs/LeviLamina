@@ -11,7 +11,9 @@
 class Block;
 class BlockPos;
 class BoundingBox;
+class ChunkSource;
 class Dimension;
+class LevelChunk;
 struct Bounds;
 namespace Editor { class RelativeVolumeListBlockVolume; }
 namespace Editor { struct ProjectRegionConfig; }
@@ -50,12 +52,12 @@ public:
     public:
         // member variables
         // NOLINTBEGIN
-        ::ll::UntypedStorage<8, 16> mUnk50f21a;
-        ::ll::UntypedStorage<8, 8>  mUnkc56775;
-        ::ll::UntypedStorage<8, 88> mUnk63a12f;
-        ::ll::UntypedStorage<8, 64> mUnka710be;
-        ::ll::UntypedStorage<8, 24> mUnk2429f3;
-        ::ll::UntypedStorage<1, 1>  mUnk17d311;
+        ::ll::UntypedStorage<8, 16>  mUnk50f21a;
+        ::ll::UntypedStorage<8, 8>   mUnkc56775;
+        ::ll::UntypedStorage<8, 112> mUnk63a12f;
+        ::ll::UntypedStorage<8, 64>  mUnka710be;
+        ::ll::UntypedStorage<8, 24>  mUnk2429f3;
+        ::ll::UntypedStorage<1, 1>   mUnk17d311;
         // NOLINTEND
 
     public:
@@ -102,7 +104,11 @@ public:
 
     MCNAPI void _discardRequests();
 
+    MCNAPI void _initialize(::Dimension& dimension);
+
     MCNAPI bool _isBoundsAvailable(::Bounds const& bounds) const;
+
+    MCNAPI void _onChunkLoaded(::ChunkSource&, ::LevelChunk& levelChunk, int);
 
     MCNAPI void _processAvailability();
 

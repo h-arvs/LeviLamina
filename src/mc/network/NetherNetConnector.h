@@ -16,6 +16,7 @@
 // clang-format off
 class NetherNetTransportFactory;
 class NetworkIdentifier;
+class PrivateKeyManager;
 class WebRTCNetworkPeer;
 struct ConnectionDefinition;
 namespace Bedrock::Http { class LibHttpClientInstance; }
@@ -132,7 +133,7 @@ public:
 
     virtual void setDisableLanSignaling(bool disableLanSignaling) /*override*/;
 
-    virtual bool host(::ConnectionDefinition const& definition) /*override*/;
+    virtual bool host(::ConnectionDefinition const& definition, ::PrivateKeyManager const& keys) /*override*/;
 
 #ifdef LL_PLAT_S
     virtual bool connect(
@@ -190,6 +191,17 @@ public:
         ::std::optional<::NetherNet::NetworkID> networkId
     );
 
+#ifdef LL_PLAT_C
+    MCAPI void _createEventQueue();
+
+    MCAPI ::gsl::not_null<::std::shared_ptr<::WebRTCNetworkPeer>> _getOrCreatePeer(
+        ::NetherNet::NetworkID const& remoteId,
+        uint64                        sessionId,
+        bool                          isLan,
+        ::Bedrock::Threading::UniqueLock<::std::recursive_mutex> const&
+    );
+#endif
+
     MCAPI void setBroadcastRequestCallback(::std::function<bool(void*, int*)>&& broadcastRequestCallback);
 
     MCAPI void setBroadcastResponseCallback(
@@ -220,11 +232,21 @@ public:
 
     MCAPI void $setDisableLanSignaling(bool disableLanSignaling);
 
+    MCFOLD bool $host(::ConnectionDefinition const& definition, ::PrivateKeyManager const& keys);
+
+#ifdef LL_PLAT_S
     MCAPI bool $connect(
         ::Social::GameConnectionInfo const&,
         ::Social::GameConnectionInfo const&,
         ::std::shared_ptr<::NetherNet::IIdentityAssertionGenerator>
     );
+#else // LL_PLAT_C
+    MCAPI bool $connect(
+        ::Social::GameConnectionInfo const&                         primaryConnection,
+        ::Social::GameConnectionInfo const&                         backupConnection,
+        ::std::shared_ptr<::NetherNet::IIdentityAssertionGenerator> identityGenerator
+    );
+#endif
 
     MCFOLD void $tick();
 
@@ -256,10 +278,6 @@ public:
     MCAPI bool $OnBroadcastDiscoveryRequestReceivedGetResponse(void* pApplicationData, int* pSize);
 
     MCAPI void $OnSessionGetConnectionFlags(::NetherNet::NetworkID, uint* flags);
-
-#ifdef LL_PLAT_C
-    MCFOLD bool $host(::ConnectionDefinition const& definition);
-#endif
 
 
     // NOLINTEND

@@ -33,12 +33,6 @@ public:
 
         virtual void OnEncodedSinkEnabled(bool enable) = 0;
         // NOLINTEND
-
-    public:
-        // virtual function thunks
-        // NOLINTBEGIN
-
-        // NOLINTEND
     };
 
 public:
@@ -70,7 +64,7 @@ public:
 
     virtual void RemoveEncodedSink(::webrtc::VideoSinkInterface<::webrtc::RecordableEncodedFrame>* sink) /*override*/;
 
-    virtual ~VideoRtpTrackSource() /*override*/;
+    virtual ~VideoRtpTrackSource() /*override*/ = default;
     // NOLINTEND
 
 public:

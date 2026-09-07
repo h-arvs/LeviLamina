@@ -51,6 +51,8 @@ public:
     virtual bool equals(::Tag const& rhs) const /*override*/;
 
     virtual void deleteChildren() /*override*/;
+
+    virtual ~ListTag() /*override*/;
     // NOLINTEND
 
 public:
@@ -60,7 +62,17 @@ public:
 
     MCAPI ::std::unique_ptr<::ListTag> copyList() const;
 
+    MCAPI ::Bedrock::Result<void> load(::IDataInput& dis, int depth);
+
     MCAPI ::ListTag& operator=(::ListTag&&);
+
+    MCAPI void write(::IDataOutput& dos, int depth) const;
+    // NOLINTEND
+
+public:
+    // destructor thunk
+    // NOLINTBEGIN
+    MCAPI void $dtor();
     // NOLINTEND
 
 public:

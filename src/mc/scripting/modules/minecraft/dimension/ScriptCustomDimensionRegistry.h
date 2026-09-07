@@ -5,6 +5,7 @@
 // auto generated inclusion list
 #include "mc/deps/core/string/HashedString.h"
 #include "mc/deps/core/utility/pub_sub/Subscription.h"
+#include "mc/platform/UUID.h"
 #include "mc/scripting/modules/minecraft/ScriptServerStateMonitor.h"
 
 // auto generated forward declare list
@@ -27,7 +28,8 @@ public:
     public:
         // member variables
         // NOLINTBEGIN
-        ::ll::TypedStorage<1, 1, bool> mInitalized;
+        ::ll::TypedStorage<1, 1, bool>         mInitialized;
+        ::ll::TypedStorage<8, 16, ::mce::UUID> mPackId;
         // NOLINTEND
     };
 
@@ -60,6 +62,8 @@ public:
     // member functions
     // NOLINTBEGIN
     MCAPI ScriptCustomDimensionRegistry(::ServerScriptManagerEvents& events, ::DimensionManager& dimensionManager);
+
+    MCAPI void _onReadyForCustomDimensionRegistration(::DimensionManager& dimensionManager);
     // NOLINTEND
 
 public:
@@ -71,6 +75,10 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $_onReload();
+
+    MCAPI void $_onScriptModuleStartupComplete();
+
 
     // NOLINTEND
 };

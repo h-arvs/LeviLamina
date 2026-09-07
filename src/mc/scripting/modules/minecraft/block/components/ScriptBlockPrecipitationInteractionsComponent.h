@@ -3,29 +3,38 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
+#include "mc/deps/script_core/runtime/scripting/Result.h"
 #include "mc/scripting/modules/minecraft/block/components/BaseScriptBlockComponent.h"
 
 // auto generated forward declare list
 // clang-format off
-namespace Scripting { class Release; }
-namespace Scripting { struct ClassBinding; }
+namespace ScriptModuleMinecraft { struct ScriptLocationInUnloadedChunkError; }
+namespace ScriptModuleMinecraft { struct ScriptLocationOutOfWorldBoundsError; }
 // clang-format on
 
 namespace ScriptModuleMinecraft {
 
 class ScriptBlockPrecipitationInteractionsComponent : public ::ScriptModuleMinecraft::BaseScriptBlockComponent {
 public:
-    // static functions
+    // member functions
     // NOLINTBEGIN
-    MCAPI static ::Scripting::ClassBinding bind();
+    MCAPI ::Scripting::Result<
+        bool,
+        ::ScriptModuleMinecraft::ScriptLocationInUnloadedChunkError,
+        ::ScriptModuleMinecraft::ScriptLocationOutOfWorldBoundsError>
+    accumulatesSnow() const;
 
-    MCFOLD static ::std::optional<::Scripting::Release> overrideEnumVersion();
-    // NOLINTEND
+    MCAPI ::Scripting::Result<
+        bool,
+        ::ScriptModuleMinecraft::ScriptLocationInUnloadedChunkError,
+        ::ScriptModuleMinecraft::ScriptLocationOutOfWorldBoundsError>
+    isSnowLoggable() const;
 
-public:
-    // static variables
-    // NOLINTBEGIN
-    MCAPI static char const*& ComponentId();
+    MCAPI ::Scripting::Result<
+        bool,
+        ::ScriptModuleMinecraft::ScriptLocationInUnloadedChunkError,
+        ::ScriptModuleMinecraft::ScriptLocationOutOfWorldBoundsError>
+    obstructsRain() const;
     // NOLINTEND
 };
 

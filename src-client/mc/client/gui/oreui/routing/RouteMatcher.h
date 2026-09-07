@@ -51,8 +51,6 @@ public:
             ::std::function<bool()>                                                  isActiveCallback,
             ::std::function<void(::std::string const&, ::OreUI::RouteHistoryAction)> matchCallback
         );
-
-        MCAPI ~RouteEntry();
         // NOLINTEND
 
     public:
@@ -67,12 +65,6 @@ public:
             ::std::function<bool()>                                                  isActiveCallback,
             ::std::function<void(::std::string const&, ::OreUI::RouteHistoryAction)> matchCallback
         );
-        // NOLINTEND
-
-    public:
-        // destructor thunk
-        // NOLINTBEGIN
-        MCAPI void $dtor();
         // NOLINTEND
     };
 
@@ -174,6 +166,10 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
+    MCAPI ::std::optional<::OreUI::RouteMatcher::RedirectEntry> _matchRedirect(::std::string const& route) const;
+
+    MCAPI ::std::optional<::OreUI::RouteMatcher::RouteEntry> _matchRoute(::std::string const& route) const;
+
     MCAPI void addRedirect(
         ::std::string const&                                 path,
         ::std::function<bool()>                              isActiveCallback,
@@ -211,12 +207,6 @@ public:
     MCAPI ::OreUI::RouteMode $getRouteMode(::std::string const& route) const;
 
     MCAPI ::OreUI::RoutePrerequisite $getRoutePrerequisite(::std::string const& route) const;
-    // NOLINTEND
-
-public:
-    // vftables
-    // NOLINTBEGIN
-    MCNAPI static void** $vftable();
     // NOLINTEND
 };
 

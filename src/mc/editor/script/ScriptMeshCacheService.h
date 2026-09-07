@@ -3,14 +3,16 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
+#include "mc/deps/script_core/runtime/scripting/Result_deprecated.h"
 #include "mc/editor/services/PayloadStoreHelper.h"
 
 // auto generated forward declare list
 // clang-format off
+namespace Editor { class EditorManager; }
 namespace Editor { class ServiceProviderCollection; }
+namespace Editor::Services { class TransactionManagerServiceProvider; }
 namespace Scripting { class WeakLifetimeScope; }
 namespace Scripting { struct ClassBinding; }
-namespace Scripting { struct EnumBinding; }
 // clang-format on
 
 namespace Editor::ScriptModule {
@@ -80,6 +82,7 @@ public:
     ::ll::UntypedStorage<8, 16>  mUnk545102;
     ::ll::UntypedStorage<8, 16>  mUnk2122b6;
     ::ll::UntypedStorage<8, 16>  mUnk847939;
+    ::ll::UntypedStorage<8, 16>  mUnke21971;
     // NOLINTEND
 
 public:
@@ -93,16 +96,39 @@ public:
     // NOLINTBEGIN
     MCNAPI ScriptMeshCacheService(::Editor::ServiceProviderCollection& services, ::Scripting::WeakLifetimeScope const&);
 
+    MCNAPI void
+    _finishActiveCommit(::std::string const& requestId, bool clientSuccess, ::std::string const& clientError);
+
+    MCNAPI void _onLevelTick(::Editor::EditorManager&);
+
+    MCNAPI void _processPendingRevertChunk();
+
+    MCNAPI void _rejectCommitPromise(::std::string const& requestId, ::std::string const& errorCode);
+
+    MCNAPI void _resolveCommitPromise(
+        ::std::string const& requestId,
+        bool                 isSuccess,
+        int                  blockCount,
+        ::std::string const& errorMessage
+    );
+
+    MCNAPI void _revertAppliedBlocksAndDiscard(
+        ::Editor::Services::TransactionManagerServiceProvider& transactionManager,
+        ::std::function<void()>                                onComplete
+    );
+
+    MCNAPI void _sendCommitCancelIfNeeded();
+
+    MCNAPI ::Scripting::Result_deprecated<void> cancelCommit(::std::string const& requestId);
+
+    MCNAPI ::Scripting::Result_deprecated<void> unloadMesh(::std::string const& meshId);
+
     MCNAPI ~ScriptMeshCacheService();
     // NOLINTEND
 
 public:
     // static functions
     // NOLINTBEGIN
-    MCNAPI static ::Scripting::EnumBinding bindMeshLoadError();
-
-    MCNAPI static ::Scripting::EnumBinding bindMeshPlacementError();
-
     MCNAPI static ::Scripting::ClassBinding bindScript();
     // NOLINTEND
 

@@ -31,6 +31,7 @@ class Config;
 class DevConsoleLogger;
 class GuiMessage;
 class IClientInstance;
+class ItemStackBase;
 class TextObjectRoot;
 class Vec2;
 struct ContentLogMessage;
@@ -164,9 +165,9 @@ public:
     ::ll::TypedStorage<1, 1, bool>                                                    mShowProgress;
     ::ll::TypedStorage<8, 32, ::std::string>                                          mTipMessage;
     ::ll::TypedStorage<4, 4, float>                                                   mTipMessageLength;
-    ::ll::TypedStorage<8, 592, ::mce::Mesh>                                           mRcFeedbackOuter;
-    ::ll::TypedStorage<8, 592, ::mce::Mesh>                                           mRcFeedbackInner;
-    ::ll::TypedStorage<8, 592, ::mce::Mesh>                                           mVignette;
+    ::ll::TypedStorage<8, 616, ::mce::Mesh>                                           mRcFeedbackOuter;
+    ::ll::TypedStorage<8, 616, ::mce::Mesh>                                           mRcFeedbackInner;
+    ::ll::TypedStorage<8, 616, ::mce::Mesh>                                           mVignette;
     ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                                     mInvFillMat;
     ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                                     mCursorMat;
     ::ll::TypedStorage<8, 24, ::Bedrock::NotNullNonOwnerPtr<::DevConsoleLogger>>      mDevConsoleLogger;
@@ -192,7 +193,7 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual void onConfigChanged(::Config const&) /*override*/;
+    virtual void onConfigChanged(::Config const& c) /*override*/;
     // NOLINTEND
 
 public:
@@ -328,6 +329,8 @@ public:
 
     MCAPI void showJukeboxPopupNotice(::std::string const& message, ::std::string const& subtitle);
 
+    MCAPI void showPopupNotice(::ItemStackBase const& item);
+
     MCAPI void showPopupNotice(::std::string const& message, ::std::string const& subtitle);
 
     MCAPI void showTipMessage(::std::string const& message);
@@ -350,6 +353,6 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
-
+    MCAPI void $onConfigChanged(::Config const& c);
     // NOLINTEND
 };

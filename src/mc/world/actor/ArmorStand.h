@@ -4,10 +4,12 @@
 
 // auto generated inclusion list
 #include "mc/deps/core/math/Vec3.h"
+#include "mc/deps/shared_types/legacy/EquipmentSlot.h"
 #include "mc/world/actor/Mob.h"
 
 // auto generated forward declare list
 // clang-format off
+class Actor;
 class ActorDamageSource;
 class ActorDefinitionGroup;
 class ActorHurtResult;
@@ -59,11 +61,12 @@ public:
     // NOLINTBEGIN
     virtual float getShadowRadius() const /*override*/;
 
-    virtual void addAdditionalSaveData(::CompoundTag& entityTag) const /*override*/;
+    virtual void addAdditionalSaveData(::CompoundTag& tag) const /*override*/;
 
     virtual void readAdditionalSaveData(::CompoundTag const& tag, ::DataLoadHelper& dataLoadHelper) /*override*/;
 
-    virtual ::InteractionResult getInteraction(::Player&, ::ActorInteraction&, ::Vec3 const&) /*override*/;
+    virtual ::InteractionResult
+    getInteraction(::Player& player, ::ActorInteraction& interaction, ::Vec3 const& location) /*override*/;
 
     virtual void kill() /*override*/;
 
@@ -87,6 +90,50 @@ public:
         ::ActorDefinitionIdentifier const& definitionName,
         ::EntityContext&                   entityContext
     );
+
+    MCAPI void _causeDamage(float damage);
+
+    MCAPI void _destroyWithEffects(::Actor* sourceActor);
+
+    MCAPI void _dropHeldItems();
+
+    MCAPI void _dropHeldItemsAndResource();
+
+    MCAPI void _hurtByProjectile(::Actor& sourceActor);
+
+    MCAPI bool _trySwapItem(::Player& player, ::SharedTypes::Legacy::EquipmentSlot slot);
+
+    MCAPI void setPoseIndex(int poseIndex);
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::ArmorStand::Pose const& POSE_ATHENA();
+
+    MCAPI static ::ArmorStand::Pose const& POSE_BRANDISH();
+
+    MCAPI static ::ArmorStand::Pose const& POSE_CANCAN_A();
+
+    MCAPI static ::ArmorStand::Pose const& POSE_CANCAN_B();
+
+    MCAPI static ::ArmorStand::Pose const& POSE_DEFAULT();
+
+    MCAPI static ::ArmorStand::Pose const& POSE_ENTERTAIN();
+
+    MCAPI static ::ArmorStand::Pose const& POSE_HERO();
+
+    MCAPI static ::ArmorStand::Pose const& POSE_HONOR();
+
+    MCAPI static ::ArmorStand::Pose const& POSE_RIPOSTE();
+
+    MCAPI static ::ArmorStand::Pose const& POSE_SALUTE();
+
+    MCAPI static ::ArmorStand::Pose const& POSE_SOLEMN();
+
+    MCAPI static ::ArmorStand::Pose const& POSE_ZERO_ROTATION();
+
+    MCAPI static ::ArmorStand::Pose const& POSE_ZOMBIE();
     // NOLINTEND
 
 public:
@@ -102,6 +149,28 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCFOLD float $getShadowRadius() const;
+
+    MCAPI void $addAdditionalSaveData(::CompoundTag& tag) const;
+
+    MCAPI void $readAdditionalSaveData(::CompoundTag const& tag, ::DataLoadHelper& dataLoadHelper);
+
+    MCAPI ::InteractionResult
+    $getInteraction(::Player& player, ::ActorInteraction& interaction, ::Vec3 const& location);
+
+    MCAPI void $kill();
+
+    MCAPI void $die(::ActorDamageSource const& source);
+
+    MCAPI ::ActorHurtResult
+    $_hurt(::ActorDamageSource const& source, float damage, ::HurtParameters const& hurtParameters);
+
+    MCAPI void $normalTick();
+
+    MCAPI void $pushActors();
+
+    MCFOLD bool $isInvulnerableTo(::ActorDamageSource const& source) const;
+
 
     // NOLINTEND
 };

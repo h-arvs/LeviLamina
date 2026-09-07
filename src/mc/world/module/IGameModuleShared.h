@@ -24,12 +24,6 @@ public:
 
     virtual void registerMolangQueries() = 0;
 
-    virtual void registerServerInstanceHandler(::ServerInstanceEventCoordinator&) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual void registerServerInstanceHandler(::ServerInstanceEventCoordinator& serverInstanceCoordinator) = 0;
     // NOLINTEND
 };

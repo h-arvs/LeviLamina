@@ -8,6 +8,7 @@
 
 // auto generated forward declare list
 // clang-format off
+class ContainerModel;
 class Recipe;
 // clang-format on
 
@@ -19,6 +20,13 @@ public:
     ::ll::TypedStorage<1, 1, bool>             mIsRecipeCraftable;
     // NOLINTEND
 
+#ifdef LL_PLAT_S
+#else // LL_PLAT_C
+public:
+    // prevent constructor by default
+    CraftingOutputContainerController();
+
+#endif
 public:
     // virtual functions
     // NOLINTBEGIN
@@ -28,16 +36,55 @@ public:
 
     virtual void onRecipeSelected(::Recipe const* recipe, uint64 gridSize, bool displayGhostItems) /*override*/;
 
-    virtual ::ItemInstance const& getRecipeItem(int) const /*override*/;
+    virtual ::ItemInstance const& getRecipeItem(int slot) const /*override*/;
 
     virtual void clearSelectedRecipe() /*override*/;
 
-    virtual bool _canRemove(int modelSlot, int removeCount) const /*override*/;
+#ifdef LL_PLAT_S
+    virtual bool _canRemove(int, int) const /*override*/;
+#else // LL_PLAT_C
+    virtual bool _canRemove(int slot, int removeCount) const /*override*/;
+#endif
+
+    // NOLINTEND
+
+public:
+    // member functions
+    // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCNAPI explicit CraftingOutputContainerController(::std::shared_ptr<::ContainerModel> containerModel);
+#endif
+    // NOLINTEND
+
+public:
+    // constructor thunks
+    // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCNAPI void* $ctor(::std::shared_ptr<::ContainerModel> containerModel);
+#endif
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCNAPI int $getBackgroundStyle(int slot, bool inventoryContainsItem) const;
 
+    MCNAPI void $onRecipeSelected(::Recipe const* recipe, uint64 gridSize, bool displayGhostItems);
+
+    MCNAPI ::ItemInstance const& $getRecipeItem(int slot) const;
+
+    MCNAPI void $clearSelectedRecipe();
+
+    MCNAPI bool $_canRemove(int slot, int removeCount) const;
+#endif
+
+
+    // NOLINTEND
+
+public:
+    // vftables
+    // NOLINTBEGIN
+    MCNAPI static void** $vftable();
     // NOLINTEND
 };

@@ -9,6 +9,7 @@
 // auto generated forward declare list
 // clang-format off
 class Actor;
+class BaseBlockLocationIterator;
 class Block;
 class BlockPalette;
 class BlockPos;
@@ -27,9 +28,9 @@ class EditorStructureTemplate : public ::StructureTemplate {
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 88> mUnk64c2f5;
-    ::ll::UntypedStorage<8, 24> mUnkd0f99f;
-    ::ll::UntypedStorage<4, 12> mUnk873fae;
+    ::ll::UntypedStorage<8, 112> mUnk64c2f5;
+    ::ll::UntypedStorage<8, 24>  mUnkd0f99f;
+    ::ll::UntypedStorage<4, 12>  mUnk873fae;
     // NOLINTEND
 
 public:
@@ -71,6 +72,14 @@ public:
     );
 #endif
 
+    MCNAPI void _editorFillBlockInfo(
+        ::BlockSource&                                 region,
+        ::std::unique_ptr<::BaseBlockLocationIterator> locationIterator,
+        ::BlockPos const&                              posMin,
+        ::BlockPos const&                              size,
+        ::BlockPos const&                              structureOffset
+    );
+
     MCNAPI void editorFillFromWorld(
         ::BlockSource&             region,
         ::StructureSettings const& structureSettings,
@@ -81,6 +90,14 @@ public:
         ::BlockSource&                                 region,
         ::StructureSettings const&                     structureSettings,
         ::Editor::RelativeVolumeListBlockVolume const& volume
+    );
+
+    MCNAPI void editorFillFromWorld(
+        ::BlockSource&                                 region,
+        ::StructureSettings const&                     structureSettings,
+        ::std::unique_ptr<::BaseBlockLocationIterator> locationIterator,
+        ::BlockPos const&                              posMin,
+        ::BlockPos const&                              span
     );
 
     MCNAPI void placeStructureTemplateInWorldForEditor(

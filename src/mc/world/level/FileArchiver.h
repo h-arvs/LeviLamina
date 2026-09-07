@@ -25,6 +25,7 @@ class LevelData;
 class LevelDbEnv;
 class LevelStorage;
 class LevelStorageSource;
+class PackInstance;
 class Scheduler;
 class TaskGroup;
 namespace Bedrock::PubSub::ThreadModel { struct MultiThreaded; }
@@ -181,6 +182,8 @@ public:
     public:
         // virtual function thunks
         // NOLINTBEGIN
+        MCAPI void $clear();
+
 
         // NOLINTEND
     };
@@ -251,26 +254,25 @@ public:
         virtual ~IWorldConverter() = default;
 
         virtual void enqueueConvertImportingWorldTasks(
-            ::std::shared_ptr<::FileArchiver::Result>&,
-            ::Bedrock::NotNullNonOwnerPtr<::FileArchiver::ProgressReporter>,
-            ::Bedrock::Threading::Async<void>&
+            ::std::shared_ptr<::FileArchiver::Result>&                      sharedResult,
+            ::Bedrock::NotNullNonOwnerPtr<::FileArchiver::ProgressReporter> progress,
+            ::Bedrock::Threading::Async<void>&                              prevTaskHandle
         ) = 0;
 
-        virtual bool shouldCopyWorldForConversion(::std::string const&) const = 0;
+        virtual bool shouldCopyWorldForConversion(::std::string const& levelId) const = 0;
 
         virtual void enqueueConvertExportingWorldTasks(
-            ::std::shared_ptr<::FileArchiver::ExportData>&,
-            ::Bedrock::NotNullNonOwnerPtr<::FileArchiver::ProgressReporter>,
-            ::Bedrock::Threading::Async<void>&,
-            ::gsl::not_null<::std::shared_ptr<::FileArchiver::InterventionPublishers>>,
-            ::std::optional<::FileArchiver::WorldConverterExportSettings> const
+            ::std::shared_ptr<::FileArchiver::ExportData>&                             exportData,
+            ::Bedrock::NotNullNonOwnerPtr<::FileArchiver::ProgressReporter>            progress,
+            ::Bedrock::Threading::Async<void>&                                         prevTaskHandle,
+            ::gsl::not_null<::std::shared_ptr<::FileArchiver::InterventionPublishers>> interventionPublishers,
+            ::std::optional<::FileArchiver::WorldConverterExportSettings> const        exportSetting
         ) = 0;
-        // NOLINTEND
 
-    public:
-        // virtual function thunks
-        // NOLINTBEGIN
-
+        virtual bool prepareEditorProjectForSaveSnapshot(
+            ::Level&                           level,
+            ::Core::PathBuffer<::std::string>& generatedLevelDataFile
+        ) = 0;
         // NOLINTEND
     };
 
@@ -401,7 +403,7 @@ public:
     virtual ~FileArchiver() /*override*/ = default;
 
     virtual ::std::shared_ptr<::FilePickerSettings>
-    generateFilePickerSettings(::std::vector<::FileArchiver::ExportType> const&, ::std::string const&) const;
+    generateFilePickerSettings(::std::vector<::FileArchiver::ExportType> const& types, ::std::string const&) const;
     // NOLINTEND
 
 public:
@@ -419,6 +421,55 @@ public:
         ::Bedrock::NotNullNonOwnerPtr<::LevelDbEnv>                     levelDbEnv,
         ::std::function<void(::std::string const&)>                     displayMessageFunction
     );
+
+    MCAPI void _clearArchiverState();
+
+    MCAPI void
+    _copyPackToTemp(::PackInstance const& packInstance, ::Core::Path const& tempPath, ::FileArchiver::Result& result);
+
+    MCAPI ::Bedrock::Threading::Async<::FileArchiver::Result> _enqueueExportWorldTasks(
+        ::Core::Path const&                                                        outputFilePath,
+        ::std::string const&                                                       worldId,
+        bool                                                                       isBundle,
+        ::FileArchiver::ExportType                                                 exportType,
+        ::FileArchiver::ShowToast const                                            showToast,
+        ::Bedrock::Threading::Async<void>                                          preTaskHandle,
+        ::gsl::not_null<::std::shared_ptr<::FileArchiver::InterventionPublishers>> interventionPublishers,
+        ::std::function<void(::FileArchiver::Result&)>                             cleanupTask,
+        ::std::optional<::FileArchiver::WorldConverterExportSettings> const        exportSetting,
+        ::Core::Path const&                                                        targetFolder
+    );
+
+    MCAPI void _exportLevelFiles(
+        ::Core::Path const&                           outputFilePath,
+        bool                                          isBundle,
+        ::std::shared_ptr<::FileArchiver::ExportData> exportData,
+        ::Core::Path const&                           worldPath
+    );
+
+#ifdef LL_PLAT_C
+    MCAPI bool _importWorld(
+        ::Core::Path const&     archivedWorldFile,
+        ::FileArchiver::Result& currentResult,
+        ::std::string const&    importLevelId
+    );
+#endif
+
+    MCAPI void _printLevelResultMessage(::FileArchiver::Result const& result);
+
+#ifdef LL_PLAT_C
+    MCAPI void _printLevelStartMessage();
+#endif
+
+    MCAPI void _printMessage(::std::string const& message);
+
+    MCAPI ::FileArchiver::Result _tryBeginExportLevel(
+        ::std::string const&            levelId,
+        ::Core::Path const&             exportFilePath,
+        ::FileArchiver::ShowToast const showToast
+    );
+
+    MCAPI bool _validatePremiumUpgradePacks(::Core::Path const& filePath);
 
 #ifdef LL_PLAT_C
     MCAPI ::std::string copyLevel(::std::string const& worldId, ::Core::Path const& targetFolder);
@@ -489,9 +540,21 @@ public:
     // NOLINTEND
 
 public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static void _revertPremiumUpgradePacks(::Core::Path const& filePath);
+
+#ifdef LL_PLAT_C
+    MCAPI static void _sanitizeWorld(::Core::Path const& newWorldPath);
+#endif
+    // NOLINTEND
+
+public:
     // static variables
     // NOLINTBEGIN
+#ifdef LL_PLAT_C
     MCAPI static ::std::string const& EXTENSION_ADDON();
+#endif
 
     MCAPI static ::std::string const& EXTENSION_PROJECT();
 
@@ -524,6 +587,9 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI ::std::shared_ptr<::FilePickerSettings>
+    $generateFilePickerSettings(::std::vector<::FileArchiver::ExportType> const& types, ::std::string const&) const;
+
 
     // NOLINTEND
 };

@@ -15,6 +15,7 @@ class IAppPlatform;
 class IClientInstance;
 class IMinecraftGame;
 namespace OreUI { class IFacet; }
+namespace OreUI { class IFacetRegistry; }
 // clang-format on
 
 namespace OreUI {
@@ -38,6 +39,30 @@ public:
             64,
             ::std::function<::std::unique_ptr<::OreUI::IFacet>(::OreUI::FacetRegistryLocation)> const>
             mConstructor;
+        // NOLINTEND
+
+    public:
+        // prevent constructor by default
+        FacetData();
+
+    public:
+        // member functions
+        // NOLINTBEGIN
+        MCAPI FacetData(
+            char const*                                                                         name,
+            ::OreUI::FacetAvailability                                                          availability,
+            ::std::function<::std::unique_ptr<::OreUI::IFacet>(::OreUI::FacetRegistryLocation)> constructor
+        );
+        // NOLINTEND
+
+    public:
+        // constructor thunks
+        // NOLINTBEGIN
+        MCAPI void* $ctor(
+            char const*                                                                         name,
+            ::OreUI::FacetAvailability                                                          availability,
+            ::std::function<::std::unique_ptr<::OreUI::IFacet>(::OreUI::FacetRegistryLocation)> constructor
+        );
         // NOLINTEND
     };
 
@@ -68,11 +93,9 @@ public:
         ::Bedrock::NonOwnerPointer<::IAppPlatform> const&                appPlatform
     );
 
-    MCAPI void _registerCoreFacets();
-
     MCAPI void _registerVanillaFacets();
 
-    MCAPI void _registerVanillaGameplayFacets();
+    MCAPI ::std::unique_ptr<::OreUI::IFacetRegistry> createFacetRegistry(::OreUI::FacetRegistryLocation location);
 
     MCAPI ~FacetRegistryFactory();
     // NOLINTEND

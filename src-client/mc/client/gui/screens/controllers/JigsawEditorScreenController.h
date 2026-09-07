@@ -12,6 +12,7 @@ class BlockPos;
 class ClientInstanceScreenModel;
 class Player;
 struct ActorUniqueID;
+struct TextEditScreenEventData;
 namespace Json { class Value; }
 // clang-format on
 
@@ -45,9 +46,17 @@ public:
         ::ActorUniqueID   uniqueId
     );
 
+    MCAPI ::std::string _getTextEditValue(::TextEditScreenEventData& textEditEvent) const;
+
     MCAPI void _registerBindings();
 
     MCAPI void _registerEventHandlers();
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static int _getTextEditValueAsInt(::TextEditScreenEventData& textEditEvent);
     // NOLINTEND
 
 public:

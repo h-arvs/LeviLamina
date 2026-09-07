@@ -8,6 +8,7 @@
 
 // auto generated forward declare list
 // clang-format off
+class SemVersionConstant;
 namespace cereal { struct ReflectionCtx; }
 // clang-format on
 
@@ -70,6 +71,14 @@ public:
         // NOLINTEND
 
     public:
+        // static variables
+        // NOLINTBEGIN
+#ifdef LL_PLAT_C
+        MCAPI static ::SemVersionConstant const& VERSION();
+#endif
+        // NOLINTEND
+
+    public:
         // destructor thunk
         // NOLINTBEGIN
 #ifdef LL_PLAT_C
@@ -86,10 +95,47 @@ public:
     ::ll::TypedStorage<8, 32, ::std::string> mFormatVersion;
     // NOLINTEND
 
+#ifdef LL_PLAT_S
+#else // LL_PLAT_C
+public:
+    // prevent constructor by default
+    ClientBiomeJsonDocument& operator=(ClientBiomeJsonDocument const&);
+    ClientBiomeJsonDocument();
+
+#endif
+public:
+    // member functions
+    // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCAPI ClientBiomeJsonDocument(::SharedTypes::v1_21_130::ClientBiomeJsonDocument const&);
+
+    MCFOLD ::SharedTypes::v1_21_130::ClientBiomeJsonDocument&
+    operator=(::SharedTypes::v1_21_130::ClientBiomeJsonDocument&&);
+
+    MCAPI ~ClientBiomeJsonDocument();
+#endif
+    // NOLINTEND
+
 public:
     // static functions
     // NOLINTBEGIN
     MCAPI static void bindType(::cereal::ReflectionCtx& ctx);
+    // NOLINTEND
+
+public:
+    // constructor thunks
+    // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCFOLD void* $ctor(::SharedTypes::v1_21_130::ClientBiomeJsonDocument const&);
+#endif
+    // NOLINTEND
+
+public:
+    // destructor thunk
+    // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCFOLD void $dtor();
+#endif
     // NOLINTEND
 };
 

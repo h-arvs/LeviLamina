@@ -25,9 +25,9 @@ public:
     ::ll::TypedStorage<8, 176, ::OreUI::Property<int>>                                        mBuyAItemAmount;
     ::ll::TypedStorage<8, 176, ::OreUI::Property<int>>                                        mBuyBItemAmount;
     ::ll::TypedStorage<8, 176, ::OreUI::Property<int>>                                        mSellItemAmount;
-    ::ll::TypedStorage<8, 200, ::OreUI::Property<::std::string>>                              mBuyAItemImage;
-    ::ll::TypedStorage<8, 200, ::OreUI::Property<::std::string>>                              mBuyBItemImage;
-    ::ll::TypedStorage<8, 200, ::OreUI::Property<::std::string>>                              mSellItemImage;
+    ::ll::TypedStorage<8, 200, ::OreUI::Property<::std::string>>                              mBuyAItemId;
+    ::ll::TypedStorage<8, 200, ::OreUI::Property<::std::string>>                              mBuyBItemId;
+    ::ll::TypedStorage<8, 200, ::OreUI::Property<::std::string>>                              mSellItemId;
     ::ll::TypedStorage<8, 176, ::OreUI::Property<bool>>                                       mHasSecondaryBuyItem;
     ::ll::TypedStorage<8, 176, ::OreUI::Property<bool>>                                       mPlayerHasItemsForTrade;
     ::ll::TypedStorage<8, 176, ::OreUI::Property<bool>>                                       mIsSelectedTrade;
@@ -43,9 +43,15 @@ public:
     // NOLINTEND
 
 public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::std::add_lvalue_reference_t<char const[31]> NAME();
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
-
+    MCAPI void $update(double);
     // NOLINTEND
 };
 

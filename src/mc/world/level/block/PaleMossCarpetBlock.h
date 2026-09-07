@@ -68,15 +68,17 @@ public:
     // NOLINTBEGIN
     MCAPI PaleMossCarpetBlock(::std::string const& nameId, int id);
 
+    MCAPI void _onOneHalfDestroyed(::BlockSource& region, ::BlockPos const& pos, bool wasBottom) const;
+
     MCAPI void tick(::BlockEvents::BlockQueuedTickEvent& eventData) const;
     // NOLINTEND
 
 public:
     // static functions
     // NOLINTBEGIN
-#ifdef LL_PLAT_C
     MCAPI static bool isBottom(::Block const& block);
-#endif
+
+    MCAPI static bool isTop(::Block const& block);
 
     MCAPI static void placeWithRandomizedSides(::BlockSource& region, ::BlockPos const& pos, ::Random& random);
     // NOLINTEND

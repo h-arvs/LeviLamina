@@ -39,7 +39,7 @@ public:
 
     virtual int AttachmentId() const = 0;
 
-    virtual ~RtpReceiverInternal() /*override*/;
+    virtual ~RtpReceiverInternal() /*override*/ = default;
     // NOLINTEND
 
 public:
@@ -55,12 +55,6 @@ public:
     // destructor thunk
     // NOLINTBEGIN
     MCNAPI void $dtor();
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };
 

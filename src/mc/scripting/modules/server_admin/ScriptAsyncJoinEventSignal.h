@@ -51,6 +51,12 @@ public:
     ScriptAsyncJoinEventSignal& operator=(ScriptAsyncJoinEventSignal const&);
     ScriptAsyncJoinEventSignal(ScriptAsyncJoinEventSignal const&);
     ScriptAsyncJoinEventSignal();
+
+public:
+    // member functions
+    // NOLINTBEGIN
+    MCNAPI void tick();
+    // NOLINTEND
 };
 
 } // namespace ScriptModuleServerAdmin

@@ -7,11 +7,14 @@
 
 // auto generated forward declare list
 // clang-format off
+class EnchantmentInstance;
 class ItemInstance;
 class ItemStack;
+class LootItemCondition;
 class LootTableContext;
 class Random;
 struct Trade;
+namespace Json { class Value; }
 // clang-format on
 
 class EnchantBookForTradingFunction : public ::LootItemFunction {
@@ -47,12 +50,12 @@ public:
     // NOLINTBEGIN
     virtual ~EnchantBookForTradingFunction() /*override*/ = default;
 
-    virtual void apply(::ItemStack&, ::Random&, ::LootTableContext&) /*override*/;
+    virtual void apply(::ItemStack& item, ::Random& random, ::LootTableContext&) /*override*/;
 
     virtual int
     apply(::ItemStack& item, ::Random& random, ::Trade const& trade, ::LootTableContext& context) /*override*/;
 
-    virtual void apply(::ItemInstance&, ::Random&, ::LootTableContext&) /*override*/;
+    virtual void apply(::ItemInstance& item, ::Random& random, ::LootTableContext&) /*override*/;
 
     virtual int
     apply(::ItemInstance& item, ::Random& random, ::Trade const& trade, ::LootTableContext& context) /*override*/;
@@ -61,8 +64,33 @@ public:
     // NOLINTEND
 
 public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI ::std::optional<::EnchantmentInstance> _trySelectEnchantmentFromOptions(::Random& random) const;
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCAPI static ::std::unique_ptr<::EnchantBookForTradingFunction>
+    deserialize(::Json::Value object, ::std::vector<::std::unique_ptr<::LootItemCondition>>& predicates);
+#endif
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $apply(::ItemStack& item, ::Random& random, ::LootTableContext&);
+
+    MCAPI int $apply(::ItemStack& item, ::Random& random, ::Trade const& trade, ::LootTableContext& context);
+
+    MCAPI void $apply(::ItemInstance& item, ::Random& random, ::LootTableContext&);
+
+    MCAPI int $apply(::ItemInstance& item, ::Random& random, ::Trade const& trade, ::LootTableContext& context);
+
+    MCFOLD ::LootItemFunction::FunctionType $getFunctionType() const;
+
 
     // NOLINTEND
 };

@@ -34,6 +34,8 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
+    virtual bool isTypeOrDerived(::BlockActorType type) const /*override*/;
+
     virtual int getContainerSize() const /*override*/;
 
     virtual ::Container* getContainer() /*override*/;
@@ -67,6 +69,8 @@ public:
     virtual ::std::unique_ptr<::BlockActorDataPacket> _getUpdatePacket(::BlockSource& region) /*override*/;
 
     virtual void _onUpdatePacket(::CompoundTag const& data, ::BlockSource& region) /*override*/;
+
+    virtual ~DispenserBlockActor() /*override*/;
     // NOLINTEND
 
 public:
@@ -86,8 +90,16 @@ public:
     // NOLINTEND
 
 public:
+    // destructor thunk
+    // NOLINTBEGIN
+    MCAPI void $dtor();
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI bool $isTypeOrDerived(::BlockActorType type) const;
+
     MCFOLD int $getContainerSize() const;
 
     MCFOLD ::Container* $getContainer();
@@ -99,6 +111,8 @@ public:
     MCAPI void $setItem(int slot, ::ItemStack const& item);
 
     MCFOLD int $getMaxStackSize() const;
+
+    MCAPI ::std::string $getName() const;
 
     MCFOLD void $startOpen(::Actor& actor);
 
@@ -116,6 +130,24 @@ public:
         ::std::function<void(int, ::ItemStack const&)> onNetIdChanged
     );
 
+    MCAPI ::std::unique_ptr<::BlockActorDataPacket> $_getUpdatePacket(::BlockSource& region);
 
+    MCFOLD void $_onUpdatePacket(::CompoundTag const& data, ::BlockSource& region);
+
+
+    // NOLINTEND
+
+public:
+    // vftables
+    // NOLINTBEGIN
+    MCNAPI static void** $vftableForIVanillaRenderBlockActorComponent();
+
+    MCNAPI static void** $vftableForIVanillaTickBlockActorComponent();
+
+    MCNAPI static void** $vftable();
+
+    MCNAPI static void** $vftableForBlockActor();
+
+    MCNAPI static void** $vftableForIVanillaMainBlockActorComponent();
     // NOLINTEND
 };

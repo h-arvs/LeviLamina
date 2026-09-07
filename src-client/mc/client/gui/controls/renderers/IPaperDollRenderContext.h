@@ -25,7 +25,7 @@ public:
 
     virtual ::MatrixStack& getWorldMatrixStack() = 0;
 
-    virtual float getInvGuiScale() = 0;
+    virtual float getYOffset(float screenScale) = 0;
 
     virtual void renderGui(
         ::HashedString const&                rendererName,
@@ -38,11 +38,5 @@ public:
     virtual ::glm::vec2 getMouseMove(::glm::vec2 const& ownerPos) = 0;
 
     virtual ::SubClientId getClientSubId() = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };

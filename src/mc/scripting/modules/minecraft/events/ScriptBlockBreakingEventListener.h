@@ -51,17 +51,13 @@ public:
         mSendCancelBreakingFunction;
     // NOLINTEND
 
-#ifdef LL_PLAT_S
-#else // LL_PLAT_C
 public:
     // prevent constructor by default
     ScriptBlockBreakingEventListener();
 
-#endif
 public:
     // member functions
     // NOLINTBEGIN
-#ifdef LL_PLAT_C
     MCAPI ScriptBlockBreakingEventListener(
         ::std::function<void(::Player&, ::BlockPos const&, ::Block const&, uchar)>      sendStartBreakingFunction,
         ::std::function<void(::Player&, ::BlockPos const&, ::Block const&, uchar, int)> sendCancelBreakingFunction
@@ -80,26 +76,21 @@ public:
     MCAPI void onBreakBlock(::Player& player);
 
     MCAPI ~ScriptBlockBreakingEventListener();
-#endif
     // NOLINTEND
 
 public:
     // constructor thunks
     // NOLINTBEGIN
-#ifdef LL_PLAT_C
     MCAPI void* $ctor(
         ::std::function<void(::Player&, ::BlockPos const&, ::Block const&, uchar)>      sendStartBreakingFunction,
         ::std::function<void(::Player&, ::BlockPos const&, ::Block const&, uchar, int)> sendCancelBreakingFunction
     );
-#endif
     // NOLINTEND
 
 public:
     // destructor thunk
     // NOLINTBEGIN
-#ifdef LL_PLAT_C
     MCAPI void $dtor();
-#endif
     // NOLINTEND
 };
 

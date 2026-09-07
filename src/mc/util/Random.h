@@ -19,10 +19,6 @@ public:
     // NOLINTEND
 
 public:
-    // prevent constructor by default
-    Random();
-
-public:
     // virtual functions
     // NOLINTBEGIN
     virtual ~Random() /*override*/ = default;
@@ -49,7 +45,13 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
+    MCAPI Random();
+
     MCAPI Random(uint seed, bool onlyUsedDeterministically);
+
+#ifdef LL_PLAT_C
+    MCAPI float nextGaussianFloat();
+#endif
     // NOLINTEND
 
 public:
@@ -61,6 +63,8 @@ public:
 public:
     // constructor thunks
     // NOLINTBEGIN
+    MCAPI void* $ctor();
+
     MCAPI void* $ctor(uint seed, bool onlyUsedDeterministically);
     // NOLINTEND
 

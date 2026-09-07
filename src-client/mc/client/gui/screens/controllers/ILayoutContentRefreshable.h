@@ -13,12 +13,6 @@ public:
     // NOLINTBEGIN
     virtual ~ILayoutContentRefreshable() = default;
 
-    virtual void refreshContent(::LinksToStyle const&) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual void refreshContent(::LinksToStyle const& linksToStyle) = 0;
     // NOLINTEND
 };

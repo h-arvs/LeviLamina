@@ -4,10 +4,14 @@
 
 // auto generated inclusion list
 #include "mc/deps/script_core/lifetime_registry/scripting/WeakHandleFromThis.h"
+#include "mc/deps/script_core/runtime/scripting/Result.h"
+#include "mc/util/Mirror.h"
+#include "mc/util/Rotation.h"
 
 // auto generated forward declare list
 // clang-format off
-namespace Scripting { struct ClassBinding; }
+class Vec3;
+namespace Editor::ScriptModule { struct ScriptPrefabErrorInvalidTemplateStructure; }
 // clang-format on
 
 namespace Editor::ScriptModule {
@@ -38,9 +42,28 @@ public:
     // NOLINTEND
 
 public:
-    // static functions
+    // member functions
     // NOLINTBEGIN
-    MCNAPI static ::Scripting::ClassBinding bindScript();
+    MCNAPI ::Scripting::Result<::Mirror, ::Editor::ScriptModule::ScriptPrefabErrorInvalidTemplateStructure>
+    _getInstanceMirror() const;
+
+    MCNAPI ::Scripting::Result<::Vec3, ::Editor::ScriptModule::ScriptPrefabErrorInvalidTemplateStructure>
+    _getInstanceOffset() const;
+
+    MCNAPI ::Scripting::Result<::Rotation, ::Editor::ScriptModule::ScriptPrefabErrorInvalidTemplateStructure>
+    _getInstanceRotation() const;
+
+    MCNAPI ::Scripting::Result<::std::string, ::Editor::ScriptModule::ScriptPrefabErrorInvalidTemplateStructure>
+    _getPrefabStructureId() const;
+
+    MCNAPI ::Scripting::Result<::Vec3, ::Editor::ScriptModule::ScriptPrefabErrorInvalidTemplateStructure>
+    _getStructureNormalizedOrigin() const;
+
+    MCNAPI ::Scripting::Result<::Vec3, ::Editor::ScriptModule::ScriptPrefabErrorInvalidTemplateStructure>
+    _getStructureOffset() const;
+
+    MCNAPI ::Scripting::Result<::Vec3, ::Editor::ScriptModule::ScriptPrefabErrorInvalidTemplateStructure>
+    _getStructureSize() const;
     // NOLINTEND
 };
 

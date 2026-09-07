@@ -12,6 +12,7 @@
 // clang-format off
 class CerealDocumentUpgrader;
 class DefinitionEvent;
+class SemVersionConstant;
 struct BlockPermutationDescription;
 namespace cereal { struct ReflectionCtx; }
 // clang-format on
@@ -23,7 +24,7 @@ public:
     ::ll::TypedStorage<8, 24, ::SemVersion>                                           mFormatVersion;
     ::ll::TypedStorage<8, 32, ::MinEngineVersion>                                     mMinEngineVersion;
     ::ll::TypedStorage<8, 24, ::SemVersion>                                           mOriginalJsonVersion;
-    ::ll::TypedStorage<8, 224, ::BlockDescription>                                    mDescription;
+    ::ll::TypedStorage<8, 240, ::BlockDescription>                                    mDescription;
     ::ll::TypedStorage<8, 112, ::BlockComponentGroupDescription>                      mBaseComponents;
     ::ll::TypedStorage<8, 24, ::std::vector<::BlockPermutationDescription>>           mPermutationDescriptions;
     ::ll::TypedStorage<8, 64, ::std::unordered_map<::std::string, ::DefinitionEvent>> mEventHandlers;
@@ -35,5 +36,11 @@ public:
     MCAPI static ::CerealDocumentUpgrader& initCerealDocumentUpgrader(::cereal::ReflectionCtx& ctx);
 
     MCAPI static void registerBlockDefinitionTypes(::cereal::ReflectionCtx& ctx);
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::SemVersionConstant const& VERSION();
     // NOLINTEND
 };

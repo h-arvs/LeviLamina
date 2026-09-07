@@ -14,13 +14,7 @@ public:
     // virtual functions
     // NOLINTBEGIN
     virtual void
-    _handleWidgetComponentStateChangePayload(::Editor::Network::WidgetComponentStateChangePayload const&) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    _handleWidgetComponentStateChangePayload(::Editor::Network::WidgetComponentStateChangePayload const& payload) = 0;
     // NOLINTEND
 };
 

@@ -61,6 +61,14 @@ public:
     // NOLINTEND
 
 public:
+    // static functions
+    // NOLINTBEGIN
+#ifdef LL_PLAT_S
+    MCAPI static bool isInPaleOakPillar(::BlockSource const& region, ::BlockPos const& pos);
+#endif
+    // NOLINTEND
+
+public:
     // constructor thunks
     // NOLINTBEGIN
     MCAPI void* $ctor(::std::string const& nameId, int id);

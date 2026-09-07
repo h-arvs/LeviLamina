@@ -27,7 +27,7 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-#ifdef LL_PLAT_S
+#ifdef LL_PLAT_C
     MCAPI void parse(::Json::Value const& root);
 #endif
     // NOLINTEND
@@ -35,9 +35,7 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
-#ifdef LL_PLAT_S
     MCAPI char const* $getJsonName() const;
-#endif
 
 
     // NOLINTEND

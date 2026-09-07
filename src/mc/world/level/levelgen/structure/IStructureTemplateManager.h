@@ -26,14 +26,8 @@ public:
 
     virtual ::StructureTemplate* getStructure(::std::string const& structureName) const = 0;
 
-    virtual ::LegacyStructureTemplate& getOrCreateLegacy(::std::string const&) = 0;
+    virtual ::LegacyStructureTemplate& getOrCreateLegacy(::std::string const& structureName) = 0;
 
-    virtual bool readStructure(::StructureTemplate&) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual bool readStructure(::StructureTemplate& structureTemplate) = 0;
     // NOLINTEND
 };

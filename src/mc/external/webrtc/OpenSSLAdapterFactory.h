@@ -52,12 +52,6 @@ public:
 
     virtual ::webrtc::OpenSSLAdapter* CreateAdapter(::webrtc::Socket*) /*override*/;
     // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
-    // NOLINTEND
 };
 
 } // namespace webrtc

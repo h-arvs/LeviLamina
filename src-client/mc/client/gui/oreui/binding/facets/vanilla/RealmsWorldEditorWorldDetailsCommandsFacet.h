@@ -36,6 +36,26 @@ public:
     // member functions
     // NOLINTBEGIN
     MCAPI explicit RealmsWorldEditorWorldDetailsCommandsFacet(::std::weak_ptr<::Realms::RealmsWorldEditor> worldEditor);
+
+    MCAPI void saveRealmDetails(::std::string const& realmId) const;
+
+    MCAPI void setRealmCheatsEnabled(bool cheatsEnabled) const;
+
+    MCAPI void setRealmDaylightCycle(int daylightCycle) const;
+
+    MCAPI void setRealmWorldDifficulty(int difficulty) const;
+
+    MCAPI void setRealmWorldGameType(int gameType) const;
+
+    MCAPI void setRealmWorldIsHardcore(bool isHardcore) const;
+
+    MCAPI void setRealmWorldName(::std::string const& name) const;
+
+    MCAPI void setRealmsAreTexturePacksRequired(bool areTexturesRequired) const;
+
+    MCAPI void setRealmsDescription(::std::string const& description) const;
+
+    MCAPI void setRealmsName(::std::string const& name) const;
     // NOLINTEND
 
 public:

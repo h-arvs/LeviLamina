@@ -24,17 +24,7 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-#ifdef LL_PLAT_C
-    MCAPI ~Trade();
-#endif
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-#ifdef LL_PLAT_C
-    MCAPI void $dtor();
-#endif
+    MCAPI bool operator==(::SharedTypes::v1_21_30::Trade const&) const;
     // NOLINTEND
 };
 

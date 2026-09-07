@@ -19,13 +19,7 @@ class CommandOutputObserver
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual void onCommand(::CommandOrigin const&, ::CommandOutput const&) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual void onCommand(::CommandOrigin const& origin, ::CommandOutput const& output) = 0;
     // NOLINTEND
 };
 

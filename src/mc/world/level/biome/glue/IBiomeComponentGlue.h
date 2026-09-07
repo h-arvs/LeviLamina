@@ -19,7 +19,7 @@ public:
     virtual bool
     resolveAndValidate(::entt::meta_any const& biomeJsonComponent, ::BiomeRegistry const& biomeRegistry) = 0;
 
-    virtual void applyToBiome(::Biome& biome, ::entt::meta_any const& biomeJsonComponent) const = 0;
+    virtual void applyToBiome(::Biome& biome, ::entt::meta_any const& component) const = 0;
     // NOLINTEND
 
 public:
@@ -29,11 +29,5 @@ public:
         ::std::string const&                                          fieldName,
         ::std::vector<::SharedTypes::v1_20_60::BlockSpecifier> const& blockSpecifiers
     );
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };

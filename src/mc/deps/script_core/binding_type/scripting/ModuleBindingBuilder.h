@@ -4,12 +4,17 @@
 
 // auto generated forward declare list
 // clang-format off
+namespace Scripting { class Release; }
 namespace Scripting { class RuntimeConditions; }
 namespace Scripting { class TypeMapBuilder; }
+namespace Scripting { struct ClassBinding; }
 namespace Scripting { struct ConstantFactory; }
 namespace Scripting { struct FunctionBinding; }
 namespace Scripting { struct ModuleBinding; }
 namespace Scripting { struct ObjectFactory; }
+namespace Scripting { struct TaggedBinding; }
+namespace Scripting { struct Version; }
+namespace mce { class UUID; }
 // clang-format on
 
 namespace Scripting {
@@ -45,6 +50,18 @@ public:
         BuilderData& operator=(BuilderData const&);
         BuilderData(BuilderData const&);
         BuilderData();
+
+    public:
+        // member functions
+        // NOLINTBEGIN
+        MCNAPI ~BuilderData();
+        // NOLINTEND
+
+    public:
+        // destructor thunk
+        // NOLINTBEGIN
+        MCNAPI void $dtor();
+        // NOLINTEND
     };
 
 public:
@@ -62,6 +79,19 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
+    MCNAPI ModuleBindingBuilder(
+        ::mce::UUID                 uuid,
+        ::std::string const&        name,
+        ::Scripting::Version const& version,
+        bool                        importRestricted
+    );
+
+    MCNAPI bool _allowed(
+        ::std::vector<::Scripting::Release> const& releases,
+        bool                                       allowUntagged,
+        ::std::vector<::std::string> const&        additionalTags
+    ) const;
+
     MCNAPI ::Scripting::ModuleBinding build(
         bool                                  allowUntagged,
         ::std::vector<::std::string> const&   additionalTags,
@@ -72,6 +102,22 @@ public:
     // NOLINTEND
 
 public:
+    // static functions
+    // NOLINTBEGIN
+    MCNAPI static bool _assertClassMemberSymbolDoNotExist(
+        ::Scripting::ClassBinding const&  classBinding,
+        ::std::string const&              name,
+        ::Scripting::TaggedBinding const& binding
+    );
+
+    MCNAPI static bool _assertModuleMemberSymbolDoNotExist(
+        ::Scripting::ModuleBinding const& moduleBinding,
+        ::std::string const&              name,
+        ::Scripting::TaggedBinding const& binding
+    );
+    // NOLINTEND
+
+public:
     // static variables
     // NOLINTBEGIN
     MCNAPI static ::Scripting::ConstantFactory& mEmptyConstantFactory();
@@ -79,6 +125,13 @@ public:
     MCNAPI static ::Scripting::FunctionBinding& mEmptyFunctionBinding();
 
     MCNAPI static ::Scripting::ObjectFactory& mEmptyObjectFactory();
+    // NOLINTEND
+
+public:
+    // constructor thunks
+    // NOLINTBEGIN
+    MCNAPI void*
+    $ctor(::mce::UUID uuid, ::std::string const& name, ::Scripting::Version const& version, bool importRestricted);
     // NOLINTEND
 };
 

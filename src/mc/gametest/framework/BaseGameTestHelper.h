@@ -256,12 +256,6 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCNAPI ::BlockPos _absolutePos(::BlockPos const& relativePos) const;
-
-    MCNAPI ::Vec3 _absoluteVec(::Vec3 const& relativeVec) const;
-
-    MCNAPI ::BlockPos _relativePos(::BlockPos const& absolutePos) const;
-
     MCNAPI ::std::optional<::gametest::GameTestError> assertCondition(bool condition, ::std::string const& message);
 
     MCNAPI void fail(::gametest::GameTestError error);
@@ -299,12 +293,6 @@ public:
         ::std::function<::std::optional<::gametest::GameTestError>()> testFn,
         ::std::function<::std::optional<::gametest::GameTestError>()> doneFn
     );
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };
 

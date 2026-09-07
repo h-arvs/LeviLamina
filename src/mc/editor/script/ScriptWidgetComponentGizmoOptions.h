@@ -21,6 +21,7 @@ public:
     // NOLINTBEGIN
     ::ll::UntypedStorage<4, 8>   mUnkf908c4;
     ::ll::UntypedStorage<1, 2>   mUnkee317e;
+    ::ll::UntypedStorage<4, 8>   mUnk8bcb1e;
     ::ll::UntypedStorage<4, 16>  mUnkbe5c2a;
     ::ll::UntypedStorage<8, 120> mUnk250a0a;
     // NOLINTEND
@@ -34,8 +35,8 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual ::Scripting::Result_deprecated<void> validate(::AABB const&, ::Vec3 const&, ::Vec3 const&) const
-        /*override*/;
+    virtual ::Scripting::Result_deprecated<void>
+    validate(::AABB const& absoluteWorldBounds, ::Vec3 const& rootPosition, ::Vec3 const& size) const /*override*/;
     // NOLINTEND
 
 public:
@@ -47,6 +48,9 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCNAPI ::Scripting::Result_deprecated<void>
+    $validate(::AABB const& absoluteWorldBounds, ::Vec3 const& rootPosition, ::Vec3 const& size) const;
+
 
     // NOLINTEND
 };

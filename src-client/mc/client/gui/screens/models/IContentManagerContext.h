@@ -22,16 +22,10 @@ public:
     virtual ~IContentManagerContext() = default;
 
     virtual ::ContentView&
-        getContentView(::brstd::move_only_function<bool(::std::shared_ptr<::ContentItem const> const&)>) = 0;
+    getContentView(::brstd::move_only_function<bool(::std::shared_ptr<::ContentItem const> const&)> predicate) = 0;
 
     virtual ::std::vector<::std::unique_ptr<::ContentView>> const& getContentViews() const = 0;
 
     virtual void onLanguageChanged() = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };

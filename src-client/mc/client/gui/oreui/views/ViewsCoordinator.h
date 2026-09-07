@@ -15,6 +15,7 @@
 class IClientInstance;
 class IGamefaceTextInputProxy;
 struct TextBoxStateChange;
+namespace Input::Debug { class ISplitscreenRedirect; }
 namespace OreUI { class FramesToPaintQueue; }
 namespace OreUI { class IFacetRegistry; }
 namespace OreUI { class IView; }
@@ -56,6 +57,8 @@ public:
     ::ll::TypedStorage<8, 24, ::std::vector<::OreUI::ViewsCoordinator::ViewEntry>> mViews;
     ::ll::TypedStorage<8, 96, ::OreUI::ViewsCacheRegistry>                         mViewsCacheRegistry;
     ::ll::TypedStorage<8, 64, ::std::function<void(::std::string_view)>>           mShowDebugToast;
+    ::ll::TypedStorage<8, 24, ::Bedrock::NotNullNonOwnerPtr<::Input::Debug::ISplitscreenRedirect>>
+        mDebugSplitscreenInputRedirect;
     // NOLINTEND
 
 public:
@@ -78,13 +81,18 @@ public:
     // member functions
     // NOLINTBEGIN
     MCAPI ViewsCoordinator(
-        ::cohtml::System*                         system,
-        ::cohtml::SystemRenderer*                 systemRenderer,
-        ::cohtml::ITimeZoneProvider*              timeZoneProvider,
-        ::OreUI::LayoutScheduler&                 layoutScheduler,
-        ::OreUI::FramesToPaintQueue&              framesToPaint,
-        ::std::function<void(::std::string_view)> showDebugToast
+        ::cohtml::System*                                                          system,
+        ::cohtml::SystemRenderer*                                                  systemRenderer,
+        ::cohtml::ITimeZoneProvider*                                               timeZoneProvider,
+        ::OreUI::LayoutScheduler&                                                  layoutScheduler,
+        ::OreUI::FramesToPaintQueue&                                               framesToPaint,
+        ::std::function<void(::std::string_view)>                                  showDebugToast,
+        ::Bedrock::NotNullNonOwnerPtr<::Input::Debug::ISplitscreenRedirect> const& debugSplitscreenInputRedirect
     );
+
+    MCAPI void _destroyView(::OreUI::ViewId viewId);
+
+    MCAPI ::std::vector<::OreUI::ViewId> _getViewIds();
 
     MCAPI void clearUnusedCachedViews(::SubClientId subClientId);
 
@@ -109,12 +117,13 @@ public:
     // constructor thunks
     // NOLINTBEGIN
     MCAPI void* $ctor(
-        ::cohtml::System*                         system,
-        ::cohtml::SystemRenderer*                 systemRenderer,
-        ::cohtml::ITimeZoneProvider*              timeZoneProvider,
-        ::OreUI::LayoutScheduler&                 layoutScheduler,
-        ::OreUI::FramesToPaintQueue&              framesToPaint,
-        ::std::function<void(::std::string_view)> showDebugToast
+        ::cohtml::System*                                                          system,
+        ::cohtml::SystemRenderer*                                                  systemRenderer,
+        ::cohtml::ITimeZoneProvider*                                               timeZoneProvider,
+        ::OreUI::LayoutScheduler&                                                  layoutScheduler,
+        ::OreUI::FramesToPaintQueue&                                               framesToPaint,
+        ::std::function<void(::std::string_view)>                                  showDebugToast,
+        ::Bedrock::NotNullNonOwnerPtr<::Input::Debug::ISplitscreenRedirect> const& debugSplitscreenInputRedirect
     );
     // NOLINTEND
 

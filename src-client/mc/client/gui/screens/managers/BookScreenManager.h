@@ -48,6 +48,8 @@ public:
     // NOLINTBEGIN
     MCAPI ::ItemStack const& _getBook();
 
+    MCAPI ::Core::PathBuffer<::std::string> _getExportTempDir();
+
     MCAPI ::ViewStatus _viewPage(::PageContent const& page);
 
     MCAPI void addPageAt(int index, ::PageContent const& page);
@@ -77,6 +79,8 @@ public:
         ::std::string const& playerXUID
     ) const;
 
+    MCAPI int getLecternBookPage() const;
+
     MCAPI ::std::string getPickPhotoInventoryName(int index);
 
     MCAPI ::std::string getPickPhotoName(int index);
@@ -88,6 +92,8 @@ public:
     MCAPI ::std::string const& getXUID();
 
     MCAPI bool lecternHasBook() const;
+
+    MCAPI bool lecternIsValid() const;
 
     MCAPI void populatePickPics(::std::vector<::PageContent> const& pages);
 

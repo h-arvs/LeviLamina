@@ -23,8 +23,6 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual ~MobEffectSubcomponent() /*override*/ = default;
-
     virtual void readfromJSON(::Json::Value& component) /*override*/;
 
     virtual void writetoJSON(::Json::Value& component) const /*override*/;
@@ -32,6 +30,12 @@ public:
     virtual void doOnHitEffect(::Actor& owner, ::ProjectileComponent& component) /*override*/;
 
     virtual char const* getName() const /*override*/;
+    // NOLINTEND
+
+public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI void _addEffectFromJSON(::Json::Value& component);
     // NOLINTEND
 
 public:
@@ -46,11 +50,5 @@ public:
     MCAPI char const* $getName() const;
 
 
-    // NOLINTEND
-
-public:
-    // vftables
-    // NOLINTBEGIN
-    MCNAPI static void** $vftable();
     // NOLINTEND
 };

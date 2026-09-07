@@ -16,6 +16,7 @@
 class BlockPos;
 class ClientInstanceScreenModel;
 class FurnaceContainerManagerController;
+class ItemStack;
 class ItemStackBase;
 class Player;
 class UIPropertyBag;
@@ -64,6 +65,7 @@ public:
     ::ll::TypedStorage<1, 1, bool>                            mSearchBarSelected;
     ::ll::TypedStorage<8, 40, ::std::optional<::std::string>> mDelayedSearchString;
     ::ll::TypedStorage<1, 1, bool>                            mHasInitalCategoryTabsState;
+    ::ll::TypedStorage<4, 4, int>                             mTTSPreviousIngredientId;
     ::ll::TypedStorage<4, 4, int>                             mTicksLeftUntilCategoryTabUpdate;
     ::ll::TypedStorage<4, 4, int>                             mTabFiltersDirty;
     ::ll::TypedStorage<8, 48, ::HashedString>                 mRecipeTag;
@@ -80,6 +82,8 @@ public:
     virtual ~FurnaceScreenController() /*override*/ = default;
 
     virtual ::ui::DirtyFlag tick() /*override*/;
+
+    virtual void onOpen() /*override*/;
 
     virtual void onEntered() /*override*/;
 
@@ -121,7 +125,7 @@ public:
 
     virtual ::ui::ViewRequest _onContainerSlotHovered(::std::string const& collectionName, int index) /*override*/;
 
-    virtual bool _isInCreativeContainer(::std::string const&) const /*override*/;
+    virtual bool _isInCreativeContainer(::std::string const& containerName) const /*override*/;
 
     virtual void _sendFlyingItem(
         ::ItemStackBase const& item,
@@ -143,6 +147,28 @@ public:
         ::ActorUniqueID                                uniqueId,
         ::HashedString const&                          recipeTag
     );
+
+    MCAPI int _findNextLeftSideTab(int dir) const;
+
+    MCAPI void _handleClearGrid();
+
+    MCAPI bool _isRecipeIngredientSelected(::std::string const& collectionName, int collectionIndex) const;
+
+    MCAPI void _refreshFilters(int tabIndex, bool forceRefresh);
+
+    MCAPI void _savePlayerOptions();
+
+    MCAPI void _selectRecipe(::std::string const& collectionName, int collectionIndex);
+
+    MCAPI void _setLeftSideTab(int tabIndex);
+
+    MCAPI void _tryAddTTSMessageForFurnaceAction(::ItemStack const& ingredientItem, ::ItemStack const& resultItem);
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::std::unordered_map<int, ::FurnaceScreenController::CategoryTabInfo> const& mCategoryTabs();
     // NOLINTEND
 
 public:
@@ -160,6 +186,59 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI ::ui::DirtyFlag $tick();
 
+    MCAPI void $onOpen();
+
+    MCAPI void $onEntered();
+
+    MCAPI void $addStaticScreenVars(::Json::Value& globalVars);
+
+    MCFOLD bool $_isStillValid() const;
+
+    MCAPI void $_handlePlaceAll(::std::string const& collectionName, int index);
+
+    MCAPI void $_handlePlaceOne(::std::string const& collectionName, int index);
+
+    MCAPI void $_registerCoalesceOrder();
+
+    MCAPI void $_registerAutoPlaceOrder();
+
+    MCAPI ::std::string $_getCollectionName(::UIPropertyBag* bag) const;
+
+    MCAPI ::SlotData $_reevaluateSlotData(::SlotData&& slotData) const;
+
+    MCAPI ::ItemStackBase const&
+    $_getVisualItemStackImpl(::std::string const& collectionName, int collectionIndex) const;
+
+    MCAPI bool $_shouldSwap(
+        ::std::string const& collectionName,
+        int                  collectionIndex,
+        ::std::string const& otherCollectionName,
+        int                  otherCollectionIndex
+    ) const;
+
+    MCAPI void $_handleSelectSlot(::std::string const& collectionName, int collectionIndex);
+
+    MCAPI ::std::string $_getButtonADescription();
+
+    MCAPI ::std::string $_getButtonBDescription();
+
+    MCAPI ::std::string $_getButtonXDescription();
+
+    MCAPI ::std::string $_getButtonYDescription();
+
+    MCAPI ::ui::ViewRequest $_onContainerSlotHovered(::std::string const& collectionName, int index);
+
+    MCAPI bool $_isInCreativeContainer(::std::string const& containerName) const;
+
+    MCAPI void $_sendFlyingItem(
+        ::ItemStackBase const& item,
+        ::std::string const&   fromName,
+        int                    fromIndex,
+        ::std::string const&   toName,
+        int                    toIndex,
+        ::FadeInIconBehavior   fadeInIconBehavior
+    );
     // NOLINTEND
 };

@@ -9,7 +9,6 @@
 // auto generated forward declare list
 // clang-format off
 class InputEventQueue;
-class RectangleArea;
 class TouchPointResults;
 // clang-format on
 
@@ -24,10 +23,6 @@ public:
     // NOLINTEND
 
 public:
-    // prevent constructor by default
-    TouchGuiConditionalPassthroughControl();
-
-public:
     // virtual functions
     // NOLINTBEGIN
     virtual ~TouchGuiConditionalPassthroughControl() /*override*/ = default;
@@ -37,26 +32,8 @@ public:
     // NOLINTEND
 
 public:
-    // member functions
-    // NOLINTBEGIN
-    MCAPI TouchGuiConditionalPassthroughControl(
-        ::std::function<::RectangleArea()> area,
-        uint                               buttonId,
-        ::std::function<bool()>            condition,
-        bool                               consumeInput
-    );
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCAPI void*
-    $ctor(::std::function<::RectangleArea()> area, uint buttonId, ::std::function<bool()> condition, bool consumeInput);
-    // NOLINTEND
-
-public:
     // virtual function thunks
     // NOLINTBEGIN
-
+    MCAPI void $tick(::InputEventQueue& eventQueue, ::TouchPointResults& touchPointResults, int yAxisInversionFactor);
     // NOLINTEND
 };

@@ -17,16 +17,10 @@ public:
 
     virtual bool isInLava() const = 0;
 
-    virtual bool isWaterBlock(::BlockPos const&) const = 0;
+    virtual bool isWaterBlock(::BlockPos const& blockPos) const = 0;
 
-    virtual bool isLavaBlock(::BlockPos const&) const = 0;
+    virtual bool isLavaBlock(::BlockPos const& blockPos) const = 0;
 
-    virtual bool isSolidBlock(::BlockPos const&) const = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual bool isSolidBlock(::BlockPos const& blockPos) const = 0;
     // NOLINTEND
 };

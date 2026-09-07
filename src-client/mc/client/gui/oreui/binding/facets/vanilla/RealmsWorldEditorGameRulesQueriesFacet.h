@@ -34,6 +34,15 @@ public:
     ::ll::TypedStorage<8, 24, ::SubscribedValue<int>>                         mSleepSkipNightSubVal;
     ::ll::TypedStorage<8, 24, ::SubscribedValue<bool>>                        mUseImmediateRespawnSubVal;
     ::ll::TypedStorage<8, 24, ::SubscribedValue<int>>                         mRespawnRadiusSubVal;
+    ::ll::TypedStorage<8, 24, ::SubscribedValue<int>>                         mRandomTickSpeedSubVal;
+    ::ll::TypedStorage<8, 24, ::SubscribedValue<bool>>                        mKeepInventorySubVal;
+    ::ll::TypedStorage<8, 24, ::SubscribedValue<bool>>                        mMobSpawnSubVal;
+    ::ll::TypedStorage<8, 24, ::SubscribedValue<bool>>                        mMobGriefingSubVal;
+    ::ll::TypedStorage<8, 24, ::SubscribedValue<bool>>                        mEntityDropSubVal;
+    ::ll::TypedStorage<8, 24, ::SubscribedValue<bool>>                        mWeatherCycleSubVal;
+    ::ll::TypedStorage<8, 24, ::SubscribedValue<bool>>                        mCommandBlocksEnabledSubVal;
+    ::ll::TypedStorage<8, 24, ::SubscribedValue<bool>>                        mFriendlyFireEnabledSubVal;
+    ::ll::TypedStorage<8, 24, ::SubscribedValue<int>>                         mPlayerWaypointModeSubVal;
     // NOLINTEND
 
 public:
@@ -54,6 +63,52 @@ public:
     MCAPI explicit RealmsWorldEditorGameRulesQueriesFacet(
         ::std::shared_ptr<::Realms::RealmsWorldEditor> realmsWorldEditor
     );
+
+    MCAPI void _refreshRealmWorldSubscriptions();
+
+    MCAPI bool getCommandBlocksEnabled() const;
+
+    MCAPI bool getEntitiesDropLoot() const;
+
+    MCFOLD bool getFireSpreads() const;
+
+    MCAPI bool getFriendlyFireEnabled() const;
+
+    MCAPI bool getImmediateRespawn() const;
+
+    MCAPI bool getKeepInventory() const;
+
+    MCAPI bool getMobGriefing() const;
+
+    MCAPI bool getMobSpawn() const;
+
+    MCAPI bool getMobsDropLoot() const;
+
+    MCFOLD bool getNaturalRegeneration() const;
+
+    MCFOLD int getPlayerWaypointsMode() const;
+
+    MCAPI int getRandomTickSpeed() const;
+
+    MCFOLD bool getRecipesUnlock() const;
+
+    MCFOLD bool getRespawnBlocksExplode() const;
+
+    MCAPI int getRespawnRadius() const;
+
+    MCFOLD bool getShowCoordinates() const;
+
+    MCFOLD bool getShowDaysPlayed() const;
+
+    MCAPI bool getSleepSkipNight() const;
+
+    MCAPI int getSleepSkipNightPercent() const;
+
+    MCAPI bool getTNTExplodes() const;
+
+    MCAPI bool getTileDrops() const;
+
+    MCAPI bool getWeatherCycle() const;
     // NOLINTEND
 
 public:
@@ -71,7 +126,7 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
-
+    MCFOLD bool $update();
     // NOLINTEND
 };
 

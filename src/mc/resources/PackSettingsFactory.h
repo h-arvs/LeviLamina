@@ -7,6 +7,7 @@
 #include "mc/deps/core/file/PathBuffer.h"
 #include "mc/deps/core/utility/pub_sub/Publisher.h"
 #include "mc/platform/UUID.h"
+#include "mc/platform/brstd/basic_cstring_view.h"
 
 // auto generated forward declare list
 // clang-format off
@@ -15,7 +16,6 @@ class PackSettings;
 struct PackSettingValueAndDefault;
 namespace Bedrock::PubSub::ThreadModel { struct MultiThreaded; }
 namespace Core { class Path; }
-namespace Core { class PathView; }
 namespace SharedTypes::v1_21_100::PackSettingsDefinition { struct Document; }
 // clang-format on
 
@@ -93,10 +93,6 @@ public:
     // NOLINTEND
 
 public:
-    // prevent constructor by default
-    PackSettingsFactory();
-
-public:
     // virtual functions
     // NOLINTBEGIN
     virtual ~PackSettingsFactory() = default;
@@ -107,12 +103,26 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCAPI
-    PackSettingsFactory(uint64 maxGlobalPackSettingEntriesPerFile, ::std::optional<::Core::PathView> globalPathRoot);
-
     MCAPI ::PackSettings* _getGlobalPackSettings(::PackManifest const& manifest);
 
     MCAPI ::PackSettings* _getWorldPackSettings(::PackManifest const& manifest, ::std::optional<::std::string> worldId);
+
+    MCAPI ::std::unique_ptr<::SharedTypes::v1_21_100::PackSettingsDefinition::Document>
+    _loadUserOverridesFromFile(::Core::Path const& path) const;
+
+#ifdef LL_PLAT_C
+    MCAPI bool _saveUserOverridesToFile(
+        ::SharedTypes::v1_21_100::PackSettingsDefinition::Document doc,
+        ::Core::Path const&                                        path
+    ) const;
+
+    MCAPI void _syncPackSettingsToSaveDoc(
+        ::mce::UUID                                                 packId,
+        ::PackSettings const&                                       packSettings,
+        ::SharedTypes::v1_21_100::PackSettingsDefinition::Document& userOverrides,
+        bool                                                        includeTimestamp
+    ) const;
+#endif
 
     MCAPI ::PackSettings* getPackSettings(::PackManifest const& manifest, ::std::optional<::std::string> worldId);
 
@@ -130,14 +140,20 @@ public:
     // NOLINTEND
 
 public:
-    // constructor thunks
+    // static variables
     // NOLINTBEGIN
-    MCAPI void* $ctor(uint64 maxGlobalPackSettingEntriesPerFile, ::std::optional<::Core::PathView> globalPathRoot);
+    MCAPI static ::brstd::basic_cstring_view<char, ::std::char_traits<char>> const&
+    GLOBAL_RESOURCE_PACK_SETTINGS_FILENAME();
+
+    MCAPI static ::brstd::basic_cstring_view<char, ::std::char_traits<char>> const&
+    WORLD_BEHAVIOR_PACK_SETTINGS_FILENAME();
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCFOLD uint64 $getAccessTimestamp() const;
+
 
     // NOLINTEND
 };

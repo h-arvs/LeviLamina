@@ -247,7 +247,7 @@ public:
     ::ll::TypedStorage<1, 1, bool>                                         mCreateInitialized;
     ::ll::TypedStorage<1, 1, bool>                                         mInitialized;
     ::ll::TypedStorage<1, 1, bool>                                         mUsesErrorInfo;
-    ::ll::TypedStorage<8, 1472, ::ScreenViewCommand>                       mScreenViewCommand;
+    ::ll::TypedStorage<8, 1728, ::ScreenViewCommand>                       mScreenViewCommand;
     ::ll::TypedStorage<1, 1, bool>                                         mIsScrollingLocked;
     ::ll::TypedStorage<
         8,
@@ -600,6 +600,8 @@ public:
         ::brstd::move_only_function<::std::string(int) const> callback,
         ::brstd::move_only_function<bool(int) const>          condition
     );
+
+    MCAPI bool hasFinishedAsyncTasks() const;
 
     MCAPI void queueAsyncTask(::brstd::move_only_function<::TaskResult()>&& task, ::std::function<void()>&& callback);
 

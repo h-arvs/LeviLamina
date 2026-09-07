@@ -43,23 +43,15 @@ public:
 
     MCAPI ::std::unique_ptr<::ActorDefinitionDescriptor> _getDescriptionFrom(uint64 start, uint64 end);
 
+    MCAPI void _updateStack();
+
     MCAPI void addDefinition(::std::string const& def);
 
     MCAPI void addPendingPropertyChange(uint64 overallPropertyIndex, ::std::variant<int, float, bool, uint64> value);
 
     MCAPI void clearChangedDescription();
 
-    MCAPI ::std::string definitionListToString(::std::string const& delimiter) const;
-
-    MCAPI ::std::unique_ptr<::ActorDefinitionDescriptor> getDescription(bool needsUpdate);
-
-    MCAPI bool hasDefinition(::std::string const& def) const;
-
     MCAPI void removeDefinition(::std::string const& def);
-
-    MCAPI void setDefinitionStack(::std::vector<::DiffListPair>& stack);
-
-    MCAPI void unlockChanges();
     // NOLINTEND
 
 public:

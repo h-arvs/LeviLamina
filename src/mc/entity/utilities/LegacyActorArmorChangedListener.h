@@ -7,6 +7,7 @@
 
 // auto generated forward declare list
 // clang-format off
+class Actor;
 class EntityContext;
 // clang-format on
 
@@ -34,12 +35,16 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
+    MCNAPI static void containerContentChanged(::Actor& actor);
+
     MCNAPI static void initializeEntity(::EntityContext& entity);
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCNAPI void $containerContentChanged(int);
+
 
     // NOLINTEND
 };

@@ -15,13 +15,7 @@ public:
     // NOLINTBEGIN
     virtual ~IScriptSentryRequestSender() = default;
 
-    virtual void sendRequest(::SentryEnvelope) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual void sendRequest(::SentryEnvelope sentryEvent) = 0;
     // NOLINTEND
 };
 

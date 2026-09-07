@@ -62,10 +62,4 @@ public:
 
     virtual void _phaseTransitionStarted(::std::string const&, ::std::string const&, int, int) /*override*/;
     // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
-    // NOLINTEND
 };

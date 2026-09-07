@@ -17,6 +17,7 @@ class CompoundTag;
 class DataLoadHelper;
 class IConstBlockSource;
 class ILevel;
+class PistonBlockActor;
 class SaveContext;
 class Vec3;
 // clang-format on
@@ -60,10 +61,22 @@ public:
     // NOLINTBEGIN
     MCAPI explicit MovingBlockActor(::BlockPos const& pos);
 
+    MCAPI ::std::pair<::AABB, ::AABB> _getWrappedBlockCollisionShapes(::IConstBlockSource const& region) const;
+
     MCAPI bool _shouldPreserve(::BlockSource& region);
 
 #ifdef LL_PLAT_C
     MCAPI ::Vec3 getDrawPos(::IConstBlockSource const& region, float a) const;
+#endif
+
+    MCAPI void moveCollidedEntities(::PistonBlockActor& pistonBlock, ::BlockSource& region);
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCAPI static bool isPreserved(::BlockActor const& blockActor, ::BlockSource& region);
 #endif
     // NOLINTEND
 

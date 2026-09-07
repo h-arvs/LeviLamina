@@ -44,9 +44,13 @@ public:
     MCAPI ::IPlayerTickPolicy::TickAction
     $shouldTickPlayer(uint64 const creditTicks, uint64 unprocessedTicksSize) const;
 
-    MCAPI bool $isStrictMovement() const;
+    MCFOLD bool $isStrictMovement() const;
 
+#ifdef LL_PLAT_S
     MCAPI bool $isStrictDismount() const;
+#else // LL_PLAT_C
+    MCFOLD bool $isStrictDismount() const;
+#endif
 
 
     // NOLINTEND

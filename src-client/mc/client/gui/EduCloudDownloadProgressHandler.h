@@ -87,6 +87,12 @@ public:
     // NOLINTEND
 
 public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static void _leaveProgressHandler(::MinecraftScreenModel& minecraftScreenModel);
+    // NOLINTEND
+
+public:
     // constructor thunks
     // NOLINTBEGIN
     MCAPI void* $ctor(
@@ -103,6 +109,24 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $tick(::MinecraftScreenModel& minecraftScreenModel);
 
+    MCAPI void $onCancel(::MinecraftScreenModel& minecraftScreenModel);
+
+    MCAPI void $onExit(::MinecraftScreenModel& minecraftScreenModel);
+
+    MCAPI void $onStart(::MinecraftScreenModel& minecraftScreenModel);
+
+    MCAPI ::std::string $getProgressMessage(::MinecraftScreenModel& minecraftScreenModel) const;
+
+    MCAPI ::std::string $getTitleText() const;
+
+    MCAPI ::std::string $getName() const;
+
+    MCAPI ::std::string $getTTSProgressMessage() const;
+
+    MCFOLD ::LoadingState $getLoadingState(::MinecraftScreenModel& minecraftScreenModel) const;
+
+    MCFOLD ::ProgressAnimation $showLoadingBar() const;
     // NOLINTEND
 };

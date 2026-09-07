@@ -15,15 +15,9 @@ public:
     // NOLINTBEGIN
     virtual ~ILifetimeScopeListener() = default;
 
-    virtual void onPreLifetimeScopeDestroy(::Scripting::LifetimeRegistry&) = 0;
+    virtual void onPreLifetimeScopeDestroy(::Scripting::LifetimeRegistry& registry) = 0;
 
     virtual void onPostLifetimeScopeDestroy(::Scripting::LifetimeRegistry&) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };
 

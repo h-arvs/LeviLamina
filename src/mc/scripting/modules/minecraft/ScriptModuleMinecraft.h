@@ -5,16 +5,23 @@
 // auto generated inclusion list
 #include "mc/deps/script_core/lifetime_registry/scripting/StrongTypedObjectHandle.h"
 #include "mc/deps/script_core/runtime/scripting/Result.h"
+#include "mc/world/persistence/DynamicPropertyDefinePropertyError.h"
 
 // auto generated forward declare list
 // clang-format off
+class Actor;
 class Block;
 class Dimension;
+class PropertyComponent;
+class PropertyMetadata;
+struct PlayerUpdateEntityOverridesPacketPayload;
+namespace Editor::ScriptModule { class ScriptRelativeVolumeListBlockVolume; }
+namespace ScriptModuleMinecraft { class ScriptActor; }
 namespace ScriptModuleMinecraft { class ScriptBiomeType; }
 namespace ScriptModuleMinecraft { class ScriptBlockPermutation; }
 namespace ScriptModuleMinecraft { class ScriptBlockType; }
 namespace ScriptModuleMinecraft { class ScriptBlockVolumeBase; }
-namespace ScriptModuleMinecraft { class ScriptCompoundBlockVolume; }
+namespace ScriptModuleMinecraft { class ScriptScoreboardIdentity; }
 namespace ScriptModuleMinecraft { struct IScriptAfterEventSignalBuilder; }
 namespace ScriptModuleMinecraft { struct ScriptBiomeFillOptions; }
 namespace ScriptModuleMinecraft { struct ScriptUnloadedChunksError; }
@@ -22,12 +29,36 @@ namespace Scripting { class ModuleBindingBuilder; }
 namespace Scripting { struct ClassBinding; }
 namespace Scripting { struct EngineError; }
 namespace Scripting { struct EnumBinding; }
+namespace Scripting { struct Error; }
 namespace Scripting { struct InvalidArgumentError; }
 // clang-format on
 
 namespace ScriptModuleMinecraft {
 // functions
 // NOLINTBEGIN
+MCNAPI ::Scripting::Error
+_handleDefinePropertyError(::DynamicPropertyDefinePropertyError error, ::std::string const& identifier);
+
+MCNAPI ::std::optional<::Scripting::Error> _tryQueueUpdateForOverridenProperty(
+    ::Actor&                                          actor,
+    ::PropertyComponent const&                        props,
+    ::PlayerUpdateEntityOverridesPacketPayload&       payload,
+    ::PropertyMetadata const&                         propertyMetadata,
+    ::std::variant<float, bool, ::std::string> const& value
+);
+
+MCNAPI ::std::optional<::Scripting::Error> _tryQueueUpdateForRemovedOverride(
+    ::Actor&                   actor,
+    ::PropertyComponent const& props,
+    ::PropertyMetadata const&  propertyMetadata
+);
+
+MCNAPI ::std::optional<::Scripting::Error> _validatePropertyMetadata(
+    ::PropertyMetadata const* propertyMetadata,
+    ::Actor const*            actor,
+    ::std::string const&      identifier
+);
+
 MCNAPI ::Scripting::EnumBinding bindActorHealCause();
 
 MCNAPI ::Scripting::EnumBinding bindActorLocatorEnum();
@@ -39,6 +70,10 @@ MCNAPI ::Scripting::ClassBinding bindBlockLocation();
 MCNAPI ::Scripting::EnumBinding bindButtonInputAction();
 
 MCNAPI ::Scripting::EnumBinding bindButtonInputState();
+
+MCNAPI ::Scripting::EnumBinding bindCameraShakeTypeEnum();
+
+MCNAPI ::Scripting::EnumBinding bindCloneBlocksCloneMode();
 
 MCNAPI ::Scripting::EnumBinding bindCommandPermissionLevel();
 
@@ -75,6 +110,8 @@ MCNAPI ::Scripting::EnumBinding bindScriptDisplayObjectiveSlotId();
 MCNAPI ::Scripting::EnumBinding bindScriptEventSource();
 
 MCNAPI ::Scripting::EnumBinding bindScriptPlayerInventoryType();
+
+MCNAPI ::Scripting::EnumBinding bindScriptPlayerSplitScreenSlot();
 
 MCNAPI ::Scripting::EnumBinding bindTimeOfDay();
 
@@ -137,6 +174,11 @@ MCNAPI ::std::unique_ptr<::ScriptModuleMinecraft::IScriptAfterEventSignalBuilder
 
 MCNAPI ::std::unique_ptr<::ScriptModuleMinecraft::IScriptAfterEventSignalBuilder>
 createEntityStartSneakingAfterEventMetadata();
+
+MCNAPI ::std::unique_ptr<::ScriptModuleMinecraft::IScriptAfterEventSignalBuilder>
+createEntityStopSneakingAfterEventMetadata();
+
+MCNAPI ::std::unique_ptr<::ScriptModuleMinecraft::IScriptAfterEventSignalBuilder> createEntityTamedAfterEventMetadata();
 
 MCNAPI ::std::unique_ptr<::ScriptModuleMinecraft::IScriptAfterEventSignalBuilder>
 createEntityUpgradeAfterEventMetadata();
@@ -244,6 +286,9 @@ MCNAPI ::std::unique_ptr<::ScriptModuleMinecraft::IScriptAfterEventSignalBuilder
 createProjectileHitEntityAfterEventMetadata();
 
 MCNAPI ::std::unique_ptr<::ScriptModuleMinecraft::IScriptAfterEventSignalBuilder>
+createSoundCompletedAfterEventMetadata();
+
+MCNAPI ::std::unique_ptr<::ScriptModuleMinecraft::IScriptAfterEventSignalBuilder>
 createTargetBlockHitAfterEventMetadata();
 
 MCNAPI ::std::unique_ptr<::ScriptModuleMinecraft::IScriptAfterEventSignalBuilder>
@@ -273,9 +318,17 @@ fillBiomes(
     ::Dimension& dimension,
     ::std::variant<
         ::Scripting::StrongTypedObjectHandle<::ScriptModuleMinecraft::ScriptBlockVolumeBase>,
-        ::Scripting::StrongTypedObjectHandle<::ScriptModuleMinecraft::ScriptCompoundBlockVolume>> const& volume,
-    ::Scripting::StrongTypedObjectHandle<::ScriptModuleMinecraft::ScriptBiomeType> const&                biomeType,
-    ::ScriptModuleMinecraft::ScriptBiomeFillOptions const&                                               options
+        ::Scripting::StrongTypedObjectHandle<::Editor::ScriptModule::ScriptRelativeVolumeListBlockVolume>> const&
+                                                                                          volume,
+    ::Scripting::StrongTypedObjectHandle<::ScriptModuleMinecraft::ScriptBiomeType> const& biomeType,
+    ::ScriptModuleMinecraft::ScriptBiomeFillOptions const&                                options
+);
+
+MCNAPI ::std::string getScriptScoreboardParticipantName(
+    ::std::variant<
+        ::Scripting::StrongTypedObjectHandle<::ScriptModuleMinecraft::ScriptScoreboardIdentity>,
+        ::Scripting::StrongTypedObjectHandle<::ScriptModuleMinecraft::ScriptActor>,
+        ::std::string> const& participant
 );
 // NOLINTEND
 

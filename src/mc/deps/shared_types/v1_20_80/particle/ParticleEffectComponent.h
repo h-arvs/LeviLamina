@@ -19,9 +19,9 @@ public:
     // NOLINTEND
 
 public:
-    // virtual function thunks
+    // static variables
     // NOLINTBEGIN
-
+    MCAPI static ::HashedString const& EmptyID();
     // NOLINTEND
 };
 

@@ -6,7 +6,7 @@
 #include "mc/deps/core/container/small_vector.h"
 #include "mc/deps/core/utility/buffer_span.h"
 #include "mc/deps/game_refs/WeakRef.h"
-#include "mc/network/packet/SubChunkPacket.h"
+#include "mc/network/packet/SubChunkPacketPayload.h"
 #include "mc/platform/threading/Mutex.h"
 #include "mc/platform/threading/SpinLockImpl.h"
 #include "mc/world/actor/ActorType.h"
@@ -57,6 +57,7 @@ class IDataOutput;
 class ILevel;
 class LevelChunkMetaData;
 class SaveContext;
+class StringByteInput;
 class SubChunkPos;
 class WeakEntityRef;
 struct ActorDefinitionIdentifier;
@@ -136,40 +137,39 @@ public:
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::TypedStorage<8, 80, ::Bedrock::Threading::Mutex>                      mBlockEntityAccessLock;
-    ::ll::TypedStorage<8, 8, ::ILevel&>                                         mLevel;
-    ::ll::TypedStorage<8, 8, ::Dimension&>                                      mDimension;
-    ::ll::TypedStorage<4, 12, ::BlockPos>                                       mMin;
-    ::ll::TypedStorage<4, 12, ::BlockPos>                                       mMax;
-    ::ll::TypedStorage<8, 8, ::ChunkPos>                                        mPosition;
-    ::ll::TypedStorage<1, 1, bool>                                              mLightingFixupDone;
-    ::ll::TypedStorage<1, 1, ::std::atomic<bool>>                               mLightingTaskActive;
-    ::ll::TypedStorage<1, 1, bool>                                              mReadOnly;
-    ::ll::TypedStorage<8, 8, ::ChunkSource*>                                    mGenerator;
-    ::ll::TypedStorage<4, 4, ::LevelChunkTicking::Entity>                       mTmpTickingEntity;
-    ::ll::TypedStorage<1, 2, ::std::optional<::LevelChunkFormat>>               mLoadedFormat;
-    ::ll::TypedStorage<1, 1, bool>                                              mHadSerializedEntities;
-    ::ll::TypedStorage<8, 32, ::std::string>                                    mSerializedEntitiesBuffer;
-    ::ll::TypedStorage<8, 32, ::std::string>                                    mFailedSerializedEntitiesBuffer;
-    ::ll::TypedStorage<8, 24, ::std::vector<::ActorLink>>                       mUnresolvedActorLinks;
-    ::ll::TypedStorage<1, 1, ::std::atomic<::ChunkState>>                       mLoadState;
-    ::ll::TypedStorage<1, 1, ::std::atomic<bool>>                               mIsCurrentLoadStateIndeterminate;
-    ::ll::TypedStorage<1, 1, ::ChunkTerrainDataState>                           mTerrainDataState;
-    ::ll::TypedStorage<1, 1, ::ChunkDebugDisplaySavedState>                     mDebugDisplaySavedState;
-    ::ll::TypedStorage<1, 1, ::ChunkCachedDataState>                            mCachedDataState;
-    ::ll::TypedStorage<8, 24, ::SpinLockImpl>                                   mCachedDataStateSpinLock;
-    ::ll::TypedStorage<8, 24, ::SpinLockImpl>                                   mClientRequestHeightmapAdjustSpinLock;
-    ::ll::TypedStorage<8, 8, ::Tick>                                            mLastTick;
-    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::BlockTickingQueue>>            mTickQueue;
-    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::BlockTickingQueue>>            mRandomTickQueue;
-    ::ll::TypedStorage<8, 24, ::std::vector<::SubChunk>>                        mSubChunks;
-    ::ll::TypedStorage<8, 24, ::std::vector<::std::unique_ptr<::SpinLockImpl>>> mSubChunkSpinLocks;
-    ::ll::TypedStorage<8, 552, ::LevelChunkBiomes>                              mBiomes;
-    ::ll::TypedStorage<4, 2048, ::std::array<::ColumnCachedData, 256>>          mCachedData;
-    ::ll::TypedStorage<2, 512, ::std::array<::ChunkLocalHeight, 256>>           mHeightmap;
-    ::ll::TypedStorage<2, 512, ::std::array<::ChunkLocalHeight, 256>>           mRenderHeightmap;
-    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::std::vector<short>>>           mPreWorldGenHeightmap;
-    ::ll::TypedStorage<2, 2, ::ChunkLocalHeight>                                mNonAirMaxHeight;
+    ::ll::TypedStorage<8, 80, ::Bedrock::Threading::Mutex>             mBlockEntityAccessLock;
+    ::ll::TypedStorage<8, 8, ::ILevel&>                                mLevel;
+    ::ll::TypedStorage<8, 8, ::Dimension&>                             mDimension;
+    ::ll::TypedStorage<4, 12, ::BlockPos>                              mMin;
+    ::ll::TypedStorage<4, 12, ::BlockPos>                              mMax;
+    ::ll::TypedStorage<8, 8, ::ChunkPos>                               mPosition;
+    ::ll::TypedStorage<1, 1, bool>                                     mLightingFixupDone;
+    ::ll::TypedStorage<1, 1, ::std::atomic<bool>>                      mLightingTaskActive;
+    ::ll::TypedStorage<1, 1, bool>                                     mReadOnly;
+    ::ll::TypedStorage<8, 8, ::ChunkSource*>                           mGenerator;
+    ::ll::TypedStorage<4, 4, ::LevelChunkTicking::Entity>              mTmpTickingEntity;
+    ::ll::TypedStorage<1, 2, ::std::optional<::LevelChunkFormat>>      mLoadedFormat;
+    ::ll::TypedStorage<1, 1, bool>                                     mHadSerializedEntities;
+    ::ll::TypedStorage<8, 32, ::std::string>                           mSerializedEntitiesBuffer;
+    ::ll::TypedStorage<8, 32, ::std::string>                           mFailedSerializedEntitiesBuffer;
+    ::ll::TypedStorage<8, 24, ::std::vector<::ActorLink>>              mUnresolvedActorLinks;
+    ::ll::TypedStorage<1, 1, ::std::atomic<::ChunkState>>              mLoadState;
+    ::ll::TypedStorage<1, 1, ::std::atomic<bool>>                      mIsCurrentLoadStateIndeterminate;
+    ::ll::TypedStorage<1, 1, ::ChunkTerrainDataState>                  mTerrainDataState;
+    ::ll::TypedStorage<1, 1, ::ChunkDebugDisplaySavedState>            mDebugDisplaySavedState;
+    ::ll::TypedStorage<1, 1, ::ChunkCachedDataState>                   mCachedDataState;
+    ::ll::TypedStorage<8, 24, ::SpinLockImpl>                          mCachedDataStateSpinLock;
+    ::ll::TypedStorage<8, 24, ::SpinLockImpl>                          mClientRequestHeightmapAdjustSpinLock;
+    ::ll::TypedStorage<8, 8, ::Tick>                                   mLastTick;
+    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::BlockTickingQueue>>   mTickQueue;
+    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::BlockTickingQueue>>   mRandomTickQueue;
+    ::ll::TypedStorage<8, 24, ::std::vector<::SubChunk>>               mSubChunks;
+    ::ll::TypedStorage<8, 552, ::LevelChunkBiomes>                     mBiomes;
+    ::ll::TypedStorage<4, 2048, ::std::array<::ColumnCachedData, 256>> mCachedData;
+    ::ll::TypedStorage<2, 512, ::std::array<::ChunkLocalHeight, 256>>  mHeightmap;
+    ::ll::TypedStorage<2, 512, ::std::array<::ChunkLocalHeight, 256>>  mRenderHeightmap;
+    ::ll::TypedStorage<8, 8, ::std::unique_ptr<::std::vector<short>>>  mPreWorldGenHeightmap;
+    ::ll::TypedStorage<2, 2, ::ChunkLocalHeight>                       mNonAirMaxHeight;
     ::ll::TypedStorage<8, 64, ::std::unordered_map<::BiomeIdType, ::BiomeChunkState>> mBiomeStates;
     ::ll::TypedStorage<1, 1, bool>                                                    mHasCachedTemperatureNoise;
     ::ll::TypedStorage<1, 256, ::std::array<bool, 256>>                               mBorderBlockMap;
@@ -209,7 +209,6 @@ public:
     ::ll::TypedStorage<1, 1, bool>                                         mHasSubChunksToPrune;
     ::ll::TypedStorage<1, 1, bool>                                         mHaveSubChunksBeenPruned;
     ::ll::TypedStorage<1, 1, bool>                                         mShouldShiftUpFlatWorldSubChunks;
-    ::ll::TypedStorage<8, 24, ::SpinLockImpl>                              mSubChunksToPruneLock;
     ::ll::TypedStorage<8, 8, ::std::unique_ptr<::std::vector<::SubChunk>>> mSubChunksToPruneOutsideRange;
     ::ll::TypedStorage<8, 8, ::gsl::not_null<::std::unique_ptr<::Bedrock::LevelChunkTimings>>> mChunkTimings;
     ::ll::TypedStorage<8, 16, ::std::shared_ptr<::GameEventListenerRegistry>> mGameEventListenerRegistry;
@@ -219,6 +218,7 @@ public:
     ::ll::TypedStorage<1, 1, bool>                                            mIsEmptyClientChunk;
     ::ll::TypedStorage<1, 1, bool>                     mActorStorageUpdatedAfterCheckingForReplacementData;
     ::ll::TypedStorage<1, 1, ::std::atomic<bool>>      mIsTransient;
+    ::ll::TypedStorage<1, 1, bool>                     mDidSaveJigsawStructureBlueprints;
     ::ll::TypedStorage<8, 856, ::LevelChunkVolumeData> mLevelChunkVolumeData;
     // NOLINTEND
 
@@ -240,18 +240,33 @@ public:
         ::LevelChunkBlockActorStorage::TrackingMode blockActorTrackingMode
     );
 
+    MCAPI void _addEntityToVolumes(::gsl::not_null<::Actor*> actor);
+
     MCAPI void _checkAndInferMetaDataAfterDeserialization();
 
 #ifdef LL_PLAT_C
     MCAPI void _deserializeBiomes(::IDataInput& stream, ::BiomeRegistry const& biomeRegistry, bool fromNetwork);
 #endif
 
+#ifdef LL_PLAT_S
+    MCAPI void _deserializeBiomes(::IDataInput& stream, ::BiomeRegistry const& biomeRegistry, bool fromNetwork);
+#endif
+
     MCAPI void _deserializeBlockEntities(::IDataInput& stream, ::LevelChunkBlockActorStorage& blockEntityMap);
+
+    MCAPI bool _deserializeSubChunk(short index, ::StringByteInput& stream);
 
     MCAPI void _fixupCorruptedBlockActors(
         ::LevelChunkBlockActorStorage& deserialized,
         ::buffer_span_mut<::SubChunk>  subchunks
     ) const;
+
+#ifdef LL_PLAT_C
+    MCAPI void _handleHeightmapDataFromSubChunkPacketWithDeserializationChanges(
+        short                                              subChunkIndex,
+        ::SubChunkPacketPayload::SubChunkPacketData const& subChunkPacketData
+    );
+#endif
 
     MCAPI void _lightingCallbacks(
         ::ChunkBlockPos const& pos,
@@ -259,6 +274,14 @@ public:
         ::Block const&         current,
         ::BlockSource*         currentSource
     );
+
+    MCAPI void _placeBlockEntity(::std::shared_ptr<::BlockActor> te);
+
+    MCAPI bool _recalcHeight(::ChunkBlockPos const& start, ::BlockSource* source);
+
+    MCAPI void _set2DBiomesFrom3D(::IDataInput& stream);
+
+    MCAPI void _setAllBiomesFrom2D(::std::array<::BiomeIdType, 256>& legacyBiomes);
 
     MCAPI void _setBiome(::Biome const& biome, ::ChunkBlockPos const& pos, bool fillYDimension);
 
@@ -294,6 +317,7 @@ public:
         short                                      absoluteIndex,
         ::std::optional<::DeserializationChanges*> deserializationChanges
     );
+#endif
 
     MCAPI void deserializeSubChunk(
         uchar                                      idx,
@@ -301,7 +325,6 @@ public:
         ::std::optional<schar>                     absoluteIndex,
         ::std::optional<::DeserializationChanges*> deserializationChanges
     );
-#endif
 
     MCAPI void fetchBlocks(::BlockPos const& volumeOrigin, ::BlockVolume& volume) const;
 
@@ -339,15 +362,16 @@ public:
     MCAPI ::std::array<::ChunkLocalHeight, 256> getEntireLightingHeightMap() const;
 #endif
 
+    MCAPI void
+    getEntities(::ActorType type, ::AABB const& bb, ::std::vector<::Actor*>& es, bool ignoreTargetType) const;
+
     MCAPI void getEntities(
         ::gsl::span<::gsl::not_null<::Actor const*>> ignoredEntities,
         ::AABB const&                                bb,
         ::std::vector<::Actor*>&                     entities,
-        bool                                         useHitbox
+        bool                                         useHitbox,
+        ::std::function<bool(::Actor*)>              selector
     ) const;
-
-    MCAPI void
-    getEntities(::ActorType type, ::AABB const& bb, ::std::vector<::Actor*>& es, bool ignoreTargetType) const;
 
     MCAPI short getMaxAllocatedY() const;
 
@@ -363,9 +387,9 @@ public:
 
 #ifdef LL_PLAT_C
     MCAPI void handleHeightmapDataFromSubChunkPacket(
-        short                                       subChunkAbsoluteIndex,
-        ::SubChunkPacket::SubChunkPacketData const& subChunkPacketData,
-        ::std::optional<::DeserializationChanges*>  deserializationChanges
+        short                                              subChunkAbsoluteIndex,
+        ::SubChunkPacketPayload::SubChunkPacketData const& subChunkPacketData,
+        ::std::optional<::DeserializationChanges*>         deserializationChanges
     );
 #endif
 
@@ -390,7 +414,14 @@ public:
         ::BlockChangeContext const&     changeSourceContext
     );
 
+    MCAPI void populateHeightMapDataForSubChunkPacket(
+        short                                        subChunkAbsoluteIndex,
+        ::SubChunkPacketPayload::SubChunkPacketData& subChunkPacketData
+    ) const;
+
+#ifdef LL_PLAT_S
     MCAPI void pruneBiomesAboveHeightmap();
+#endif
 
 #ifdef LL_PLAT_C
     MCAPI void recalculateChunkSkyLight();
@@ -456,6 +487,10 @@ public:
     MCAPI void setPendingEntities(::std::string entitiesData);
 
     MCAPI void setPreWorldGenHeightMap(::std::unique_ptr<::std::vector<short>> heightmap);
+
+#ifdef LL_PLAT_C
+    MCAPI void setupRedstoneCircuit(::BlockSource& resource);
+#endif
 
     MCAPI void tickBlockEntities(::BlockSource& tickRegion);
 

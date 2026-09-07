@@ -4,7 +4,7 @@
 
 // auto generated inclusion list
 #include "mc/deps/core/string/HashedString.h"
-#include "mc/deps/shared_types/v1_26_20/block/GeometryComponent.h"
+#include "mc/deps/shared_types/v1_26_20/block/components/GeometryComponent.h"
 #include "mc/world/level/block/components/BlockComponentDescription.h"
 #include "mc/world/level/block/components/BlockRendererDescription.h"
 #include "mc/world/level/block/components/NetworkedBlockComponentDescription.h"
@@ -76,6 +76,8 @@ public:
     virtual ::CompoundTag buildUnboundDataNetworkTag() const /*override*/;
 
     virtual void initializeUnboundDataFromNetwork(::CompoundTag const& tag) /*override*/;
+
+    virtual ~BlockGeometryDescription() /*override*/;
     // NOLINTEND
 
 public:
@@ -117,17 +119,29 @@ public:
     // NOLINTBEGIN
     MCAPI static ::HashedString const& CROSS_GEO_NAME();
 
+    MCAPI static ::std::string const& CULLING_LAYER_DOCUMENTATION();
+
     MCAPI static ::HashedString const& CULLING_LAYER_LEAVES();
+
+    MCAPI static ::std::string const& CULLING_LAYER_NAME_CONSTRAINT();
 
     MCAPI static ::HashedString const& CULLING_LAYER_UNDEFINED();
 
     MCAPI static ::HashedString const& CULLING_SHAPE_DEFAULT();
 
+    MCAPI static ::std::string const& CULLING_SHAPE_DOCUMENTATION();
+
+    MCAPI static ::std::string const& CULLING_SHAPE_NAME_CONSTRAINT();
+
     MCAPI static ::HashedString const& FULL_BLOCK_GEO_NAME();
 
     MCAPI static ::HashedString const& FULL_BLOCK_GEO_NAME_V1();
 
+    MCAPI static ::std::string const& GEO_NAME_CONSTRAINT();
+
     MCAPI static ::std::string const& NameID();
+
+    MCAPI static ::std::string const& UV_LOCKING_CONSTRAINT();
     // NOLINTEND
 
 public:
@@ -149,6 +163,12 @@ public:
     // NOLINTEND
 
 public:
+    // destructor thunk
+    // NOLINTBEGIN
+    MCAPI void $dtor();
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
     MCAPI ::std::string const& $getName() const;
@@ -159,7 +179,11 @@ public:
 
     MCFOLD void $initializeComponentFromCode(::BlockComponentStorage& blockComponentStorage) const;
 
+#ifdef LL_PLAT_S
     MCAPI void $initializeComponentFromCode(::BlockComponentDescription::InitializationContext& context) const;
+#else // LL_PLAT_C
+    MCFOLD void $initializeComponentFromCode(::BlockComponentDescription::InitializationContext& context) const;
+#endif
 
     MCAPI void $handleVersionBasedInitialization(::SemVersion const& originalJsonVersion);
 

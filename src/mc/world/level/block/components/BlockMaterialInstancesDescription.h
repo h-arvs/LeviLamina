@@ -79,11 +79,17 @@ public:
     virtual void initializeFromNetwork(::CompoundTag const& tag, ::cereal::ReflectionCtx const& ctx) /*override*/;
 
     virtual void handleVersionBasedInitialization(::SemVersion const& originalJsonVersion) /*override*/;
+
+    virtual ~BlockMaterialInstancesDescription() /*override*/;
     // NOLINTEND
 
 public:
     // member functions
     // NOLINTBEGIN
+    MCAPI explicit BlockMaterialInstancesDescription(
+        ::std::vector<::BlockMaterialInstancesDescription::BlockMaterialData> const& materialDatas
+    );
+
     MCAPI BlockMaterialInstancesDescription(
         ::std::string const& textureName,
         ::BlockRenderLayer   renderLayer,
@@ -119,6 +125,8 @@ public:
 public:
     // constructor thunks
     // NOLINTBEGIN
+    MCAPI void* $ctor(::std::vector<::BlockMaterialInstancesDescription::BlockMaterialData> const& materialDatas);
+
     MCAPI void* $ctor(
         ::std::string const& textureName,
         ::BlockRenderLayer   renderLayer,
@@ -130,6 +138,12 @@ public:
         bool                 alphaMaskedTint,
         bool                 dithering
     );
+    // NOLINTEND
+
+public:
+    // destructor thunk
+    // NOLINTBEGIN
+    MCAPI void $dtor();
     // NOLINTEND
 
 public:

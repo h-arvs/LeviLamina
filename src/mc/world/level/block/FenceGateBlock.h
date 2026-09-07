@@ -17,6 +17,7 @@ class BlockSource;
 class Experiments;
 class GetCollisionShapeInterface;
 class IConstBlockSource;
+class Player;
 namespace BlockEvents { class BlockPlaceEvent; }
 namespace BlockEvents { class BlockPlayerInteractEvent; }
 namespace BlockEvents { class BlockQueuedTickEvent; }
@@ -49,8 +50,6 @@ public:
 
     virtual bool ignoreEntitiesOnPistonMove(::Block const& block) const /*override*/;
 
-    virtual bool isFenceGateBlock() const /*override*/;
-
     virtual void _addHardCodedBlockComponents(::Experiments const&) /*override*/;
 
     virtual void _onHitByActivatingAttack(::BlockSource& region, ::BlockPos const& pos, ::Actor*) const /*override*/;
@@ -62,6 +61,14 @@ public:
     MCAPI FenceGateBlock(::std::string const& nameId, int id, ::WoodType);
 
     MCAPI void _onRedstoneUpdate(::BlockEvents::BlockRedstoneUpdateEvent& blockEvent) const;
+
+    MCAPI void _setOpen(
+        ::BlockSource&                  region,
+        ::gsl::not_null<::Block const*> block,
+        ::BlockPos const&               pos,
+        ::Player*                       player,
+        bool                            shouldBeOpen
+    ) const;
 
     MCFOLD void onPlace(::BlockEvents::BlockPlaceEvent& eventData) const;
 
@@ -75,6 +82,9 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
+    MCAPI static ::AABB const&
+    _getShape(::BlockPos const& pos, ::Block const& block, ::AABB& bufferValue, bool isCollisionShape);
+
     MCAPI static void _onSetupRedstoneComponent(::BlockSource& region, ::BlockPos const& pos);
     // NOLINTEND
 
@@ -102,8 +112,6 @@ public:
     MCFOLD bool $isInteractiveBlock() const;
 
     MCAPI bool $ignoreEntitiesOnPistonMove(::Block const& block) const;
-
-    MCFOLD bool $isFenceGateBlock() const;
 
     MCAPI void $_addHardCodedBlockComponents(::Experiments const&);
 

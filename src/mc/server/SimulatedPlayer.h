@@ -26,6 +26,7 @@ class ChunkViewSource;
 class EntityContext;
 class ItemStack;
 class Level;
+class NavigationComponent;
 class NetworkIdentifier;
 class PacketSender;
 class ServerNetworkHandler;
@@ -89,7 +90,7 @@ public:
 
     virtual ::std::shared_ptr<::ChunkViewSource> _createChunkSource(::ChunkSource& mainChunkSource) /*override*/;
 
-    virtual void _updateChunkPublisherView(::Vec3 const&, float) /*override*/;
+    virtual void _updateChunkPublisherView(::Vec3 const& position, float minDistance) /*override*/;
     // NOLINTEND
 
 public:
@@ -113,11 +114,18 @@ public:
         ::EntityContext&                                   entityContext
     );
 
+    MCAPI void _addMoveComponent();
+
+    MCAPI ::ScriptModuleGameTest::ScriptNavigationResult
+    _createNavigationResult(::NavigationComponent* navigation) const;
+
     MCAPI void _updateDestroyBlock();
 
     MCAPI void _updateMovement();
 
     MCAPI void _updateRidingComponents();
+
+    MCAPI void postAiStep();
 
     MCAPI void preAiStep();
 
@@ -231,6 +239,25 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $initializeComponents(::ActorInitializationMethod method, ::VariantParameterList const& params);
+
+    MCAPI void $aiStep();
+
+    MCFOLD bool $isSimulated() const;
+
+    MCAPI ::std::string $getXuid() const;
+
+    MCAPI ::PlayerMovementSettings const& $getMovementSettings() const;
+
+    MCAPI void
+    $teleportTo(::Vec3 const& pos, bool shouldStopRiding, int cause, int sourceEntityType, bool keepVelocity);
+
+    MCFOLD int $_getSpawnChunkLimit() const;
+
+    MCAPI ::std::shared_ptr<::ChunkViewSource> $_createChunkSource(::ChunkSource& mainChunkSource);
+
+    MCFOLD void $_updateChunkPublisherView(::Vec3 const& position, float minDistance);
+
 
     // NOLINTEND
 };

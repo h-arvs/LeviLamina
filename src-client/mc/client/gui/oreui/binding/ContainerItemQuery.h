@@ -19,7 +19,7 @@ class ContainerItemQuery : public ::OreUI::QueryBase<::OreUI::ContainerItemQuery
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::TypedStorage<8, 1832, ::OreUI::ContainerItemBindings>                               mItemBindings;
+    ::ll::TypedStorage<8, 2008, ::OreUI::ContainerItemBindings>                               mItemBindings;
     ::ll::TypedStorage<1, 1, ::ContainerEnumName>                                             mContainerName;
     ::ll::TypedStorage<4, 4, int>                                                             mIndex;
     ::ll::TypedStorage<8, 24, ::Bedrock::NotNullNonOwnerPtr<::GameplayUI::GameplayUIContext>> mContext;
@@ -32,9 +32,15 @@ public:
     // NOLINTEND
 
 public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::std::add_lvalue_reference_t<char const[34]> NAME();
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
-
+    MCAPI void $update(double);
     // NOLINTEND
 };
 

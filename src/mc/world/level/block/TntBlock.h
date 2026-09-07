@@ -45,6 +45,8 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
+    MCAPI static void _setAllowUnderwater(::Actor* e);
+
     MCAPI static bool tryLightTnt(::Player& player, ::BlockPos const& pos);
     // NOLINTEND
 

@@ -4,6 +4,7 @@
 
 // auto generated inclusion list
 #include "mc/platform/Result.h"
+#include "mc/util/BidirectionalUnorderedMap.h"
 #include "mc/world/inventory/transaction/InventoryTransaction.h"
 #include "mc/world/inventory/transaction/InventoryTransactionError.h"
 
@@ -53,9 +54,7 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
-#ifdef LL_PLAT_C
     MCAPI static void _setDepenetrationOverride(::EntityContext& entity);
-#endif
 
     MCAPI static ::std::unique_ptr<::ComplexInventoryTransaction> fromType(::ComplexInventoryTransaction::Type type);
 
@@ -63,6 +62,13 @@ public:
     fromType(::ComplexInventoryTransaction::Type type, ::InventoryTransaction const& transaction);
 
     MCAPI static ::std::string const getTransactionTypeName(::ComplexInventoryTransaction::Type type);
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::BidirectionalUnorderedMap<::ComplexInventoryTransaction::Type, ::std::string> const&
+    transactionTypeMap();
     // NOLINTEND
 
 public:

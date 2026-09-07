@@ -17,6 +17,7 @@
 class ResourceLoadManager;
 class ResourceLocation;
 class ScreenContext;
+class Tessellator;
 struct OffscreenCaptureDescription;
 namespace Core { class Path; }
 namespace mce { class TextureGroup; }
@@ -29,6 +30,7 @@ public:
     // clang-format off
     struct GlyphQuad;
     struct TextObject;
+    class TextObjectCache;
     // clang-format on
 
     // Font inner types define
@@ -57,7 +59,7 @@ public:
         public:
             // member variables
             // NOLINTBEGIN
-            ::ll::TypedStorage<8, 592, ::mce::Mesh>      mMesh;
+            ::ll::TypedStorage<8, 616, ::mce::Mesh>      mMesh;
             ::ll::TypedStorage<8, 32, ::mce::TexturePtr> mTexture;
             ::ll::TypedStorage<4, 4, int>                mSheet;
             // NOLINTEND
@@ -71,6 +73,38 @@ public:
         ::ll::TypedStorage<1, 1, bool>                                     mContainsUnicode;
         ::ll::TypedStorage<1, 1, bool>                                     mShadow;
         // NOLINTEND
+
+    public:
+        // member functions
+        // NOLINTBEGIN
+        MCAPI void render(
+            ::ScreenContext&                     screenContext,
+            ::Font const&                        font,
+            ::mce::MaterialPtr const*            optionalMat,
+            ::OffscreenCaptureDescription const& offscreenCaptureDescription
+        ) const;
+        // NOLINTEND
+    };
+
+    class TextObjectCache {
+    public:
+        // TextObjectCache inner types define
+        using TextObjects = ::std::vector<::std::shared_ptr<::Font::TextObject>>;
+
+        using TextObjectsPtr = ::std::shared_ptr<::std::vector<::std::shared_ptr<::Font::TextObject>>>;
+
+    public:
+        // member variables
+        // NOLINTBEGIN
+        ::ll::TypedStorage<
+            8,
+            16,
+            ::std::map<
+                ::std::tuple<::std::string, ::mce::Color, float, float, bool, bool>,
+                ::std::shared_ptr<::std::vector<::std::shared_ptr<::Font::TextObject>>>,
+                ::std::less<void>>>
+            mEntries;
+        // NOLINTEND
     };
 
     using CurrentLineCallback = ::std::function<bool(::std::string_view const&, ::std::string&, float, uint&)> const;
@@ -79,11 +113,6 @@ public:
 
     using StringCacheLookupKey = ::std::tuple<::std::string_view, ::mce::Color, float, float, bool, bool>;
 
-    using StringCache = ::std::map<
-        ::std::tuple<::std::string, ::mce::Color, float, float, bool, bool>,
-        ::std::vector<::std::shared_ptr<::Font::TextObject>>,
-        ::std::less<void>>;
-
 public:
     // member variables
     // NOLINTBEGIN
@@ -91,34 +120,28 @@ public:
     ::ll::TypedStorage<4, 4, float>                                         mScalarOverride;
     ::ll::TypedStorage<8, 24, ::std::vector<::std::tuple<int, int, float>>> mScaleOverrideCharacter;
     ::ll::TypedStorage<8, 16, ::std::shared_ptr<::mce::TextureGroup>>       mTextureGroup;
-    ::ll::TypedStorage<
-        8,
-        16,
-        ::std::map<
-            ::std::tuple<::std::string, ::mce::Color, float, float, bool, bool>,
-            ::std::vector<::std::shared_ptr<::Font::TextObject>>,
-            ::std::less<void>>>
-                                                  mStringCache;
-    ::ll::TypedStorage<4, 4, int>                 mObfuscatedIndex;
-    ::ll::TypedStorage<4, 4, float>               mObfuscatedTextTime;
-    ::ll::TypedStorage<4, 8, ::Vec2>              mCaretRenderPosition;
-    ::ll::TypedStorage<4, 8, ::Vec2>              mCaretRenderSize;
-    ::ll::TypedStorage<1, 1, bool>                mAlwaysUnicode;
-    ::ll::TypedStorage<1, 1, bool>                mAutoResetFormat;
-    ::ll::TypedStorage<1, 1, bool>                mUseCache;
-    ::ll::TypedStorage<4, 16, ::mce::Color>       mCurrentColor;
-    ::ll::TypedStorage<4, 4, int>                 mFontTexture;
-    ::ll::TypedStorage<4, 16, ::mce::Color>       mCaretColor;
-    ::ll::TypedStorage<1, 1, bool>                mItalic;
-    ::ll::TypedStorage<1, 1, bool>                mBold;
-    ::ll::TypedStorage<1, 1, bool>                mStrikethrough;
-    ::ll::TypedStorage<1, 1, bool>                mUnderlined;
-    ::ll::TypedStorage<1, 1, bool>                mObfuscated;
-    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr> mFontMat;
+    ::ll::TypedStorage<8, 16, ::Font::TextObjectCache>                      mStringCache;
+    ::ll::TypedStorage<4, 4, int>                                           mObfuscatedIndex;
+    ::ll::TypedStorage<4, 4, float>                                         mObfuscatedTextTime;
+    ::ll::TypedStorage<4, 8, ::Vec2>                                        mCaretRenderPosition;
+    ::ll::TypedStorage<4, 8, ::Vec2>                                        mCaretRenderSize;
+    ::ll::TypedStorage<1, 1, bool>                                          mAlwaysUnicode;
+    ::ll::TypedStorage<1, 1, bool>                                          mAutoResetFormat;
+    ::ll::TypedStorage<1, 1, bool>                                          mUseCache;
+    ::ll::TypedStorage<4, 16, ::mce::Color>                                 mCurrentColor;
+    ::ll::TypedStorage<4, 4, int>                                           mFontTexture;
+    ::ll::TypedStorage<4, 16, ::mce::Color>                                 mCaretColor;
+    ::ll::TypedStorage<1, 1, bool>                                          mItalic;
+    ::ll::TypedStorage<1, 1, bool>                                          mBold;
+    ::ll::TypedStorage<1, 1, bool>                                          mStrikethrough;
+    ::ll::TypedStorage<1, 1, bool>                                          mUnderlined;
+    ::ll::TypedStorage<1, 1, bool>                                          mObfuscated;
+    ::ll::TypedStorage<8, 16, ::mce::MaterialPtr>                           mFontMat;
     // NOLINTEND
 
 public:
     // prevent constructor by default
+    Font& operator=(Font const&);
     Font();
 
 public:
@@ -126,12 +149,12 @@ public:
     // NOLINTBEGIN
     virtual ~Font();
 
-    virtual void switchFontsource(::Core::Path const&, ::Core::Path const&) = 0;
+    virtual void switchFontsource(::Core::Path const& asciiName, ::Core::Path const& unicodeName) = 0;
 
     virtual ::std::pair<::Core::PathBuffer<::std::string> const&, ::Core::PathBuffer<::std::string> const&>
     getFontSources() const = 0;
 
-    virtual void fetchPage(int);
+    virtual void fetchPage(int page);
 
     virtual void drawCached(
         ::ScreenContext&                     screenContext,
@@ -154,7 +177,7 @@ public:
         bool                                 autoGenNormalsAndTangents
     );
 
-    virtual bool supportsChar(int const&) = 0;
+    virtual bool supportsChar(int const& character) = 0;
 
     virtual int getLineLength(::std::string_view str, float fontSize, bool showColorSymbol);
 
@@ -162,7 +185,7 @@ public:
 
     virtual float getScaleFactor() const = 0;
 
-    virtual float getScaleFactor(int) const;
+    virtual float getScaleFactor(int uniChar) const;
 
     virtual ::Vec2 getTranslationFactor() const;
 
@@ -172,7 +195,13 @@ public:
 
     virtual void uploadTextureToGPU() = 0;
 
-    virtual void setTextConstantsInScreenContext(::ScreenContext&, int, float, ::mce::Color const&, bool) const;
+    virtual void setTextConstantsInScreenContext(
+        ::ScreenContext&    screenContext,
+        int                 glyphSheet,
+        float               guiScale,
+        ::mce::Color const& textColor,
+        bool                hasShadow
+    ) const;
 
     virtual ::mce::Font::Type getType(int glyphSheet) const;
 
@@ -190,29 +219,38 @@ public:
 
     virtual void onDeviceLost();
 
-    virtual void reloadFontTextures(::Bedrock::NonOwnerPointer<::ResourceLoadManager> const&, bool);
+    virtual void
+    reloadFontTextures(::Bedrock::NonOwnerPointer<::ResourceLoadManager> const& resourceLoadManager, bool blockingLoad);
 
     virtual bool isReloadingTextures();
 
     virtual void unloadTextures();
 
-    virtual void onLanguageChanged(::std::string_view);
+    virtual void onLanguageChanged(::std::string_view languageCode);
 
-    virtual float buildChar(::std::vector<::Font::GlyphQuad>&, int, ::mce::Color const&, bool, float, float, bool) = 0;
+    virtual float buildChar(
+        ::std::vector<::Font::GlyphQuad>& quads,
+        int                               i,
+        ::mce::Color const&               color,
+        bool                              italic,
+        float                             x,
+        float                             y,
+        bool                              unicode
+    ) = 0;
 
-    virtual ::mce::MaterialPtr const& getMaterial(int, bool) const = 0;
+    virtual ::mce::MaterialPtr const& getMaterial(int sheet, bool isOddGuiScale) const = 0;
 
-    virtual void loadFontData(bool) = 0;
+    virtual void loadFontData(bool uploadTextureImmediately) = 0;
 
     virtual int _getReplacementCharacter();
 
     virtual bool _supportsShadowInSingleDraw() = 0;
 
-    virtual float _getCharWidth(int, bool) = 0;
+    virtual float _getCharWidth(int uniChar, bool forceUnicode) = 0;
 
-    virtual void _scanUnicodeCharacterSize(int, int, bool) = 0;
+    virtual void _scanUnicodeCharacterSize(int character, int sheet, bool forceUnicode) = 0;
 
-    virtual ::ResourceLocation _getFontSheetLocation(int, bool) const = 0;
+    virtual ::ResourceLocation _getFontSheetLocation(int sheet, bool forceUnicode) const = 0;
 
     virtual ::std::string _remapString(::std::string_view str) const;
     // NOLINTEND
@@ -220,7 +258,21 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
+    MCAPI Font(::Font const& rhs);
+
     MCAPI explicit Font(::std::shared_ptr<::mce::TextureGroup> textureGroup);
+
+    MCAPI bool _chopString(
+        ::std::string&                                                                       currentLine,
+        ::std::string&                                                                       activeFormatting,
+        float&                                                                               totalHeight,
+        uint&                                                                                remainingLineCount,
+        float                                                                                maxWidth,
+        bool                                                                                 showColorSymbol,
+        bool                                                                                 centered,
+        float                                                                                fontSize,
+        ::std::function<bool(::std::string_view const&, ::std::string&, float, uint&)> const currentLineCallback
+    );
 
     MCAPI int _drawWordWrap(
         ::ScreenContext&    screenContext,
@@ -235,6 +287,23 @@ public:
         bool                centered,
         bool                showColorSymbol,
         ::mce::MaterialPtr* optionalMat
+    );
+
+    MCAPI ::std::shared_ptr<::Font::TextObject> _makeTextObject(
+        ::Tessellator&      tessellator,
+        ::std::string_view  str,
+        ::mce::Color const& ccolor,
+        bool                showColorSymbol,
+        bool                ignoreColorFormatting,
+        int                 caretPosition,
+        bool                shadow,
+        float               linePadding,
+        bool                isOddGuiScale,
+        ::mce::Color const& resetColorOverride,
+        bool                uiMaterial,
+        float               outlineWidth,
+        float               yCaretOffset,
+        bool                autoGenNormalsAndTangents
     );
 
     MCAPI int _processHeightWrap(
@@ -275,6 +344,20 @@ public:
         bool                shadow
     );
 
+    MCAPI void drawWithColorResetOverride(
+        ::ScreenContext&    screenContext,
+        ::std::string_view  str,
+        float               x,
+        float               y,
+        ::mce::Color const& color,
+        ::mce::Color const& resetColor,
+        bool                showColorSymbol,
+        ::mce::MaterialPtr* optionalMat,
+        int                 caretPosition,
+        float               linePadding,
+        float               yCaretOffset
+    );
+
     MCAPI ::std::unordered_set<::ResourceLocation> const& getGlyphLocations() const;
 
     MCAPI ::std::vector<::ResourceLocation> getReloadFontTextures() const;
@@ -303,6 +386,8 @@ public:
 public:
     // constructor thunks
     // NOLINTBEGIN
+    MCAPI void* $ctor(::Font const& rhs);
+
     MCAPI void* $ctor(::std::shared_ptr<::mce::TextureGroup> textureGroup);
     // NOLINTEND
 
@@ -315,7 +400,7 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
-    MCFOLD void $fetchPage(int);
+    MCFOLD void $fetchPage(int page);
 
     MCAPI void $drawCached(
         ::ScreenContext&                     screenContext,
@@ -340,11 +425,17 @@ public:
 
     MCAPI int $getLineLength(::std::string_view str, float fontSize, bool showColorSymbol);
 
-    MCAPI float $getScaleFactor(int) const;
+    MCAPI float $getScaleFactor(int uniChar) const;
 
     MCFOLD ::Vec2 $getTranslationFactor() const;
 
-    MCFOLD void $setTextConstantsInScreenContext(::ScreenContext&, int, float, ::mce::Color const&, bool) const;
+    MCFOLD void $setTextConstantsInScreenContext(
+        ::ScreenContext&    screenContext,
+        int                 glyphSheet,
+        float               guiScale,
+        ::mce::Color const& textColor,
+        bool                hasShadow
+    ) const;
 
     MCFOLD ::mce::Font::Type $getType(int glyphSheet) const;
 
@@ -362,13 +453,16 @@ public:
 
     MCFOLD void $onDeviceLost();
 
-    MCAPI void $reloadFontTextures(::Bedrock::NonOwnerPointer<::ResourceLoadManager> const&, bool);
+    MCAPI void $reloadFontTextures(
+        ::Bedrock::NonOwnerPointer<::ResourceLoadManager> const& resourceLoadManager,
+        bool                                                     blockingLoad
+    );
 
     MCAPI bool $isReloadingTextures();
 
     MCFOLD void $unloadTextures();
 
-    MCFOLD void $onLanguageChanged(::std::string_view);
+    MCFOLD void $onLanguageChanged(::std::string_view languageCode);
 
     MCAPI int $_getReplacementCharacter();
 

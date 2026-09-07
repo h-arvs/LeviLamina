@@ -10,6 +10,7 @@
 struct DimensionType;
 namespace ScriptModuleMinecraft { class ScriptDimensionType; }
 namespace Scripting { class ModuleBindingBuilder; }
+namespace Scripting { class WeakLifetimeScope; }
 // clang-format on
 
 namespace ScriptModuleMinecraft {
@@ -32,6 +33,12 @@ public:
     // NOLINTEND
 
 public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI void registerTypes(::Scripting::WeakLifetimeScope scope);
+    // NOLINTEND
+
+public:
     // static functions
     // NOLINTBEGIN
     MCAPI static ::std::unordered_map<::std::string, ::std::string> _getDimensionStringNames();
@@ -41,6 +48,12 @@ public:
     MCAPI static ::DimensionType fromString(::std::string const& name);
 
     MCAPI static ::std::string toString(::DimensionType const& type);
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::std::string const& sMinecraftNamespace();
     // NOLINTEND
 };
 

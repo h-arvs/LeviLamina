@@ -53,37 +53,19 @@ public:
     // NOLINTBEGIN
     virtual ~NativeRuntime() /*override*/ = default;
 
-#ifdef LL_PLAT_S
     virtual ::std::optional<::Scripting::ScriptContext> createContext(
         ::Scripting::ModuleBindingBundle&& bindings,
         ::Scripting::IDependencyLoader*    loader,
         ::Scripting::IPrinter*             printer,
         ::Scripting::ContextConfig const&
     ) /*override*/;
-#else // LL_PLAT_C
-    virtual ::std::optional<::Scripting::ScriptContext> createContext(
-        ::Scripting::ModuleBindingBundle&&,
-        ::Scripting::IDependencyLoader*,
-        ::Scripting::IPrinter*,
-        ::Scripting::ContextConfig const&
-    ) /*override*/;
-#endif
 
-#ifdef LL_PLAT_S
     virtual void destroyContext(::Scripting::ContextId contextId) /*override*/;
-#else // LL_PLAT_C
-    virtual void destroyContext(::Scripting::ContextId) /*override*/;
-#endif
 
-#ifdef LL_PLAT_S
     virtual ::Scripting::ResultAny
     run(::Scripting::ContextId                  contextId,
         ::Scripting::IPayload*                  payload,
         ::std::optional<::Scripting::Privilege> privilege) /*override*/;
-#else // LL_PLAT_C
-    virtual ::Scripting::ResultAny
-    run(::Scripting::ContextId, ::Scripting::IPayload*, ::std::optional<::Scripting::Privilege>) /*override*/;
-#endif
 
     virtual ::Scripting::ResultAny call(
         ::Scripting::ContextId,

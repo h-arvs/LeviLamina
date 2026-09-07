@@ -13,12 +13,6 @@ public:
     // NOLINTBEGIN
     virtual ~IPremiumCachePackEntitlementValidator() = default;
 
-    virtual bool isEntitlementValid(::IEntitlement const&) const = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual bool isEntitlementValid(::IEntitlement const& entitlement) const = 0;
     // NOLINTEND
 };

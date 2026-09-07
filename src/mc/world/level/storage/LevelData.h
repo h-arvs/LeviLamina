@@ -27,6 +27,7 @@
 #include "mc/world/level/NetherWorldType.h"
 #include "mc/world/level/SpawnSettings.h"
 #include "mc/world/level/Tick.h"
+#include "mc/world/level/WorldVersion.h"
 #include "mc/world/level/levelgen/flat/FlatWorldPresetID.h"
 #include "mc/world/level/storage/AdventureSettings.h"
 #include "mc/world/level/storage/CloudSaveLevelInfo.h"
@@ -48,6 +49,7 @@ class WorldClockRegistry;
 struct EduSharedUriResource;
 struct LevelDataValue;
 namespace Bedrock::PubSub::ThreadModel { struct SingleThreaded; }
+namespace RakNet { class BitStream; }
 // clang-format on
 
 class LevelData {
@@ -157,9 +159,8 @@ public:
             ::std::vector<::LevelDataProperty>,
             ::std::vector<::std::unique_ptr<
                 ::Bedrock::PubSub::Publisher<void(), ::Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>>>>
-                                                              mLevelDataPropertiesPublishers;
-    ::ll::TypedStorage<8, 40, ::std::optional<::std::string>> mExperienceWorldId;
-    ::ll::TypedStorage<4, 4, ::LevelDataType>                 mLevelDataType;
+                                              mLevelDataPropertiesPublishers;
+    ::ll::TypedStorage<4, 4, ::LevelDataType> mLevelDataType;
     // NOLINTEND
 
 public:
@@ -194,9 +195,11 @@ public:
     _getLevelDataPropertyPublisher(::LevelDataProperty property) const;
 #endif
 
-    MCFOLD ::LevelDataValue const* _getValue(::HashedString const& key) const;
+    MCAPI ::LevelDataValue const* _getValue(::HashedString const& key) const;
 
-    MCFOLD ::LevelDataValue* _getValue(::HashedString const& key);
+    MCAPI ::LevelDataValue* _getValue(::HashedString const& key);
+
+    MCAPI void _initLevelDataPropertyPublishers();
 
 #ifdef LL_PLAT_C
     MCAPI void _resetDefaultAdvancedSettingsData(bool isTrial);
@@ -222,9 +225,7 @@ public:
 
     MCAPI ::GeneratorType getGenerator() const;
 
-#ifdef LL_PLAT_C
     MCAPI void getTagData(::CompoundTag const& tag);
-#endif
 
     MCAPI bool hasCloudSaveAssociation() const;
 
@@ -232,11 +233,9 @@ public:
     MCAPI bool isCloudSaveActiveForWorld() const;
 
     MCAPI bool isEditionCompatible() const;
-#endif
 
     MCAPI ::LevelData& operator=(::LevelData&& rhs);
 
-#ifdef LL_PLAT_C
     MCAPI ::Bedrock::PubSub::Subscription registerIsHardcoreListener(::std::function<void(bool)> callback) const;
 
     MCAPI ::Bedrock::PubSub::Subscription
@@ -249,9 +248,9 @@ public:
     MCAPI void resetDefaultCheatSettingsData();
 
     MCAPI void resetSettingsForRandomSeed();
+#endif
 
     MCAPI void setBiomeOverride(::std::string const& biomeName);
-#endif
 
     MCAPI void setCheatsEnabled(bool cheatsEnabled);
 
@@ -267,9 +266,9 @@ public:
 
     MCAPI void setEducationFeaturesEnabled(bool educationEnabled);
 
-#ifdef LL_PLAT_C
     MCAPI void setEducationOid(::std::string const& educationOid);
 
+#ifdef LL_PLAT_C
     MCAPI void setFlatWorldPreset(::FlatWorldPresetID preset);
 #endif
 
@@ -277,9 +276,7 @@ public:
 
     MCAPI void setGameType(::GameType type);
 
-#ifdef LL_PLAT_C
     MCAPI void setGenerator(::GeneratorType version);
-#endif
 
     MCAPI void setIsHardcore(bool value);
 
@@ -287,9 +284,7 @@ public:
 
     MCAPI void setOverworldTimeSetting(int time);
 
-#ifdef LL_PLAT_C
     MCAPI void setSeed(::LevelSeed64 seed);
-#endif
 
     MCAPI void setServerChunkTickRange(uint newRange);
 
@@ -301,11 +296,15 @@ public:
 
     MCAPI void setWorldTemplateOptionLocked(bool isLocked);
 
+    MCAPI void setWorldVersion(::WorldVersion version);
+
 #ifdef LL_PLAT_C
     MCAPI bool shouldAchievementsBeDisabled(bool isTrialMode, bool hasBehaviourPack) const;
 #endif
 
     MCAPI void touchLastLoadedWithVersion();
+
+    MCAPI void v1_read(::RakNet::BitStream& bitStream, ::StorageVersion storageVersion);
 
     MCAPI ~LevelData();
     // NOLINTEND

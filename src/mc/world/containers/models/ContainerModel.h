@@ -94,7 +94,7 @@ public:
 
     virtual bool isSlotDisabled(int slot) const;
 
-    virtual void refreshContainer(bool);
+    virtual void refreshContainer(bool fullRefresh);
 
     virtual ::Container* _getContainer() const;
 
@@ -119,6 +119,8 @@ public:
 
 #ifdef LL_PLAT_C
     MCAPI int getItemCount(::ItemDescriptor const& descriptor) const;
+
+    MCAPI int getValidIngredientItemCount(::ItemDescriptor const& descriptor) const;
 #endif
 
     MCAPI void networkUpdateItem(int modelSlot, ::ItemStack const& oldItem, ::ItemStack const& newItem);
@@ -128,6 +130,13 @@ public:
 
     MCAPI void
     registerPlayerNotificationCallback(::std::function<void(int, ::ItemStack const&, ::ItemStack const&)> callback);
+
+#ifdef LL_PLAT_C
+    MCAPI void registerTrackedOnContainerChangedCallback(
+        ::std::function<void(int, ::ItemStack const&, ::ItemStack const&)> callback,
+        ::SharedTypes::Legacy::ContainerType                               containerType
+    );
+#endif
 
     MCAPI void setClientUIContainer(::SparseContainerClient* clientUIContainer);
     // NOLINTEND
@@ -164,11 +173,17 @@ public:
 
     MCFOLD void $tick(int selectedSlot);
 
+    MCAPI ::ContainerWeakRef $getContainerWeakRef() const;
+
     MCAPI ::ItemStack const& $getItemStack(int modelSlot) const;
 
     MCFOLD ::std::vector<::ItemStack> const& $getItems() const;
 
+#ifdef LL_PLAT_S
     MCAPI ::ItemInstance const& $getItemInstance(int modelSlot) const;
+#else // LL_PLAT_C
+    MCFOLD ::ItemInstance const& $getItemInstance(int modelSlot) const;
+#endif
 
     MCAPI ::ItemStackBase const& $getItemStackBase(int modelSlot) const;
 
@@ -190,7 +205,9 @@ public:
 
     MCFOLD bool $isSlotDisabled(int slot) const;
 
-    MCFOLD void $refreshContainer(bool);
+    MCFOLD void $refreshContainer(bool fullRefresh);
+
+    MCFOLD ::Container* $_getContainer() const;
 
     MCFOLD int $_getContainerOffset() const;
 

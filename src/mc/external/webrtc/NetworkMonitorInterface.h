@@ -64,12 +64,6 @@ public:
 
     virtual ::webrtc::NetworkBindingResult BindSocketToNetwork(int, ::webrtc::IPAddress const&, ::std::string_view);
     // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
-    // NOLINTEND
 };
 
 } // namespace webrtc

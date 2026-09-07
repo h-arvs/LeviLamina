@@ -4,8 +4,10 @@
 
 // auto generated inclusion list
 #include "mc/world/ContainerID.h"
+#include "mc/world/containers/ContainerEnumName.h"
 #include "mc/world/containers/managers/models/ContainerManagerModel.h"
 #include "mc/world/containers/models/FilterResult.h"
+#include "mc/world/containers/models/TextSearchMode.h"
 #include "mc/world/item/ItemInstance.h"
 #include "mc/world/item/crafting/RecipeIngredientSet.h"
 #include "mc/world/level/BlockPos.h"
@@ -14,6 +16,8 @@
 // clang-format off
 class ContainerModel;
 class ContainerScreenContext;
+class CreativeItemGroupCategory;
+class FilteredContainerModel;
 class ItemStack;
 class Player;
 // clang-format on
@@ -87,6 +91,23 @@ public:
         ::std::string const& inventorySearch
     );
 
+    MCAPI ::std::shared_ptr<::FilteredContainerModel> _createContainerModel(
+        ::ContainerEnumName                                          containerEnumName,
+        ::CreativeItemGroupCategory* const                           category,
+        bool                                                         doExpando,
+        ::std::function<::FilterResult(::ItemInstance const&, bool)> rule
+    );
+
+    MCAPI ::FilterResult _filterByInventory(::ItemInstance const& item, bool includeCursorItem) const;
+
+    MCAPI ::FilterResult _filterByText(::ItemInstance const& item, ::TextSearchMode searchMode) const;
+
+    MCAPI bool _foundInStartOfAnyWord(::std::string const& itemName) const;
+
+    MCAPI bool _hasUnlockedRecipes(::ItemInstance const& item) const;
+
+    MCAPI ::std::vector<::std::string> const getCraftingTags() const;
+
     MCAPI bool hasIngredientSetChanged(::ItemStack const& inHand);
 
     MCAPI void setIsFiltering(bool craftableFilterOn);
@@ -114,6 +135,24 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCFOLD ::std::vector<::ItemStack> $getItemCopies() const;
+
+    MCFOLD void $setSlot(int, ::ItemStack const&, bool);
+
+    MCFOLD ::ItemStack const& $getSlot(int) const;
+
+    MCFOLD void $setData(int, int);
+
+    MCFOLD void $broadcastChanges();
+
+    MCAPI bool $isValid(float pickRange);
+
+    MCAPI bool $tick();
+
+    MCAPI ::ContainerScreenContext $_postInit();
+#endif
+
 
     // NOLINTEND
 };

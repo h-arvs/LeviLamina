@@ -2,6 +2,14 @@
 
 #include "mc/_HeaderOutputPredefine.h"
 
+// auto generated inclusion list
+#include "mc/deps/game_refs/WeakRef.h"
+
+// auto generated forward declare list
+// clang-format off
+namespace Editor::Prefabs { class PrefabDBTemplate; }
+// clang-format on
+
 namespace Editor::ScriptModule {
 
 class ScriptPrefabTemplateMetadata {
@@ -22,9 +30,37 @@ public:
 
 public:
     // prevent constructor by default
-    ScriptPrefabTemplateMetadata& operator=(ScriptPrefabTemplateMetadata const&);
-    ScriptPrefabTemplateMetadata(ScriptPrefabTemplateMetadata const&);
     ScriptPrefabTemplateMetadata();
+
+public:
+    // member functions
+    // NOLINTBEGIN
+    MCNAPI ScriptPrefabTemplateMetadata(::Editor::ScriptModule::ScriptPrefabTemplateMetadata const&);
+
+    MCNAPI explicit ScriptPrefabTemplateMetadata(::WeakRef<::Editor::Prefabs::PrefabDBTemplate const> templateRef);
+
+    MCNAPI ::Editor::ScriptModule::ScriptPrefabTemplateMetadata&
+    operator=(::Editor::ScriptModule::ScriptPrefabTemplateMetadata&&);
+
+    MCNAPI ::Editor::ScriptModule::ScriptPrefabTemplateMetadata&
+    operator=(::Editor::ScriptModule::ScriptPrefabTemplateMetadata const&);
+
+    MCNAPI ~ScriptPrefabTemplateMetadata();
+    // NOLINTEND
+
+public:
+    // constructor thunks
+    // NOLINTBEGIN
+    MCNAPI void* $ctor(::Editor::ScriptModule::ScriptPrefabTemplateMetadata const&);
+
+    MCNAPI void* $ctor(::WeakRef<::Editor::Prefabs::PrefabDBTemplate const> templateRef);
+    // NOLINTEND
+
+public:
+    // destructor thunk
+    // NOLINTBEGIN
+    MCNAPI void $dtor();
+    // NOLINTEND
 };
 
 } // namespace Editor::ScriptModule

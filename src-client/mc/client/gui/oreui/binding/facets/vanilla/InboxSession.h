@@ -4,6 +4,7 @@
 
 // auto generated inclusion list
 #include "mc/client/gui/oreui/binding/facets/vanilla/InboxFacet.h"
+#include "mc/client/social/invites/Invite.h"
 #include "mc/deps/core/utility/NonOwnerPointer.h"
 #include "mc/deps/core/utility/pub_sub/Subscription.h"
 
@@ -26,6 +27,7 @@ public:
     // member variables
     // NOLINTBEGIN
     ::ll::TypedStorage<8, 8, ::IClientInstance&>                                          mClient;
+    ::ll::TypedStorage<8, 24, ::std::vector<::OreUI::InboxFacet::InboxMessageData>>       mPrevData;
     ::ll::TypedStorage<8, 24, ::std::vector<::OreUI::InboxFacet::InboxMessageData>>       mData;
     ::ll::TypedStorage<1, 5, ::OreUI::InboxFacet::InboxSettings>                          mSettings;
     ::ll::TypedStorage<8, 16, ::std::weak_ptr<::RealmsAPI>>                               mRealmsApi;
@@ -54,6 +56,19 @@ public:
     InboxSession& operator=(InboxSession const&);
     InboxSession(InboxSession const&);
     InboxSession();
+
+public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI void _clearInvitesMessages();
+
+    MCAPI void _setInvitationStatus(
+        ::OreUI::InboxFacet::InboxMessageData const& inMessage,
+        ::Invites::Invite::InvitationStatus const&   status
+    );
+
+    MCAPI void saveSettings();
+    // NOLINTEND
 };
 
 } // namespace OreUI

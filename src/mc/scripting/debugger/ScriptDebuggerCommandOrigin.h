@@ -13,8 +13,10 @@ class Actor;
 class BlockPos;
 class Dimension;
 class Level;
+class ServerLevel;
 class Vec2;
 class Vec3;
+struct DimensionType;
 // clang-format on
 
 class ScriptDebuggerCommandOrigin : public ::CommandOrigin {
@@ -64,14 +66,72 @@ public:
 
     virtual ::CommandOriginType getOriginType() const /*override*/;
 
-    virtual void handleCommandOutputCallback(int, ::std::string&&) const /*override*/;
+    virtual void handleCommandOutputCallback(int successCount, ::std::string&& messages) const /*override*/;
 
     virtual bool isValid() const /*override*/;
     // NOLINTEND
 
 public:
+    // member functions
+    // NOLINTBEGIN
+    MCNAPI ScriptDebuggerCommandOrigin(
+        ::ServerLevel&                              origin,
+        ::CommandPermissionLevel                    permissionLevel,
+        ::DimensionType                             dimensionType,
+        ::std::function<void(int, ::std::string&&)> outputCallback
+    );
+    // NOLINTEND
+
+public:
+    // constructor thunks
+    // NOLINTBEGIN
+    MCNAPI void* $ctor(
+        ::ServerLevel&                              origin,
+        ::CommandPermissionLevel                    permissionLevel,
+        ::DimensionType                             dimensionType,
+        ::std::function<void(int, ::std::string&&)> outputCallback
+    );
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCNAPI ::std::string const& $getRequestId() const;
 
+    MCNAPI ::std::string $getName() const;
+
+    MCNAPI ::BlockPos $getBlockPosition() const;
+
+    MCNAPI ::Vec3 $getWorldPosition() const;
+
+    MCNAPI ::std::optional<::Vec2> $getRotation() const;
+
+    MCNAPI ::Level* $getLevel() const;
+
+    MCNAPI ::Dimension* $getDimension() const;
+
+    MCNAPI ::Actor* $getEntity() const;
+
+    MCNAPI ::CommandPermissionLevel $getPermissionsLevel() const;
+
+    MCNAPI ::std::unique_ptr<::CommandOrigin> $clone() const;
+
+    MCNAPI bool $canUseCommandsWithoutCheatsEnabled() const;
+
+    MCNAPI bool $isSelectorExpansionAllowed() const;
+
+    MCNAPI ::CommandOriginType $getOriginType() const;
+
+    MCNAPI void $handleCommandOutputCallback(int successCount, ::std::string&& messages) const;
+
+    MCNAPI bool $isValid() const;
+
+
+    // NOLINTEND
+
+public:
+    // vftables
+    // NOLINTBEGIN
+    MCNAPI static void** $vftable();
     // NOLINTEND
 };

@@ -6,6 +6,7 @@
 #include "mc/client/gui/DirtyFlag.h"
 #include "mc/client/gui/screens/controllers/CreateWorldOrRealm.h"
 #include "mc/client/gui/screens/controllers/MainMenuScreenController.h"
+#include "mc/deps/core/file/PathBuffer.h"
 #include "mc/resources/InvalidPacksFilterGroup.h"
 
 // auto generated forward declare list
@@ -14,6 +15,7 @@ class DlcUIWrapper;
 class PlatformMultiplayerRestrictions;
 class PlayScreenModel;
 class ResourceLocation;
+struct PackIdVersion;
 struct WorldTemplateInfo;
 namespace Json { class Value; }
 namespace ui { class ScreenTechStackSelector; }
@@ -67,6 +69,20 @@ public:
         ::ui::ScreenTechStackSelector const& screenTechStackSelector,
         bool                                 hideTopBar
     );
+
+    MCAPI void _createWorldTemplate(::PackIdVersion const& packId, ::std::function<void(bool)> successCallback);
+
+    MCAPI void _fetchDownloadedWorldTemplates();
+
+    MCAPI void _handleWorldTemplateClicked(::WorldTemplateInfo const& level);
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::Core::PathBuffer<::std::string> const& DEFAULT_WORLD_SCREENSHOT();
+
+    MCAPI static ::std::string const& INVALID_WORLD_SCREENSHOT();
     // NOLINTEND
 
 public:
@@ -82,6 +98,12 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $onOpen();
 
+    MCAPI ::ui::DirtyFlag $tick();
+
+    MCAPI void $addStaticScreenVars(::Json::Value& globalVars);
+
+    MCFOLD int $getScreenVersion() const;
     // NOLINTEND
 };

@@ -72,6 +72,20 @@ public:
     // NOLINTEND
 
 public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI bool write(::cereal::DynamicValue value);
+    // NOLINTEND
+
+public:
+    // destructor thunk
+    // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCAPI void $dtor();
+#endif
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
     MCAPI bool $write(::cereal::NullType);
@@ -102,7 +116,7 @@ public:
 
     MCAPI bool $write(::gsl::span<uchar const> view);
 
-    MCFOLD void $writeAdditionalData(bool);
+    MCAPI void $writeAdditionalData(bool);
 
     MCFOLD void $writeAdditionalData(uint);
 

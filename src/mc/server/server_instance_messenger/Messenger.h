@@ -17,6 +17,8 @@ class Messenger : public ::ServerInstanceMessenger::IMessenger,
 public:
     // member variables
     // NOLINTBEGIN
+    ::ll::UntypedStorage<8, 80>  mUnk3b074b;
+    ::ll::UntypedStorage<1, 1>   mUnk3abda9;
     ::ll::UntypedStorage<8, 616> mUnke430a3;
     // NOLINTEND
 
@@ -29,15 +31,21 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual void
-        enqueueMessage(::brstd::move_only_function<void()>, ::ServerInstanceMessenger::MessageAction) /*override*/;
+    virtual void enqueueMessage(
+        ::brstd::move_only_function<void()>      message,
+        ::ServerInstanceMessenger::MessageAction action
+    ) /*override*/;
 
     virtual void enqueueAndAwaitExecution(
-        ::brstd::move_only_function<void(::brstd::move_only_function<void() const>)>,
-        ::ServerInstanceMessenger::MessageAction
+        ::brstd::move_only_function<void(::brstd::move_only_function<void() const>)> message,
+        ::ServerInstanceMessenger::MessageAction                                     action
     ) /*override*/;
 
     virtual void processMessages() /*override*/;
+
+    virtual void stopAndDiscardMessages() /*override*/;
+
+    virtual uint64 getPendingMessageCount() /*override*/;
 
     virtual ::ServerInstanceMessenger::IMessageProducer& getProducer() /*override*/;
 
@@ -45,8 +53,33 @@ public:
     // NOLINTEND
 
 public:
+    // member functions
+    // NOLINTBEGIN
+    MCNAPI void
+    _enqueueMessage(::brstd::move_only_function<void()>&& message, ::ServerInstanceMessenger::MessageAction action);
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCNAPI void
+    $enqueueMessage(::brstd::move_only_function<void()> message, ::ServerInstanceMessenger::MessageAction action);
+
+    MCNAPI void $enqueueAndAwaitExecution(
+        ::brstd::move_only_function<void(::brstd::move_only_function<void() const>)> message,
+        ::ServerInstanceMessenger::MessageAction                                     action
+    );
+
+    MCNAPI void $processMessages();
+
+    MCNAPI void $stopAndDiscardMessages();
+
+    MCNAPI uint64 $getPendingMessageCount();
+
+    MCNAPI ::ServerInstanceMessenger::IMessageProducer& $getProducer();
+
+    MCNAPI ::ServerInstanceMessenger::IMessageConsumer& $getConsumer();
+
 
     // NOLINTEND
 };

@@ -3,6 +3,7 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
+#include "mc/deps/core/debug/log/LogArea.h"
 #include "mc/deps/core/utility/EnableNonOwnerReferences.h"
 #include "mc/deps/core/utility/NonOwnerPointer.h"
 #include "mc/deps/puv/puv_load_data/LoadResultWithTiming.h"
@@ -17,6 +18,7 @@ class ActorDefinition;
 class IMinecraftEventing;
 class Level;
 class LinkedAssetValidator;
+class PackLoadContext;
 class ResourcePackManager;
 class SemVersion;
 namespace Json { class Value; }
@@ -96,6 +98,19 @@ public:
         ::Bedrock::NonOwnerPointer<::LinkedAssetValidator> linkedAssetValidator
     );
 
+#ifdef LL_PLAT_S
+    MCAPI void _addRef(::ActorDefinitionPtr& ptr);
+#endif
+
+    MCAPI ::ActorDefinitionGroup::LoadActorResult _loadActorDefinition(
+        ::Level&                             level,
+        ::PackLoadContext&                   packLoadContext,
+        ::std::string const&                 relativeResourceFilepath,
+        ::Json::Value&                       root,
+        ::std::unordered_set<::std::string>& definitions,
+        ::LogArea                            logArea
+    );
+
     MCAPI ::std::vector<::std::string> buildActorEventList() const;
 
     MCAPI ::ActorDefinitionPtr tryGetDefinition(::std::string const& definitionId);
@@ -106,6 +121,8 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
+    MCAPI static void _setupCommonResourceDefinitionMap(::ActorDefinition& def, ::Level& level);
+
 #ifdef LL_PLAT_C
     MCAPI static void loadActorDefinitionFormatVersion(::Json::Value& root, ::SemVersion& formatVersion);
 

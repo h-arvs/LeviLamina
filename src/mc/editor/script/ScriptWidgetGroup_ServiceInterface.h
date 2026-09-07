@@ -16,20 +16,14 @@ public:
     // NOLINTBEGIN
     virtual void _performDeleteGroup() = 0;
 
-    virtual void _setValid(bool) = 0;
+    virtual void _setValid(bool valid) = 0;
 
-    virtual void _handleWidgetStateChangePayload(::Editor::Network::WidgetStateChangePayload const&) = 0;
+    virtual void _handleWidgetStateChangePayload(::Editor::Network::WidgetStateChangePayload const& payload) = 0;
 
     virtual void
-    _handleWidgetComponentStateChangePayload(::Editor::Network::WidgetComponentStateChangePayload const&) = 0;
+    _handleWidgetComponentStateChangePayload(::Editor::Network::WidgetComponentStateChangePayload const& payload) = 0;
 
     virtual void _servicePendingStateChanges() = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };
 

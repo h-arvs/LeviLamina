@@ -13,6 +13,7 @@ class Command;
 class CommandOrigin;
 class CompoundTag;
 class DataLoadHelper;
+class Level;
 struct ActorUniqueID;
 // clang-format on
 
@@ -46,6 +47,8 @@ public:
 
     MCAPI void _setCommand(::BlockSource& region, ::CommandOrigin const& origin, ::std::string const& command);
 
+    MCAPI void compile(::CommandOrigin const& origin, ::Level& level);
+
     MCAPI ::std::string getLastOutput() const;
 
     MCAPI void load(::CompoundTag const& tag, ::DataLoadHelper& dataLoadHelper);
@@ -54,7 +57,9 @@ public:
 
     MCAPI bool performCommand(::BlockSource& region, ::ActorUniqueID const& minecartId);
 
+#ifdef LL_PLAT_S
     MCAPI bool performCommand(::BlockSource& region, ::BlockPos const& pos, bool& markForSaving);
+#endif
 
     MCAPI bool save(::CompoundTag& tag) const;
 

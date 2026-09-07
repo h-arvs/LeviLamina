@@ -46,10 +46,11 @@ class NetworkWorldJoiner {
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::TypedStorage<8, 528, ::World::RealmWorldJoiner>  mRealmWorldJoiner;
-    ::ll::TypedStorage<8, 256, ::World::ServerWorldJoiner> mServerWorldJoiner;
-    ::ll::TypedStorage<8, 8, ::World::ServerURLResolver>   mServerURLResolver;
-    ::ll::TypedStorage<8, 8, ::OreUI::Router&>             mRouter;
+    ::ll::TypedStorage<8, 528, ::World::RealmWorldJoiner>       mRealmWorldJoiner;
+    ::ll::TypedStorage<8, 264, ::World::ServerWorldJoiner>      mServerWorldJoiner;
+    ::ll::TypedStorage<8, 8, ::World::ServerURLResolver>        mServerURLResolver;
+    ::ll::TypedStorage<8, 8, ::World::ExternalServerWorldList&> mExternalServerWorldList;
+    ::ll::TypedStorage<8, 8, ::OreUI::Router&>                  mRouter;
     // NOLINTEND
 
 public:
@@ -123,6 +124,12 @@ public:
     MCAPI ::Bedrock::PubSub::Subscription subscribeToJoinRealmWorldResultPublisher(
         ::std::function<void(::World::JoinRealmWorldResult)> onJoinRealmWorldResult
     );
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::std::add_lvalue_reference_t<char const[37]> REALM_JOIN_ROUTE();
     // NOLINTEND
 
 public:

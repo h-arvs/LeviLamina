@@ -3,11 +3,14 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
+#include "mc/util/MolangVariableIndex.h"
 #include "mc/util/MolangVariableMap.h"
 
 // auto generated forward declare list
 // clang-format off
+class HashedString;
 class RenderParams;
+struct MolangEvalStackState;
 struct MolangScriptArg;
 // clang-format on
 
@@ -28,8 +31,26 @@ public:
     // NOLINTEND
 
 public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI uint64 popMissingVariableOrActorAddress(::MolangVariableIndex variableIndex);
+
+    MCAPI uint64 popMissingVariableOrActorAddress(::HashedString const& variableName);
+
+    MCAPI void pushReturnValue();
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static void restoreStackState(::MolangEvalStackState&& state);
+    // NOLINTEND
+
+public:
     // static variables
     // NOLINTBEGIN
+    MCAPI static ::RenderParams& mErrorRenderParams();
+
     MCAPI static ::MolangEvalParams& mThreadLocalMolangEvalParams();
     // NOLINTEND
 };

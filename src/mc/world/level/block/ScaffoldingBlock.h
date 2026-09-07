@@ -86,6 +86,14 @@ public:
     // NOLINTEND
 
 public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static bool _updateBlockStability(::BlockSource& region, ::BlockPos const& pos);
+
+    MCAPI static int calculateStability(::BlockSource const& region, ::BlockPos const& pos);
+    // NOLINTEND
+
+public:
     // constructor thunks
     // NOLINTBEGIN
     MCAPI void* $ctor(::std::string const& nameId, int id);

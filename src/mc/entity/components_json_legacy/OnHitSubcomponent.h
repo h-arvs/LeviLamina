@@ -25,8 +25,8 @@ public:
     // NOLINTEND
 
 public:
-    // virtual function thunks
+    // static functions
     // NOLINTBEGIN
-
+    MCAPI static bool _canAttack(::Actor* projectileOwnerActor, ::Actor* hitActor);
     // NOLINTEND
 };

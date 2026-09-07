@@ -96,7 +96,7 @@ public:
 
     virtual ~Mob() /*override*/;
 
-    virtual void knockback(::Actor* source, int damage, float xd, float zd, ::KnockbackParameters const& parameters);
+    virtual void knockback(::Actor* source, float damage, float xd, float zd, ::KnockbackParameters const& parameters);
 
     virtual void kill() /*override*/;
 
@@ -154,11 +154,7 @@ public:
 
     virtual float getItemUseIntervalProgress() const;
 
-#ifdef LL_PLAT_S
-    virtual bool swing(::ActorSwingSource) /*override*/;
-#else // LL_PLAT_C
     virtual bool swing(::ActorSwingSource swingSource) /*override*/;
-#endif
 
     virtual float getMaxHeadXRot();
 
@@ -185,11 +181,7 @@ public:
 
     virtual void setDamagedArmor(::SharedTypes::Legacy::ArmorSlot slot, ::ItemStack const& item);
 
-#ifdef LL_PLAT_S
-    virtual void sendArmorDamage(::std::bitset<5> const);
-#else // LL_PLAT_C
     virtual void sendArmorDamage(::std::bitset<5> const damagedSlots);
-#endif
 
     virtual void sendArmor(::std::bitset<5> const armorSlots);
 
@@ -211,11 +203,7 @@ public:
 
     virtual void clearVanishEnchantedItemsOnDeath();
 
-#ifdef LL_PLAT_S
-    virtual void sendInventory(bool);
-#else // LL_PLAT_C
     virtual void sendInventory(bool shouldSelectSlot);
-#endif
 
     virtual void buildDebugInfo(::std::string& out) const /*override*/;
 
@@ -288,8 +276,6 @@ public:
 
     MCAPI ::BuiltInMobComponents _addBuiltInMobComponents();
 
-    MCAPI void _doSoulSpeedParticleEffect();
-
     MCAPI void _doSprintParticleEffect();
 
     MCAPI bool _initHardCodedComponents(bool isClientSide);
@@ -299,8 +285,6 @@ public:
     MCAPI bool _isDoingMaceSmashAttack() const;
 
     MCAPI void _processSoulSpeed();
-
-    MCAPI void _updateSprintingState();
 
     MCAPI void
     addSpeedModifier(::mce::UUID const& attributeID, ::std::string const& attributeName, float speedModifier);
@@ -327,8 +311,6 @@ public:
     MCAPI ::std::vector<int> getAllArmorID() const;
 #endif
 
-    MCAPI float getArmorCoverPercentage() const;
-
     MCAPI int getArmorTypeHash();
 
     MCAPI int getCarriedItemKnockbackBonus() const;
@@ -336,6 +318,8 @@ public:
     MCAPI float getDamageAfterArmorReduction(::ActorDamageSource const& source, float damage) const;
 
     MCAPI float getDamageAfterDamageSensorComponentAdjustments(::ActorDamageSource const& source, float damage);
+
+    MCAPI ::SharedTypes::Legacy::LevelSoundEvent getHurtSound(::SharedTypes::Legacy::ActorDamageCause cause) const;
 
     MCAPI float getJumpEffectAmplifierValue();
 
@@ -377,6 +361,8 @@ public:
 
     MCAPI bool isAbleToMove() const;
 
+    MCAPI bool isTransitioningSitting() const;
+
     MCAPI void joinCaravan(::Mob* head);
 
     MCAPI void jumpFromGround();
@@ -387,9 +373,7 @@ public:
 
     MCAPI void onPlayerDimensionChanged(::Player* player, ::DimensionType fromDimension, ::DimensionType toDimension);
 
-#ifdef LL_PLAT_C
     MCAPI void removeSpeedModifier(::mce::UUID const& attributeID);
-#endif
 
     MCAPI void resetAttributes();
 
@@ -408,8 +392,6 @@ public:
     MCAPI bool shouldApplyWaterGravity();
 
     MCAPI void snapToYBodyRot(float yBodyRot);
-
-    MCAPI void tickMobEffectsVisuals();
 
     MCAPI void updateEquipment();
 
@@ -447,7 +429,7 @@ public:
 
     MCAPI void $reloadHardcoded(::ActorInitializationMethod method, ::VariantParameterList const& params);
 
-    MCAPI void $knockback(::Actor* source, int damage, float xd, float zd, ::KnockbackParameters const& parameters);
+    MCAPI void $knockback(::Actor* source, float damage, float xd, float zd, ::KnockbackParameters const& parameters);
 
     MCAPI void $kill();
 
@@ -505,7 +487,7 @@ public:
 
     MCFOLD float $getItemUseIntervalProgress() const;
 
-    MCAPI bool $swing(::ActorSwingSource);
+    MCAPI bool $swing(::ActorSwingSource swingSource);
 
     MCAPI float $getMaxHeadXRot();
 
@@ -531,7 +513,7 @@ public:
 
     MCAPI void $setDamagedArmor(::SharedTypes::Legacy::ArmorSlot slot, ::ItemStack const& item);
 
-    MCFOLD void $sendArmorDamage(::std::bitset<5> const);
+    MCFOLD void $sendArmorDamage(::std::bitset<5> const damagedSlots);
 
     MCAPI void $sendArmor(::std::bitset<5> const armorSlots);
 
@@ -553,7 +535,7 @@ public:
 
     MCAPI void $clearVanishEnchantedItemsOnDeath();
 
-    MCAPI void $sendInventory(bool);
+    MCAPI void $sendInventory(bool shouldSelectSlot);
 
     MCAPI void $buildDebugInfo(::std::string& out) const;
 

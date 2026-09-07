@@ -8,6 +8,11 @@
 #include "mc/deps/shared_types/v1_26_20/block/Traits.h"
 #include "mc/deps/shared_types/v1_26_20/block/VanillaBlockData.h"
 
+// auto generated forward declare list
+// clang-format off
+namespace cereal { struct ReflectionCtx; }
+// clang-format on
+
 namespace SharedTypes::v1_26_20::BlockDefinition {
 
 struct Description {
@@ -18,7 +23,7 @@ public:
     ::ll::TypedStorage<8, 48, ::SharedTypes::v1_26_20::BlockDefinition::BlockMenuCategory> mMenuCategory;
     ::ll::TypedStorage<8, 256, ::SharedTypes::v1_26_20::BlockDefinition::States>           mStates;
     ::ll::TypedStorage<8, 56, ::SharedTypes::v1_26_20::BlockDefinition::Traits>            mTraits;
-    ::ll::TypedStorage<8, 64, ::std::optional<::SharedTypes::v1_26_20::BlockDefinition::VanillaBlockData>>
+    ::ll::TypedStorage<8, 80, ::std::optional<::SharedTypes::v1_26_20::BlockDefinition::VanillaBlockData>>
         mVanillaBlockData;
     // NOLINTEND
 
@@ -38,6 +43,12 @@ public:
     operator=(::SharedTypes::v1_26_20::BlockDefinition::Description const&);
 
     MCAPI ~Description();
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static void bindType(::cereal::ReflectionCtx& ctx);
     // NOLINTEND
 
 public:

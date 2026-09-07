@@ -18,19 +18,13 @@ public:
     // NOLINTBEGIN
     virtual ::webrtc::IceTransportInternal* internal() = 0;
 
-    virtual ~IceTransportInterface() /*override*/;
+    virtual ~IceTransportInterface() /*override*/ = default;
     // NOLINTEND
 
 public:
     // destructor thunk
     // NOLINTBEGIN
     MCNAPI void $dtor();
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };
 

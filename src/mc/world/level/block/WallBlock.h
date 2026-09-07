@@ -7,6 +7,7 @@
 #include "mc/world/level/ShapeType.h"
 #include "mc/world/level/block/BlockSupportType.h"
 #include "mc/world/level/block/BlockType.h"
+#include "mc/world/level/block/WallConnectionType.h"
 
 // auto generated forward declare list
 // clang-format off
@@ -79,11 +80,22 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
+    MCAPI ::WallConnectionType
+    _desiredConnectionState(::BlockSource& region, ::BlockPos const& pos, uchar const neighbor) const;
+
+    MCAPI bool _tryAddToTickingQueue(::BlockSource& region, ::BlockPos const& pos) const;
+
     MCAPI void onPlaceBase(::BlockEvents::BlockPlaceEvent& eventData) const;
 
     MCAPI void tick(::BlockEvents::BlockQueuedTickEvent& eventData) const;
 
     MCAPI void tryFixWallStates(::BlockSource& region, ::BlockPos const& pos, int updateFlags) const;
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static bool _shouldBePost(::BlockSource& region, ::BlockPos const& pos, ::Block const& block);
     // NOLINTEND
 
 public:

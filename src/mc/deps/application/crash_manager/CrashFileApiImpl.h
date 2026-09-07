@@ -14,14 +14,22 @@ public:
     // NOLINTBEGIN
     virtual ::std::string_view getSaveRoot() const /*override*/;
 
-    virtual ::Bedrock::Result<void> createDirectory(char const*) /*override*/;
+    virtual ::Bedrock::Result<void> createDirectory(char const* path) /*override*/;
 
-    virtual ::Bedrock::Result<void> writeFile(char const*, char const*, uint64) /*override*/;
+    virtual ::Bedrock::Result<void> writeFile(char const* path, char const* buffer, uint64 bufferSize) /*override*/;
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCNAPI ::std::string_view $getSaveRoot() const;
+
+    MCNAPI ::Bedrock::Result<void> $createDirectory(char const* path);
+
+    MCNAPI ::Bedrock::Result<void> $writeFile(char const* path, char const* buffer, uint64 bufferSize);
+#endif
+
 
     // NOLINTEND
 };

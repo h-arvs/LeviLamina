@@ -7,6 +7,7 @@
 
 // auto generated forward declare list
 // clang-format off
+class BlockPos;
 class Mob;
 // clang-format on
 
@@ -45,6 +46,12 @@ public:
     // NOLINTEND
 
 public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI ::std::optional<::BlockPos> const _hasLastVibrationAtNoteblock();
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
     MCAPI bool $canUse();
@@ -60,11 +67,5 @@ public:
     MCAPI void $appendDebugInfo(::std::string& str) const;
 
 
-    // NOLINTEND
-
-public:
-    // vftables
-    // NOLINTBEGIN
-    MCNAPI static void** $vftable();
     // NOLINTEND
 };

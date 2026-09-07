@@ -66,4 +66,12 @@ public:
         ::ParticleRenderData const& particleRenderData
     );
     // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static int64& mParticleRenderBucketCount();
+
+    MCAPI static int64& mParticleRenderParticleCount();
+    // NOLINTEND
 };

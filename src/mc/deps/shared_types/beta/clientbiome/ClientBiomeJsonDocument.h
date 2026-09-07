@@ -64,6 +64,14 @@ public:
         // NOLINTEND
 
     public:
+        // static functions
+        // NOLINTBEGIN
+#ifdef LL_PLAT_C
+        MCAPI static void bindType(::cereal::ReflectionCtx& ctx);
+#endif
+        // NOLINTEND
+
+    public:
         // constructor thunks
         // NOLINTBEGIN
 #ifdef LL_PLAT_C

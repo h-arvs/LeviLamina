@@ -62,7 +62,7 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual ~BaseGameTestInstance();
+    virtual ~BaseGameTestInstance() = default;
 
     virtual void initialize();
 
@@ -124,14 +124,10 @@ public:
     // NOLINTEND
 
 public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCNAPI void $dtor();
-    // NOLINTEND
-
-public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCNAPI void $initialize();
+
     MCNAPI void $spawnStructure();
 
     MCNAPI void $_rerun();

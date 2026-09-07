@@ -4,7 +4,6 @@
 
 // auto generated forward declare list
 // clang-format off
-class BinaryStream;
 namespace Core { class FlatFileManifestInfo; }
 namespace Core { class PathView; }
 // clang-format on
@@ -31,6 +30,8 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
+    MCNAPI void _clear();
+
     MCNAPI void _createFromVector(
         ::Core::PathView                                   manifestPath,
         ::std::vector<::Core::FlatFileManifestInfo> const& manifestInfoVector,
@@ -40,16 +41,6 @@ public:
 
     MCNAPI ::Core::FlatFileManifestInfo const*
     findFileOrDirectoryEntry(::Core::PathView filePath, bool skipDeleted) const;
-
-    MCNAPI void writeToStream(::BinaryStream& manifestFileStream) const;
-
-    MCNAPI ~FlatFileManifest();
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCNAPI void $dtor();
     // NOLINTEND
 };
 

@@ -6,8 +6,10 @@
 #include "mc/client/gui/DirtyFlag.h"
 #include "mc/client/gui/SceneType.h"
 #include "mc/client/gui/StoreNavigationOrigin.h"
+#include "mc/client/gui/ViewRequest.h"
 #include "mc/client/gui/screens/controllers/MarketplacePassTabIndex.h"
 #include "mc/client/gui/screens/controllers/PurchaseEnabledScreenController.h"
+#include "mc/client/services/sdl/SubscriptionInfo.h"
 #include "mc/client/store/iap/transactions/TransactionStatus.h"
 #include "mc/client/store/sidebar/Type.h"
 #include "mc/deps/core/utility/NonOwnerPointer.h"
@@ -20,7 +22,6 @@ class MainMenuScreenModel;
 namespace Json { class Value; }
 namespace RealmsScreenUtils { struct RealmsWorldLoadingDetailsGroup; }
 namespace SDL { struct ScreenLayoutQuery; }
-namespace SDL { struct SubscriptionInfo; }
 namespace sidebar { class NavigationModel; }
 // clang-format on
 
@@ -41,7 +42,7 @@ public:
     ::ll::TypedStorage<8, 32, ::std::string>                                        mMarketplacePassPrice;
     ::ll::TypedStorage<1, 1, bool>                                                  mCheckedTOS;
     ::ll::TypedStorage<1, 1, bool>                                                  mDirty;
-    ::ll::TypedStorage<8, 8, ::SDL::SubscriptionInfo const&>                        mSubscriptionInfo;
+    ::ll::TypedStorage<8, 200, ::SDL::SubscriptionInfo const>                       mSubscriptionInfo;
     ::ll::TypedStorage<4, 4, ::TransactionStatus>                                   mCurrentTransactionStatus;
     ::ll::TypedStorage<8, 16, ::std::shared_ptr<::sidebar::NavigationModel>>        mNavigationModel;
     ::ll::TypedStorage<8, 16, ::std::shared_ptr<::RealmsScreenUtils::RealmsWorldLoadingDetailsGroup>>
@@ -50,8 +51,6 @@ public:
 
 public:
     // prevent constructor by default
-    MarketplacePassPDPScreenController& operator=(MarketplacePassPDPScreenController const&);
-    MarketplacePassPDPScreenController(MarketplacePassPDPScreenController const&);
     MarketplacePassPDPScreenController();
 
 public:
@@ -88,6 +87,16 @@ public:
         ::StoreNavigationOrigin                              origin,
         ::sidebar::navigationLayout::Type                    sidebarLayoutType
     );
+
+    MCAPI ::ui::ViewRequest _changeTabTo(::MarketplacePassTabIndex tabIndex);
+
+    MCAPI ::std::string const _getMarketplacePassOfferPrice();
+
+    MCAPI ::std::string const _getMarketplacePassOfferString(::std::string const& locKey);
+
+    MCAPI bool _isCsbSubscribed() const;
+
+    MCAPI bool _isRealmsPlusSubscriptionActive() const;
     // NOLINTEND
 
 public:
@@ -105,6 +114,22 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $addStaticScreenVars(::Json::Value& globalVars);
 
+    MCAPI void $onCreation();
+
+    MCAPI void $onOpen();
+
+    MCAPI void $onEntered();
+
+    MCAPI void $onLeave();
+
+    MCAPI ::ui::DirtyFlag $tick();
+
+    MCAPI ::std::string $getAdditionalScreenInfo() const;
+
+    MCFOLD ::ui::SceneType $getSceneType() const;
+
+    MCAPI ::sidebar::navigationLayout::Type $getSidebarLayoutType() const;
     // NOLINTEND
 };

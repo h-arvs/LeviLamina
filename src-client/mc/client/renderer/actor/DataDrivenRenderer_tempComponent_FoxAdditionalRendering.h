@@ -10,6 +10,7 @@
 // clang-format off
 class ActorRenderData;
 class BaseActorRenderContext;
+class DataDrivenRenderer;
 class RenderParams;
 // clang-format on
 
@@ -17,29 +18,27 @@ class DataDrivenRenderer_tempComponent_FoxAdditionalRendering : public ::DataDri
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 16> mUnk9c5afc;
+    ::ll::TypedStorage<8, 16, ::std::weak_ptr<::DataDrivenRenderer>> mRenderer;
     // NOLINTEND
-
-public:
-    // prevent constructor by default
-    DataDrivenRenderer_tempComponent_FoxAdditionalRendering&
-    operator=(DataDrivenRenderer_tempComponent_FoxAdditionalRendering const&);
-    DataDrivenRenderer_tempComponent_FoxAdditionalRendering(
-        DataDrivenRenderer_tempComponent_FoxAdditionalRendering const&
-    );
-    DataDrivenRenderer_tempComponent_FoxAdditionalRendering();
 
 public:
     // virtual functions
     // NOLINTBEGIN
     virtual ::V2TempComponentRequirements getV2Requirements() const /*override*/;
 
-    virtual void render(::BaseActorRenderContext&, ::ActorRenderData&, ::RenderParams&) /*override*/;
+    virtual void render(
+        ::BaseActorRenderContext& renderContext,
+        ::ActorRenderData&        actorRenderData,
+        ::RenderParams&           renderParams
+    ) /*override*/;
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCFOLD ::V2TempComponentRequirements $getV2Requirements() const;
 
+    MCAPI void
+    $render(::BaseActorRenderContext& renderContext, ::ActorRenderData& actorRenderData, ::RenderParams& renderParams);
     // NOLINTEND
 };

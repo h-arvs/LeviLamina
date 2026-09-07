@@ -16,14 +16,8 @@ public:
     // NOLINTBEGIN
     virtual ~ITickDelegate() = default;
 
-    virtual void onLand(::FallingBlock const&, ::IBlockSource&, ::BlockPos const&) = 0;
+    virtual void onLand(::FallingBlock const& block, ::IBlockSource& region, ::BlockPos const& pos) = 0;
 
-    virtual void breakBlock(::FallingBlockActor&) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual void breakBlock(::FallingBlockActor& fallingBlock) = 0;
     // NOLINTEND
 };

@@ -50,6 +50,8 @@ public:
     // member functions
     // NOLINTBEGIN
     MCAPI explicit ReceivedFriendRequestsQuery(::OreUI::GameDependencies const& game);
+
+    MCAPI void _fetchData();
     // NOLINTEND
 
 public:
@@ -61,7 +63,7 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
-
+    MCAPI void $update(double);
     // NOLINTEND
 };
 

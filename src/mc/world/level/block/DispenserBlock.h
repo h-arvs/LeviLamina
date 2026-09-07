@@ -12,6 +12,7 @@ class Actor;
 class Block;
 class BlockPos;
 class BlockSource;
+class Container;
 class ItemStack;
 class Player;
 class Vec3;
@@ -62,9 +63,23 @@ public:
 
     MCAPI void _onRedstoneUpdate(::BlockEvents::BlockRedstoneUpdateEvent& blockEvent) const;
 
+    MCAPI void ejectItem(
+        ::BlockSource&     region,
+        ::Vec3 const&      pos,
+        uchar              face,
+        ::ItemStack const& item,
+        ::Container&       container,
+        int                slot,
+        int                countLimit
+    ) const;
+
+    MCAPI ::Vec3 getDispensePosition(::BlockSource& region, ::Vec3 const& pos) const;
+
+    MCAPI uchar getFacing(::Block const& block) const;
+
     MCAPI void tick(::BlockEvents::BlockQueuedTickEvent& eventData) const;
 
-    MCAPI void use(::BlockEvents::BlockPlayerInteractEvent& eventData) const;
+    MCFOLD void use(::BlockEvents::BlockPlayerInteractEvent& eventData) const;
     // NOLINTEND
 
 public:
@@ -75,7 +90,9 @@ public:
     MCAPI static void
     ejectItem(::BlockSource& region, ::Vec3 const& pos, uchar face, ::ItemStack const& item, int countLimit);
 
+#ifdef LL_PLAT_S
     MCAPI static void openInventoryContainer(::Player& player, ::BlockPos const& pos);
+#endif
     // NOLINTEND
 
 public:
@@ -107,8 +124,7 @@ public:
 
     MCFOLD bool $hasComparatorSignal() const;
 
-    MCFOLD int
-    $getComparatorSignal(::BlockSource& region, ::BlockPos const& pos, ::Block const& block, uchar dir) const;
+    MCAPI int $getComparatorSignal(::BlockSource& region, ::BlockPos const& pos, ::Block const& block, uchar dir) const;
 
     MCFOLD int $getTickDelay() const;
 

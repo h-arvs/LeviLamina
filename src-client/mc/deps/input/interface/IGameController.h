@@ -16,9 +16,9 @@ public:
     // NOLINTBEGIN
     virtual ~IGameController() = default;
 
-    virtual bool hasEvents(void const*) const = 0;
+    virtual bool hasEvents(void const* token) const = 0;
 
-    virtual ::GameControllerEvent getNextEvent(void const*) = 0;
+    virtual ::GameControllerEvent getNextEvent(void const* token) = 0;
 
     virtual int getId() const = 0;
 
@@ -26,18 +26,12 @@ public:
 
     virtual bool isAdequateController() const = 0;
 
-    virtual void pairControllerToClient(::SubClientId) = 0;
+    virtual void pairControllerToClient(::SubClientId clientId) = 0;
 
     virtual void unpairControllerFromClient() = 0;
 
     virtual bool isControllerPairedToClient() const = 0;
 
     virtual ::std::optional<::SubClientId> getPairedClientId() const = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };

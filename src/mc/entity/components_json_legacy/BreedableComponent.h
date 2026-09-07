@@ -45,4 +45,14 @@ public:
 
     MCAPI void readAdditionalSaveData(::Actor&, ::CompoundTag const& tag, ::DataLoadHelper&);
     // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static void _spawnExperienceOrbs(::Actor& owner);
+
+    MCAPI static void _spawnLoveParticles(::Actor& owner);
+
+    MCAPI static bool meetsSittingRequirements(::Actor const& actor);
+    // NOLINTEND
 };

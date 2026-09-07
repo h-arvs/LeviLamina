@@ -93,6 +93,12 @@ public:
     // NOLINTEND
 
 public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static bool _pickBerries(::BlockSource& region, ::BlockPos const& pos, ::Actor& sourceEntity);
+    // NOLINTEND
+
+public:
     // constructor thunks
     // NOLINTBEGIN
     MCAPI void* $ctor(::std::string const& nameId, int id, ::CaveVinesVariant variant);

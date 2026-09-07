@@ -5,6 +5,7 @@
 // auto generated forward declare list
 // clang-format off
 namespace Core { class Path; }
+namespace Json { class Value; }
 namespace glTF { struct Accessor; }
 namespace glTF { struct Buffer; }
 namespace glTF { struct BufferView; }
@@ -69,6 +70,8 @@ public:
 #ifdef LL_PLAT_C
     MCNAPI bool _hasMaterial(::std::string const& materialName);
 
+    MCNAPI void _serialize(::Json::Value& root);
+
     MCNAPI int addAccessor(::glTF::Accessor& accessor);
 
     MCNAPI uint64 addBinaryBuffer(::Core::Path const& filePath, uchar const* data, uint64 size);
@@ -114,6 +117,8 @@ public:
 public:
     // destructor thunk
     // NOLINTBEGIN
+#ifdef LL_PLAT_C
     MCNAPI void $dtor();
+#endif
     // NOLINTEND
 };

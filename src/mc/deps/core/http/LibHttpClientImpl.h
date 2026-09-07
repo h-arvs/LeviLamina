@@ -10,6 +10,9 @@
 // clang-format off
 namespace Bedrock::Http { class Request; }
 namespace Bedrock::Http { class Response; }
+namespace Bedrock::Http::Internal { class IResponseBody; }
+namespace Bedrock::Threading { class Mutex; }
+struct HC_CALL;
 // clang-format on
 
 namespace Bedrock::Http {
@@ -39,13 +42,32 @@ public:
 
     virtual void shutdown() /*override*/;
 
-    virtual ::Bedrock::Threading::Async<::Bedrock::Http::Response> send(::Bedrock::Http::Request&&) /*override*/;
+    virtual ::Bedrock::Threading::Async<::Bedrock::Http::Response>
+    send(::Bedrock::Http::Request&& request) /*override*/;
     // NOLINTEND
 
 public:
     // member functions
     // NOLINTBEGIN
     MCNAPI LibHttpClientImpl();
+
+    MCNAPI ::std::shared_ptr<::Bedrock::Http::Internal::IResponseBody>
+    _tryGetResponseBody(::gsl::not_null<::HC_CALL*> call);
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCNAPI static HRESULT
+    _requestBodyRead(::HC_CALL* call, uint64, uint64 bytesAvailable, void*, uchar* destination, uint64* bytesWritten);
+
+    MCNAPI static HRESULT _responseBodyWrite(::HC_CALL* call, uchar const* source, uint64 bytesAvailable, void*);
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCNAPI static ::Bedrock::Threading::Mutex& sWeakThisMutex();
     // NOLINTEND
 
 public:
@@ -57,6 +79,12 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCNAPI void $initialize();
+
+    MCNAPI void $shutdown();
+
+    MCNAPI ::Bedrock::Threading::Async<::Bedrock::Http::Response> $send(::Bedrock::Http::Request&& request);
+
 
     // NOLINTEND
 };

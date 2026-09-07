@@ -167,6 +167,8 @@ public:
     virtual ::IVanillaMainBlockActorComponent const* _getMainComponent() const /*override*/;
 
     virtual ::IVanillaMainBlockActorComponent* _getMainComponent() /*override*/;
+
+    virtual ~VanillaBlockActor() /*override*/;
     // NOLINTEND
 
 public:
@@ -186,6 +188,12 @@ public:
     // NOLINTEND
 
 public:
+    // destructor thunk
+    // NOLINTBEGIN
+    MCAPI void $dtor();
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
     MCAPI void $loadStatic();
@@ -198,7 +206,7 @@ public:
 
     MCFOLD ::BlockActor const& $getBlockActor() const;
 
-    MCAPI ::BlockPos const& $getBlockActorPosition() const;
+    MCFOLD ::BlockPos const& $getBlockActorPosition() const;
 
     MCAPI ::BlockActorType $getBlockActorType() const;
 

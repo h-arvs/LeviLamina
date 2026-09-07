@@ -5,6 +5,7 @@
 // auto generated inclusion list
 #include "mc/entity/components_json_legacy/NpcGUIOffset.h"
 #include "mc/legacy/ActorUniqueID.h"
+#include "mc/world/actor/ActorDataIDs.h"
 #include "mc/world/actor/npc/ActionContainer.h"
 
 // auto generated forward declare list
@@ -120,6 +121,33 @@ public:
 #ifdef LL_PLAT_C
     MCAPI void syncActionsWithServer(::Actor& owner) const;
 #endif
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static void _defineEntityDataString(::Actor& owner, ::ActorDataIDs id);
+
+    MCAPI static void
+    executeCommandAction(::Actor& owner, ::Player& sourcePlayer, int actionIndex, ::std::string const& sceneName);
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::std::string const& ACTIONS_TAG();
+
+    MCAPI static ::std::string const& INTERACTIVE_TAG();
+
+    MCAPI static ::std::string const& NAME_RAW_TEXT_TAG();
+
+    MCAPI static ::std::string const& PLAYER_ID_TAG();
+
+    MCAPI static ::std::string const& PLAYER_SCENE_MAPPING_TAG();
+
+    MCAPI static ::std::string const& SCENE_NAME_TAG();
+
+    MCAPI static ::std::string const& URL_TAG();
     // NOLINTEND
 
 public:

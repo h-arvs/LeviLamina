@@ -45,16 +45,21 @@ public:
         InboxFeedbackBugs                  = 33,
         InboxFeedbackIdeas                 = 34,
         RealmsManageSavesHelpPage          = 35,
+        ServicesAgreementPage              = 36,
     };
 
     using LaunchUri = ::std::function<void(::std::string const&)>;
+
+    using LaunchBetaFeedbackQr = ::std::function<void()>;
 
 public:
     // member variables
     // NOLINTBEGIN
     ::ll::TypedStorage<8, 64, ::std::function<void(::std::string const&)>> mLaunchUri;
+    ::ll::TypedStorage<8, 64, ::std::function<void()>>                     mLaunchBetaFeedbackQr;
     ::ll::TypedStorage<8, 64, ::std::unordered_map<::OreUI::WebBrowserFacet::WebBrowserLink, ::std::string>>
-        mAllowedURLs;
+                                   mAllowedURLs;
+    ::ll::TypedStorage<1, 1, bool> mUseBetaFeedbackQr;
     // NOLINTEND
 
 public:
@@ -70,19 +75,35 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCAPI explicit WebBrowserFacet(::std::function<void(::std::string const&)> launchUri);
+    MCAPI WebBrowserFacet(
+        ::std::function<void(::std::string const&)> launchUri,
+        ::std::function<void()>                     launchBetaFeedbackQr,
+        bool                                        useBetaFeedbackQr
+    );
+
+    MCAPI void openBetaFeedbackQr();
+
+    MCAPI void openLink(::OreUI::WebBrowserFacet::WebBrowserLink linkHandle);
+
+    MCAPI void openLinkWithParams(::OreUI::WebBrowserFacet::WebBrowserLink linkHandle, ::std::string const& params);
+
+    MCAPI void openManageSubscriptionsStoreLink(::std::string const& storeId);
     // NOLINTEND
 
 public:
     // constructor thunks
     // NOLINTBEGIN
-    MCAPI void* $ctor(::std::function<void(::std::string const&)> launchUri);
+    MCAPI void* $ctor(
+        ::std::function<void(::std::string const&)> launchUri,
+        ::std::function<void()>                     launchBetaFeedbackQr,
+        bool                                        useBetaFeedbackQr
+    );
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
-
+    MCFOLD bool $update();
     // NOLINTEND
 };
 

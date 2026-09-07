@@ -8,6 +8,12 @@
 #include "mc/server/commands/CurrentCmdVersion.h"
 #include "mc/util/molang/ExpressionNode.h"
 
+// auto generated forward declare list
+// clang-format off
+class Actor;
+class RenderParams;
+// clang-format on
+
 class ActorAnimationEvent {
 public:
     // member variables
@@ -27,25 +33,23 @@ public:
     // member functions
     // NOLINTBEGIN
     MCAPI ActorAnimationEvent(
-        float                time,
-        ::std::string const& event,
-        ::CurrentCmdVersion  commandVersion,
-        ::MolangVersion      molangVersion
+        float                     time,
+        ::std::string const&      event,
+        ::CurrentCmdVersion const commandVersion,
+        ::MolangVersion const     molangVersion
     );
 
-    MCAPI ~ActorAnimationEvent();
+    MCAPI void fire(::RenderParams& renderParams, ::Actor* actor) const;
     // NOLINTEND
 
 public:
     // constructor thunks
     // NOLINTBEGIN
-    MCAPI void*
-    $ctor(float time, ::std::string const& event, ::CurrentCmdVersion commandVersion, ::MolangVersion molangVersion);
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCAPI void $dtor();
+    MCAPI void* $ctor(
+        float                     time,
+        ::std::string const&      event,
+        ::CurrentCmdVersion const commandVersion,
+        ::MolangVersion const     molangVersion
+    );
     // NOLINTEND
 };

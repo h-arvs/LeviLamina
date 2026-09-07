@@ -10,13 +10,7 @@ public:
     // NOLINTBEGIN
     virtual ~IVanillaSystemsEventingAdapter() = default;
 
-    virtual void doFireEventActorValueValidationFailed(::std::string const&, char const*) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual void doFireEventActorValueValidationFailed(::std::string const& invalidValue, char const* caller) = 0;
     // NOLINTEND
 };
 

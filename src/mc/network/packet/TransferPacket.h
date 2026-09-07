@@ -63,6 +63,8 @@ public:
 
     virtual ::Bedrock::Result<void>
     _read(::ReadOnlyBinaryStream& stream, ::cereal::ReflectionCtx const& reflectionCtx) /*override*/;
+
+    virtual ~TransferPacket() /*override*/;
     // NOLINTEND
 
 public:
@@ -78,15 +80,21 @@ public:
     // NOLINTEND
 
 public:
+    // destructor thunk
+    // NOLINTBEGIN
+    MCAPI void $dtor();
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
     MCAPI ::MinecraftPacketIds $getId() const;
 
     MCAPI ::std::string_view $getName() const;
 
-    MCFOLD ::SerializationMode $getSerializationMode() const;
+    MCAPI ::SerializationMode $getSerializationMode() const;
 
-    MCFOLD void $setSerializationMode(::SerializationMode mode);
+    MCAPI void $setSerializationMode(::SerializationMode mode);
 
     MCAPI void $writeWithSerializationMode(
         ::BinaryStream&                      stream,

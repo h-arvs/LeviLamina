@@ -21,8 +21,10 @@ namespace Bedrock::Threading { class Mutex; }
 namespace GeometryAtlas { class IItemTile; }
 namespace GeometryAtlas { class IPaperDollTile; }
 namespace GeometryAtlas { class IRenderContext; }
+namespace GeometryAtlas { struct AllocateAtlasPayload; }
 namespace GeometryAtlas { struct RenderableUpdateCommand; }
 namespace GeometryAtlas { struct TileDefinition; }
+namespace GeometryAtlas { struct TileHandleSharedState; }
 namespace dragon::atlas { class IAtlasHandle; }
 // clang-format on
 
@@ -32,10 +34,10 @@ class AtlasImpl : public ::GeometryAtlas::IGeometryAtlas {
 public:
     // AtlasImpl inner types declare
     // clang-format off
-    struct TileEntry;
+    class TileEntry;
+    struct CommandArgs;
     struct Data;
     struct TileDirtyUpdate;
-    struct CommandArgs;
     struct mDispatcher;
     // clang-format on
 
@@ -46,7 +48,7 @@ public:
         UpToDate              = 2,
     };
 
-    struct TileEntry {
+    class TileEntry {
     public:
         // TileEntry inner types define
         enum class Status : uchar {
@@ -59,11 +61,34 @@ public:
         // member variables
         // NOLINTBEGIN
         ::ll::TypedStorage<8, 40, ::std::variant<::GeometryAtlas::ItemData, ::GeometryAtlas::PaperDollData>> mData;
-        ::ll::TypedStorage<8, 32, ::dragon::atlas::AtlasTileHandle>                                          mBackendID;
-        ::ll::TypedStorage<4, 8, ::dragon::atlas::AtlasTileDescription>         mTileDescription;
-        ::ll::TypedStorage<1, 1, bool>                                          mIsAnimated;
-        ::ll::TypedStorage<1, 1, ::GeometryAtlas::AtlasImpl::TileEntry::Status> mStatus;
+        ::ll::TypedStorage<1, 1, bool>                                                       mIsAnimated;
+        ::ll::TypedStorage<4, 8, ::dragon::atlas::AtlasTileDescription const>                mTileDescription;
+        ::ll::TypedStorage<1, 1, ::GeometryAtlas::AtlasImpl::TileEntry::Status>              mStatus;
+        ::ll::TypedStorage<8, 16, ::std::shared_ptr<::GeometryAtlas::TileHandleSharedState>> mShared;
+        ::ll::TypedStorage<8, 32, ::dragon::atlas::AtlasTileHandle>                          mBackendID;
         // NOLINTEND
+    };
+
+    struct CommandArgs {
+    public:
+        // member variables
+        // NOLINTBEGIN
+        ::ll::TypedStorage<8, 8, ::GeometryAtlas::IRenderContext&> mContext;
+        ::ll::TypedStorage<
+            8,
+            8,
+            ::std::_List_iterator<::std::_List_val<
+                ::std::_List_simple_types<::std::pair<uint const, ::GeometryAtlas::AtlasImpl::TileEntry>>>>>
+                                                                         mIt;
+        ::ll::TypedStorage<8, 8, ::GeometryAtlas::AtlasImpl::TileEntry*> mEntry;
+        ::ll::TypedStorage<4, 4, uint>                                   mTileID;
+        // NOLINTEND
+
+    public:
+        // prevent constructor by default
+        CommandArgs& operator=(CommandArgs const&);
+        CommandArgs(CommandArgs const&);
+        CommandArgs();
     };
 
     struct Data {
@@ -103,28 +128,6 @@ public:
         // NOLINTEND
     };
 
-    struct CommandArgs {
-    public:
-        // member variables
-        // NOLINTBEGIN
-        ::ll::TypedStorage<8, 8, ::GeometryAtlas::IRenderContext&> mContext;
-        ::ll::TypedStorage<
-            8,
-            8,
-            ::std::_List_iterator<::std::_List_val<
-                ::std::_List_simple_types<::std::pair<uint const, ::GeometryAtlas::AtlasImpl::TileEntry>>>>>
-                                                                         mIt;
-        ::ll::TypedStorage<8, 8, ::GeometryAtlas::AtlasImpl::TileEntry*> mEntry;
-        ::ll::TypedStorage<4, 4, uint>                                   mTileID;
-        // NOLINTEND
-
-    public:
-        // prevent constructor by default
-        CommandArgs& operator=(CommandArgs const&);
-        CommandArgs(CommandArgs const&);
-        CommandArgs();
-    };
-
     struct mDispatcher {};
 
     using CommandBuffer = ::std::deque<::GeometryAtlas::RenderableUpdateCommand>;
@@ -146,12 +149,12 @@ public:
     // virtual functions
     // NOLINTBEGIN
     virtual ::std::shared_ptr<::GeometryAtlas::IItemTile>
-    createItem(::GeometryAtlas::TileDefinition const&) /*override*/;
+    createItem(::GeometryAtlas::TileDefinition const& definition) /*override*/;
 
     virtual ::std::shared_ptr<::GeometryAtlas::IPaperDollTile>
-    createDoll(::GeometryAtlas::TileDefinition const&) /*override*/;
+    createDoll(::GeometryAtlas::TileDefinition const& definition) /*override*/;
 
-    virtual void trySubmitUpdates(::GeometryAtlas::IRenderContext&) /*override*/;
+    virtual void trySubmitUpdates(::GeometryAtlas::IRenderContext& context) /*override*/;
 
     virtual bool hasAnyUpdates() const /*override*/;
 
@@ -162,6 +165,9 @@ public:
     // member functions
     // NOLINTBEGIN
     MCAPI AtlasImpl();
+
+    MCAPI void
+    _processCommand(::GeometryAtlas::AtlasImpl::CommandArgs& args, ::GeometryAtlas::AllocateAtlasPayload&& payload);
     // NOLINTEND
 
 public:
@@ -173,7 +179,16 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI ::std::shared_ptr<::GeometryAtlas::IItemTile> $createItem(::GeometryAtlas::TileDefinition const& definition);
 
+    MCAPI ::std::shared_ptr<::GeometryAtlas::IPaperDollTile>
+    $createDoll(::GeometryAtlas::TileDefinition const& definition);
+
+    MCAPI void $trySubmitUpdates(::GeometryAtlas::IRenderContext& context);
+
+    MCAPI bool $hasAnyUpdates() const;
+
+    MCFOLD ::Bedrock::PubSub::Connector<void(::std::vector<uint> const&)>& $getTileChangeConnector();
     // NOLINTEND
 };
 

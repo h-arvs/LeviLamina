@@ -15,12 +15,6 @@ public:
 
     virtual bool isServerAuthBlockBreakingEnabled() const = 0;
 
-    virtual bool destroyBlock(::BlockPos const&, uchar) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual bool destroyBlock(::BlockPos const& pos, uchar face) = 0;
     // NOLINTEND
 };

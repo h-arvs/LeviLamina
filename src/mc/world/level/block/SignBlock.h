@@ -18,12 +18,14 @@ class BlockPos;
 class BlockSource;
 class GetCollisionShapeInterface;
 class IConstBlockSource;
+class Item;
 class ItemInstance;
 class ItemStack;
 class Player;
 class SignBlockActor;
 namespace BlockEvents { class BlockPlayerInteractEvent; }
 namespace BlockEvents { class BlockQueuedTickEvent; }
+namespace mce { class Color; }
 // clang-format on
 
 class SignBlock : public ::ActorBlock {
@@ -47,6 +49,7 @@ public:
         Bamboo              = 9,
         Cherry              = 10,
         PaleOak             = 11,
+        Poplar              = 12,
     };
 
     struct SignInteractionResult {
@@ -128,6 +131,13 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
+    MCAPI static bool
+    _canUseDye(::SignBlockActor& blockActor, ::SignTextSide side, ::mce::Color const& dyeColor, ::Player& player);
+
+    MCAPI static bool _canUseHoneyComb(::SignBlockActor& blockActor, ::Player& player);
+
+    MCAPI static bool _canUseInkSac(::SignBlockActor& blockActor, ::SignTextSide side, ::Player& player);
+
 #ifdef LL_PLAT_C
     MCAPI static ::SignBlock::SignInteractionResult _getInteractResult(
         ::SignBlockActor& blockActor,
@@ -141,6 +151,8 @@ public:
     MCAPI static ::SignBlock::SignInteractionResult
     getInteractResult(::Player& player, ::BlockPos const& pos, uchar face);
 #endif
+
+    MCAPI static ::mce::Color getSignTextColorFromDyeItem(::Item const& dyeItem);
     // NOLINTEND
 
 public:
@@ -157,7 +169,11 @@ public:
 
     MCFOLD bool $checkIsPathable(::Actor& entity, ::BlockPos const& lastPathPos, ::BlockPos const& pathPos) const;
 
+#ifdef LL_PLAT_S
     MCAPI ::ItemInstance $asItemInstance(::Block const&, ::BlockActor const*) const;
+#else // LL_PLAT_C
+    MCFOLD ::ItemInstance $asItemInstance(::Block const&, ::BlockActor const*) const;
+#endif
 
     MCAPI bool $mayPlace(::BlockSource& region, ::BlockPos const& pos, uchar face) const;
 

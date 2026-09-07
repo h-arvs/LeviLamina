@@ -5,6 +5,7 @@
 // auto generated inclusion list
 #include "mc/deps/core/utility/optional_ref.h"
 #include "mc/world/item/FertilizerType.h"
+#include "mc/world/level/block/BigDripleafTilt.h"
 #include "mc/world/level/block/BlockType.h"
 
 // auto generated forward declare list
@@ -31,8 +32,6 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual ::BlockType& init() /*override*/;
-
     virtual ::AABB const& getVisualShape(::Block const& block, ::AABB& bufferAABB) const /*override*/;
 
     virtual ::AABB getCollisionShape(
@@ -65,6 +64,8 @@ public:
 
     virtual bool isLavaBlocking() const /*override*/;
 
+    virtual ::Block const& getInitialDefaultState() /*override*/;
+
     virtual void _addHardCodedBlockComponents(::Experiments const&) /*override*/;
     // NOLINTEND
 
@@ -83,6 +84,11 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
+    MCAPI static void _resetTilt(::BlockSource& region, ::BlockPos const& pos);
+
+    MCAPI static void
+    _setTiltAndScheduleTick(::BigDripleafTilt bigDripleafTilt, ::BlockSource& region, ::BlockPos const& pos);
+
     MCAPI static void placeWithRandomHeight(::BlockSource& region, ::Random& random, ::BlockPos stemPos, int facing);
     // NOLINTEND
 
@@ -95,8 +101,6 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
-    MCAPI ::BlockType& $init();
-
     MCAPI ::AABB const& $getVisualShape(::Block const& block, ::AABB& bufferAABB) const;
 
     MCAPI ::AABB $getCollisionShape(
@@ -124,6 +128,8 @@ public:
     MCAPI void $onProjectileHit(::BlockSource& region, ::BlockPos const& pos, ::Actor const&) const;
 
     MCFOLD bool $isLavaBlocking() const;
+
+    MCAPI ::Block const& $getInitialDefaultState();
 
     MCAPI void $_addHardCodedBlockComponents(::Experiments const&);
 

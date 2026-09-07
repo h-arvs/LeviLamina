@@ -34,14 +34,13 @@ public:
 
     virtual ::std::string ToString() const /*override*/;
 
-    virtual ~HeartbeatAckChunk() /*override*/;
+    virtual ~HeartbeatAckChunk() /*override*/ = default;
     // NOLINTEND
 
 public:
     // static functions
     // NOLINTBEGIN
-    MCNAPI static ::std::optional<::dcsctp::HeartbeatAckChunk>
-    Parse(::webrtc::ArrayView<uchar const, 18446744073709546905> data);
+    MCNAPI static ::std::optional<::dcsctp::HeartbeatAckChunk> Parse(::webrtc::ArrayView<uchar const> data);
     // NOLINTEND
 
 public:

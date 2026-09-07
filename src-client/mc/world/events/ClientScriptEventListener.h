@@ -11,12 +11,6 @@ public:
     // NOLINTBEGIN
     virtual ~ClientScriptEventListener() = default;
 
-    virtual ::EventResult onScriptKeyEvent(::std::string const&, ::std::string const&);
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual ::EventResult onScriptKeyEvent(::std::string const& eventID, ::std::string const& additionalInfo);
     // NOLINTEND
 };

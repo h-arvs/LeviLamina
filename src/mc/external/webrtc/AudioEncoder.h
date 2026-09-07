@@ -104,8 +104,7 @@ public:
 
     virtual void SetTargetBitrate(int);
 
-    virtual ::webrtc::ArrayView<::std::unique_ptr<::webrtc::AudioEncoder>, 18446744073709546905>
-    ReclaimContainedEncoders();
+    virtual ::webrtc::ArrayView<::std::unique_ptr<::webrtc::AudioEncoder>> ReclaimContainedEncoders();
 
     virtual bool EnableAudioNetworkAdaptor(::std::string_view);
 
@@ -134,13 +133,7 @@ public:
     virtual ::std::optional<::std::pair<::webrtc::DataRate, ::webrtc::DataRate>> GetBitrateRange() const;
 
     virtual ::webrtc::AudioEncoder::EncodedInfo
-    EncodeImpl(uint, ::webrtc::ArrayView<short const, 18446744073709546905>, ::webrtc::BufferT<uchar, 0>*) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    EncodeImpl(uint, ::webrtc::ArrayView<short const>, ::webrtc::BufferT<uchar, 0>*) = 0;
     // NOLINTEND
 };
 

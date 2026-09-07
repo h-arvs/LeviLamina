@@ -21,29 +21,13 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-#ifdef LL_PLAT_S
-    virtual void onLevelAdded(::std::string const&, ::LevelListCacheObserver::LevelAddedType);
-#else // LL_PLAT_C
     virtual void onLevelAdded(::std::string const& levelId, ::LevelListCacheObserver::LevelAddedType type);
-#endif
 
-#ifdef LL_PLAT_S
-    virtual void onLevelUpdated(::std::string const&);
-#else // LL_PLAT_C
     virtual void onLevelUpdated(::std::string const& levelId);
-#endif
 
-#ifdef LL_PLAT_S
-    virtual void onLevelDeleted(::std::string const&);
-#else // LL_PLAT_C
     virtual void onLevelDeleted(::std::string const& levelId);
-#endif
 
-#ifdef LL_PLAT_S
-    virtual void onSummaryUpdated(::std::string const&);
-#else // LL_PLAT_C
     virtual void onSummaryUpdated(::std::string const& levelId);
-#endif
 
     virtual void onStorageChanged();
     // NOLINTEND

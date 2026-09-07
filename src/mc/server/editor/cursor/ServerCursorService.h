@@ -16,12 +16,13 @@ class BlockPos;
 class HashedString;
 namespace Bedrock::PubSub { class Subscription; }
 namespace Editor { class ProjectRegion; }
-namespace Editor { class ServiceProviderCollection; }
 namespace Editor::Cursor { class ServerCursor; }
 namespace Editor::Cursor { struct AttachmentProperties; }
 namespace Editor::Cursor { struct CursorState; }
 namespace Editor::Cursor { struct Position; }
 namespace Editor::Cursor { struct Ray; }
+namespace Editor::Network { class CursorServicePositionChangePayload; }
+namespace Editor::Network { class CursorServiceViewDistanceChangePayload; }
 // clang-format on
 
 namespace Editor::Cursor {
@@ -114,13 +115,11 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCNAPI explicit ServerCursorService(::Editor::ServiceProviderCollection& providers);
-    // NOLINTEND
+    MCNAPI void _createOrUpdateRegion(::BlockPos const& pos);
 
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCNAPI void* $ctor(::Editor::ServiceProviderCollection& providers);
+    MCNAPI void _handleMaxViewDistanceChange(::Editor::Network::CursorServiceViewDistanceChangePayload const& payload);
+
+    MCNAPI void _handlePayloadPositionChange(::Editor::Network::CursorServicePositionChangePayload const& payload);
     // NOLINTEND
 
 public:
@@ -180,14 +179,6 @@ public:
     MCNAPI ::WeakRef<::Editor::ProjectRegion> $getRegion() const;
 
 
-    // NOLINTEND
-
-public:
-    // vftables
-    // NOLINTBEGIN
-    MCNAPI static void** $vftableForServerCursorServiceProvider();
-
-    MCNAPI static void** $vftableForIEditorService();
     // NOLINTEND
 };
 

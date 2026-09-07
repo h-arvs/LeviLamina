@@ -8,28 +8,31 @@
 
 class GameControllerHandler {
 public:
-    // member variables
-    // NOLINTBEGIN
-    ::ll::UntypedStorage<8, 64> mUnkbf0644;
-    ::ll::UntypedStorage<8, 24> mUnkedf897;
-    ::ll::UntypedStorage<8, 24> mUnk26b586;
-    ::ll::UntypedStorage<8, 32> mUnkef31db;
-    ::ll::UntypedStorage<8, 32> mUnkfa3a3f;
-    ::ll::UntypedStorage<8, 24> mUnkb2bd1e;
-    ::ll::UntypedStorage<4, 16> mUnkc39aef;
-    ::ll::UntypedStorage<8, 16> mUnkdd3707;
-    ::ll::UntypedStorage<1, 1>  mUnkfe6c7b;
-    // NOLINTEND
+    // GameControllerHandler inner types define
+    using InputButton = uint;
+
+    using ButtonMap = ::std::unordered_map<uint, int>;
+
+    using ButtonStateMap = ::std::unordered_map<uint, ::GameControllerButtonState>;
 
 public:
-    // prevent constructor by default
-    GameControllerHandler& operator=(GameControllerHandler const&);
-    GameControllerHandler(GameControllerHandler const&);
+    // member variables
+    // NOLINTBEGIN
+    ::ll::TypedStorage<8, 64, ::std::unordered_map<uint, int>> mButtonMap;
+    ::ll::TypedStorage<8, 24, ::std::vector<float>>            mLeftTrigger;
+    ::ll::TypedStorage<8, 24, ::std::vector<float>>            mRightTrigger;
+    ::ll::TypedStorage<8, 32, ::std::vector<bool>>             mLeftStickTouched;
+    ::ll::TypedStorage<8, 32, ::std::vector<bool>>             mRightStickTouched;
+    ::ll::TypedStorage<8, 24, ::std::vector<::std::unordered_map<uint, ::GameControllerButtonState>>> mButtonState;
+    ::ll::TypedStorage<4, 16, uint[4]>            mInputProcessResult;
+    ::ll::TypedStorage<8, 16, ::std::thread>      mPollingThread;
+    ::ll::TypedStorage<1, 1, ::std::atomic<bool>> mJoinThreads;
+    // NOLINTEND
 
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual ~GameControllerHandler();
+    virtual ~GameControllerHandler() = default;
 
     virtual void refresh() = 0;
 
@@ -41,42 +44,18 @@ public:
 
     virtual float normalizeAxis(float raw, float deadzone);
 
-    virtual void normalizeAxes(float&, float&, float) = 0;
-    // NOLINTEND
-
-public:
-    // member functions
-    // NOLINTBEGIN
-    MCNAPI GameControllerHandler();
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCNAPI void* $ctor();
-    // NOLINTEND
-
-public:
-    // destructor thunk
-    // NOLINTBEGIN
-    MCNAPI void $dtor();
+    virtual void normalizeAxes(float& ioX, float& ioY, float deadzone) = 0;
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
-    MCNAPI void $refresh(bool isInGame);
+    MCFOLD void $refresh(bool isInGame);
 
-    MCNAPI void $shutdown();
+    MCFOLD void $shutdown();
 
-    MCNAPI ::GameControllerErrorType $checkPlatformSpecificControllerError();
+    MCFOLD ::GameControllerErrorType $checkPlatformSpecificControllerError();
 
-    MCNAPI float $normalizeAxis(float raw, float deadzone);
-    // NOLINTEND
-
-public:
-    // vftables
-    // NOLINTBEGIN
-    MCNAPI static void** $vftable();
+    MCFOLD float $normalizeAxis(float raw, float deadzone);
     // NOLINTEND
 };

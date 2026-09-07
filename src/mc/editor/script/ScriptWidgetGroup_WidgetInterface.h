@@ -18,13 +18,7 @@ public:
     // virtual functions
     // NOLINTBEGIN
     virtual ::Scripting::Result_deprecated<void>
-        _deleteWidget(::Scripting::StrongTypedObjectHandle<::Editor::ScriptModule::ScriptWidget>) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    _deleteWidget(::Scripting::StrongTypedObjectHandle<::Editor::ScriptModule::ScriptWidget> widgetToDelete) = 0;
     // NOLINTEND
 };
 

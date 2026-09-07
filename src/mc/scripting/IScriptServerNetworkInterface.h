@@ -3,6 +3,7 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
+#include "mc/common/SubClientId.h"
 #include "mc/deps/core/utility/NonOwnerPointer.h"
 #include "mc/deps/script_core/runtime/scripting/Result.h"
 #include "mc/server/commands/CommandPermissionLevel.h"
@@ -35,12 +36,9 @@ public:
     virtual ::CommandPermissionLevel getCommandsOpPermissionLevel() const = 0;
 
     virtual ::Scripting::Result<void, ::Scripting::EngineError>
-    savePlayerPermission(::Player const& player, ::PlayerPermissionLevel permission) = 0;
-    // NOLINTEND
+    savePlayerPermission(::Player& player, ::PlayerPermissionLevel permission) = 0;
 
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual ::Scripting::Result<::std::optional<::SubClientId>, ::Scripting::EngineError>
+    tryGetPlayerSplitScreenClientId(::Player const& player) const = 0;
     // NOLINTEND
 };

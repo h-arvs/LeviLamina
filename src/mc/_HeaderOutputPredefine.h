@@ -47,6 +47,9 @@ namespace ll {
 class type_id_ref;
 }
 
+// cgltf exposes pointers to this internal tokenizer type.
+struct jsmntok_t;
+
 namespace Bedrock {
 template <typename Category, typename Type>
 ::ll::type_id_ref typeid_storage_impl();
@@ -69,6 +72,7 @@ template <typename Category, typename Type>
 #include <clocale>       // C localization library
 #include <cmath>         // Common mathematics functions
 #include <complex>       // Complex number type
+#include <cstddef>       // Standard size and pointer difference types
 #include <cstdio>        // C Standard Input/Output library
 #include <cstdlib>       // C Standard General Utilities Library
 #include <cstring>       // C string handling
@@ -162,7 +166,6 @@ template <typename Category, typename Type>
 
 // stb C++ Library
 #include "stb_truetype.h"
-struct stbi__context;
 
 struct HWND__;
 struct HKEY__;
@@ -260,6 +263,13 @@ template<typename It, typename Type>
 class ComponentStorageIterator;
 }
 }
+
+#ifndef cerealizer
+template <typename T>
+struct cerealizer {
+    struct SerializedData{};
+};
+#endif
 
 namespace GameInput::v2 {
     class IGameInput;
@@ -414,7 +424,12 @@ class function_ref;
 }
 
 namespace rtc {
-template<class T, size_t N = size_t(-4711ll)>
+template<class T, ::std::ptrdiff_t N = -4711>
+class ArrayView;
+}
+
+namespace webrtc {
+template<class T, ::std::ptrdiff_t N = -4711>
 class ArrayView;
 }
 

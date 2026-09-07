@@ -138,6 +138,14 @@ public:
 
     MCAPI ::LevelSettings& setBaseGameVersion(::BaseGameVersion const& baseGameVersion);
 
+#ifdef LL_PLAT_C
+    MCAPI ::LevelSettings& setCloudSaveInfo(::std::optional<::CloudSaveLevelInfo> cloudSaveInfo);
+
+    MCAPI ::LevelSettings& setEducationCreatorID(::std::string id);
+
+    MCAPI ::LevelSettings& setEducationCreatorWorldID(::std::string id);
+#endif
+
     MCAPI ::LevelSettings& setExperiments(::ExperimentStorage const& experiments);
 
 #ifdef LL_PLAT_C

@@ -59,6 +59,8 @@ MCAPI void memSet(void* _dst, uchar _ch, uint64 _numBytes);
 
 MCAPI void mtxInverse(float* _result, float const* _a);
 
+MCAPI void mtxMul(float* _result, float const* _a, float const* _b);
+
 MCAPI void mtxOrtho(
     float* _result,
     float  _left,
@@ -189,7 +191,7 @@ MCAPI void quickSort(void* _data, uint _num, uint _stride, int (*const_fn)(void 
 
 MCAPI void radixSort(uint* _keys, uint* _tempKeys, uint _size);
 
-MCAPI int snprintf(char*, int, char const*, ...);
+MCAPI int snprintf(char* _out, int max, char const* _format, ...);
 
 MCAPI int strCat(char* _dst, int _dstSize, ::bx::StringView const& _str, int _num);
 

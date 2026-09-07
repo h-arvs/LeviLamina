@@ -25,22 +25,18 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual ::Bedrock::PubSub::Subscription subscribeToBossEvent(::std::function<void(::BossEventUpdateType)>) = 0;
+    virtual ::Bedrock::PubSub::Subscription
+    subscribeToBossEvent(::std::function<void(::BossEventUpdateType)> callback) = 0;
 
     virtual ::Bedrock::PubSub::Subscription subscribeToBossEvent(
-        ::std::function<void(::BossEventUpdateType, ::ActorUniqueID const&, ::BossEventPacket const&)>
+        ::std::function<void(::BossEventUpdateType, ::ActorUniqueID const&, ::BossEventPacket const&)> callback
     ) = 0;
 
-    virtual void broadcastBossEvent(::BossEventUpdateType) = 0;
+    virtual void broadcastBossEvent(::BossEventUpdateType type) = 0;
 
-    virtual void broadcastBossEvent(::BossEventUpdateType, ::ActorUniqueID const&, ::BossEventPacket const&) = 0;
+    virtual void
+    broadcastBossEvent(::BossEventUpdateType type, ::ActorUniqueID const& id, ::BossEventPacket const& packet) = 0;
 
     virtual bool areBossEventSubscribersReady() const = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };

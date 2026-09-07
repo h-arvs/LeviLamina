@@ -36,7 +36,7 @@ public:
 
     virtual ::std::string ToString() const /*override*/;
 
-    virtual ~AbortChunk() /*override*/;
+    virtual ~AbortChunk() /*override*/ = default;
     // NOLINTEND
 
 public:
@@ -48,8 +48,7 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
-    MCNAPI static ::std::optional<::dcsctp::AbortChunk>
-    Parse(::webrtc::ArrayView<uchar const, 18446744073709546905> data);
+    MCNAPI static ::std::optional<::dcsctp::AbortChunk> Parse(::webrtc::ArrayView<uchar const> data);
     // NOLINTEND
 
 public:

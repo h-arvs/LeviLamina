@@ -14,7 +14,6 @@ class PackManifest;
 class PackReport;
 class ResourceLocation;
 class SubpackInfoCollection;
-namespace Core { class Path; }
 // clang-format on
 
 class PackManifestFactory : public ::IPackManifestFactory {
@@ -61,8 +60,6 @@ public:
     // NOLINTBEGIN
     MCNAPI static ::std::string const& MANIFEST_PACK_UUID_UPGRADE_SALT();
 
-    MCNAPI static ::Core::Path const& MANIFEST_PATH();
-
     MCNAPI static ::std::unordered_map<::std::string, ::std::vector<char> const>& mAlternateContentKeys();
 
     MCNAPI static ::std::unordered_map<::std::string, ::std::vector<char> const>& mContentKeys();
@@ -77,7 +74,9 @@ public:
 public:
     // destructor thunk
     // NOLINTBEGIN
+#ifdef LL_PLAT_S
     MCNAPI void $dtor();
+#endif
     // NOLINTEND
 
 public:

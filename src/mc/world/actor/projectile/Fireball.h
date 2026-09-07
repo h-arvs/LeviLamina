@@ -14,6 +14,7 @@ class CompoundTag;
 class DataLoadHelper;
 class EntityContext;
 class IConstBlockSource;
+class Vec3;
 struct ActorDefinitionIdentifier;
 // clang-format on
 
@@ -57,6 +58,14 @@ public:
         ::ActorDefinitionIdentifier const& definitionName,
         ::EntityContext&                   entityContext
     );
+
+#ifdef LL_PLAT_S
+    MCAPI void _setPower(::Vec3 const& power);
+#endif
+
+#ifdef LL_PLAT_C
+    MCAPI void _setPower(::Vec3 const& power);
+#endif
     // NOLINTEND
 
 public:

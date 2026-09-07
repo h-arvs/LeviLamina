@@ -70,12 +70,6 @@ public:
 
     virtual void _onTeardown() /*override*/;
     // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
-    // NOLINTEND
 };
 
 } // namespace Core

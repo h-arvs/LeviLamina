@@ -62,7 +62,9 @@ public:
 
     virtual void onBindingsReleased() /*override*/;
 
-    virtual void update(double const) /*override*/;
+    virtual void update(double const time) /*override*/;
+
+    virtual ~CommandRegistry() /*override*/;
     // NOLINTEND
 
 public:
@@ -75,9 +77,21 @@ public:
     // NOLINTEND
 
 public:
+    // destructor thunk
+    // NOLINTBEGIN
+    MCAPI void $dtor();
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
     MCAPI void $onReadyForBindings();
+
+    MCFOLD void $onSuspend();
+
+    MCFOLD void $onBindingsReleased();
+
+    MCFOLD void $update(double const time);
     // NOLINTEND
 };
 

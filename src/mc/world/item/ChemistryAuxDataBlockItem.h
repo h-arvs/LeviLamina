@@ -16,10 +16,4 @@ public:
     // NOLINTBEGIN
     virtual void fixupCommon(::ItemStackBase& stack) const /*override*/;
     // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
-    // NOLINTEND
 };

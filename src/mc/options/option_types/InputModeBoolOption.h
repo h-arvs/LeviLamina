@@ -27,17 +27,9 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-#ifdef LL_PLAT_S
-    virtual void save(::std::vector<::std::pair<::std::string, ::std::string>>&) /*override*/;
-#else // LL_PLAT_C
     virtual void save(::std::vector<::std::pair<::std::string, ::std::string>>& propertyVector) /*override*/;
-#endif
 
-#ifdef LL_PLAT_S
-    virtual void load(::std::string const&) /*override*/;
-#else // LL_PLAT_C
     virtual void load(::std::string const& valueString) /*override*/;
-#endif
 
     virtual void load(::std::map<::std::string, ::std::string>& propertyMap) /*override*/;
     // NOLINTEND
@@ -66,7 +58,8 @@ public:
         bool                 valueGamePad
     );
 
-    MCAPI void reset(::InputMode inputMode, bool saveOptionChange);
+    MCAPI void
+    _saveForInputMode(::std::vector<::std::pair<::std::string, ::std::string>>& propertyVector, ::InputMode mode);
 
     MCAPI void set(::InputMode inputmode, bool value, bool saveOptionChange);
 #endif

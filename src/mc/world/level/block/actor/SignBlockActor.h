@@ -137,13 +137,21 @@ public:
         // NOLINTBEGIN
         MCAPI ::std::string const& getMessage() const;
 
-#ifdef LL_PLAT_C
+        MCAPI void load(::CompoundTag const& tag, ::SignBlockActor::Text::LoadMode load);
+
+        MCAPI bool save(::CompoundTag& tag) const;
+
         MCAPI void setMessage(::std::string message);
 
         MCAPI void setMessage(::TextObjectRoot message);
-#endif
 
         MCAPI ~Text();
+        // NOLINTEND
+
+    public:
+        // static variables
+        // NOLINTBEGIN
+        MCAPI static ::std::add_lvalue_reference_t<char const[18]> SIGN_PERSIST_FORMATTING_TAG();
         // NOLINTEND
 
     public:
@@ -173,6 +181,8 @@ public:
     // virtual functions
     // NOLINTBEGIN
     virtual ~SignBlockActor() /*override*/;
+
+    virtual bool isTypeOrDerived(::BlockActorType type) const /*override*/;
 
     virtual bool save(::CompoundTag& tag, ::SaveContext const& saveContext) const /*override*/;
 
@@ -241,6 +251,8 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI bool $isTypeOrDerived(::BlockActorType type) const;
+
     MCAPI bool $save(::CompoundTag& tag, ::SaveContext const& saveContext) const;
 
     MCAPI void $load(::ILevel& level, ::CompoundTag const& tag, ::DataLoadHelper& dataLoadHelper);

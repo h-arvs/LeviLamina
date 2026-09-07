@@ -109,19 +109,12 @@ public:
     // NOLINTBEGIN
     virtual ~NetEq() = default;
 
-    virtual int InsertPacket(::webrtc::RTPHeader const&, ::webrtc::ArrayView<uchar const, 18446744073709546905>);
+    virtual int InsertPacket(::webrtc::RTPHeader const&, ::webrtc::ArrayView<uchar const>);
 
-    virtual int InsertPacket(
-        ::webrtc::RTPHeader const&,
-        ::webrtc::ArrayView<uchar const, 18446744073709546905>,
-        ::webrtc::Timestamp
-    );
+    virtual int InsertPacket(::webrtc::RTPHeader const&, ::webrtc::ArrayView<uchar const>, ::webrtc::Timestamp);
 
-    virtual int InsertPacket(
-        ::webrtc::RTPHeader const&,
-        ::webrtc::ArrayView<uchar const, 18446744073709546905>,
-        ::webrtc::RtpPacketInfo const&
-    );
+    virtual int
+    InsertPacket(::webrtc::RTPHeader const&, ::webrtc::ArrayView<uchar const>, ::webrtc::RtpPacketInfo const&);
 
     virtual void InsertEmptyPacket(::webrtc::RTPHeader const&) = 0;
 
@@ -174,12 +167,6 @@ public:
     virtual ::std::vector<ushort> GetNackList(int64) const = 0;
 
     virtual int SyncBufferSizeMs() const = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };
 

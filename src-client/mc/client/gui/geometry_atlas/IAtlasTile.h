@@ -18,12 +18,8 @@ public:
     virtual uint getUserID() const = 0;
 
     virtual ::dragon::atlas::AtlasTileHandle getBackendID() const = 0;
-    // NOLINTEND
 
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual bool isInitialized() const = 0;
     // NOLINTEND
 };
 

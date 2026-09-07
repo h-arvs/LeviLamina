@@ -6,10 +6,13 @@
 #include "mc/client/renderer/block/BakedBlockLightType.h"
 #include "mc/deps/game_refs/WeakRef.h"
 #include "mc/deps/minecraft_renderer/game/RangeIndices.h"
+#include "mc/world/level/chunk/ChunkSourceViewGenerateMode.h"
 #include "mc/world/phys/AABB.h"
 
 // auto generated forward declare list
 // clang-format off
+class Block;
+class BlockPos;
 class BlockTessellator;
 class ChunkSource;
 class ChunkViewSource;
@@ -19,6 +22,7 @@ class RenderChunkCoordinator;
 class RenderChunkGeometry;
 class RuntimeLocalLightingConfig;
 class Tessellator;
+struct AirAndSimpleBlockBits;
 struct BlockQueueEntry;
 struct RenderChunkQuadInfo;
 namespace ClientBlockPipeline { class BlockTessellatorPipeline; }
@@ -99,7 +103,19 @@ public:
         ::mce::framebuilder::FrameLightingModelCapabilities const& lightingModelCapabilities
     );
 
+    MCAPI void prepareWorldData(::BlockPos const& pos, ::ChunkSourceViewGenerateMode viewMoveMode);
+
     MCAPI ~RenderChunkBuilder();
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static void checkNeighborBlockIsAirOrSimpleBlock(
+        ::Block const&           block,
+        uint64 const             blockBitsetIndex,
+        ::AirAndSimpleBlockBits& airAndSimpleBlocks
+    );
     // NOLINTEND
 
 public:

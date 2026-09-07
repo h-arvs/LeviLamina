@@ -12,6 +12,7 @@ class LocalPlayer;
 class ResourcePackManager;
 class SemVersion;
 namespace Editor::Services { class ClientDataTransferServiceProvider; }
+namespace Puv { class LoadResultAny; }
 namespace cereal { struct ReflectionCtx; }
 // clang-format on
 
@@ -97,6 +98,9 @@ public:
     // member functions
     // NOLINTBEGIN
     MCNAPI void loadDataSync(::cereal::ReflectionCtx const& ctx, ::ResourcePackManager& resourcePackManager);
+
+    MCNAPI ::Puv::LoadResultAny
+    loadFromString(::cereal::ReflectionCtx const& ctx, ::std::string const& shadowStylizationJson);
     // NOLINTEND
 
 public:
@@ -109,6 +113,14 @@ public:
         ::LocalPlayer&                                         localPlayer,
         ::cereal::ReflectionCtx const&                         ctx
     );
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCNAPI static ::std::string_view const& PAYLOAD_KEY();
+
+    MCNAPI static ::std::string_view const& SHADOW_STYLIZATION_GLOBAL_CONFIG_FILE();
     // NOLINTEND
 
 public:

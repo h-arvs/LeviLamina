@@ -70,6 +70,8 @@ public:
         ::Bedrock::NotNullNonOwnerPtr<::LevelEventManager>   levelEventManager
     );
 
+    MCFOLD void _onPlayerDeath();
+
     MCAPI bool enoughPlayersDeepSleeping() const;
 
     MCAPI void initializeWithPlayerDeathManager(::PlayerDeathManager& playerDeathManager);
@@ -93,6 +95,20 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $updateSleepingPlayerList();
+
+#ifdef LL_PLAT_S
+    MCAPI ::Bedrock::PubSub::Connector<void(::Player&)>& $getPlayerWakeUpConnector();
+#else // LL_PLAT_C
+    MCFOLD ::Bedrock::PubSub::Connector<void(::Player&)>& $getPlayerWakeUpConnector();
+#endif
+
+#ifdef LL_PLAT_S
+    MCAPI ::Bedrock::PubSub::Connector<void()>& $getOnWakeUpAllPlayersConnector();
+#else // LL_PLAT_C
+    MCFOLD ::Bedrock::PubSub::Connector<void()>& $getOnWakeUpAllPlayersConnector();
+#endif
+
 
     // NOLINTEND
 };

@@ -15,18 +15,12 @@ public:
     // NOLINTBEGIN
     virtual ~IWorldSettingsStorage() = default;
 
-    virtual bool hasAvailableSpaceForLevel(::std::shared_ptr<::Core::FileStorageArea>) = 0;
+    virtual bool hasAvailableSpaceForLevel(::std::shared_ptr<::Core::FileStorageArea> sptStorageArea) = 0;
 
     virtual void saveWorld() = 0;
 
     virtual ::LevelSummary& getLevelSummary() = 0;
 
     virtual ::LevelData& getLevelData() = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };

@@ -5,6 +5,9 @@
 // auto generated inclusion list
 #include "mc/client/gui/CardinalDirection.h"
 #include "mc/client/gui/DirtyFlag.h"
+#include "mc/client/gui/GameEventNotification.h"
+#include "mc/client/gui/controls/TextCharEventResult.h"
+#include "mc/client/gui/screens/ControlCollectionChange.h"
 #include "mc/client/gui/screens/GamepadCursorData.h"
 #include "mc/client/gui/screens/ScreenEvent.h"
 #include "mc/client/gui/screens/TextEditFocusedListener.h"
@@ -12,26 +15,42 @@
 #include "mc/deps/core/utility/pub_sub/Publisher.h"
 #include "mc/deps/core/utility/pub_sub/Subscription.h"
 #include "mc/deps/input/InputMode.h"
+#include "mc/deps/input/TextboxTextUpdateReason.h"
+#include "mc/deps/input/enums/ButtonState.h"
+#include "mc/deps/input/enums/DirectionId.h"
 #include "mc/deps/input/enums/FocusImpact.h"
+#include "mc/deps/input/enums/RawInputType.h"
 
 // auto generated forward declare list
 // clang-format off
+class AbstractScene;
+class CachedScenes;
+class DataBindingComponent;
 class FocusManager;
 class ITTSEventManager;
+class InputComponent;
 class KeyboardManager;
 class LayoutManager;
 class RectangleArea;
 class ScreenController;
+class ScreenInputContext;
 class ScreenLoadTimeTracker;
 class ScreenRenderBatch;
 class ScreenSettings;
 class ScreenViewProxy;
+class TaskGroup;
+class TextEditComponent;
 class UIAnimationController;
 class UIControl;
 class UIControlFactory;
+class UIFrameUpdateContext;
 class UIMeasureStrategy;
+class UIPropertyBag;
+class UIRenderContext;
 class VisualTree;
+struct TouchPadTouchEventData;
 namespace Bedrock::PubSub::ThreadModel { struct MultiThreaded; }
+namespace Json { class Value; }
 // clang-format on
 
 class ScreenView {
@@ -184,19 +203,202 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
+    MCAPI ScreenView(
+        ::KeyboardManager&                    keyboardManager,
+        ::std::shared_ptr<::ScreenController> controller,
+        ::std::unique_ptr<::VisualTree>       visualTree,
+        ::std::shared_ptr<::UIControlFactory> controlFactory,
+        ::UIMeasureStrategy&                  measureStrategy,
+        ::std::unique_ptr<::LayoutManager>    layoutManager,
+        ::GamepadCursorData                   gamepadCursorData,
+        ::std::weak_ptr<::ITTSEventManager>   ttsEventManager
+    );
+
+    MCAPI void _adjustScrollToControl(::UIControl& control);
+
+    MCAPI void
+    _adjustScrollToFocusedControl(::UIControl& focusedControl, bool selectNearestControl, bool isRightStickScrolling);
+
+    MCAPI void _advanceToNextTab(bool right);
+
+    MCAPI void _bindData(bool doAllBinds);
+
+    MCAPI void
+    _changeInputControlCollection(::UIControl& control, ::ControlCollectionChange change, bool const isRemoveCallback);
+
+    MCAPI void _debugRenderControl(::UIRenderContext& context, ::UIControl const& control) const;
+
+    MCAPI void _debugRenderFocusControl(
+        ::UIRenderContext&                 context,
+        ::UIControl const&                 control,
+        ::std::vector<::UIControl const*>& visited
+    ) const;
+
+    MCAPI void _deselectControl(bool forceDeselect, bool hoverAfterDeselect);
+
+    MCAPI void _executeDelayedCommands(::ScreenView::DelayedCommandLocation location);
+
+    MCAPI void _fireSelectedStateChangeEvent(::TextEditComponent const& textEditComponent, bool state);
+
+    MCAPI void _fireTextChangedEvent(
+        bool                  finished,
+        ::TextCharEventResult result,
+        uint                  id,
+        int                   index,
+        ::UIPropertyBag*      propertyBag
+    );
+
+    MCAPI void _focusChangeCallback(
+        ::std::weak_ptr<::UIControl> previousFocusControl,
+        ::std::weak_ptr<::UIControl> currentFocusControl
+    );
+
+    MCAPI void _forwardEventToAnimationControls(::ScreenEvent const& screenEvent);
+
+    MCAPI ::std::shared_ptr<::UIControl> _getGamepadCursorFocusedControl() const;
+
     MCAPI ::ScreenSettings const* _getScreenComponent() const;
+
+    MCAPI void _handleDirtyVisualTree(bool overrideFocusControl, bool doAllBinds);
+
+    MCAPI void _handlePointerLocation(
+        ::glm::vec2 const& position,
+        ::FocusImpact      focusImpact,
+        bool               forceHandleWhenMotionless,
+        bool               isRightStickScrolling
+    );
+
+    MCAPI void _handleSliderMovement();
+
+    MCAPI void _handleStickScrolling(::DirectionId directionId);
 
     MCAPI void _passViewCommand();
 
+    MCAPI void _processControllerCursorMove(::DirectionId directionId);
+
+    MCAPI void _processControllerDirection(::DirectionId directionId);
+
+    MCAPI void _processEvents(::ScreenInputContext& context);
+
+    MCAPI void _queueTextToSpeechIfEnabled(
+        ::std::shared_ptr<::UIControl> focusedControl,
+        bool                           excludeControlHeader,
+        bool                           notInterruptible
+    );
+
+    MCAPI void _queueTextToSpeechTextboxCharacter(::std::string const& inputStr);
+
+    MCAPI void _resetButtonState(::UIControl& control);
+
+    MCAPI void _resetFocusedControl();
+
+    MCAPI void
+    _resetInputControl(::UIControl& control, ::InputComponent* const inputComponent, bool const handleModalChange);
+
+    MCAPI void _scrollToGridItem(::UIControl* gridControl, int itemIndex, int numItems);
+
     MCAPI void _selectControl(::UIControl& control, bool isHandlingTextChar);
+
+    MCAPI void _selectNextFocusObject(
+        ::ui::CardinalDirection direction,
+        bool                    overrideOrigin,
+        ::glm::vec2 const       overridePos,
+        bool                    isRightStickScrolling
+    );
+
+    MCAPI void _sendScrollEvent(::UIControl& parent, float delta) const;
+
+    MCAPI void _setGamepadCursorFocusMode(bool focusModeEnabled);
+
+    MCAPI void _setKeyboardHeight(float height);
 
     MCAPI void _setupControlFactoryCallbacks();
 
+    MCAPI void _switchTabToTargetIndex(::std::vector<::std::shared_ptr<::UIControl>>& tabControls, int targetIndex);
+
+    MCAPI bool _updateControlCollections(bool overrideFocusControl);
+
+    MCAPI void
+    _updateFocusControl(bool forceUpdate, bool forceFocusToAdjust, bool isRightStickScrolling, bool isHandlingTextChar);
+
+    MCAPI void _updateInputAreas();
+
+    MCAPI void _updateKeyboardVisibility();
+
+    MCAPI void cleanInputComponents();
+
+    MCAPI bool containsScreenNameSubstring(::std::string_view substring) const;
+
+    MCAPI bool equalsScreenName(::std::string_view comparison) const;
+
+    MCAPI void frameUpdate(::UIFrameUpdateContext& uiFrameUpdateContext);
+
+    MCAPI ::RectangleArea getAreaOfControlByName(::std::string const& controlName) const;
+
+    MCAPI ::std::vector<::RectangleArea> getInputAreas() const;
+
+    MCAPI ::std::string getRawScreenName() const;
+
+    MCAPI ::std::string getRoute() const;
+
+    MCAPI ::std::string getScreenName() const;
+
+    MCAPI ::std::string getScreenTelemetryName() const;
+
+    MCAPI void handleButtonEvent(uint buttonId, ::ButtonState buttonState, ::FocusImpact focusImpact);
+
+    MCAPI void handleDirection(::DirectionId directionId, float x, float y, ::FocusImpact focusImpact);
+
+    MCAPI void handleInputModeChanged(::InputMode inputMode);
+
+    MCAPI bool
+    handlePointerLocation(::glm::vec2 const& position, bool forceMotionlessPointer, ::FocusImpact focusImpact);
+
+    MCAPI void handleRawInputEvent(int id, ::RawInputType keyType, ::ButtonState state, bool allowRemapping);
+
+    MCAPI void handleTouchPadTouch(::TouchPadTouchEventData const& touchEventData, ::FocusImpact focusImpact);
+
     MCAPI bool isGamepadDeflectionModeEnabled() const;
+
+    MCAPI void onDelete(::CachedScenes& cache, ::TaskGroup& taskGroup);
+
+    MCAPI void onFocusGained();
+
+    MCAPI void onFocusLost();
+
+    MCAPI void onGameEventNotification(::ui::GameEventNotification notification);
+
+    MCAPI void onLeave();
+
+    MCAPI void onScreenEntrance(bool isRevisiting, bool doScreenTransitions);
+
+    MCAPI void onScreenExit(bool isPopping, bool doScreenTransitions, ::std::shared_ptr<::AbstractScene> pushedScene);
+
+    MCAPI void reload(::Json::Value const& globalVars);
+
+    MCAPI void render(::UIRenderContext& uiRenderContext);
+
+    MCAPI void resize();
 
     MCAPI void setInitialized();
 
+    MCAPI void setScreenLoadTimeTracker(::Bedrock::NonOwnerPointer<::ScreenLoadTimeTracker> tracker);
+
+    MCAPI void setShouldSendEvents(bool shouldSendEvents);
+
+    MCAPI void setTextboxText(::std::string const& text, ::TextboxTextUpdateReason reason);
+
     MCAPI ~ScreenView();
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static bool _isFocusEnabled(::std::shared_ptr<::UIControl> const& control);
+
+    MCAPI static bool _isFocusMagnetEnabled(::std::shared_ptr<::UIControl> const& control);
+
+    MCAPI static bool _shouldBindChildren(bool doAllBinds, ::UIControl& control, ::DataBindingComponent& dataBinding);
     // NOLINTEND
 
 public:
@@ -208,6 +410,21 @@ public:
     MCAPI static bool& sIsDebuggingFocus();
 
     MCAPI static bool& sRenderDebugControls();
+    // NOLINTEND
+
+public:
+    // constructor thunks
+    // NOLINTBEGIN
+    MCAPI void* $ctor(
+        ::KeyboardManager&                    keyboardManager,
+        ::std::shared_ptr<::ScreenController> controller,
+        ::std::unique_ptr<::VisualTree>       visualTree,
+        ::std::shared_ptr<::UIControlFactory> controlFactory,
+        ::UIMeasureStrategy&                  measureStrategy,
+        ::std::unique_ptr<::LayoutManager>    layoutManager,
+        ::GamepadCursorData                   gamepadCursorData,
+        ::std::weak_ptr<::ITTSEventManager>   ttsEventManager
+    );
     // NOLINTEND
 
 public:

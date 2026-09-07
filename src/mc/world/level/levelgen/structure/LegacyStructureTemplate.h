@@ -13,6 +13,7 @@
 // clang-format off
 class Block;
 class BlockSource;
+class CompoundTag;
 class JigsawStructureBlockInfo;
 class LegacyStructureActorInfo;
 class LegacyStructureBlockInfo;
@@ -76,11 +77,26 @@ public:
     ) const;
 
     MCAPI ::std::vector<::JigsawStructureBlockInfo> getJigsawMarkers() const;
+
+#ifdef LL_PLAT_C
+    MCAPI void load(::CompoundTag const& tag);
+#endif
     // NOLINTEND
 
 public:
     // static functions
     // NOLINTBEGIN
+    MCAPI static void _fixItemStack(::CompoundTag& itemTag, int const dataVersion);
+
+    MCAPI static void _mapPropertiesToTags(::CompoundTag& originalTag, ::CompoundTag const& paletteTag);
+
+    MCAPI static ::std::unique_ptr<::CompoundTag> _mapTag(
+        ::std::unique_ptr<::CompoundTag> originalTag,
+        ::std::string const&             javaBlockName,
+        int                              dataVersion,
+        ::Block const*&                  block
+    );
+
     MCAPI static ::Block const* _mapToBlock(::std::string const& blockName);
 
     MCAPI static ::Block const& _mapToData(::Block const& curr, ::LegacyStructureSettings const& settings);
@@ -92,7 +108,31 @@ public:
 public:
     // static variables
     // NOLINTBEGIN
+    MCAPI static ::std::string const& AUTHOR_TAG();
+
+    MCAPI static ::std::string const& BLOCKS_TAG();
+
+    MCAPI static ::std::string const& BLOCK_TAG_NBT();
+
+    MCAPI static ::std::string const& BLOCK_TAG_POS();
+
+    MCAPI static ::std::string const& BLOCK_TAG_STATE();
+
+    MCAPI static ::std::string const& DATA_VERSION_TAG();
+
+    MCAPI static ::std::string const& ENTITIES_TAG();
+
+    MCAPI static ::std::string const& ENTITY_TAG_BLOCKPOS();
+
+    MCAPI static ::std::string const& ENTITY_TAG_NBT();
+
+    MCAPI static ::std::string const& ENTITY_TAG_POS();
+
     MCAPI static ::std::string const& MINECRAFT_PREFIX();
+
+    MCAPI static ::std::string const& PALETTE_TAG();
+
+    MCAPI static ::std::string const& SIZE_TAG();
     // NOLINTEND
 
 public:

@@ -16,7 +16,7 @@ public:
 
     virtual ~Description() = default;
 
-    virtual void deserializeData(::DeserializeDataParams nonConstDeserializeDataParams);
+    virtual void deserializeData(::DeserializeDataParams deserializeDataParams);
     // NOLINTEND
 
 public:
@@ -30,7 +30,7 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
-    MCAPI void $deserializeData(::DeserializeDataParams nonConstDeserializeDataParams);
+    MCFOLD void $deserializeData(::DeserializeDataParams deserializeDataParams);
 
 
     // NOLINTEND

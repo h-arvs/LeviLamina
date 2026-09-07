@@ -47,6 +47,20 @@ public:
     // NOLINTEND
 
 public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI void _restorePreviousGravityFlag(::Mob& mob);
+
+    MCAPI void _storePreviousGravityFlag(::Mob& mob);
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static void _disableGravity(::Mob& mob);
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
     MCAPI void $initializeInternal(::Mob& mob, ::NavigationDescription const* description);

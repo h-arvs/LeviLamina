@@ -9,6 +9,11 @@
 #include "mc/deps/shared_types/v1_20_80/particle/ParticleEffectComponent.h"
 #include "mc/deps/shared_types/v1_20_80/particle/UV.h"
 
+// auto generated forward declare list
+// clang-format off
+namespace cereal { struct ReflectionCtx; }
+// clang-format on
+
 namespace SharedTypes::v1_20_80 {
 
 struct ParticleAppearanceBillboardComponent : public ::SharedTypes::v1_20_80::ParticleEffectComponent {
@@ -51,6 +56,12 @@ public:
     // NOLINTEND
 
 public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static void bindType(::cereal::ReflectionCtx& ctx);
+    // NOLINTEND
+
+public:
     // static variables
     // NOLINTBEGIN
     MCAPI static ::HashedString const& NameID();
@@ -65,11 +76,17 @@ public:
     // NOLINTEND
 
 public:
-    // virtual function thunks
+    // destructor thunk
     // NOLINTBEGIN
 #ifdef LL_PLAT_C
-    MCAPI ::HashedString const& $getIdentifier() const;
+    MCAPI void $dtor();
 #endif
+    // NOLINTEND
+
+public:
+    // virtual function thunks
+    // NOLINTBEGIN
+    MCAPI ::HashedString const& $getIdentifier() const;
 
 
     // NOLINTEND

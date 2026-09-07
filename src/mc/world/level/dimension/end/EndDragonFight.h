@@ -10,9 +10,13 @@
 
 // auto generated forward declare list
 // clang-format off
+class ActorDamageSource;
+class ActorSoundIdentifier;
 class BlockPatternMatcher;
 class BlockSource;
 class ChunkViewSource;
+class EnderCrystal;
+class EnderDragon;
 // clang-format on
 
 class EndDragonFight {
@@ -75,6 +79,52 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
+    MCAPI void _createNewDragon();
+
+    MCAPI void _initializeDragon(::EnderDragon& enderDragon);
+
+    MCAPI void _makeEndIslandFeature(::BlockSource& region, ::BlockPos const position);
+
+    MCAPI ::ActorSoundIdentifier _makeSoundIdentifier() const;
+
+    MCAPI void _spawnExitPortal(bool activated);
+
+    MCAPI void _spawnNewGatewayChunksTask(
+        ::std::tuple<
+            ::EndDragonFight::GatewayTask,
+            ::EndDragonFight::GateWayGenerator,
+            ::EndDragonFight::GateWayGenerator>& task
+    );
+
+    MCAPI void _updateCrystalCount();
+
+    MCAPI void _verifyExitPositionsTask(
+        ::std::tuple<
+            ::EndDragonFight::GatewayTask,
+            ::EndDragonFight::GateWayGenerator,
+            ::EndDragonFight::GateWayGenerator>& task
+    );
+
+    MCAPI void onCrystalDestroyed(::EnderCrystal const& crystal, ::ActorDamageSource const& source);
+
+    MCAPI void resetSpikeCrystals();
+
+    MCAPI void spawnNewGatewayChunks(::BlockPos const& pos, bool placeEntryBlocks, bool placeExitBlocks);
+
     MCAPI void tryRespawn();
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static bool _canSpawnNewGateway(::ChunkViewSource* source, ::BlockPos const& pos);
+
+    MCAPI static bool _setEndGatewayBlockActorExitPosition(
+        ::BlockSource&    entrySource,
+        ::BlockSource&    exitSource,
+        ::BlockPos const& endGatewayActorPos,
+        ::BlockPos const& destinationPos,
+        bool              lookForGateway
+    );
     // NOLINTEND
 };

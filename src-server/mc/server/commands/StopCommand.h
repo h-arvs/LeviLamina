@@ -9,6 +9,7 @@
 // clang-format off
 class CommandOrigin;
 class CommandOutput;
+class DedicatedServer;
 // clang-format on
 
 class StopCommand : public ::Command {
@@ -19,8 +20,14 @@ public:
     // NOLINTEND
 
 public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::DedicatedServer*& mServer();
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
-
+    MCAPI void $execute(::CommandOrigin const&, ::CommandOutput&) const;
     // NOLINTEND
 };

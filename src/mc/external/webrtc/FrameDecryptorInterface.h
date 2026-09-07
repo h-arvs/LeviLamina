@@ -47,18 +47,12 @@ public:
     virtual ::webrtc::FrameDecryptorInterface::Result Decrypt(
         ::webrtc::MediaType,
         ::std::vector<uint> const&,
-        ::webrtc::ArrayView<uchar const, 18446744073709546905>,
-        ::webrtc::ArrayView<uchar const, 18446744073709546905>,
-        ::webrtc::ArrayView<uchar, 18446744073709546905>
+        ::webrtc::ArrayView<uchar const>,
+        ::webrtc::ArrayView<uchar const>,
+        ::webrtc::ArrayView<uchar>
     ) = 0;
 
     virtual uint64 GetMaxPlaintextByteSize(::webrtc::MediaType, uint64) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };
 

@@ -5,6 +5,7 @@
 // auto generated forward declare list
 // clang-format off
 class IPurchaseEventing;
+class IResourceLoadEventing;
 // clang-format on
 
 class IMinecraftEventingProvider {
@@ -14,11 +15,7 @@ public:
     virtual ~IMinecraftEventingProvider() = default;
 
     virtual ::IPurchaseEventing& getPurchaseEventing() = 0;
-    // NOLINTEND
 
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual ::IResourceLoadEventing& getResourceLoadEventing() = 0;
     // NOLINTEND
 };

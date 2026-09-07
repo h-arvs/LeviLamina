@@ -53,6 +53,12 @@ public:
     // NOLINTEND
 
 public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static void _poofParticles(::BlockSource& region, ::BlockPos const& pos);
+    // NOLINTEND
+
+public:
     // virtual function thunks
     // NOLINTBEGIN
     MCAPI bool $attack(::Player* player, ::BlockPos const& pos) const;

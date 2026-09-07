@@ -13,11 +13,14 @@
 
 // auto generated forward declare list
 // clang-format off
+class Option;
 class PauseScreenModel;
 class PermissionsScreenController;
+class PlayerListEntry;
 class SocialButtonScreenController;
 class UserDataScreenController;
 namespace Json { class Value; }
+namespace mce { class UUID; }
 // clang-format on
 
 class PauseScreenController : public ::ClientInstanceScreenController {
@@ -37,7 +40,6 @@ public:
     ::ll::TypedStorage<8, 16, ::Bedrock::PubSub::Subscription>                   mPauseOptionSubscription;
     ::ll::TypedStorage<8, 16, ::Bedrock::PubSub::Subscription>                   mTrialModeUpdateSubscription;
     ::ll::TypedStorage<1, 1, bool>                                               mScoreboardShowing;
-    ::ll::TypedStorage<1, 1, bool>                                               mPersonaEnabled;
     ::ll::TypedStorage<1, 1, bool>                                               mErrorButtonHovered;
     ::ll::TypedStorage<4, 4, int>                                                mPreviousMaxPlayerCount;
     ::ll::TypedStorage<4, 4, int>                                                mFeedUnreadCount;
@@ -79,6 +81,31 @@ public:
     // member functions
     // NOLINTBEGIN
     MCAPI PauseScreenController(::std::shared_ptr<::PauseScreenModel> model, bool overlaySocialDrawerOnce);
+
+    MCAPI bool _isInviteButtonEnabled() const;
+
+    MCAPI bool _isInviteButtonVisible() const;
+
+    MCAPI bool _isMultiplayerLocked() const;
+
+    MCAPI bool _isProfileButtonAEnabled() const;
+
+    MCAPI bool _isProfileButtonBEnabled() const;
+
+    MCAPI void _navigateToPermissions(::ActorUniqueID const& id);
+
+    MCAPI void _onPlayerListEntryRemoved(
+        ::PlayerListEntry const&,
+        ::std::unordered_map<::mce::UUID, ::PlayerListEntry> const& list
+    );
+
+    MCAPI void _pauseToggleOptionCallback(::Option const& pauseFeatureToggle);
+
+    MCAPI void _populateClientIds();
+
+    MCAPI bool _showRealmsButtons() const;
+
+    MCAPI bool _useMovedInviteButton() const;
     // NOLINTEND
 
 public:
@@ -90,6 +117,22 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $onOpen();
 
+    MCAPI void $onTerminate();
+
+    MCAPI void $onInit();
+
+    MCAPI void $onEntered();
+
+    MCAPI void $addStaticScreenVars(::Json::Value& globalVars);
+
+    MCAPI ::ui::SceneType $getSceneType() const;
+
+    MCAPI ::ui::DirtyFlag $tick();
+
+    MCAPI ::ui::DirtyFlag $handleGameEventNotification(::ui::GameEventNotification notification);
+
+    MCFOLD ::std::string $_getButtonADescription();
     // NOLINTEND
 };

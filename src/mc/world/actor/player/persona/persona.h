@@ -4,7 +4,7 @@
 
 // auto generated inclusion list
 #include "mc/deps/core/string/HashedString.h"
-#include "mc/world/actor/player/persona/PieceType.h"
+#include "mc/deps/shared_types/persona/PieceType.h"
 #include "mc/world/actor/player/persona/Rarity.h"
 
 // auto generated forward declare list
@@ -13,6 +13,10 @@ namespace mce { class Color; }
 namespace mce { class UUID; }
 class UIPropertyBag;
 namespace persona { struct DefaultAppearance; }
+namespace persona { struct PackEvictionPass; }
+namespace persona { struct PackEvictionState; }
+namespace persona { struct PackEvictionTarget; }
+namespace persona { struct PackEvictionTelemetrySnapshot; }
 // clang-format on
 
 namespace persona {
@@ -24,18 +28,21 @@ MCAPI ::mce::Color getPieceRarityColor(::UIPropertyBag const& bag, ::persona::Ra
 MCAPI ::persona::Rarity pieceRarityFromString(::std::string const& rarityTypeStr);
 #endif
 
-MCAPI ::persona::PieceType pieceTypeFromString(::std::string const& assetTypeStr);
+MCAPI ::SharedTypes::persona::PieceType pieceTypeFromString(::std::string const& assetTypeStr);
 
 #ifdef LL_PLAT_C
+MCAPI ::persona::PackEvictionTelemetrySnapshot
+recordEvictionPass(::persona::PackEvictionPass const& pass, ::persona::PackEvictionState& state);
+
 MCAPI ::std::string stringFromPieceRarity(::persona::Rarity const& rarity);
 
 MCAPI ::std::string stringFromPieceRarityNotLocalized(::persona::Rarity const& rarity);
-#endif
 
-MCAPI ::std::string const& stringFromPieceType(::persona::PieceType assetType, bool isDefaultItem);
+MCAPI ::std::string const& stringFromPieceType(::SharedTypes::persona::PieceType assetType, bool isDefaultItem);
 
-#ifdef LL_PLAT_C
-MCAPI ::std::string ttsStringFromPieceType(::persona::PieceType assetType, bool isDefaultItem);
+MCAPI bool tryDeleteCachedPack(::persona::PackEvictionTarget const& target);
+
+MCAPI ::std::string ttsStringFromPieceType(::SharedTypes::persona::PieceType assetType, bool isDefaultItem);
 #endif
 // NOLINTEND
 
@@ -86,272 +93,86 @@ MCAPI ::mce::UUID const& NONE_PIECE_ID();
 
 MCAPI ::std::string const& NO_ERROR_OCCURRED();
 
+MCAPI ::std::string const& PERSONA_LOD_CONTROLLER_THIRD_PERSON();
+
+MCAPI ::std::string const& PIECE_SIDE_BOTH_STR();
+
 MCAPI ::std::string const& PIECE_SIDE_LEFT_STR();
 
 MCAPI ::std::string const& PIECE_SIDE_RIGHT_STR();
 
 MCAPI ::std::string const&& PIECE_TYPE_ARMS_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_ARMS_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_BACK_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_BACK_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_BODY_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_BODY_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_BOTTOM_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_BOTTOM_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_CAPES_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_CAPES_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_CLASSIC_SKIN_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_CLASSIC_SKIN_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_DRESS_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_DRESS_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_EMOTE_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_EMOTE_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_EYES_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_EYES_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_FACE_ACCESSORY_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_FACE_ACCESSORY_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_FACIAL_HAIR_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_FACIAL_HAIR_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_FEET_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_FEET_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_HAIR_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_HAIR_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_HANDS_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_HANDS_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_HEAD_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_HEAD_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_HIGH_PANTS_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_HIGH_PANTS_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_HOOD_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_HOOD_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_LEFT_ARM();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_LEFT_ARM();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_LEFT_LEG();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_LEFT_LEG();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_LEGS_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_LEGS_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_MOUTH_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_MOUTH_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_OUTERWEAR_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_OUTERWEAR_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_RIGHT_ARM();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_RIGHT_ARM();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_RIGHT_LEG();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_RIGHT_LEG();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_SKELETON_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_SKELETON_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_SKIN_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_SKIN_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_TOP_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_TOP_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_UNKNOWN_DEFAULT_ITEM_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_UNKNOWN_DEFAULT_ITEM_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_UNKNOWN_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_UNKNOWN_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const&& PIECE_TYPE_UNSUPPORTED_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string const&& PIECE_TYPE_UNSUPPORTED_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::std::string const& RARITY_NONE();
 
 MCAPI ::std::unordered_map<::persona::Rarity, ::std::string> const& RarityToStringMap();
-
-MCAPI ::std::unordered_map<::std::string, ::persona::PieceType> const& StringToPieceTypeMap();
 #endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::unordered_map<::std::string, ::persona::PieceType> const& StringToPieceTypeMap();
-#endif
+MCAPI ::std::unordered_map<::std::string, ::SharedTypes::persona::PieceType> const& StringToPieceTypeMap();
 
 #ifdef LL_PLAT_C
 MCAPI ::std::unordered_map<::HashedString, ::persona::Rarity> const& StringToRarityMap();
 
 MCAPI ::std::string_view const& UNKNOWN_TYPE_STR();
-#endif
 
-#ifdef LL_PLAT_S
-MCAPI ::std::string_view const& UNKNOWN_TYPE_STR();
-#endif
-
-#ifdef LL_PLAT_C
 MCAPI ::HashedString const& USE_BLINKING_ANIMATION_VARIABLE();
 #endif
 // NOLINTEND

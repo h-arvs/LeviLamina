@@ -16,7 +16,9 @@ class BlockSource;
 class BoundingBox;
 class Random;
 class StructureManager;
+class StructurePiece;
 class StructurePoolBlockRule;
+struct OceanRuinConfiguration;
 // clang-format on
 
 class OceanRuinPieces {
@@ -47,6 +49,10 @@ public:
         // NOLINTEND
 
     public:
+        // prevent constructor by default
+        OceanRuinPiece();
+
+    public:
         // virtual functions
         // NOLINTBEGIN
         virtual ::StructurePieceType getType() const /*override*/;
@@ -54,18 +60,93 @@ public:
         virtual bool postProcess(::BlockSource& region, ::Random& random, ::BoundingBox const& chunkBB) /*override*/;
 
         virtual void _handleDataMarker(
-            ::std::string const&,
-            ::BlockPos const&,
-            ::BlockSource&,
-            ::Random&,
-            ::BoundingBox const&
+            ::std::string const& markerId,
+            ::BlockPos const&    position,
+            ::BlockSource&       region,
+            ::Random&            random,
+            ::BoundingBox const& chunkBB
         ) /*override*/;
+        // NOLINTEND
+
+    public:
+        // member functions
+        // NOLINTBEGIN
+        MCAPI OceanRuinPiece(
+            ::Bedrock::NotNullNonOwnerPtr<::StructureManager> structureManager,
+            ::std::string                                     templateName,
+            ::BlockPos const&                                 origin,
+            ::Rotation                                        rotation,
+            float                                             integrity,
+            bool                                              isLarge,
+            ::OceanTempCategory                               type
+        );
+        // NOLINTEND
+
+    public:
+        // constructor thunks
+        // NOLINTBEGIN
+        MCAPI void* $ctor(
+            ::Bedrock::NotNullNonOwnerPtr<::StructureManager> structureManager,
+            ::std::string                                     templateName,
+            ::BlockPos const&                                 origin,
+            ::Rotation                                        rotation,
+            float                                             integrity,
+            bool                                              isLarge,
+            ::OceanTempCategory                               type
+        );
         // NOLINTEND
 
     public:
         // virtual function thunks
         // NOLINTBEGIN
+        MCAPI ::StructurePieceType $getType() const;
+
+        MCAPI bool $postProcess(::BlockSource& region, ::Random& random, ::BoundingBox const& chunkBB);
+
+        MCAPI void $_handleDataMarker(
+            ::std::string const& markerId,
+            ::BlockPos const&    position,
+            ::BlockSource&       region,
+            ::Random&            random,
+            ::BoundingBox const& chunkBB
+        );
+
 
         // NOLINTEND
     };
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static void _addPiece(
+        ::Bedrock::NotNullNonOwnerPtr<::StructureManager>   structureManager,
+        ::BlockPos const&                                   position,
+        ::Rotation const&                                   rotation,
+        ::std::vector<::std::unique_ptr<::StructurePiece>>& pieces,
+        ::Random&                                           random,
+        ::OceanRuinConfiguration const&                     configuration,
+        bool const                                          isLarge,
+        float const                                         baseIntegrity
+    );
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::std::add_lvalue_reference_t<::std::string_view[4]> bigRuinsBrick();
+
+    MCAPI static ::std::add_lvalue_reference_t<::std::string_view[4]> bigRuinsCracked();
+
+    MCAPI static ::std::add_lvalue_reference_t<::std::string_view[4]> bigRuinsMossy();
+
+    MCAPI static ::std::add_lvalue_reference_t<::std::string_view[4]> bigWarmRuins();
+
+    MCAPI static ::std::add_lvalue_reference_t<::std::string_view[9]> ruinsBrick();
+
+    MCAPI static ::std::add_lvalue_reference_t<::std::string_view[9]> ruinsCracked();
+
+    MCAPI static ::std::add_lvalue_reference_t<::std::string_view[9]> ruinsMossy();
+
+    MCAPI static ::std::add_lvalue_reference_t<::std::string_view[8]> warmRuins();
+    // NOLINTEND
 };

@@ -73,6 +73,8 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
+    MCAPI static void _tryGrow(::BlockSource& region, ::BlockPos const& pos, int age);
+
     MCAPI static void placeVineString(
         ::BlockSource&    region,
         ::Random&         random,

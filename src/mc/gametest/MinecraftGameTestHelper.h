@@ -10,11 +10,13 @@
 
 // auto generated forward declare list
 // clang-format off
+class AABB;
 class Actor;
 class Block;
 class BlockPos;
 class BlockSource;
 class BlockType;
+class Container;
 class Dimension;
 class Item;
 class ItemStack;
@@ -269,6 +271,30 @@ public:
     virtual ::std::variant<::gametest::GameTestError, ::Dimension*> getDimension() /*override*/;
 
     virtual ::std::optional<::gametest::GameTestError> onPlayerJump(::Mob& mob, int jumpAmount) /*override*/;
+    // NOLINTEND
+
+public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI ::std::optional<::gametest::GameTestError> _assertEntityInstancePresent(
+        ::Actor const*    actor,
+        ::AABB const&     searchBounds,
+        ::BlockPos const& relativeTestPosition,
+        bool              expectedPresent
+    ) const;
+
+    MCAPI ::std::optional<::gametest::GameTestError> _assertEntityPresent(
+        ::ActorDefinitionIdentifier const& actorIdentifier,
+        ::AABB const&                      searchBounds,
+        ::BlockPos const&                  pos,
+        bool                               expectedPresent
+    ) const;
+
+    MCAPI ::Container const* _getContainer(::BlockPos const& pos);
+
+    MCAPI int _getItemEntityCount(::Item const& item, ::AABB const& searchBounds);
+
+    MCAPI ::std::optional<::gametest::GameTestError> _getStructureBlockMissingError() const;
     // NOLINTEND
 
 public:

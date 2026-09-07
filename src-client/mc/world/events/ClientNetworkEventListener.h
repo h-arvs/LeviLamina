@@ -16,12 +16,6 @@ public:
     // NOLINTBEGIN
     virtual ~ClientNetworkEventListener() = default;
 
-    virtual ::EventResult onMessage(::ClientMessageEvent const&);
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual ::EventResult onMessage(::ClientMessageEvent const& messageEvent);
     // NOLINTEND
 };

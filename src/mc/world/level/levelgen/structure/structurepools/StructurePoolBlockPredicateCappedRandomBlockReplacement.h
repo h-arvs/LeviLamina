@@ -43,6 +43,26 @@ public:
     virtual bool operator==(::StructurePoolBlockPredicateCappedRandomBlockReplacement const& other) const;
 
     virtual bool operator!=(::StructurePoolBlockPredicateCappedRandomBlockReplacement const& other) const;
+
+    virtual ~StructurePoolBlockPredicateCappedRandomBlockReplacement() /*override*/;
+    // NOLINTEND
+
+public:
+    // member functions
+    // NOLINTBEGIN
+#ifdef LL_PLAT_S
+    MCAPI bool _finalize(::BlockSource& region, ::IRandom& random, ::std::function<void(::BlockPos&)> applyToBlocks);
+#endif
+
+#ifdef LL_PLAT_C
+    MCAPI bool _finalize(::BlockSource& region, ::IRandom& random, ::std::function<void(::BlockPos&)> applyToBlocks);
+#endif
+    // NOLINTEND
+
+public:
+    // destructor thunk
+    // NOLINTBEGIN
+    MCAPI void $dtor();
     // NOLINTEND
 
 public:

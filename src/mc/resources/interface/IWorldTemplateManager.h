@@ -36,6 +36,8 @@ public:
 
     virtual ::WorldTemplateInfo const& getWorldTemplateAtIndex(int index) const = 0;
 
+    virtual bool isWorldTemplateInstalled(::mce::UUID const& uuid) const = 0;
+
     virtual void deleteWorldTemplateAndFiles(::PackIdVersion const& packIdentity) = 0;
 
     virtual ::WorldTemplateInfo const* findInstalledWorldTemplate(::PackIdVersion const& packIdentityToFind) const = 0;
@@ -45,11 +47,5 @@ public:
     virtual void forEachWorldTemplate(::std::function<void(::WorldTemplateInfo const&)> const& callback) const = 0;
 
     virtual bool isInitialized() const = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };

@@ -4,6 +4,7 @@
 
 // auto generated inclusion list
 #include "mc/deps/script_core/lifetime_registry/scripting/StrongTypedObjectHandle.h"
+#include "mc/deps/script_core/runtime/scripting/Result_deprecated.h"
 
 // auto generated forward declare list
 // clang-format off
@@ -20,7 +21,11 @@ namespace Scripting { struct InterfaceBinding; }
 namespace Editor::ScriptModule {
 // functions
 // NOLINTBEGIN
+MCNAPI ::Scripting::Result_deprecated<void> _validateStructureName(::std::string const& structureName);
+
 MCNAPI ::Scripting::EnumBinding bindAxisEnums();
+
+MCNAPI ::Scripting::EnumBinding bindGizmoScaleSpaceEnums();
 
 MCNAPI ::Scripting::EnumBinding bindPlaneEnums();
 
@@ -39,10 +44,6 @@ MCNAPI ::Scripting::InterfaceBinding bindScriptLocalizationEntry();
 MCNAPI ::Scripting::EnumBinding bindScriptMouseActionCategory();
 
 MCNAPI ::Scripting::EnumBinding bindScriptMouseCursorIconType();
-
-#ifdef LL_PLAT_S
-MCNAPI ::Scripting::EnumBinding bindStructureSourceEnum();
-#endif
 
 MCNAPI ::Scripting::StrongTypedObjectHandle<::Editor::ScriptModule::ScriptIBlockPaletteItem>
 convertServiceItemToScriptItem(

@@ -37,12 +37,6 @@ public:
         // NOLINTEND
 
     public:
-        // virtual function thunks
-        // NOLINTBEGIN
-
-        // NOLINTEND
-
-    public:
         // vftables
         // NOLINTBEGIN
         MCNAPI static void** $vftable();
@@ -64,7 +58,7 @@ public:
 
     virtual ::webrtc::AudioOptions const options() const;
 
-    virtual ~AudioSourceInterface() /*override*/;
+    virtual ~AudioSourceInterface() /*override*/ = default;
     // NOLINTEND
 
 public:

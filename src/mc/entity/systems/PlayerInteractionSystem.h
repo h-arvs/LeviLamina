@@ -25,13 +25,8 @@ public:
         // NOLINTBEGIN
         virtual ~InteractionMappingBase() = default;
 
-        virtual ::InteractionResult getInteraction(::Actor&, ::Player&, ::ActorInteraction&) const = 0;
-        // NOLINTEND
-
-    public:
-        // virtual function thunks
-        // NOLINTBEGIN
-
+        virtual ::InteractionResult
+        getInteraction(::Actor& actor, ::Player& player, ::ActorInteraction& interaction) const = 0;
         // NOLINTEND
     };
 

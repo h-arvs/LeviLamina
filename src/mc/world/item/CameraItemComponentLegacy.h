@@ -89,6 +89,9 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
+    MCAPI static ::CameraItemComponentLegacy::UseAction
+    _tryPlace(::ItemStack const& instance, ::Actor& actor, ::BlockPos const& blockPos, uchar face, ::Vec3& spawnPos);
+
     MCAPI static ::Json::Value initializeFromNetwork(::CompoundTag const& tag);
     // NOLINTEND
 

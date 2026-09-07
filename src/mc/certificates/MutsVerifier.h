@@ -33,14 +33,20 @@ public:
     // NOLINTBEGIN
     virtual ~MutsVerifier() /*override*/ = default;
 
-    virtual void setRequest(::Json::Value&) /*override*/;
+    virtual void setRequest(::Json::Value& request) /*override*/;
 
-    virtual ::std::optional<::Json::Value> verify(::Json::Value&&) /*override*/;
+    virtual ::std::optional<::Json::Value> verify(::Json::Value&& response) /*override*/;
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCNAPI void $setRequest(::Json::Value& request);
+
+    MCNAPI ::std::optional<::Json::Value> $verify(::Json::Value&& response);
+#endif
+
 
     // NOLINTEND
 };

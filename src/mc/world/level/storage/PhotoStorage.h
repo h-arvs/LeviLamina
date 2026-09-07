@@ -36,6 +36,10 @@ public:
     MCAPI explicit PhotoStorage(::Core::Path const& baseDir);
 
 #ifdef LL_PLAT_C
+    MCAPI bool _addValidFile(::Core::Path path);
+
+    MCAPI bool _isValidFile(::Core::Path file);
+
     MCAPI void getLoosePhotos(::Player& owner, ::std::vector<::Core::PathBuffer<::std::string>>& result);
 
     MCAPI ::Core::PathBuffer<::std::string> getPath(::PhotoStorageContainer const& container);
@@ -63,9 +67,7 @@ public:
         ::std::string const&           photoName,
         ::std::string const&           photoData
     );
-#endif
 
-#ifdef LL_PLAT_S
     MCAPI ~PhotoStorage();
 #endif
     // NOLINTEND
@@ -73,6 +75,12 @@ public:
 public:
     // static variables
     // NOLINTBEGIN
+    MCAPI static ::std::string const& BOOKS_DIR();
+
+    MCAPI static ::std::string const& MANIFEST_NAME();
+
+    MCAPI static ::std::string const& PHOTOITEM_DIR();
+
     MCAPI static ::std::string const& PHOTO_DIR();
     // NOLINTEND
 
@@ -85,7 +93,7 @@ public:
 public:
     // destructor thunk
     // NOLINTBEGIN
-#ifdef LL_PLAT_S
+#ifdef LL_PLAT_C
     MCAPI void $dtor();
 #endif
     // NOLINTEND

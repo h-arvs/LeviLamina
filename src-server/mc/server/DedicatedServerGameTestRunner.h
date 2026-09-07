@@ -26,4 +26,16 @@ public:
     DedicatedServerGameTestRunner& operator=(DedicatedServerGameTestRunner const&);
     DedicatedServerGameTestRunner(DedicatedServerGameTestRunner const&);
     DedicatedServerGameTestRunner();
+
+public:
+    // member functions
+    // NOLINTBEGIN
+    MCNAPI bool _saveReport();
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCNAPI static bool _writeFile(::std::string const& fileName, ::std::string const& contents);
+    // NOLINTEND
 };

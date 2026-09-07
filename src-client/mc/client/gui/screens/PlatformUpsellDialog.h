@@ -13,12 +13,6 @@ public:
     // NOLINTBEGIN
     virtual ~PlatformUpsellDialog() = default;
 
-    virtual void show(::std::shared_ptr<::Social::User> const user, ::std::function<void(bool)> callback) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
+    virtual void show(::std::shared_ptr<::Social::User> const, ::std::function<void(bool)>) = 0;
     // NOLINTEND
 };

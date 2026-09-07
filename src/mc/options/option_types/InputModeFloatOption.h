@@ -30,9 +30,9 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
-    virtual void save(::std::vector<::std::pair<::std::string, ::std::string>>&) /*override*/;
+    virtual void save(::std::vector<::std::pair<::std::string, ::std::string>>& propertyVector) /*override*/;
 
-    virtual void load(::std::string const&) /*override*/;
+    virtual void load(::std::string const& valueString) /*override*/;
 
     virtual void load(::std::map<::std::string, ::std::string>& propertyMap) /*override*/;
     // NOLINTEND
@@ -52,7 +52,8 @@ public:
         float                rangeMax
     );
 
-    MCAPI void reset(::InputMode inputMode, bool saveOptionChange);
+    MCAPI void
+    _saveForInputMode(::std::vector<::std::pair<::std::string, ::std::string>>& propertyVector, ::InputMode mode);
 
     MCAPI void set(::InputMode inputmode, float value, bool saveOptionChange);
 #endif
@@ -78,6 +79,14 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+#ifdef LL_PLAT_C
+    MCAPI void $save(::std::vector<::std::pair<::std::string, ::std::string>>& propertyVector);
+
+    MCFOLD void $load(::std::string const& valueString);
+
+    MCAPI void $load(::std::map<::std::string, ::std::string>& propertyMap);
+#endif
+
 
     // NOLINTEND
 };

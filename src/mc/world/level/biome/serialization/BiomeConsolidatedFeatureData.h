@@ -3,7 +3,13 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
+#include "mc/platform/Result.h"
 #include "mc/world/level/biome/serialization/BiomeScatterParamData.h"
+
+// auto generated forward declare list
+// clang-format off
+class ReadOnlyBinaryStream;
+// clang-format on
 
 struct BiomeConsolidatedFeatureData {
 public:
@@ -20,6 +26,14 @@ public:
     // member functions
     // NOLINTBEGIN
     MCAPI ~BiomeConsolidatedFeatureData();
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+#ifdef LL_PLAT_S
+    MCAPI static ::Bedrock::Result<::BiomeConsolidatedFeatureData> read(::ReadOnlyBinaryStream& stream);
+#endif
     // NOLINTEND
 
 public:

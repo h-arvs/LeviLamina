@@ -5,12 +5,14 @@
 // auto generated inclusion list
 #include "mc/deps/script_core/lifetime_registry/scripting/StrongTypedObjectHandle.h"
 #include "mc/deps/script_core/lifetime_registry/scripting/TypedObjectHandle.h"
+#include "mc/deps/script_core/runtime/scripting/Result_deprecated.h"
 
 // auto generated forward declare list
 // clang-format off
 class Player;
 struct ChatEvent;
 namespace ScriptModuleMinecraft { class ScriptPlayer; }
+namespace ScriptModuleMinecraft { struct ScriptChatSendIntermediateData; }
 namespace Scripting { class WeakLifetimeScope; }
 namespace Scripting { struct ClassBinding; }
 // clang-format on
@@ -18,6 +20,10 @@ namespace Scripting { struct ClassBinding; }
 namespace ScriptModuleMinecraft {
 
 struct ScriptChatSendAfterEvent {
+public:
+    // ScriptChatSendAfterEvent inner types define
+    using QueueType = ::ScriptModuleMinecraft::ScriptChatSendIntermediateData;
+
 public:
     // member variables
     // NOLINTBEGIN
@@ -40,6 +46,11 @@ public:
     MCAPI ScriptChatSendAfterEvent(::ScriptModuleMinecraft::ScriptChatSendAfterEvent const&);
 
     MCAPI ScriptChatSendAfterEvent(
+        ::std::shared_ptr<::ScriptModuleMinecraft::ScriptChatSendIntermediateData> const& evtData,
+        ::Scripting::WeakLifetimeScope const&                                             scope
+    );
+
+    MCAPI ScriptChatSendAfterEvent(
         ::ChatEvent const&                    chatEvent,
         ::Player const&                       player,
         ::Scripting::WeakLifetimeScope const& scope
@@ -47,8 +58,15 @@ public:
 
     MCAPI void copyTo(::ChatEvent& chatEvent, ::Scripting::WeakLifetimeScope const& scope) const;
 
+    MCAPI ::Scripting::Result_deprecated<
+        ::std::vector<::Scripting::TypedObjectHandle<::ScriptModuleMinecraft::ScriptPlayer>>>
+    getTargets_V010();
+
     MCAPI ::ScriptModuleMinecraft::ScriptChatSendAfterEvent&
     operator=(::ScriptModuleMinecraft::ScriptChatSendAfterEvent const&);
+
+    MCAPI ::Scripting::Result_deprecated<void>
+    setTargets_V010(::std::vector<::Scripting::TypedObjectHandle<::ScriptModuleMinecraft::ScriptPlayer>> targets);
 
     MCAPI ~ScriptChatSendAfterEvent();
     // NOLINTEND
@@ -65,6 +83,11 @@ public:
     // constructor thunks
     // NOLINTBEGIN
     MCAPI void* $ctor(::ScriptModuleMinecraft::ScriptChatSendAfterEvent const&);
+
+    MCAPI void* $ctor(
+        ::std::shared_ptr<::ScriptModuleMinecraft::ScriptChatSendIntermediateData> const& evtData,
+        ::Scripting::WeakLifetimeScope const&                                             scope
+    );
 
     MCAPI void*
     $ctor(::ChatEvent const& chatEvent, ::Player const& player, ::Scripting::WeakLifetimeScope const& scope);

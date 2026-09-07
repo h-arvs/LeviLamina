@@ -14,6 +14,8 @@ class BoundingBox;
 class ChunkPos;
 class SimpleBlockVolume;
 class Vec3;
+namespace Editor { class BlockAdjacencyItem; }
+namespace Editor { class BlockAdjacencyMap; }
 namespace cereal { struct ReflectionCtx; }
 // clang-format on
 
@@ -28,8 +30,11 @@ public:
     ::ll::UntypedStorage<8, 24> mUnk83c576;
     ::ll::UntypedStorage<4, 4>  mUnk6756a4;
     ::ll::UntypedStorage<4, 4>  mUnkd8738a;
+    ::ll::UntypedStorage<4, 4>  mUnk9ccdc4;
     ::ll::UntypedStorage<4, 16> mUnkbfff20;
     ::ll::UntypedStorage<8, 8>  mUnk89b559;
+    ::ll::UntypedStorage<8, 8>  mUnk140c85;
+    ::ll::UntypedStorage<1, 1>  mUnkc0e231;
     // NOLINTEND
 
 public:
@@ -60,6 +65,8 @@ public:
     virtual ::std::unordered_set<::BlockPos> getFlattenedBlockPositions() const /*override*/;
 
     virtual ::std::unique_ptr<::BaseBlockLocationIterator> getIterator() const /*override*/;
+
+    virtual ~RelativeVolumeListBlockVolume() /*override*/;
     // NOLINTEND
 
 public:
@@ -69,14 +76,19 @@ public:
 
     MCNAPI RelativeVolumeListBlockVolume(::Editor::RelativeVolumeListBlockVolume const& rhs);
 
+    MCNAPI void _addVolumesBulkViaGrid(::std::vector<::SimpleBlockVolume> const& volumes);
+
     MCNAPI void add(::SimpleBlockVolume const& _relativeVolume);
 
-    MCNAPI void clear();
+    MCNAPI ::std::vector<::SimpleBlockVolume>
+    calculateVolumetricDifference(::SimpleBlockVolume const& volA, ::SimpleBlockVolume const& volB);
 
-    MCNAPI void enableAdjacencyMap();
+    MCNAPI void compact();
+
+    MCNAPI void enableAdjacencyMap() const;
 
 #ifdef LL_PLAT_C
-    MCNAPI void forEachRelativeBlockPosition(::std::function<bool(::BlockPos const&)> callback) const;
+    MCNAPI ::Editor::BlockAdjacencyItem getAdjacencyBits(::BlockPos const& pos) const;
 #endif
 
     MCNAPI ::std::vector<::BlockPos> getBlockPositionList(bool relative) const;
@@ -87,9 +99,13 @@ public:
 
     MCNAPI void moveTo(::BlockPos const& pos);
 
+    MCNAPI ::Editor::RelativeVolumeListBlockVolume& operator=(::std::vector<::Vec3> const& locations);
+
     MCNAPI ::Editor::RelativeVolumeListBlockVolume& operator=(::Editor::RelativeVolumeListBlockVolume&& rhs);
 
     MCNAPI ::Editor::RelativeVolumeListBlockVolume& operator=(::Editor::RelativeVolumeListBlockVolume const& rhs);
+
+    MCNAPI ::Editor::RelativeVolumeListBlockVolume& operator=(::SimpleBlockVolume const& volume);
 
     MCNAPI bool operator==(::Editor::RelativeVolumeListBlockVolume const& rhs) const;
 
@@ -99,6 +115,9 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
+    MCNAPI static ::std::vector<::SimpleBlockVolume>
+    _greedyBoxCoverFromGrid(::Editor::BlockAdjacencyMap& remaining, ::std::vector<::BlockPos>& voxels);
+
     MCNAPI static void bindType(::cereal::ReflectionCtx& ctx);
     // NOLINTEND
 
@@ -108,6 +127,12 @@ public:
     MCNAPI void* $ctor(::Editor::RelativeVolumeListBlockVolume&& rhs);
 
     MCNAPI void* $ctor(::Editor::RelativeVolumeListBlockVolume const& rhs);
+    // NOLINTEND
+
+public:
+    // destructor thunk
+    // NOLINTBEGIN
+    MCNAPI void $dtor();
     // NOLINTEND
 
 public:

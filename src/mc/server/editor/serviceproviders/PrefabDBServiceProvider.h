@@ -27,7 +27,8 @@ public:
     virtual void bake(
         ::WeakEntityRef                           weakPlayerRef,
         ::std::function<void(bool)>               completionCallback,
-        ::std::function<void(::std::string_view)> logger
+        ::std::function<void(::std::string_view)> logger,
+        bool                                      deleteInstancesAfterBake
     ) = 0;
 
     virtual void unbake(
@@ -35,12 +36,6 @@ public:
         ::std::function<void(bool)>               completionCallback,
         ::std::function<void(::std::string_view)> logger
     ) = 0;
-    // NOLINTEND
-
-public:
-    // virtual function thunks
-    // NOLINTBEGIN
-
     // NOLINTEND
 };
 

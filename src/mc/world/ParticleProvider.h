@@ -86,7 +86,11 @@ public:
 public:
     // virtual functions
     // NOLINTBEGIN
+#ifdef LL_PLAT_S
+    virtual ~ParticleProvider() = default;
+#else // LL_PLAT_C
     virtual ~ParticleProvider();
+#endif
 
 #ifdef LL_PLAT_S
     virtual void addSprintParticleEffect(::Actor const&, ::IConstBlockSource const&, ::IRandom&);
@@ -99,13 +103,19 @@ public:
 public:
     // destructor thunk
     // NOLINTBEGIN
+#ifdef LL_PLAT_C
     MCAPI void $dtor();
+#endif
     // NOLINTEND
 
 public:
     // virtual function thunks
     // NOLINTBEGIN
+#ifdef LL_PLAT_S
     MCFOLD void $addSprintParticleEffect(::Actor const&, ::IConstBlockSource const&, ::IRandom&);
+#else // LL_PLAT_C
+    MCFOLD void $addSprintParticleEffect(::Actor const& mob, ::IConstBlockSource const& region, ::IRandom& random);
+#endif
 
 
     // NOLINTEND

@@ -11,15 +11,19 @@
 // auto generated forward declare list
 // clang-format off
 class Actor;
+class Block;
 class BlockPos;
 class BlockSource;
 class CompoundTag;
 class Container;
+class HashedString;
 class InteractionResult;
 class ItemDescriptor;
+class ItemInstance;
 class ItemStack;
 class ItemStackBase;
 class Level;
+class Material;
 class Player;
 class Vec3;
 struct Brightness;
@@ -95,6 +99,45 @@ public:
     virtual ::InteractionResult
     _useOn(::ItemStack& instance, ::Actor& entity, ::BlockPos pos, uchar face, ::Vec3 const& clickPos) const
         /*override*/;
+    // NOLINTEND
+
+public:
+    // member functions
+    // NOLINTBEGIN
+    MCAPI void _broadcastBucketEmptySound(::BlockSource& region, ::Actor& entity, ::BlockPos const& pos) const;
+
+    MCAPI bool _emptyBucket(
+        ::BlockSource&     region,
+        ::Block const&     contents,
+        ::BlockPos const&  pos,
+        ::Actor*           placer,
+        ::ItemStack const& instance,
+        uchar              face
+    ) const;
+
+    MCAPI bool
+    _supportsWaterlessEntity(::Actor const& entity, ::HashedString& bucketType, bool const onlyCheckActorType) const;
+
+    MCAPI bool readBucketEntitySaveData(
+        ::BlockSource&        region,
+        ::Actor*              placer,
+        ::BlockPos            pos,
+        ::ItemInstance const& instance
+    ) const;
+    // NOLINTEND
+
+public:
+    // static functions
+    // NOLINTBEGIN
+    MCAPI static void _broadcastBucketFillSound(::BlockSource& region, ::Actor& entity, ::Material const& material);
+
+    MCAPI static void _replaceWithEmptyBucket(::ItemStack& instance, ::Actor& entity);
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::std::vector<::BucketItem::FillTypeEntityData> const& mFillTypeEntityData();
     // NOLINTEND
 
 public:

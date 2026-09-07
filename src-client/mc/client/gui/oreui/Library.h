@@ -3,24 +3,31 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
+#include "mc/client/gui/oreui/ViewCacheMode.h"
 #include "mc/client/gui/oreui/views/FramesToPaintQueue.h"
 #include "mc/deps/core/utility/NonOwnerPointer.h"
 
 // auto generated forward declare list
 // clang-format off
+class IClientInstance;
 class TaskGroup;
 namespace Core { class Path; }
 namespace Gameface { class ResourceHandlerBroker; }
 namespace Gameface { class TemporaryTextureHolder; }
+namespace Input::Debug { class ISplitscreenRedirect; }
+namespace OreUI { class IFacetRegistry; }
 namespace OreUI { class ILiveViewCollectionConsumer; }
 namespace OreUI { class IRenderingBackend; }
 namespace OreUI { class InternationalizationManager; }
 namespace OreUI { class LayoutScheduler; }
 namespace OreUI { class ViewsCoordinator; }
 namespace OreUI { struct DebugData; }
+namespace OreUI { struct ViewId; }
+namespace OreUI::Detail { class ViewContextFactory; }
 namespace cohtml { class IAllocator; }
 namespace cohtml { class IFileSystemReader; }
 namespace cohtml { class ITimeZoneProvider; }
+namespace cohtml { class IVirtualAllocator; }
 namespace cohtml { class Library; }
 namespace cohtml { class System; }
 namespace cohtml { class SystemRenderer; }
@@ -74,6 +81,8 @@ public:
     ::ll::TypedStorage<1, 1, bool>                          mICUDataInitialized;
     ::ll::TypedStorage<8, 16, ::std::thread>                mResourceThread;
     ::ll::TypedStorage<8, 8, ::OreUI::DebugData&>           mDebugData;
+    ::ll::TypedStorage<8, 24, ::Bedrock::NotNullNonOwnerPtr<::Input::Debug::ISplitscreenRedirect>>
+        mDebugSplitscreenInputRedirect;
     // NOLINTEND
 
 public:
@@ -87,6 +96,14 @@ public:
     // NOLINTBEGIN
     MCAPI void _loadICUData(::TaskGroup& taskGroup, ::Core::Path const& packagePath);
 
+    MCAPI ::OreUI::ViewId createView(
+        ::OreUI::Detail::ViewContextFactory&       contextFactory,
+        ::std::string const&                       viewPath,
+        ::std::unique_ptr<::OreUI::IFacetRegistry> facets,
+        ::IClientInstance&                         clientInstance,
+        ::OreUI::ViewCacheMode                     viewCacheMode
+    );
+
     MCAPI void initializeRendering(
         ::Bedrock::NonOwnerPointer<::mce::ShaderGroup> shaderGroup,
         ::mce::RenderContext&                          renderContext
@@ -95,6 +112,12 @@ public:
     MCAPI void initializeViewsCoordinator(::std::function<void(::std::string_view)> showDebugToast);
 
     MCAPI void update(double time);
+    // NOLINTEND
+
+public:
+    // static variables
+    // NOLINTBEGIN
+    MCAPI static ::std::unique_ptr<::cohtml::IVirtualAllocator>& mVirtualAllocator();
     // NOLINTEND
 };
 

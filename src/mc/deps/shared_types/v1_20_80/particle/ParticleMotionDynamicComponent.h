@@ -64,11 +64,17 @@ public:
     // NOLINTEND
 
 public:
-    // virtual function thunks
+    // destructor thunk
     // NOLINTBEGIN
 #ifdef LL_PLAT_C
-    MCAPI ::HashedString const& $getIdentifier() const;
+    MCAPI void $dtor();
 #endif
+    // NOLINTEND
+
+public:
+    // virtual function thunks
+    // NOLINTBEGIN
+    MCAPI ::HashedString const& $getIdentifier() const;
 
 
     // NOLINTEND

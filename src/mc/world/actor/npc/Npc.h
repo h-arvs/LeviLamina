@@ -48,7 +48,7 @@ public:
     virtual void buildDebugInfo(::std::string& out) const /*override*/;
 
     virtual void
-    knockback(::Actor* source, int damage, float xd, float zd, ::KnockbackParameters const& parameters) /*override*/;
+    knockback(::Actor* source, float damage, float xd, float zd, ::KnockbackParameters const& parameters) /*override*/;
 
     virtual bool canBePulledIntoVehicle() const /*override*/;
 
@@ -88,6 +88,33 @@ public:
 public:
     // virtual function thunks
     // NOLINTBEGIN
+    MCAPI void $reloadHardcoded(::ActorInitializationMethod method, ::VariantParameterList const& params);
+
+    MCAPI void $initializeComponents(::ActorInitializationMethod method, ::VariantParameterList const& params);
+
+    MCAPI void $newServerAiStep();
+
+    MCFOLD void $die(::ActorDamageSource const& source);
+
+    MCFOLD bool $canBeAffected(uint id) const;
+
+    MCAPI ::mce::Color $getNameTagTextColor() const;
+
+    MCFOLD bool $canShowNameTag() const;
+
+    MCFOLD bool $isTargetable() const;
+
+    MCAPI void $buildDebugInfo(::std::string& out) const;
+
+    MCFOLD void $knockback(::Actor* source, float damage, float xd, float zd, ::KnockbackParameters const& parameters);
+
+    MCFOLD bool $canBePulledIntoVehicle() const;
+
+    MCFOLD bool $canExistWhenDisallowMob() const;
+
+    MCAPI ::ActorHurtResult
+    $_hurt(::ActorDamageSource const& source, float damage, ::HurtParameters const& hurtParameters);
+
 
     // NOLINTEND
 };
