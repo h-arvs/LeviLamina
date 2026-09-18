@@ -3,6 +3,7 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
+#include "mc/deps/core/math/Vec3.h"
 #include "mc/server/commands/Command.h"
 #include "mc/server/commands/CommandPositionFloat.h"
 #include "mc/server/commands/CommandSelector.h"
@@ -16,7 +17,6 @@ class CommandOrigin;
 class CommandOutput;
 class CommandRegistry;
 class TeleportTarget;
-class Vec3;
 struct DimensionType;
 namespace RotationCommandUtils { class RotationData; }
 // clang-format on
@@ -58,6 +58,7 @@ public:
     ::ll::TypedStorage<1, 1, bool>                                 mIsUsingRotation;
     ::ll::TypedStorage<1, 1, bool>                                 mFacingIsPosition;
     ::ll::TypedStorage<1, 1, bool>                                 mCheckForBlocks;
+    ::ll::TypedStorage<1, 1, bool>                                 mForceProvidedPositionOnDimensionChange;
     // NOLINTEND
 
 public:
@@ -69,7 +70,7 @@ public:
 public:
     // static functions
     // NOLINTBEGIN
-    MCAPI static void applyTarget(::Actor& victim, ::TeleportTarget target, bool keepVelocity);
+    MCAPI static void applyTarget(::Actor& victim, ::TeleportTarget target, int commandVersion, bool keepVelocity);
 
     MCAPI static ::TeleportTarget computeTarget(
         ::Actor&                                                     victim,

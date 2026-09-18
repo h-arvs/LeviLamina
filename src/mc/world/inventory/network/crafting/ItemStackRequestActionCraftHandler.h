@@ -14,6 +14,7 @@ class ItemInstance;
 class ItemStackRequestActionConsume;
 class ItemStackRequestActionCraftBase;
 class ItemStackRequestActionCraftResults_DEPRECATEDASKTYLAING;
+class ItemStackRequestActionCreate;
 class ItemStackRequestActionHandler;
 class Player;
 class SimpleSparseContainer;
@@ -46,26 +47,30 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCNAPI ::ItemStackNetResult _initCraftResults(::std::vector<::ItemInstance> const& results, uchar numCrafts);
+    MCAPI ::ItemStackNetResult _initCraftResults(::std::vector<::ItemInstance> const& results, uchar numCrafts);
 
-    MCNAPI ::ItemInstance* _initSingleCraftResult(::ItemInstance const& itemInstance);
+    MCAPI ::ItemInstance* _initSingleCraftResult(::ItemInstance const& itemInstance);
 
-    MCNAPI ::ItemStackNetResult _setCreatedItemOutputSlot(uchar resultsIndex);
+    MCAPI ::ItemStackNetResult _setCreatedItemOutputSlot(uchar resultsIndex);
 
-    MCNAPI ::ItemStackNetResult endRequest(::ItemStackNetResult currentResult);
+    MCAPI ::ItemStackNetResult endRequest(::ItemStackNetResult currentResult);
 
-    MCNAPI ::ItemStackNetResult handleConsume(::ItemStackRequestActionConsume const& requestAction);
+    MCAPI ::ItemStackNetResult handleConsume(::ItemStackRequestActionConsume const& requestAction);
 
-    MCNAPI ::ItemStackNetResult handleCraftAction(::ItemStackRequestActionCraftBase const& requestAction);
+    MCAPI ::ItemStackNetResult handleCraftAction(::ItemStackRequestActionCraftBase const& requestAction);
 
-    MCNAPI ::ItemStackNetResult
+    MCAPI ::ItemStackNetResult
     handleCraftResults(::ItemStackRequestActionCraftResults_DEPRECATEDASKTYLAING const& requestAction);
 
-    MCNAPI bool isCraftRequest() const;
+#ifdef LL_PLAT_S
+    MCAPI ::ItemStackNetResult handleCreate(::ItemStackRequestActionCreate const& requestAction);
+#endif
 
-    MCNAPI void onContainerScreenOpen(::ContainerScreenContext const& screenContext);
+    MCAPI bool isCraftRequest() const;
 
-    MCNAPI ::ItemStackNetResult preHandleAction(::ItemStackRequestActionType requestActionType);
+    MCAPI void onContainerScreenOpen(::ContainerScreenContext const& screenContext);
+
+    MCAPI ::ItemStackNetResult preHandleAction(::ItemStackRequestActionType requestActionType);
     // NOLINTEND
 
 public:

@@ -265,6 +265,7 @@ class ComponentStorageIterator;
 }
 
 #ifndef cerealizer
+// Compile-only placeholder for generated headers; does not describe the game's ABI.
 template <typename T>
 struct cerealizer {
     struct SerializedData{};
@@ -402,7 +403,7 @@ namespace Puv {
 template <typename From, typename To, typename CustomData>
 class CerealUpgrader;
 
-template <typename T0, typename T1, typename T2, typename T3>
+template <typename T0, typename T1, typename T2, typename T3, typename T4>
 class SlicedLoader;
 }
 

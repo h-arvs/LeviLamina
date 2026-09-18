@@ -56,8 +56,6 @@ public:
 public:
     // member functions
     // NOLINTBEGIN
-    MCAPI ScriptDeferredEventCoordinator();
-
     MCAPI void _sendFlushBlockCustomComponentAfterEvents(::ScriptDeferredFlushTracker& deferredTracker);
 
     MCAPI void _sendFlushEditorDataStoreAfterEvents(::ScriptDeferredFlushTracker& deferredTracker);
@@ -80,12 +78,6 @@ public:
     // NOLINTBEGIN
     MCAPI static ::std::vector<::ScriptDeferredEventCoordinator::DocumentableEventExecution> const&
     sEventExecutionOrder();
-    // NOLINTEND
-
-public:
-    // constructor thunks
-    // NOLINTBEGIN
-    MCAPI void* $ctor();
     // NOLINTEND
 
 public:

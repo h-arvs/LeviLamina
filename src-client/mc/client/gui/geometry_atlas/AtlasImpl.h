@@ -7,6 +7,7 @@
 #include "mc/client/gui/geometry_atlas/IGeometryAtlas.h"
 #include "mc/client/gui/geometry_atlas/ItemData.h"
 #include "mc/client/gui/geometry_atlas/PaperDollData.h"
+#include "mc/client/gui/geometry_atlas/RenderableUpdateCommand.h"
 #include "mc/deps/core/threading/BasicLockbox.h"
 #include "mc/deps/core/utility/pub_sub/Connector.h"
 #include "mc/deps/core/utility/pub_sub/Publisher.h"
@@ -17,12 +18,10 @@
 // auto generated forward declare list
 // clang-format off
 namespace Bedrock::PubSub::ThreadModel { struct MultiThreaded; }
-namespace Bedrock::Threading { class Mutex; }
 namespace GeometryAtlas { class IItemTile; }
 namespace GeometryAtlas { class IPaperDollTile; }
 namespace GeometryAtlas { class IRenderContext; }
 namespace GeometryAtlas { struct AllocateAtlasPayload; }
-namespace GeometryAtlas { struct RenderableUpdateCommand; }
 namespace GeometryAtlas { struct TileDefinition; }
 namespace GeometryAtlas { struct TileHandleSharedState; }
 namespace dragon::atlas { class IAtlasHandle; }
@@ -100,8 +99,7 @@ public:
         ::ll::TypedStorage<
             8,
             120,
-            ::Bedrock::Threading::
-                BasicLockbox<::std::deque<::GeometryAtlas::RenderableUpdateCommand>, ::Bedrock::Threading::Mutex>>
+            ::Bedrock::Threading::BasicLockbox<::std::deque<::GeometryAtlas::RenderableUpdateCommand>, ::std::mutex>>
                                                                                            mCommands;
         ::ll::TypedStorage<8, 24, ::std::vector<::GeometryAtlas::RenderableUpdateCommand>> mFutureCommands;
         ::ll::TypedStorage<

@@ -3,13 +3,12 @@
 #include "mc/_HeaderOutputPredefine.h"
 
 // auto generated inclusion list
-#include "mc/platform/threading/Mutex.h"
+#include "mc/deps/core_graphics/ImageBuffer.h"
+#include "mc/deps/minecraft_renderer/renderer/TexturePtr.h"
 
 // auto generated forward declare list
 // clang-format off
 namespace GeometryAtlas { class IAtlasTile; }
-namespace cg { class ImageBuffer; }
-namespace mce { class TexturePtr; }
 // clang-format on
 
 namespace Gameface {
@@ -25,8 +24,8 @@ public:
 public:
     // member variables
     // NOLINTBEGIN
-    ::ll::TypedStorage<8, 80, ::Bedrock::Threading::Mutex> mMutex;
-    ::ll::TypedStorage<8, 8, uint64>                       mId;
+    ::ll::TypedStorage<8, 80, ::std::mutex> mMutex;
+    ::ll::TypedStorage<8, 8, uint64>        mId;
     ::ll::TypedStorage<
         8,
         16,

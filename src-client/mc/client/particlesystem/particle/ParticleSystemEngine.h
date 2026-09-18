@@ -8,13 +8,13 @@
 #include "mc/deps/core/container/slot_map_handle.h"
 #include "mc/deps/core/math/Color.h"
 #include "mc/deps/core/math/Vec3.h"
+#include "mc/deps/core/string/HashedString.h"
 #include "mc/deps/core/utility/EnableNonOwnerReferences.h"
 
 // auto generated forward declare list
 // clang-format off
 class Actor;
 class BlockSource;
-class HashedString;
 class LightTexture;
 class Matrix;
 class MolangVariableMap;
@@ -81,7 +81,8 @@ public:
         ::ParticleEffectGroup&                                  particleEffectGroup,
         ::BlockSource&                                          region,
         ::std::weak_ptr<::LightPropagation::LightVolumeManager> lightVolumeManager,
-        ::LightTexture&                                         lightTexture
+        ::LightTexture&                                         lightTexture,
+        int                                                     framesToInterpolate
     );
 
     MCAPI void clear();
@@ -137,7 +138,8 @@ public:
         ::ParticleEffectGroup&                                  particleEffectGroup,
         ::BlockSource&                                          region,
         ::std::weak_ptr<::LightPropagation::LightVolumeManager> lightVolumeManager,
-        ::LightTexture&                                         lightTexture
+        ::LightTexture&                                         lightTexture,
+        int                                                     framesToInterpolate
     );
     // NOLINTEND
 };
