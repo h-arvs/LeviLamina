@@ -12,7 +12,6 @@ class StrictEntityContext;
 struct ActorMovementTickNeededComponent;
 struct AttributeRequestComponent;
 struct AttributesComponent;
-struct InterpolateMovementNeededComponent;
 struct MovementAttributesComponent;
 // clang-format on
 
@@ -21,17 +20,14 @@ namespace UpdateAttributesSystemImpl {
 // NOLINTBEGIN
 MCAPI void tickProcessRequests(
     ::entt::type_list<::Include<::ActorMovementTickNeededComponent>>,
-    ::StrictEntityContext const&                  entity,
-    ::AttributesComponent&                        attributes,
-    ::AttributeRequestComponent const&            request,
-    ::EntityModifier<::AttributeRequestComponent> modifier
+    ::StrictEntityContext const&                         entity,
+    ::AttributesComponent&                               attributes,
+    ::AttributeRequestComponent const&                   request,
+    ::EntityModifier<::AttributeRequestComponent> const& modifier
 );
 
-MCAPI void tickUpdateAttributesSystem(
-    ::entt::type_list<::Include<::InterpolateMovementNeededComponent>>,
-    ::AttributesComponent const&   attributes,
-    ::MovementAttributesComponent& movementAttributes
-);
+MCAPI void
+tickUpdateAttributesSystem(::AttributesComponent const& attributes, ::MovementAttributesComponent& movementAttributes);
 // NOLINTEND
 
 } // namespace UpdateAttributesSystemImpl
